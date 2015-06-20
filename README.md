@@ -1,12 +1,11 @@
 # ofAlReves
-openFrameworks scenes for Compagnie Al Reves, Aix en Provence
+A set of OpenFrameworks scenes used for "Compagnie Al Reves", Aix en Provence.
 
 # Addons
-ofxGui
-ofxOpenCv
-ofxXmlSettings
-ofxAppUtils
-ofxCv
-ofxTween
-ofxUI
-
+ - ofxGui
+ - ofxOpenCv
+ - ofxXmlSettings
+ - ofxAppUtils
+ - ofxCv
+ - ofxTween
+ - ofxUI

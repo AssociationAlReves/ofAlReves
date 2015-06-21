@@ -8,12 +8,12 @@
 * See https://github.com/danomatika/ofxAppUtils for documentation
 *
 */
-#include "ofAlRevesApp.h"
+#include "ofApp.h"
 
 #include "scenes/scenes.h"
 
 //--------------------------------------------------------------
-void ofAlRevesApp::setup() {
+void ofApp::setup() {
 
 	// setup for nice jaggy-less rendering
 	ofSetVerticalSync(true);
@@ -24,7 +24,7 @@ void ofAlRevesApp::setup() {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::setupSceneManager() {
+void ofApp::setupSceneManager() {
 
 	// setup the render size (working area)
 	transformer.setRenderSize(PROJECTOR_RESOLUTION_X, PROJECTOR_RESOLUTION_Y);
@@ -43,8 +43,22 @@ void ofAlRevesApp::setupSceneManager() {
 #endif
 
 	// load scenes
-	sceneManager.add(new ofxTerrain());
+
+	//// Vasarely (Mac or PC)
+	//sceneManager.add(new ofxTerrain());
+	//sceneManager.add(new ofxVasaDalleQuad());
+	//sceneManager.add(new ofxVasaSquareField());
+
+	// Bellegarde (mac - front with kinect)
+	/*sceneManager.add(new ofMovingSquares());
+	sceneManager.add(new ofxSquareScreen());
+	sceneManager.add(new ofxVasaDalleQuad());
+	sceneManager.add(new ofxVasaSquareField());
+	sceneManager.add(new ofxKinecticon());*/
+
+	// Bellegarde (PC - top without kinect)
 	sceneManager.add(new ofMovingSquares());
+	sceneManager.add(new ofxSquareScreen());
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
 
@@ -77,7 +91,7 @@ void ofAlRevesApp::setupSceneManager() {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::update() {
+void ofApp::update() {
 
 	// the current scene is automatically updated before this function
 
@@ -90,15 +104,14 @@ void ofAlRevesApp::update() {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::draw() {
+void ofApp::draw() {
 
 	cam.begin();
 	ofPushMatrix();
 
 	ofScale (1,-1,1);
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-
-
+	
 	// the current scene is automatically drawn before this function
 	sceneManager.draw();
 
@@ -142,7 +155,7 @@ void ofAlRevesApp::draw() {
 
 // current scene input functions are called automatically before calling these
 //--------------------------------------------------------------
-void ofAlRevesApp::keyPressed(int key) {
+void ofApp::keyPressed(int key) {
 
 	switch (key) {
 
@@ -234,27 +247,27 @@ void ofAlRevesApp::keyPressed(int key) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::keyReleased(int key) {
+void ofApp::keyReleased(int key) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::mouseMoved(int x, int y) {
+void ofApp::mouseMoved(int x, int y) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::mouseDragged(int x, int y, int button) {
+void ofApp::mouseDragged(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::mousePressed(int x, int y, int button) {
+void ofApp::mousePressed(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::mouseReleased(int x, int y, int button) {
+void ofApp::mouseReleased(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void ofAlRevesApp::windowResized(int w, int h) {
+void ofApp::windowResized(int w, int h) {
 
 	// transformer.setNewScreenSize() is automatically called if the transformer is set
 

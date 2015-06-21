@@ -14,11 +14,11 @@
 #include "ofxTransformPanel.h"
 #endif
 
-class ofAlRevesApp : public ofxApp { // <-- inherits ofxApp instead of ofBaseApp
+class ofApp : public ofxApp { // <-- inherits ofxApp instead of ofBaseApp
 
 public:
 
-	ofAlRevesApp()  {}
+	ofApp()  {}
 
 	void setupSceneManager();
 	void setup();

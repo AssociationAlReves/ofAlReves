@@ -1,3 +1,10 @@
+//
+//  ofMovingSquares.h
+//  ofAlReves
+//
+//  Created by Xavier Fischer on 21/06/2015.
+//
+//
 #pragma once
 
 #include "ofMain.h"

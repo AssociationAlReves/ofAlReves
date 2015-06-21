@@ -292,9 +292,6 @@
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.cpp">
       <Filter>addons\ofxUI\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ofAlRevesApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\scenes\ofxTerrain.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
@@ -312,6 +309,15 @@
     </ClCompile>
     <ClCompile Include="src\scenes\quads\ofxVasaDalle.cpp">
       <Filter>src\scenes\quads</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\ofxKinecticon.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\ofxSquareScreen.cpp">
+      <Filter>src\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1046,9 +1052,6 @@
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWrapper.h">
       <Filter>addons\ofxUI\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ofAlRevesApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\scenes\scenes.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
@@ -1072,6 +1075,15 @@
     </ClInclude>
     <ClInclude Include="src\scenes\quads\ofxVasaDalle.h">
       <Filter>src\scenes\quads</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\ofxKinecticon.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\ofxSquareScreen.h">
+      <Filter>src\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

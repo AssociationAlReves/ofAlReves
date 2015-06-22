@@ -10,8 +10,8 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "quads\ofxBingQuad.h"
-#include "quads\ofxVasaDalle.h"
+#include "ofxBingQuad.h"
+#include "ofxVasaDalle.h"
 
 class ofxVasaDalleQuad : public ofxFadeScene {
     

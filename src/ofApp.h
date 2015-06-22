@@ -3,7 +3,7 @@
 #include "ofMain.h"
 
 #include "ofxAppUtils.h"
-#include "scenes\globals.h"
+#include "globals.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project

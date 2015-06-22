@@ -9,7 +9,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "..\ofxTween.h"
+#include "ofxTween.h"
 #include "ofxAppUtils.h"
 
 #define SC_MODE_INIT 0

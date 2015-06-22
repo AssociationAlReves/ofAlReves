@@ -19,33 +19,33 @@ void ofMovingSquares::setup(){
 #ifdef MOV_SQUARES_DEBUG
 	int curTime = 0;
 
-	timeTriggers[ofMovingSquares::state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[ofMovingSquares::state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
-	curTime += 5; timeTriggers[ofMovingSquares::state_StartTimer] = curTime;
-	curTime += 30; timeTriggers[ofMovingSquares::state_Slow] = curTime;
-	curTime += 6; timeTriggers[ofMovingSquares::state_Accelerate] = curTime;
-	curTime += 19; timeTriggers[ofMovingSquares::state_Noise] = curTime;
-	curTime += 6; timeTriggers[ofMovingSquares::state_FullStop] = curTime;
-	curTime += 37; timeTriggers[ofMovingSquares::state_Reset] = curTime;
-	curTime += 3; timeTriggers[ofMovingSquares::state_NoGreen] = curTime;
-	curTime += 4; timeTriggers[ofMovingSquares::state_NoViolet] = curTime;
-	curTime += 3; timeTriggers[ofMovingSquares::state_NoBlue] = curTime;
-	curTime += 40; timeTriggers[ofMovingSquares::state_NoYellow] = curTime;
-	curTime += 30; timeTriggers[ofMovingSquares::state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
+	curTime += 5; timeTriggers[MOV_state_StartTimer] = curTime;
+	curTime += 30; timeTriggers[MOV_state_Slow] = curTime;
+	curTime += 6; timeTriggers[MOV_state_Accelerate] = curTime;
+	curTime += 19; timeTriggers[MOV_state_Noise] = curTime;
+	curTime += 6; timeTriggers[MOV_state_FullStop] = curTime;
+	curTime += 37; timeTriggers[MOV_state_Reset] = curTime;
+	curTime += 3; timeTriggers[MOV_state_NoGreen] = curTime;
+	curTime += 4; timeTriggers[MOV_state_NoViolet] = curTime;
+	curTime += 3; timeTriggers[MOV_state_NoBlue] = curTime;
+	curTime += 40; timeTriggers[MOV_state_NoYellow] = curTime;
+	curTime += 30; timeTriggers[MOV_state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
 #else
-	timeTriggers[ofMovingSquares::state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[ofMovingSquares::state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[ofMovingSquares::state_StartTimer] = 195;		// start chrono for song							- 195 s
-	timeTriggers[ofMovingSquares::state_Slow		] = 214;	// start slow motion - 195s (3:15)					-  19 s
-	timeTriggers[ofMovingSquares::state_Accelerate	] = 220;	// start slow-> fast - 214s (3:34)					-   6 s
-	timeTriggers[ofMovingSquares::state_Noise		] = 239;	// start fast w accelerating noise - 220s (3:40)		-  19 s
-	timeTriggers[ofMovingSquares::state_FullStop	] = 245;	// start going to full stop - 239s (3:59)			-   6 s
-	timeTriggers[ofMovingSquares::state_Reset		] = 282;	// reset to initial state - 245s (4:05)				-   6 s
-	timeTriggers[ofMovingSquares::state_NoGreen		] = 286;	// green goes away - 282s (4:42)						-  37 s
-	timeTriggers[ofMovingSquares::state_NoViolet	] = 289.5;	// violet goes away - 285s (4:45)					-   3 s
-	timeTriggers[ofMovingSquares::state_NoBlue		] = 292.5;	// blue goes away - 289s (4:49)						-   4 s
-	timeTriggers[ofMovingSquares::state_NoYellow	] = 332.5;	// yellow goes away - 292s (4:52)					-   3 s
-	timeTriggers[ofMovingSquares::state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s										// red goes away - 332s (5:32)
+	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_StartTimer] = 195;		// start chrono for song							- 195 s
+	timeTriggers[MOV_state_Slow		] = 214;	// start slow motion - 195s (3:15)					-  19 s
+	timeTriggers[MOV_state_Accelerate	] = 220;	// start slow-> fast - 214s (3:34)					-   6 s
+	timeTriggers[MOV_state_Noise		] = 239;	// start fast w accelerating noise - 220s (3:40)		-  19 s
+	timeTriggers[MOV_state_FullStop	] = 245;	// start going to full stop - 239s (3:59)			-   6 s
+	timeTriggers[MOV_state_Reset		] = 282;	// reset to initial state - 245s (4:05)				-   6 s
+	timeTriggers[MOV_state_NoGreen		] = 286;	// green goes away - 282s (4:42)						-  37 s
+	timeTriggers[MOV_state_NoViolet	] = 289.5;	// violet goes away - 285s (4:45)					-   3 s
+	timeTriggers[MOV_state_NoBlue		] = 292.5;	// blue goes away - 289s (4:49)						-   4 s
+	timeTriggers[MOV_state_NoYellow	] = 332.5;	// yellow goes away - 292s (4:52)					-   3 s
+	timeTriggers[MOV_state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s										// red goes away - 332s (5:32)
 
 #endif							  		
 
@@ -56,7 +56,7 @@ void ofMovingSquares::setup(){
 		, 3*PI/4
 		, 130
 		, ofColor::red
-		, ofMovingSquares::circle);
+		, MOV_circle);
 
 	// -----------------------------------
 	// yellow
@@ -65,7 +65,7 @@ void ofMovingSquares::setup(){
 		, -PI/3
 		, 200
 		, ofColor::yellow
-		, ofMovingSquares::triangle);
+		, MOV_triangle);
 
 	// -----------------------------------
 	// blue
@@ -74,7 +74,7 @@ void ofMovingSquares::setup(){
 		, PI/2
 		, 400
 		, ofColor::blue
-		, ofMovingSquares::rectangle);
+		, MOV_rectangle);
 
 	// -----------------------------------
 	// green
@@ -83,7 +83,7 @@ void ofMovingSquares::setup(){
 		, PI/3+0.2
 		, 140
 		, ofColor::green
-		, ofMovingSquares::rectangle);
+		, MOV_rectangle);
 
 	// -----------------------------------
 	// fuchsia
@@ -92,7 +92,7 @@ void ofMovingSquares::setup(){
 		, -3*PI/4
 		, 140
 		, ofColor::fuchsia
-		, ofMovingSquares::parallelogram);
+		, MOV_parallelogram);
 
 
 	shapes.push_back(red);
@@ -128,45 +128,45 @@ void ofMovingSquares::nextMode(std::string reason){
 		<< endl;
 
 	switch(currentMode) {
-	case ofMovingSquares::state_BlackToBlank:
+	case MOV_state_BlackToBlank:
 		updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
 		break;
-	case ofMovingSquares::state_StartFadeIn:
+	case MOV_state_StartFadeIn:
 		updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
 		break;
-	case ofMovingSquares::state_Slow:
+	case MOV_state_Slow:
 		{
 			isRotating = true;
 			updateTween(tweenFadein, easingsine,ofxTween::easeOut,0,2,1000);
 		}
 		break;
-	case ofMovingSquares::state_Accelerate:
+	case MOV_state_Accelerate:
 		{
 			isRotating = true;
 			updateTween(tweenFadein, easinglinear,ofxTween::easeInOut,2,20,5000);
 		}
 		break;
-	case ofMovingSquares::state_Noise:
+	case MOV_state_Noise:
 		{
 			isRotating = true;
 			updateTween(tweenNoise, easingcubic,ofxTween::easeInOut,0,1,5000);
 		}
 		break;
-	case ofMovingSquares::state_FullStop:
+	case MOV_state_FullStop:
 		{
 			isRotating = true;
 			updateTween(tweenFadein, easingsine,ofxTween::easeInOut,20,0,3000);
 			updateTween(tweenNoise, easingsine,ofxTween::easeInOut,1,0,3000); // 6000
 		}
 		break;
-	case ofMovingSquares::state_Reset:
+	case MOV_state_Reset:
 		{
 			isRotating = true;
 			isStopFadeOut = true;
 			updateTween(tweenNoise, easinglinear,ofxTween::easeInOut,255,0,200);
 		}
 		break;
-	case ofMovingSquares::state_NoGreen:
+	case MOV_state_NoGreen:
 		{
 			/* contents should be
 			shapes.push_back(red); 0
@@ -177,7 +177,7 @@ void ofMovingSquares::nextMode(std::string reason){
 			shapes.erase(shapes.begin()+3);
 		}
 		break;
-	case ofMovingSquares::state_NoViolet:
+	case MOV_state_NoViolet:
 		{
 			/* contents should be
 			shapes.push_back(red); 0
@@ -187,7 +187,7 @@ void ofMovingSquares::nextMode(std::string reason){
 			shapes.erase(shapes.begin()+3);
 		}
 		break;
-	case ofMovingSquares::state_NoBlue:
+	case MOV_state_NoBlue:
 		{
 			/* contents should be
 			shapes.push_back(red); 0
@@ -196,7 +196,7 @@ void ofMovingSquares::nextMode(std::string reason){
 			shapes.erase(shapes.begin()+2);
 		}
 		break;
-	case ofMovingSquares::state_NoYellow:
+	case MOV_state_NoYellow:
 		{
 			/* contents should be
 			shapes.push_back(red); 0
@@ -204,14 +204,14 @@ void ofMovingSquares::nextMode(std::string reason){
 			shapes.erase(shapes.begin()+1);
 		}
 		break;
-	case ofMovingSquares::state_NoRed:
+	case MOV_state_NoRed:
 		{
 			/* contents should be
 			shapes.push_back(red); 0*/
 			shapes.clear();
 		}
 		break;
-	case ofMovingSquares::state_StartTimer: 
+	case MOV_state_StartTimer: 
 		{
 			ofResetElapsedTimeCounter();
 		}
@@ -224,7 +224,7 @@ bool ofMovingSquares::beforeDraw(){
 
 	bool bDrawShapes = true;
 	switch(currentMode) {
-	case ofMovingSquares::state_BlackToBlank: 
+	case MOV_state_BlackToBlank: 
 		{
 			ofClear(tweenFadein.update());
 			bDrawShapes = false;
@@ -261,7 +261,7 @@ void ofMovingSquares::draw(){
 		float shapeAngle = 0;
 		if (isRotating) {
 
-			adjustedTime = ofGetElapsedTimef()-timeTriggers[ofMovingSquares::state_StartTimer];
+			adjustedTime = ofGetElapsedTimef()-timeTriggers[MOV_state_StartTimer];
 			amout = tweenFadein.isCompleted() ? tweenFadein.getTarget(0) : tweenFadein.update();
 			currentAngle += 0.003 * amout;
 
@@ -281,11 +281,11 @@ void ofMovingSquares::draw(){
 			ShapeDef shape = *shapeIt;
 			//--------------------------------------------------------------
 			// shape color alpha
-			if (currentMode == ofMovingSquares::state_StartFadeIn) {
+			if (currentMode == MOV_state_StartFadeIn) {
 				ofColor color = shape.color;
 				color.a  = tweenFadein.update();
 				ofSetColor(color);
-			} else if (currentMode == ofMovingSquares::state_Reset) {
+			} else if (currentMode == MOV_state_Reset) {
 				ofColor color = shape.color;
 				color.a  = tweenNoise.update();
 				if (tweenNoise.isCompleted() && tweenNoise.getTarget(0) == 0) {
@@ -303,7 +303,7 @@ void ofMovingSquares::draw(){
 			// shape position
 			switch (currentMode)
 			{
-			case ofMovingSquares::state_Noise:
+			case MOV_state_Noise:
 				{
 					float curMargin = shape.margin;//+ 100 * ofSignedNoise(ofGetElapsedTimef()*0.2+i);
 					float a = shape.angleOffset + posAngle;
@@ -323,7 +323,7 @@ void ofMovingSquares::draw(){
 					ofRotateZ(shapeAngle * noiseAmount*0.2 * ofSignedNoise((adjustedTime+i)*speed*5. + i * 0.987+1.23));; 
 				}
 				break;
-			case ofMovingSquares::state_FullStop:
+			case MOV_state_FullStop:
 				{
 					float curMargin = shape.margin;//+ 100 * ofSignedNoise(ofGetElapsedTimef()*0.2+i);
 					float a = shape.angleOffset + posAngle;
@@ -343,7 +343,7 @@ void ofMovingSquares::draw(){
 					ofRotateZ(shapeAngle * noiseAmount*0.2 * ofSignedNoise((adjustedTime+i)*speed*5. + i * 0.987+1.23));
 				}
 				break;
-			case ofMovingSquares::state_Reset:
+			case MOV_state_Reset:
 				{
 					if (isStopFadeOut) {
 						float curMargin = shape.margin;//+ 100 * ofSignedNoise(ofGetElapsedTimef()*0.2+i);
@@ -395,14 +395,14 @@ void ofMovingSquares::draw(){
 			ofTranslate(0,0,i);
 			switch (shape.shapeType)
 			{
-			case ofMovingSquares::rectangle:
+			case MOV_rectangle:
 				ofRect(-w/2,-h/2,w,h);
 				break;
-			case ofMovingSquares::circle:
+			case MOV_circle:
 				ofCircle(0,0, w/2);
 				break;
 
-			case ofMovingSquares::parallelogram:
+			case MOV_parallelogram:
 				ofBeginShape();
 				ofVertex(-w/2, 0);
 				ofVertex(0, -h/2);
@@ -411,7 +411,7 @@ void ofMovingSquares::draw(){
 				ofEndShape();
 				break;
 
-			case ofMovingSquares::triangle:
+			case MOV_triangle:
 				// rect triangle
 				ofTriangle(-w/2,-h/2,
 					w/2,-h/2,
@@ -444,20 +444,20 @@ void ofMovingSquares::draw(){
 	ofSetColor(ofColor::black);
 	string strMode = "";
 	switch (currentMode) {
-	case ofMovingSquares::state_BlackToBlank: strMode = "modeBlackToBlank"; break; //0;	// initial screen
-	case ofMovingSquares::state_StartFadeIn: strMode = "modeStartFadeIn"; break; //1;	// before song
-	case ofMovingSquares::state_StartTimer: strMode = "modeStartTimer"; break; //2;	// start chrono for song - 0s
-	case ofMovingSquares::state_Slow: strMode = "modeSlow"; break; //3;			// start slow motion - 195s (3:15)
-	case ofMovingSquares::state_Accelerate: strMode = "modeAccelerate"; break; //4;	// start slow-> fast - 214s (3:34)
-	case ofMovingSquares::state_Noise: strMode = "modeNoise"; break; //5;			// start fast w accelerating noise - 220s (3:40)
-	case ofMovingSquares::state_FullStop: strMode = "modeFullStop"; break; //6;		// start going to full stop - 239s (3:59)
-	case ofMovingSquares::state_Reset: strMode = "modeReset"; break; //7;			// reset to initial state - 245s (4:05)
+	case MOV_state_BlackToBlank: strMode = "modeBlackToBlank"; break; //0;	// initial screen
+	case MOV_state_StartFadeIn: strMode = "modeStartFadeIn"; break; //1;	// before song
+	case MOV_state_StartTimer: strMode = "modeStartTimer"; break; //2;	// start chrono for song - 0s
+	case MOV_state_Slow: strMode = "modeSlow"; break; //3;			// start slow motion - 195s (3:15)
+	case MOV_state_Accelerate: strMode = "modeAccelerate"; break; //4;	// start slow-> fast - 214s (3:34)
+	case MOV_state_Noise: strMode = "modeNoise"; break; //5;			// start fast w accelerating noise - 220s (3:40)
+	case MOV_state_FullStop: strMode = "modeFullStop"; break; //6;		// start going to full stop - 239s (3:59)
+	case MOV_state_Reset: strMode = "modeReset"; break; //7;			// reset to initial state - 245s (4:05)
 
-	case ofMovingSquares::state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
-	case ofMovingSquares::state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
-	case ofMovingSquares::state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)
-	case ofMovingSquares::state_NoYellow: strMode = "modeNoYellow"; break; //11;		// yellow goes away - 292s (4:52)
-	case ofMovingSquares::state_NoRed: strMode = "modeNoRed"; break; //12;		// red goes away - 332s (5:32)
+	case MOV_state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
+	case MOV_state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
+	case MOV_state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)
+	case MOV_state_NoYellow: strMode = "modeNoYellow"; break; //11;		// yellow goes away - 292s (4:52)
+	case MOV_state_NoRed: strMode = "modeNoRed"; break; //12;		// red goes away - 332s (5:32)
 	}
 	int posY = 5;
 	stringstream ss;
@@ -474,7 +474,7 @@ void ofMovingSquares::draw(){
 //--------------------------------------------------------------
 void ofMovingSquares::afterDraw(){
 	switch(currentMode) {
-	case ofMovingSquares::state_StartFadeIn: 
+	case MOV_state_StartFadeIn: 
 		{
 			/*ofSetColor(tweenFadein.update());
 			ofRect(0,0,ofGetWidth(),ofGetHeight());*/

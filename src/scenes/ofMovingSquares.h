@@ -23,6 +23,26 @@
 #define MOV_SQUARE_DURATION 3000
 #endif
 
+#define MOV_state_BlackToBlank	 0	// initial screen
+#define MOV_state_StartFadeIn	 1	// before song
+#define MOV_state_StartTimer	 2	// start chrono for song - 0s
+#define MOV_state_Slow			 3	// start slow motion - 195s (3:15)
+#define MOV_state_Accelerate	 4	// start slow-> fast - 214s (3:34)
+#define MOV_state_Noise		 5	// start fast w accelerating noise - 220s (3:40)
+#define MOV_state_FullStop		 6	// start going to full stop - 239s (3:59)
+#define MOV_state_Reset		 7	// reset to initial state - 245s (4:05)
+#define MOV_state_NoGreen		 8	// green goes away - 282s (4:42)
+#define MOV_state_NoViolet		 9	// violet goes away - 285s (4:45)
+#define MOV_state_NoBlue		 10	// blue goes away - 289s (4:49)
+#define MOV_state_NoYellow		 11	// yellow goes away - 292s (4:52)
+#define MOV_state_NoRed		 12	// red goes away - 332s (5:32)
+
+#define MOV_rectangle		 1
+#define MOV_circle			 2
+#define MOV_triangle		 3
+#define MOV_parallelogram	 4
+
+
 // This is meant to be sync with beethoven sonata
 
 class ofMovingSquares  : public ofxFadeScene {
@@ -45,27 +65,7 @@ private:
 		: name(name), size(size), orientation(orientation), angleOffset(angleOffset),margin(margin),color(color), shapeType(shapeType) {
 		}
 	};
-
-	static const int rectangle		= 1;
-	static const int circle			= 2;
-	static const int triangle		= 3;
-	static const int parallelogram	= 4;
-
-
-	static const int state_BlackToBlank	= 0;	// initial screen
-	static const int state_StartFadeIn	= 1;	// before song
-	static const int state_StartTimer	= 2;	// start chrono for song - 0s
-	static const int state_Slow			= 3;	// start slow motion - 195s (3:15)
-	static const int state_Accelerate	= 4;	// start slow-> fast - 214s (3:34)
-	static const int state_Noise		= 5;	// start fast w accelerating noise - 220s (3:40)
-	static const int state_FullStop		= 6;	// start going to full stop - 239s (3:59)
-	static const int state_Reset		= 7;	// reset to initial state - 245s (4:05)
-	static const int state_NoGreen		= 8;	// green goes away - 282s (4:42)
-	static const int state_NoViolet		= 9;	// violet goes away - 285s (4:45)
-	static const int state_NoBlue		= 10;	// blue goes away - 289s (4:49)
-	static const int state_NoYellow		= 11;	// yellow goes away - 292s (4:52)
-	static const int state_NoRed		= 12;	// red goes away - 332s (5:32)
-
+    
 	int currentMode;
 	void nextMode(std::string reason);
 
@@ -104,7 +104,7 @@ private:
 
 
 public:
-
+    
 	ofMovingSquares() : ofxFadeScene("Moving squares"){
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out

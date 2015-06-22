@@ -49,21 +49,22 @@ void ofApp::setupSceneManager() {
 	//sceneManager.add(new ofxVasaDalleQuad());
 	//sceneManager.add(new ofxVasaSquareField());
 
+#if __APPLE__
 	// Bellegarde (mac - front with kinect)
-	/*sceneManager.add(new ofMovingSquares());
+	sceneManager.add(new ofMovingSquares());
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
-	squareScreen->ppenFromBottom = true;
+	squareScreen->openFromBottom = true;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
-	sceneManager.add(new ofxKinecticon());*/
-
+	sceneManager.add(new ofxKinecticon());
+#else
 	// Bellegarde (PC - top without kinect)
 	sceneManager.add(new ofMovingSquares());
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
 	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
-
+#endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
 	setSceneManagerUpdate(true);

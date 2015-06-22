@@ -5,3 +5,5 @@ ofxAppUtils
 ofxCv
 ofxTween
 ofxUI
+ofxKinect
+ofxPostProcessing

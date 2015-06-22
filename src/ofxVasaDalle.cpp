@@ -13,6 +13,7 @@ float fadeoutRate = 0.05; // 0.05
 float lifeTime = 10.5;
 
 ofxVasaDalle::ofxVasaDalle(){
+
     palette.push_back(ofColor::fromHex(0x8F6EC1)); // mauve
     palette.push_back(ofColor::fromHex(0x7EA878)); // vert
     palette.push_back(ofColor::fromHex(0xFEA15C)); // jaune

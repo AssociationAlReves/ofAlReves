@@ -23,19 +23,26 @@
 #define MOV_SQUARE_DURATION 3000
 #endif
 
-#define MOV_state_BlackToBlank	 0	// initial screen
-#define MOV_state_StartFadeIn	 1	// before song
-#define MOV_state_StartTimer	 2	// start chrono for song - 0s
-#define MOV_state_Slow			 3	// start slow motion - 195s (3:15)
-#define MOV_state_Accelerate	 4	// start slow-> fast - 214s (3:34)
-#define MOV_state_Noise		 5	// start fast w accelerating noise - 220s (3:40)
-#define MOV_state_FullStop		 6	// start going to full stop - 239s (3:59)
-#define MOV_state_Reset		 7	// reset to initial state - 245s (4:05)
-#define MOV_state_NoGreen		 8	// green goes away - 282s (4:42)
-#define MOV_state_NoViolet		 9	// violet goes away - 285s (4:45)
-#define MOV_state_NoBlue		 10	// blue goes away - 289s (4:49)
-#define MOV_state_NoYellow		 11	// yellow goes away - 292s (4:52)
-#define MOV_state_NoRed		 12	// red goes away - 332s (5:32)
+#define MOV_state_BlackToBlank		0	// initial screen
+#define MOV_state_StartFadeIn		1	// before song
+#define MOV_state_StartTimer		2	// start chrono for song - 0s
+#define MOV_state_MoveViolet		3	// 45s
+#define MOV_state_MoveGreen			4	// 53.5
+#define MOV_state_MoveRed			5	// start chrono for song - 0s
+#define MOV_state_MoveYellow		6	// start chrono for song - 0s
+#define MOV_state_MoveBlue			7	// start chrono for song - 0s
+#define MOV_state_StopMoveBlue		8	// start chrono for song - 0s
+#define MOV_state_Slow				9	// start slow motion - 195s (3:15)
+#define MOV_state_Accelerate		10	// start slow-> fast - 214s (3:34)
+#define MOV_state_Noise				11
+// start fast w accelerating noise - 220s (3:40)
+#define MOV_state_FullStop			12	// start going to full stop - 239s (3:59)
+#define MOV_state_Reset				13	// reset to initial state - 245s (4:05)
+#define MOV_state_NoGreen			 14	// green goes away - 282s (4:42)
+#define MOV_state_NoViolet			15	// violet goes away - 285s (4:45)
+#define MOV_state_NoBlue			16	// blue goes away - 289s (4:49)
+#define MOV_state_NoYellow			17	// yellow goes away - 292s (4:52)
+#define MOV_state_NoRed				18	// red goes away - 332s (5:32)
 
 #define MOV_rectangle		 1
 #define MOV_circle			 2

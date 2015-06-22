@@ -34,8 +34,14 @@ void ofMovingSquares::setup(){
 	curTime += 30; timeTriggers[MOV_state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
 #else
 	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[MOV_state_StartTimer] = 195;		// start chrono for song							- 195 s
+	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME; // 195 !!!
+	timeTriggers[MOV_state_StartTimer] = 47;		// start chrono for song							- 47 s
+	timeTriggers[MOV_state_MoveViolet] = 53.5;		// start chrono for song							- 53.5 s
+	timeTriggers[MOV_state_MoveGreen] = 62;		// start chrono for song							- 1:02 s
+	timeTriggers[MOV_state_MoveRed] = 70;		// start chrono for song							- 1:10 s
+	timeTriggers[MOV_state_MoveYellow] = 81.5;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveBlue] = 90;		// start chrono for song							- 1:30 s
+	timeTriggers[MOV_state_StopMoveBlue] = 195;		// start chrono for song							- 195 s
 	timeTriggers[MOV_state_Slow		] = 214;	// start slow motion - 195s (3:15)					-  19 s
 	timeTriggers[MOV_state_Accelerate	] = 220;	// start slow-> fast - 214s (3:34)					-   6 s
 	timeTriggers[MOV_state_Noise		] = 239;	// start fast w accelerating noise - 220s (3:40)		-  19 s
@@ -134,6 +140,19 @@ void ofMovingSquares::nextMode(std::string reason){
 	case MOV_state_StartFadeIn:
 		updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
 		break;
+	case MOV_state_MoveViolet:
+	case MOV_state_MoveGreen:
+	case MOV_state_MoveRed:
+	case MOV_state_MoveYellow:
+	case MOV_state_MoveBlue: {
+		float tweenDuration = 0;
+		if (currentMode == MOV_state_MoveViolet) {
+			tweenDuration = 6.5*1000;
+		} else {
+			tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
+		}
+		updateTween(tweenFadein, easingsine,ofxTween::easeOut,0,PI,tweenDuration);
+							 } break;
 	case MOV_state_Slow:
 		{
 			isRotating = true;
@@ -381,6 +400,15 @@ void ofMovingSquares::draw(){
 
 					// shape rotation on its axis
 					ofRotateZ(shapeAngle);
+
+					if ((currentMode == MOV_state_MoveViolet && shape.name == "fuchsia")
+						|| (currentMode ==  MOV_state_MoveGreen	 && shape.name == "green")
+						|| (currentMode ==  MOV_state_MoveRed	 && shape.name == "red")
+						|| (currentMode ==  MOV_state_MoveYellow && shape.name == "yellow")
+						|| (currentMode ==  MOV_state_MoveBlue	 && shape.name == "blue")) {
+						float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
+						ofTranslate(localNoise * ofNoise(ofGetElapsedTimef()*5.3) *40,localNoise * ofNoise(ofGetElapsedTimef()*4.3f + 12.34) *40);
+					} 
 				}
 				break;
 			}
@@ -447,12 +475,18 @@ void ofMovingSquares::draw(){
 	case MOV_state_BlackToBlank: strMode = "modeBlackToBlank"; break; //0;	// initial screen
 	case MOV_state_StartFadeIn: strMode = "modeStartFadeIn"; break; //1;	// before song
 	case MOV_state_StartTimer: strMode = "modeStartTimer"; break; //2;	// start chrono for song - 0s
+
 	case MOV_state_Slow: strMode = "modeSlow"; break; //3;			// start slow motion - 195s (3:15)
 	case MOV_state_Accelerate: strMode = "modeAccelerate"; break; //4;	// start slow-> fast - 214s (3:34)
 	case MOV_state_Noise: strMode = "modeNoise"; break; //5;			// start fast w accelerating noise - 220s (3:40)
 	case MOV_state_FullStop: strMode = "modeFullStop"; break; //6;		// start going to full stop - 239s (3:59)
 	case MOV_state_Reset: strMode = "modeReset"; break; //7;			// reset to initial state - 245s (4:05)
-
+	case MOV_state_MoveViolet	: strMode = "MoveViolet"; break;
+	case MOV_state_MoveGreen	: strMode = "MoveGreen"; break;
+	case MOV_state_MoveRed		: strMode = "MoveRed"; break;
+	case MOV_state_MoveYellow	: strMode = "MoveYellow"; break;
+	case MOV_state_MoveBlue		: strMode = "MoveBlue"; break;
+	case MOV_state_StopMoveBlue	: strMode = "StopMoveBlue"; break;
 	case MOV_state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
 	case MOV_state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
 	case MOV_state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)

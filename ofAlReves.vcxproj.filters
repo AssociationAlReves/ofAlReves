@@ -319,6 +319,9 @@
     <ClCompile Include="src\ofxVasaSquareField.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxCrossedLines.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1077,6 +1080,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxCrossedLines.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,46 @@
+//
+//  ofxSquareScreen.h
+//  ofAlReves
+//
+//  Created by Xavier Fischer on 21/06/2015.
+//
+//
+#pragma once
+
+#include "ofMain.h"
+#include "globals.h"
+#include "ofxTween.h"
+#include "ofxAppUtils.h"
+
+
+class ofxCrossedLines: public ofxFadeScene
+{
+public:
+	ofxCrossedLines() : ofxFadeScene("CrossedLines"){
+			setSingleSetup(true); // call setup each time the scene is loaded
+			setFade(1000, 1000); // 1 second fade in/out
+		}
+
+	void setup();
+	void update();
+	void draw();
+
+	void keyPressed(int key);
+
+
+	// transitions
+	ofxTween tween;
+    
+	ofxEasingBack 	easingback;
+	ofxEasingBounce 	easingbounce;
+	ofxEasingCirc 	easingcirc;
+	ofxEasingSine	easingsine;
+	ofxEasingCubic 	easingcubic;
+	ofxEasingElastic easingelastic;
+	ofxEasingExpo 	easingexpo;
+	ofxEasingLinear 	easinglinear;
+	ofxEasingQuad 	easingquad;
+	ofxEasingQuart 	easingquart;
+	ofxEasingQuint 	easingquint;
+};
+

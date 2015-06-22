@@ -6,3 +6,4 @@
 #include "ofxVasaSquareField.h"
 #include "ofxKinecticon.h"
 #include "ofxSquareScreen.h"
+#include "ofxCrossedLines.h"

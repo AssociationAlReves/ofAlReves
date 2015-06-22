@@ -51,14 +51,16 @@ void ofApp::setupSceneManager() {
 
 	// Bellegarde (mac - front with kinect)
 	/*sceneManager.add(new ofMovingSquares());
-	sceneManager.add(new ofxSquareScreen());
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
+	squareScreen->ppenFromBottom = true;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
 	sceneManager.add(new ofxKinecticon());*/
 
 	// Bellegarde (PC - top without kinect)
 	sceneManager.add(new ofMovingSquares());
-	sceneManager.add(new ofxSquareScreen());
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
+	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
 
@@ -70,7 +72,7 @@ void ofApp::setupSceneManager() {
 
 	// start with a specific scene
 	// set now to true in order to ignore the scene fade and change now
-	//sceneManager.gotoScene("Terrain", true);
+	sceneManager.gotoScene("SquareScreen", true);
 	lastScene = sceneManager.getCurrentSceneIndex();
 
 	// overlap scenes when transitioning

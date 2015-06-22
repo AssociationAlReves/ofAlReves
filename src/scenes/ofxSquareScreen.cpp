@@ -4,7 +4,8 @@
 //--------------------------------------------------------------
 void ofxSquareScreen::setup(){
 	mode = 0;
-	width = ofGetWidth();
+	sWidth = ofGetWidth();
+	sHeight = ofGetHeight();
 }
 
 //--------------------------------------------------------------
@@ -15,10 +16,6 @@ void ofxSquareScreen::update(){
 //--------------------------------------------------------------
 void ofxSquareScreen::draw(){
 
-	ofClear(0);
-	ofFill();
-	ofSetColor(255);
-
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
@@ -26,31 +23,72 @@ void ofxSquareScreen::draw(){
 	{
 	case SC_MODE_BEGIN :
 	case SC_MODE_CLOSE :
-	case SC_MODE_THIN :
-		width = tween.update(); break;
+		sWidth = tween.update(); break;
+	case SC_MODE_VOPEN :
+		sHeight = tween.update(); break;
 	default:
 		break;
 	}
 
-	ofRect((w-width)/2, 0, width, h);
+
+	ofPushMatrix();
+
+	ofClear(0); 
+	ofFill();
+	ofSetColor(255); 
+
+		switch (mode)
+		{
+		case SC_MODE_INIT:
+		case SC_MODE_BEGIN:
+		case SC_MODE_CLOSE: {
+			ofTranslate((w - sWidth)/2, 0);
+			ofRect(0, 0, sWidth, h);
+							} break;
+		case SC_MODE_VOPEN: {
+			if (openFromBottom) {
+				ofTranslate(0, (h-sHeight));
+			} else {
+				ofTranslate(0, 0);
+			}
+			ofRect(0, 0, w, sHeight);
+							} break;
+		default:
+			break;
+		}
+
+	ofPopMatrix();
+
+
 }
 
 
 //--------------------------------------------------------------
 void ofxSquareScreen::nextMode(){
-	mode = (mode + 1) % 5;  
+	mode = (mode + 1) % 4;  
 
 	switch (mode)
 	{
 	case SC_MODE_INIT : setup(); break;
 	case SC_MODE_BEGIN : {
-		tween.setParameters(easingcirc, ofxTween::easeInOut,  ofGetWidth(),  ofGetWidth() -500, 5000,0);
+		tween.setParameters(easingcirc, ofxTween::easeInOut
+			, ofGetWidth()
+			, ofGetWidth()*0.375
+			, 5000,0);
 						 } break;
 	case SC_MODE_CLOSE : {
-		tween.setParameters(easingsine, ofxTween::easeInOut,  ofGetWidth() -500,  300, 10000, 0);
+		tween.setParameters(easingquad, ofxTween::easeInOut
+			, ofGetWidth()*0.375
+			, 0
+			, 10000, 0);
 						 } break;
-	case SC_MODE_THIN : {
-		tween.setParameters(easingquad, ofxTween::easeInOut,  300,  0, 10000, 0);
+	case SC_MODE_VOPEN : {
+		sWidth = ofGetWidth();
+		sHeight = 0;
+		tween.setParameters(easingquad, ofxTween::easeInOut
+			, 0
+			, ofGetHeight()
+			, 10000, 0);
 						 } break;
 	default:
 		break;

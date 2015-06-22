@@ -14,8 +14,10 @@
 
 #define SC_MODE_INIT 0
 #define SC_MODE_BEGIN 1
-#define SC_MODE_CLOSE 2
-#define SC_MODE_VOPEN 3
+#define SC_MODE_LINE 2
+#define SC_MODE_BEGIN_REOPEN 3
+#define SC_MODE_CLOSE 4
+#define SC_MODE_VOPEN 5
 
 class ofxSquareScreen : public ofxFadeScene
 {
@@ -36,12 +38,12 @@ public:
 
 	void keyPressed(int key);
 
-	int sWidth;
-	int sHeight;
+	float sWidth;
+	float sHeight;
 
 	// transitions
 	ofxTween tween;
-
+    
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;
 	ofxEasingCirc 	easingcirc;

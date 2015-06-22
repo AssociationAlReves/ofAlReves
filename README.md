@@ -9,3 +9,4 @@ A set of OpenFrameworks scenes used for "Compagnie Al Reves", Aix en Provence.
  - ofxCv
  - ofxTween
  - ofxUI
+ - ofxKinect

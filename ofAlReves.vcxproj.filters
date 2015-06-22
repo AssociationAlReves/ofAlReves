@@ -292,32 +292,32 @@
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.cpp">
       <Filter>addons\ofxUI\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\ofxTerrain.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\ofMovingSquares.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\ofxVasaDalleQuad.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\ofxVasaSquareField.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\quads\ofxBingQuad.cpp">
-      <Filter>src\scenes\quads</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\quads\ofxVasaDalle.cpp">
-      <Filter>src\scenes\quads</Filter>
-    </ClCompile>
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\ofxKinecticon.cpp">
-      <Filter>src\scenes</Filter>
+    <ClCompile Include="src\ofMovingSquares.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\ofxSquareScreen.cpp">
-      <Filter>src\scenes</Filter>
+    <ClCompile Include="src\ofxBingQuad.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxKinecticon.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxSquareScreen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxTerrain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxVasaDalle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxVasaDalleQuad.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxVasaSquareField.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,12 +455,6 @@
     </Filter>
     <Filter Include="addons\ofxUI\src">
       <UniqueIdentifier>{A00C2D23-6C11-BC86-3993-2CF0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scenes">
-      <UniqueIdentifier>{990d09db-1551-411d-b2b5-47fdfec6e052}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scenes\quads">
-      <UniqueIdentifier>{729b4883-996a-42ca-9765-93bedc5c56ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1052,38 +1046,38 @@
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWrapper.h">
       <Filter>addons\ofxUI\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\scenes.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\globals.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\ofxTerrain.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\ofMovingSquares.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\ofxVasaDalleQuad.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\ofxVasaSquareField.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\quads\ofxBingQuad.h">
-      <Filter>src\scenes\quads</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\quads\ofxVasaDalle.h">
-      <Filter>src\scenes\quads</Filter>
-    </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\ofxKinecticon.h">
-      <Filter>src\scenes</Filter>
+    <ClInclude Include="src\globals.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\ofxSquareScreen.h">
-      <Filter>src\scenes</Filter>
+    <ClInclude Include="src\ofMovingSquares.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxBingQuad.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxKinecticon.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxSquareScreen.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxTerrain.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaDalle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaDalleQuad.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaSquareField.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

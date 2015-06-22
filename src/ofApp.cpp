@@ -10,7 +10,7 @@
 */
 #include "ofApp.h"
 
-#include "scenes/scenes.h"
+#include "scenes.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {

@@ -90,7 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\scenes\ofxKinecticon.cpp" />
+    <ClCompile Include="src\ofxKinecticon.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
@@ -189,25 +189,25 @@
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWaveform.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidget.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.cpp" />
-    <ClCompile Include="src\scenes\ofMovingSquares.cpp" />
-    <ClCompile Include="src\scenes\ofxSquareScreen.cpp" />
-    <ClCompile Include="src\scenes\quads\ofxBingQuad.cpp" />
-    <ClCompile Include="src\scenes\ofxTerrain.cpp" />
-    <ClCompile Include="src\scenes\quads\ofxVasaDalle.cpp" />
-    <ClCompile Include="src\scenes\ofxVasaDalleQuad.cpp" />
-    <ClCompile Include="src\scenes\ofxVasaSquareField.cpp" />
+    <ClCompile Include="src\ofMovingSquares.cpp" />
+    <ClCompile Include="src\ofxSquareScreen.cpp" />
+    <ClCompile Include="src\ofxBingQuad.cpp" />
+    <ClCompile Include="src\ofxTerrain.cpp" />
+    <ClCompile Include="src\ofxVasaDalle.cpp" />
+    <ClCompile Include="src\ofxVasaDalleQuad.cpp" />
+    <ClCompile Include="src\ofxVasaSquareField.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\scenes\ofxKinecticon.h" />
-    <ClInclude Include="src\scenes\globals.h" />
-    <ClInclude Include="src\scenes\ofMovingSquares.h" />
-    <ClInclude Include="src\scenes\ofxSquareScreen.h" />
-    <ClInclude Include="src\scenes\quads\ofxBingQuad.h" />
-    <ClInclude Include="src\scenes\ofxTerrain.h" />
-    <ClInclude Include="src\scenes\quads\ofxVasaDalle.h" />
-    <ClInclude Include="src\scenes\ofxVasaDalleQuad.h" />
-    <ClInclude Include="src\scenes\ofxVasaSquareField.h" />
-    <ClInclude Include="src\scenes\scenes.h" />
+    <ClInclude Include="src\ofxKinecticon.h" />
+    <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\ofMovingSquares.h" />
+    <ClInclude Include="src\ofxSquareScreen.h" />
+    <ClInclude Include="src\ofxBingQuad.h" />
+    <ClInclude Include="src\ofxTerrain.h" />
+    <ClInclude Include="src\ofxVasaDalle.h" />
+    <ClInclude Include="src\ofxVasaDalleQuad.h" />
+    <ClInclude Include="src\ofxVasaSquareField.h" />
+    <ClInclude Include="src\scenes.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />

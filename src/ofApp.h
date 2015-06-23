@@ -48,6 +48,8 @@ public:
 
 	ofEasyCam cam;
 
+	string IntToString(int i);
+
 #ifdef HAVE_OFX_GUI
 	ofxTransformPanel panel;
 #endif

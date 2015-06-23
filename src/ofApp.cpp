@@ -61,14 +61,15 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxCrossedLines());
 	sceneManager.add(new ofxKinecticon());	
 #else
+	int i = 0;
 	// Bellegarde (PC - top without kinect)
-	sceneManager.add(new ofMovingSquares());
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
+	sceneManager.add(new ofMovingSquares(IntToString(i++)));
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
 	squareScreen->openFromBottom = false;
-	sceneManager.add(new ofxVasaDalleQuad());
-	sceneManager.add(new ofxVasaSquareField());
-	sceneManager.add(new ofxCrossedLines());
-	sceneManager.add(new ofxVideoScene());
+	sceneManager.add(new ofxVasaDalleQuad(IntToString(i++)));
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
+	sceneManager.add(new ofxCrossedLines(IntToString(i++)));
+	sceneManager.add(new ofxVideoScene(IntToString(i++)));
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
@@ -96,6 +97,12 @@ void ofApp::setupSceneManager() {
 	//
 	setSceneManager(&sceneManager);
 
+}
+
+string ofApp::IntToString(int i) {
+	std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << i;
+    return oss.str();
 }
 
 //--------------------------------------------------------------

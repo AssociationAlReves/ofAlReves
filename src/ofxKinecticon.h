@@ -21,7 +21,7 @@
 class ofxKinecticon : public ofxFadeScene
 {
 public:
-	ofxKinecticon() : ofxFadeScene("Kinecticon"){
+	ofxKinecticon(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Kinecticon") {
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}

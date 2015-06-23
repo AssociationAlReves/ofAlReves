@@ -23,7 +23,7 @@ class ofxTerrain : public ofxFadeScene {
     
 public:
     
-    ofxTerrain() : ofxFadeScene("Terrain"){
+    ofxTerrain(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Terrain"){
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}

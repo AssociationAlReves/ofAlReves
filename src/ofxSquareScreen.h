@@ -22,7 +22,7 @@
 class ofxSquareScreen : public ofxFadeScene
 {
 public:
-	ofxSquareScreen() : ofxFadeScene("SquareScreen"){
+	ofxSquareScreen(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Square screen"){
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}

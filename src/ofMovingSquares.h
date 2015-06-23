@@ -52,7 +52,21 @@
 
 // This is meant to be sync with beethoven sonata
 
-class ofMovingSquares  : public ofxFadeScene {
+class ofMovingSquares : public ofxFadeScene {
+	
+public:
+    
+	ofMovingSquares(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Moving squares"){
+			setSingleSetup(true); // call setup each time the scene is loaded
+			setFade(1000, 1000); // 1 second fade in/out
+		}
+
+	void setup();
+	void update();
+	void draw();
+
+	void keyPressed(int key);
+
 private:
 
 	struct ShapeDef {
@@ -109,18 +123,5 @@ private:
 
 	void updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration = MOV_SQUARE_DURATION );
 
-
-public:
-    
-	ofMovingSquares() : ofxFadeScene("Moving squares"){
-			setSingleSetup(true); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
-		}
-
-	void setup();
-	void update();
-	void draw();
-
-	void keyPressed(int key);
 
 };

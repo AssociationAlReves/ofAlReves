@@ -54,23 +54,30 @@ void ofApp::setupSceneManager() {
 
 #if __APPLE__
 	// Bellegarde (mac - front with kinect)
+	int i = 0;
+	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));
+	inkScene->horizontalFlip = false;
+	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));
 	sceneManager.add(new ofMovingSquares());
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
 	squareScreen->openFromBottom = true;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
-	sceneManager.add(new ofxCrossedLines());
 	sceneManager.add(new ofxKinecticon());	
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
+	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));
+	inkScene->horizontalFlip = true;	
+	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));
 	sceneManager.add(new ofMovingSquares(IntToString(i++)));
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
 	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad(IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
-	sceneManager.add(new ofxCrossedLines(IntToString(i++)));
-	sceneManager.add(new ofxVideoScene(IntToString(i++)));
+	
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
@@ -122,6 +129,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
 
+	ofClear(255);
 	ofEnableAntiAliasing();
 	cam.begin();
 	ofPushMatrix();

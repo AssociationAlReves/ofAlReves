@@ -4,7 +4,7 @@ A set of OpenFrameworks scenes used for "Compagnie Al Reves", Aix en Provence.
 # How to run
 Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to access specific scenes.
 
-# Scene setups - Espace Jeunesse Bellegarde
+## Scene setup - Espace Jeunesse Bellegarde
 ###Top computer scenes (floor screen)
  1. WHITE
  2. Droplet video

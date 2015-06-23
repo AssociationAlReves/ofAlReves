@@ -1,11 +1,11 @@
 #include "ofxCrossedLines.h"
 
-float duration = 100;
-float wait = 0;
+float duration = 5000;
+float wait = 500;
 //--------------------------------------------------------------
 void ofxCrossedLines::setup(){
 	numLine = -1;
-	tween.setParameters(easinglinear, ofxTween::easeInOut, 0,1,duration,wait);
+	tween.setParameters(easingcubic, ofxTween::easeInOut, 0,1,duration,wait);
 }
 
 //--------------------------------------------------------------
@@ -20,7 +20,7 @@ void ofxCrossedLines::update(){
 
 void ofxCrossedLines::nextMode() {
 
-	tween.setParameters(easinglinear, ofxTween::easeInOut, 0,1,duration,wait);
+	tween.setParameters(easingcubic, ofxTween::easeInOut, 0,1,duration,wait);
 	numLine += 1;
 	if (numLine == 5) numLine = -1;
 
@@ -33,8 +33,8 @@ void ofxCrossedLines::draw(){
 	ofClear(255);
 	ofEnableAlphaBlending();
 
-	ofSetColor(ofColor::red, 200);
-	ofSetLineWidth(5);
+	ofSetColor(ofColor::red, 128);
+	ofSetLineWidth(20);
 	for (int i = 0; i<=numLine; i++)
 	{
 		if (i == numLine) {

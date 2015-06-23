@@ -322,6 +322,9 @@
     <ClCompile Include="src\ofxCrossedLines.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxVideoScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1085,6 +1088,7 @@
     <ClInclude Include="src\ofxCrossedLines.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\ofxVideoScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

@@ -68,9 +68,10 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
 	sceneManager.add(new ofxCrossedLines());
+	sceneManager.add(new ofxVideoScene());
 #endif
 	//sceneManager.add(new ofxTerrain());
-	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
+	sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
 	setSceneManagerUpdate(true);
 	setSceneManagerDraw(false);
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
@@ -117,9 +118,9 @@ void ofApp::draw() {
 	cam.begin();
 	ofPushMatrix();
 
-	ofScale (1,-1,1);
-	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 	
+	ofTranslate(-ofGetWidth()/2, ofGetHeight()/2);
+	ofScale (1,-1,1);
 	// the current scene is automatically drawn before this function
 	sceneManager.draw();
 

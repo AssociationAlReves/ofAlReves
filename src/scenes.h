@@ -7,3 +7,4 @@
 #include "ofxKinecticon.h"
 #include "ofxSquareScreen.h"
 #include "ofxCrossedLines.h"
+#include "ofxVideoScene.h"

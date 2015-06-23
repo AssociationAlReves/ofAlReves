@@ -11,7 +11,7 @@ Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to 
  3. Red line (star alike)
  4. Red line fadeout
  5. Moving square with timer starting on bell sound
- 6. (after two musics) Light bulb video
+ 6. (after two musics) Light bulb video (https://www.youtube.com/watch?v=fcbm8SvlRYk)
  7. (after one music) Screen square closing scene
  8. WHITE
  9. WHITE

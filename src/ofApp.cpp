@@ -1,4 +1,5 @@
 /*
+* ofxAppUtils
 * Copyright (c) 2011 Dan Wilcox <danomatika@gmail.com>
 *
 * BSD Simplified License.

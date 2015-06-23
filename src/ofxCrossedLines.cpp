@@ -12,7 +12,7 @@ void ofxCrossedLines::setup(){
 void ofxCrossedLines::update(){
 	if (numLine == -1) return;
 	
-	if (tween.isCompleted())
+	if (tween.isCompleted() && numLine != 4)
 	{
 		nextMode();
 	}

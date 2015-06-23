@@ -15,7 +15,9 @@ void ofxSquareScreen::setup(){
 
 //--------------------------------------------------------------
 void ofxSquareScreen::nextMode(){
-	mode = (mode + 1) % 4;  
+	mode = (mode + 1) % 6;  
+
+	cout << "new mode : " << ofToString(mode) << endl;
 
 	switch (mode)
 	{

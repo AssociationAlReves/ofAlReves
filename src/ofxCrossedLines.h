@@ -27,6 +27,12 @@ public:
 
 	void keyPressed(int key);
 
+private:
+
+	void drawLine(int lineIndex, float interpolation = 1);
+	int numLine;
+
+	void nextMode();
 
 	// transitions
 	ofxTween tween;

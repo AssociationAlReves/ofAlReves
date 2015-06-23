@@ -401,6 +401,7 @@ void ofMovingSquares::draw(){
 					// shape rotation on its axis
 					ofRotateZ(shapeAngle);
 
+					// shake mode
 					if ((currentMode == MOV_state_MoveViolet && shape.name == "fuchsia")
 						|| (currentMode ==  MOV_state_MoveGreen	 && shape.name == "green")
 						|| (currentMode ==  MOV_state_MoveRed	 && shape.name == "red")

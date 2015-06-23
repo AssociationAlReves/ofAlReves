@@ -3,83 +3,15 @@
 
 //--------------------------------------------------------------
 void ofxSquareScreen::setup(){
-	mode = 0;
+	mode = SC_MODE_INIT;
 	sWidth = ofGetWidth();
 	sHeight = ofGetHeight();
+
+	tween.setParameters(easingsine, ofxTween::easeInOut
+			, sWidth
+			, sWidth
+			, 100,0);
 }
-
-//--------------------------------------------------------------
-void ofxSquareScreen::update(){
-
-}
-
-//--------------------------------------------------------------
-void ofxSquareScreen::draw(){
-
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-
-	switch (mode)
-	{
-	case SC_MODE_BEGIN :
-    case SC_MODE_LINE :
-        {
-            sWidth = tween.update();
-            cout << ofToString(sWidth) << endl;
-            if (tween.isCompleted()) {
-                nextMode();
-            }
-        }
-            break;
-    case SC_MODE_BEGIN_REOPEN :
-            sWidth = tween.update(); break;
-	case SC_MODE_CLOSE :
-		sWidth = tween.update(); break;
-	case SC_MODE_VOPEN :
-		sHeight = tween.update(); break;
-	default:
-		break;
-	}
-
-
-	ofPushMatrix();
-
-	ofClear(0); 
-	ofFill();
-	ofSetColor(255); 
-
-		switch (mode)
-		{
-		case SC_MODE_INIT:
-		case SC_MODE_BEGIN:
-		case SC_MODE_CLOSE:
-        case SC_MODE_BEGIN_REOPEN :{
-			ofTranslate((w - sWidth)/2, 0);
-			ofRect(0, 0, sWidth, h);
-							} break;
-        case SC_MODE_LINE: {
-            float lineWidth = (float)w * sin(sWidth);
-            //cout << ofToString(lineWidth) << endl;
-            ofTranslate((w - lineWidth)/2, (h/2-5));
-            ofRect(0, 0, lineWidth, 5);
-            } break;
-		case SC_MODE_VOPEN: {
-			if (openFromBottom) {
-				ofTranslate(0, (h-sHeight));
-			} else {
-				ofTranslate(0, 0);
-			}
-			ofRect(0, 0, w, sHeight);
-							} break;
-		default:
-			break;
-		}
-
-	ofPopMatrix();
-
-
-}
-
 
 //--------------------------------------------------------------
 void ofxSquareScreen::nextMode(){
@@ -94,18 +26,18 @@ void ofxSquareScreen::nextMode(){
 			, 0
 			, 30000,0);
 						 } break;
-    case SC_MODE_LINE: {
-            tween.setParameters(easingexpo, ofxTween::easeInOut
-                                , 0
-                                , PI
-                                , 500,0);
-        } break;
-    case SC_MODE_BEGIN_REOPEN: {
-            tween.setParameters(easingback, ofxTween::easeOut
-                                , 0
-                                , ofGetWidth()*0.3
-                                , 2000,0);
-        } break;
+	case SC_MODE_LINE: {
+		tween.setParameters(easingexpo, ofxTween::easeInOut
+			, 0
+			, PI
+			, 500,0);
+					   } break;
+	case SC_MODE_BEGIN_REOPEN: {
+		tween.setParameters(easingback, ofxTween::easeOut
+			, 0
+			, ofGetWidth()*0.3
+			, 2000,0);
+							   } break;
 	case SC_MODE_CLOSE : {
 		tween.setParameters(easingquad, ofxTween::easeInOut
 			, ofGetWidth()*0.3
@@ -124,6 +56,80 @@ void ofxSquareScreen::nextMode(){
 		break;
 	}
 }
+
+//--------------------------------------------------------------
+void ofxSquareScreen::update(){
+
+}
+
+//--------------------------------------------------------------
+void ofxSquareScreen::draw(){
+
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+
+	int backColor = 0;
+
+	// dimensions update
+	switch (mode)
+	{
+	default :
+		sWidth = tween.update(); break;
+	case SC_MODE_VOPEN :
+		sHeight = tween.update(); break;
+	}
+
+
+	// other updates (alpha, color, mode change)
+	switch (mode)
+	{
+	case SC_MODE_BEGIN : if (tween.isCompleted()) nextMode(); break;
+	case SC_MODE_LINE : // same as begin but color
+		{
+			backColor = (int)(abs(sin(2.f*sWidth))*255);
+			if (tween.isCompleted()) nextMode();
+		}
+		break;
+	default:
+		break;
+	}
+
+	int foreColor = 255-backColor;
+	ofPushMatrix();
+
+	ofClear(backColor); 
+	ofFill();
+	ofSetColor(foreColor); 
+
+	switch (mode)
+	{
+	case SC_MODE_LINE: {
+		float lineWidth = (float)w * sin(sWidth);
+		//cout << ofToString(lineWidth) << endl;
+		ofTranslate((w - lineWidth)/2, (h/2-5));
+		ofRect(0, 0, lineWidth, 5);
+					   } break;
+	case SC_MODE_VOPEN: {
+		if (openFromBottom) {
+			ofTranslate(0, (h-sHeight));
+		} else {
+			ofTranslate(0, 0);
+		}
+		ofRect(0, 0, w, sHeight);
+						} break;
+	default: {
+		ofTranslate((w - sWidth)/2, 0);
+		ofRect(0, 0, sWidth, h);
+			 } 
+			 break;
+	}
+
+	ofPopMatrix();
+
+
+}
+
+
 
 //--------------------------------------------------------------
 void ofxSquareScreen::keyPressed(int key){

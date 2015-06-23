@@ -17,6 +17,8 @@ void ofApp::setup() {
 
 	// setup for nice jaggy-less rendering
 	ofSetVerticalSync(true);
+	ofSetFrameRate(60);
+
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
@@ -56,7 +58,8 @@ void ofApp::setupSceneManager() {
 	squareScreen->openFromBottom = true;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
-	sceneManager.add(new ofxKinecticon());
+	sceneManager.add(new ofxCrossedLines());
+	sceneManager.add(new ofxKinecticon());	
 #else
 	// Bellegarde (PC - top without kinect)
 	sceneManager.add(new ofMovingSquares());
@@ -64,6 +67,7 @@ void ofApp::setupSceneManager() {
 	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad());
 	sceneManager.add(new ofxVasaSquareField());
+	sceneManager.add(new ofxCrossedLines());
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
@@ -109,6 +113,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
 
+	ofEnableAntiAliasing();
 	cam.begin();
 	ofPushMatrix();
 
@@ -154,6 +159,7 @@ void ofApp::draw() {
 	transformer.push();
 
 	// the warp editor is drawn automatically after this function
+	ofDisableAntiAliasing();
 }
 
 // current scene input functions are called automatically before calling these

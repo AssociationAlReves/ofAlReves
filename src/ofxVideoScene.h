@@ -14,9 +14,9 @@
 class ofxVideoScene : public ofxFadeScene
 {
 public:
-	ofxVideoScene(string fileName, string prefix = "scene") : 
+	ofxVideoScene(string fileName, string prefix = "scene", bool boxed = false) : 
 		ofxFadeScene(prefix + ": " + "VideoScene " + fileName )
-			, fileName(fileName) {
+			, fileName(fileName), boxed(boxed) {
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}
@@ -29,6 +29,8 @@ public:
 	ofVideoPlayer player;
 
 	string fileName;
+	bool boxed;
+	float aspectRatio;
 
 	bool horizontalFlip;
 

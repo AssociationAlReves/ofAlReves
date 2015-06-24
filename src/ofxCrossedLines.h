@@ -16,8 +16,8 @@
 class ofxCrossedLines: public ofxFadeScene
 {
 public:
-	ofxCrossedLines(bool startMode, string prefix = "scene") : 
-		ofxFadeScene(prefix + ": " + "Crossing lines"), starMode(starMode) {
+	ofxCrossedLines(bool starMode, string prefix = "scene") : 
+		starMode(starMode), ofxFadeScene(prefix + ": " + "Crossing lines") {
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}

@@ -25,7 +25,7 @@ class ofxVasaSquareField : public ofxFadeScene {
 public:
   	
 	ofxVasaSquareField(string prefix = "scene") : ofxFadeScene(prefix + ": " + "SquareField"){
-			setSingleSetup(true); // call setup each time the scene is loaded
+			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 
 			mode = VASA_SQUARE_MODE_FULL;

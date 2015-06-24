@@ -60,11 +60,11 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));
 	sceneManager.add(new ofMovingSquares());
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen()); // save pointer
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
 	squareScreen->openFromBottom = true;
-	sceneManager.add(new ofxVasaDalleQuad());
-	sceneManager.add(new ofxVasaSquareField());
-	sceneManager.add(new ofxKinecticon());	
+	sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));	
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
@@ -72,15 +72,14 @@ void ofApp::setupSceneManager() {
 	inkScene->horizontalFlip = true;	
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));
 	sceneManager.add(new ofMovingSquares(IntToString(i++)));
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), false));
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
 	squareScreen->openFromBottom = false;
-	sceneManager.add(new ofxVasaDalleQuad(IntToString(i++)));
+	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
 	
 #endif
 	//sceneManager.add(new ofxTerrain());
-	sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
+	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
 	setSceneManagerUpdate(true);
 	setSceneManagerDraw(false);
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside

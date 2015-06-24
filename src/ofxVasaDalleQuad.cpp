@@ -39,6 +39,10 @@ void ofxVasaDalleQuad::setup(int screenWidth, int screenHeight, int sizeOfTiles,
 
 	// the light highlight of the material //
 	material.setSpecularColor(ofColor(255, 255, 255, 255));
+
+	clear();
+
+	bLights = false;
 }
 
 //--------------------------------------------------------------
@@ -107,7 +111,7 @@ void ofxVasaDalleQuad::createDalleFromQuadKey(string key, int shapeType){
     if (bing.tryTakeQuad(key)){
         ofVec2f px = bing.QuadKeyToPixelXY(key, 0);
         
-        ofxVasaDalle dalle = ofxVasaDalle();
+		ofxVasaDalle dalle = ofxVasaDalle(blackAndWhite);
         double tileSizeAtZoom = tileSize * pow(0.5, (double)key.length() - bing.levelOfDetail);
         //cout << tileSize<< endl;
         dalle.setup(tileSizeAtZoom);

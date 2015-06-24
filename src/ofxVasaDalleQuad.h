@@ -17,10 +17,10 @@ class ofxVasaDalleQuad : public ofxFadeScene {
     
 public:
     
-	ofxVasaDalleQuad(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Vasa dalles"){
-			setSingleSetup(true); // call setup each time the scene is loaded
+	ofxVasaDalleQuad(bool blackAndWhite, string prefix = "scene") 
+		: blackAndWhite(blackAndWhite), ofxFadeScene(prefix + ": " + "Vasa dalles"){
+			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
-
 		}
 	void setup();
     void setup(int width, int height, int sizeOfTiles = 256, int maxDepthLevel = 3);
@@ -41,6 +41,7 @@ public:
 	bool bLights;
 private:
     
+	bool blackAndWhite;
     int tileSize;
     void createDalleFromQuadKey(string key, int shapeType);
     

@@ -57,7 +57,7 @@ class ofMovingSquares : public ofxFadeScene {
 public:
     
 	ofMovingSquares(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Moving squares"){
-			setSingleSetup(true); // call setup each time the scene is loaded
+			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(1000, 1000); // 1 second fade in/out
 		}
 

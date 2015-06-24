@@ -106,15 +106,16 @@ void ofxCrossedLines::drawLine(int lineIndex, float interpolation){
 
 	//ofSetPolyMode(OF_POLY_WINDING_ABS_GEQ_TWO);
 	float marginLerp = ofLerp(sm,m,interpolation);
+	float marginLerpBase = ofLerp(0,sm,interpolation);
 	ofBeginShape();
 	ofVertex(xStart,yStart+sm);
 	ofVertex(xStart,yStart-sm);
 	if (endOnYAxis) {
-		ofVertex(ofLerp(xStart, xEnd+marginLerp, interpolation),   ofLerp(yStart-sm, yEnd, interpolation));
-		ofVertex(ofLerp(xStart, xEnd-marginLerp, interpolation),   ofLerp(yStart+sm, yEnd, interpolation));
+		ofVertex(ofLerp(xStart, xEnd+marginLerp, interpolation),   ofLerp(yStart-marginLerpBase, yEnd, interpolation));
+		ofVertex(ofLerp(xStart, xEnd-marginLerp, interpolation),   ofLerp(yStart+marginLerpBase, yEnd, interpolation));
 	} else {
-		ofVertex(ofLerp(xStart, xEnd, interpolation),   ofLerp(yStart-sm, yEnd-marginLerp, interpolation));
-		ofVertex(ofLerp(xStart, xEnd, interpolation),   ofLerp(yStart+sm, yEnd+marginLerp, interpolation));
+		ofVertex(ofLerp(xStart, xEnd, interpolation),   ofLerp(yStart-marginLerpBase, yEnd-marginLerp, interpolation));
+		ofVertex(ofLerp(xStart, xEnd, interpolation),   ofLerp(yStart+marginLerpBase, yEnd+marginLerp, interpolation));
 	}
 	ofEndShape(true);
 	/*ofTriangle(xStart, yStart,

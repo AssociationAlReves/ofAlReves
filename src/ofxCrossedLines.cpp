@@ -2,9 +2,14 @@
 
 float duration = 3700;
 float wait = 0;
+float m = 25; // margin at end
+float sm = 5; // margin at start
+float direction = 1;
+
 //--------------------------------------------------------------
 void ofxCrossedLines::setup(){
 	numLine = -1;
+	direction = 1;
 	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,duration,wait);
 }
 
@@ -20,9 +25,23 @@ void ofxCrossedLines::update(){
 
 void ofxCrossedLines::nextMode() {
 
-	numLine += 1;
-	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,duration,numLine == 0 ? 0 : wait);
-	if (numLine == 5) numLine = -1;
+	numLine += direction;
+	if (numLine == 5) {
+		if (direction > 0) {
+			cout << "NumLine : " << "start fadeout" << endl;
+			direction = -1;
+			numLine = 4;
+		} else {
+			cout << "NumLine : " << "end fadeout" << endl;
+			numLine = -1;
+			direction = 1;
+		}
+	}
+	if (numLine == -1) direction = 1;
+
+	float start = direction > 0 ? 0 : 1;
+	float end = direction > 0 ? 1 : 0;
+	tween.setParameters(easingsine, ofxTween::easeInOut, start, end, duration,numLine == 0 ? 0 : wait);
 
 	cout << "NumLine : " << ofToString(numLine) << endl;
 }
@@ -54,8 +73,7 @@ void ofxCrossedLines::drawLine(int lineIndex, float interpolation){
 
 	float xStart = 0, yStart = 0, xEnd = 0, yEnd = 0;
 	float w = ofGetWidth(), h = ofGetHeight();
-	float m = 25; // margin at end
-	float sm = 5; // margin at start
+
 	bool endOnYAxis = false;
 
 	if (starMode) {

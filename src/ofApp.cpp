@@ -70,7 +70,7 @@ void ofApp::setupSceneManager() {
 	// Bellegarde (PC - top without kinect)
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false));
 	inkScene->horizontalFlip = true;	
-	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));
+	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));
 	sceneManager.add(new ofMovingSquares(IntToString(i++)));
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), false));
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer

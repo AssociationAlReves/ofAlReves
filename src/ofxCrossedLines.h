@@ -36,7 +36,7 @@ private:
 	bool starMode;
 
 	void nextMode();
-
+    
 	// transitions
 	ofxTween tween;
     

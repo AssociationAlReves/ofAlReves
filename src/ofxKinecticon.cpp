@@ -74,7 +74,8 @@ void ofxKinecticon::setup(){
 	gui->addIntSlider("diffThresh", 0, 255, &threshold);
 	gui->addLabelToggle("Use background (b)", &bKinectUseBg);
 	gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
-
+    gui->setVisible(false);
+    
 #endif
 
 }
@@ -377,6 +378,7 @@ void ofxKinecticon::keyPressed(int key){
 		case '0':
 			kinect.setLed(ofxKinect::LED_OFF);
 			break;
+        case 'g' : gui->setVisible(!gui->isVisible());
 
 		case OF_KEY_UP:
 			angle++;

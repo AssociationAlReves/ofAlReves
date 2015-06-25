@@ -23,6 +23,11 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
+    
+    post.init(ofGetWidth(), ofGetHeight());
+    post.createPass<FxaaPass>();
+    post.createPass<FxaaPass>();
+    post.createPass<BloomPass>();
 
 }
 
@@ -58,11 +63,9 @@ void ofApp::setupSceneManager() {
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));
 	inkScene->horizontalFlip = false;
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));
-	sceneManager.add(new ofMovingSquares());
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
 	squareScreen->openFromBottom = true;
-	sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
 	sceneManager.add(new ofxKinecticon(IntToString(i++)));	
 #else
@@ -130,8 +133,16 @@ void ofApp::draw() {
 
 	ofClear(255);
 	ofEnableAntiAliasing();
-	cam.begin();
-	ofPushMatrix();
+    
+    if (sceneManager.getCurrentSceneIndex() == 1
+        || sceneManager.getCurrentSceneIndex() >=3 ) {
+        post.begin(cam);
+    } else {
+        ofEnableAntiAliasing();
+        cam.begin();
+    }
+	
+    ofPushMatrix();
 
 	
 	ofTranslate(-ofGetWidth()/2, ofGetHeight()/2);
@@ -140,8 +151,12 @@ void ofApp::draw() {
 	sceneManager.draw();
 
 	ofPopMatrix();
-	cam.end();
-
+    if (sceneManager.getCurrentSceneIndex() == 1) {
+        post.end();
+    } else {
+        cam.end();
+    }
+    
 	// show the render area edges with a white rect
 	if(isDebug()) {
 		ofNoFill();
@@ -175,7 +190,7 @@ void ofApp::draw() {
 	transformer.push();
 
 	// the warp editor is drawn automatically after this function
-	ofDisableAntiAliasing();
+	//ofDisableAntiAliasing();
 }
 
 // current scene input functions are called automatically before calling these

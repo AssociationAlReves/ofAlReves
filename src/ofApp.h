@@ -4,6 +4,8 @@
 
 #include "ofxAppUtils.h"
 #include "globals.h"
+#include "ofxPostProcessing.h"
+
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project
@@ -49,6 +51,8 @@ public:
 	ofxVideoScene *inkScene;
 
 	ofEasyCam cam;
+    
+    ofxPostProcessing post;
 
 	string IntToString(int i);
 

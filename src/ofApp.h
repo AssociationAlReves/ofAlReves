@@ -53,6 +53,7 @@ public:
 	ofEasyCam cam;
     
     ofxPostProcessing post;
+	map<int, bool> postEnabledByScene;
 
 	string IntToString(int i);
 

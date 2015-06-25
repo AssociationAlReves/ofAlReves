@@ -292,38 +292,110 @@
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.cpp">
       <Filter>addons\ofxUI\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\BleachBypassPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\BloomPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\ContrastPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\ConvolutionPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\DofAltPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\DofPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\EdgePass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\FakeSSSPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\FxaaPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\GodRaysPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\HorizontalTiltShifPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\KaleidoscopePass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\LimbDarkeningPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\LUTPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\NoiseWarpPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\PixelatePass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\PostProcessing.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\RenderPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\RGBShiftPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\RimHighlightingPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\SSAOPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\ToonPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\VerticalTiltShifPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPostProcessing\src\ZoomBlurPass.cpp">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClCompile>
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ofMovingSquares.cpp">
-      <Filter>src</Filter>
+      <Filter>src\scenes</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxBingQuad.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofxKinecticon.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofxSquareScreen.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofxTerrain.cpp">
-      <Filter>src</Filter>
+      <Filter>src\quad</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxVasaDalle.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofxVasaDalleQuad.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofxVasaSquareField.cpp">
-      <Filter>src</Filter>
+      <Filter>src\quad</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxCrossedLines.cpp">
-      <Filter>src</Filter>
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxKinecticon.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxSquareScreen.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxTerrain.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxVasaDalleQuad.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxVasaSquareField.cpp">
+      <Filter>src\scenes</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxVideoScene.cpp">
-      <Filter>src</Filter>
+      <Filter>src\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +533,18 @@
     </Filter>
     <Filter Include="addons\ofxUI\src">
       <UniqueIdentifier>{A00C2D23-6C11-BC86-3993-2CF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPostProcessing">
+      <UniqueIdentifier>{AB514210-24FF-87A6-AE4B-9AE5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPostProcessing\src">
+      <UniqueIdentifier>{8E4D751F-6272-927D-3C6E-AFCE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\scenes">
+      <UniqueIdentifier>{23cd2434-9e92-4675-9254-e6ef819cab7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\quad">
+      <UniqueIdentifier>{e33a18a4-1ebe-4598-95f2-6ce12f79de53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1058,37 +1142,112 @@
     <ClInclude Include="src\globals.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ofMovingSquares.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxBingQuad.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxKinecticon.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxSquareScreen.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxTerrain.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxVasaDalle.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxVasaDalleQuad.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxVasaSquareField.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\scenes.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ofxCrossedLines.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\ofxVideoScene.h" />
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\BleachBypassPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\BloomPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\ContrastPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\ConvolutionPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\DofAltPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\DofPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\EdgePass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\FakeSSSPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\FxaaPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\GodRaysPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\HorizontalTiltShifPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\KaleidoscopePass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\LimbDarkeningPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\LUTPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\NoiseWarpPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\ofxPostProcessing.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\PixelatePass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\PostProcessing.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\RenderPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\RGBShiftPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\RimHighlightingPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\SSAOPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\ToonPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\VerticalTiltShifPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\ZoomBlurPass.h">
+      <Filter>addons\ofxPostProcessing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofMovingSquares.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxBingQuad.h">
+      <Filter>src\quad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaDalle.h">
+      <Filter>src\quad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxCrossedLines.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxKinecticon.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxSquareScreen.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxTerrain.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaDalleQuad.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVasaSquareField.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

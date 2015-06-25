@@ -245,14 +245,14 @@ bool ofMovingSquares::beforeDraw(){
 	switch(currentMode) {
 	case MOV_state_BlackToBlank: 
 		{
-			ofClear(tweenFadein.update());
+			ofBackground(tweenFadein.update());
 			bDrawShapes = false;
 		}
 		break;
 	default:
 		{
 			bDrawShapes = true;
-			ofClear(255);
+			ofBackground(255);
 		}
 		break;
 	}
@@ -263,6 +263,7 @@ bool ofMovingSquares::beforeDraw(){
 //--------------------------------------------------------------
 void ofMovingSquares::draw(){
 
+	ofDisableAlphaBlending();
 	float adjustedTime = 0;
 	float amout = 0;
 	float noiseAmount = 0;

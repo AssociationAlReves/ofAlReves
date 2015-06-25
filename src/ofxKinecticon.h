@@ -12,8 +12,9 @@
 #include "ofxAppUtils.h"
 #include "ofxUI.h"
 #include "ofxOpenCv.h"
+#ifdef USE_KINECT
 #include "ofxKinect.h"
-
+#endif
 
 #define VASA_KINECT_NUM_BG_FRAMES 200
 #define VASA_KINECT_POINTCLOUD_STEP 2

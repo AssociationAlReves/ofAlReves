@@ -60,25 +60,26 @@ void ofApp::setupSceneManager() {
 #if __APPLE__
 	// Bellegarde (mac - front with kinect)
 	int i = 0;
-	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));
+	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));	postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = false;
-	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
+	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));													postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));										postEnabledByScene[i-1] = false;
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));						postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = true;
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
-	sceneManager.add(new ofxKinecticon(IntToString(i++)));	
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));															postEnabledByScene[i-1] = false;
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
-	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false));
+	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false)); postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = true;	
-	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));
-	sceneManager.add(new ofMovingSquares(IntToString(i++)));
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++))); // save pointer
+	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));														postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofMovingSquares(IntToString(i++)));															postEnabledByScene[i-1] = false;
+	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));							postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = false;
-	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));
+	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));															postEnabledByScene[i-1] = false;
+
 	
 #endif
 	//sceneManager.add(new ofxTerrain());
@@ -134,8 +135,7 @@ void ofApp::draw() {
 	ofClear(255);
 	ofEnableAntiAliasing();
     
-    if (sceneManager.getCurrentSceneIndex() == 1
-        || sceneManager.getCurrentSceneIndex() >=3 ) {
+	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
         post.begin(cam);
     } else {
         ofEnableAntiAliasing();
@@ -151,7 +151,7 @@ void ofApp::draw() {
 	sceneManager.draw();
 
 	ofPopMatrix();
-    if (sceneManager.getCurrentSceneIndex() == 1) {
+    if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
         post.end();
     } else {
         cam.end();

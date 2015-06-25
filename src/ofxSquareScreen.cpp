@@ -99,7 +99,7 @@ void ofxSquareScreen::draw(){
 	int foreColor = 255-backColor;
 	ofPushMatrix();
 
-	ofClear(backColor); 
+	ofBackground(backColor);
 	ofFill();
 	ofSetColor(foreColor); 
 

@@ -209,6 +209,8 @@ void ofApp::keyPressed(int key) {
 
 			  } break;
 
+        case 'e': cam.disableMouseInput(); break;
+        case 'E' : cam.enableMouseInput(); break;
 	case 'D':
 		bDebug = !bDebug;
 		break;

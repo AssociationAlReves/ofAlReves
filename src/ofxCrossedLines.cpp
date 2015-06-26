@@ -91,13 +91,13 @@ void ofxCrossedLines::drawLine(int lineIndex, float interpolation){
 		case 2: 
 			endOnYAxis = true;
 			xStart = 0; xEnd = w * 0.65;
-			yStart = h * 0.5; yEnd = h;
+			yStart = h * 0.43; yEnd = h;
 			break;
 
 		case 3: 
 			endOnYAxis = true;
 			xStart = 0; xEnd = w * 0.25;
-			yStart = h * 0.7; yEnd = h;
+			yStart = h * 0.65; yEnd = h;
 			break;
 		}
 	} else {

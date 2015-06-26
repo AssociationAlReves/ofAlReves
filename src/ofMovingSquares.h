@@ -119,7 +119,6 @@ private:
 	ofxEasingQuint 	easingquint;
 
 	bool beforeDraw();
-	void afterDraw();
 
 	void updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration = MOV_SQUARE_DURATION );
 

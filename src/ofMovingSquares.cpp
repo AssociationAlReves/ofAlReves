@@ -463,8 +463,6 @@ void ofMovingSquares::draw(){
 
 		ofPopMatrix();
 
-		//ofDrawAxis(200);
-		afterDraw();
 
 		cam.end();
 	}
@@ -507,24 +505,6 @@ void ofMovingSquares::draw(){
 #endif
 }
 
-//--------------------------------------------------------------
-void ofMovingSquares::afterDraw(){
-	switch(currentMode) {
-	case MOV_state_StartFadeIn: 
-		{
-			/*ofSetColor(tweenFadein.update());
-			ofRect(0,0,ofGetWidth(),ofGetHeight());*/
-		}
-		break;
-	default:
-		{
-			//ofClear(255);
-		}
-		break;
-	}
-
-
-}
 
 //--------------------------------------------------------------
 void ofMovingSquares::keyPressed(int key){

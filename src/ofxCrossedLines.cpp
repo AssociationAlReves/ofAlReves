@@ -50,10 +50,10 @@ void ofxCrossedLines::nextMode() {
 void ofxCrossedLines::draw(){
     
     ofEnableAlphaBlending();
-    ofBackground(255,255,255,255*alpha);
+    ofBackground(255,255,255,255);
 
 	ofFill();
-	ofSetColor(ofColor::red, 255 * alpha);
+	ofSetColor(ofColor::red, 255);
 	ofSetLineWidth(0);
 	for (int i = 0; i<=numLine; i++)
 	{

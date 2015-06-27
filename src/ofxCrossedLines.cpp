@@ -48,12 +48,12 @@ void ofxCrossedLines::nextMode() {
 
 //--------------------------------------------------------------
 void ofxCrossedLines::draw(){
-
-    ofBackground(ofColor::white);
-	//ofEnableAlphaBlending();
+    
+    ofEnableAlphaBlending();
+    ofBackground(255,255,255,255*alpha);
 
 	ofFill();
-	ofSetColor(ofColor::red, 255);
+	ofSetColor(ofColor::red, 255 * alpha);
 	ofSetLineWidth(0);
 	for (int i = 0; i<=numLine; i++)
 	{
@@ -65,7 +65,7 @@ void ofxCrossedLines::draw(){
 	}
 
 
-	//ofDisableAlphaBlending();
+	ofDisableAlphaBlending();
 }
 
 //--------------------------------------------------------------

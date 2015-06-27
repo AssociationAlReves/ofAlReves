@@ -66,10 +66,11 @@ void ofxVasaSquareField::update(){
 //--------------------------------------------------------------
 void ofxVasaSquareField::draw(){
 
-	ofClear(ofColor::black);
+    ofEnableAlphaBlending();
+	ofBackground(0,0,0,255*alpha);
 
 	ofFill();
-	ofSetColor(ofColor::white);
+	ofSetColor(255,255,255,255*alpha);
 
 	ofPushMatrix();
 	if (mode == VASA_SQUARE_MODE_ONE){
@@ -101,7 +102,8 @@ void ofxVasaSquareField::draw(){
 
 	ofPopMatrix();
 
-	ofSetColor(ofColor::black);
+	ofSetColor(0,0,0,255*alpha);
+    ofDisableAlphaBlending();
 
 }
 

@@ -18,6 +18,8 @@ void ofxVideoScene::update(){
 
 //--------------------------------------------------------------
 void ofxVideoScene::draw(){
+    
+    ofEnableAlphaBlending();
 	ofPushMatrix();
 
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
@@ -25,15 +27,15 @@ void ofxVideoScene::draw(){
 		ofScale (1,-1,1);
 	}
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-	ofBackground(255,255,255);
-	ofSetColor(255);
+	ofBackground(255,255,255, 255 * alpha);
+	ofSetColor(255, 255, 255, 255 * alpha);
 	float pw = ofGetHeight() * aspectRatio;
 	float ph = ofGetHeight();
 	float xCenterOrigin = -(pw-ofGetWidth())/2;
 	ofTranslate(xCenterOrigin, 0);
 	player.draw(0, 0, pw, ph);
 	if (boxed) {
-		ofSetColor(0);
+		ofSetColor(0,0,0,255*alpha);
 		ofSetLineWidth(5);
 		ofLine(0,0,pw,0);
 		ofLine(pw,0,pw,ph);
@@ -43,6 +45,7 @@ void ofxVideoScene::draw(){
 
 
 	ofPopMatrix();
+    ofDisableAlphaBlending();
 }
 
 

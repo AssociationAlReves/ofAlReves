@@ -75,6 +75,7 @@ void ofApp::setupSceneManager() {
 	inkScene->horizontalFlip = true;	
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));														postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofMovingSquares(IntToString(i++)));															postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));							postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));														postEnabledByScene[i-1] = false;

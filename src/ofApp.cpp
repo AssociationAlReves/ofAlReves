@@ -23,16 +23,18 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
-    
-    post.init(ofGetWidth(), ofGetHeight());
-    post.createPass<FxaaPass>();
-    post.createPass<FxaaPass>();
-    post.createPass<BloomPass>();
+
+	post.init(ofGetWidth(), ofGetHeight());
+	post.createPass<FxaaPass>();
+	post.createPass<FxaaPass>();
+	post.createPass<BloomPass>();
 
 }
 
 //--------------------------------------------------------------
 void ofApp::setupSceneManager() {
+
+	setDrawFramerate(false);
 
 	// setup the render size (working area)
 	transformer.setRenderSize(PROJECTOR_RESOLUTION_X, PROJECTOR_RESOLUTION_Y);
@@ -63,7 +65,7 @@ void ofApp::setupSceneManager() {
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));	postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = false;
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));													postEnabledByScene[i-1] = true;
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));										postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));						postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = true;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));														postEnabledByScene[i-1] = false;
@@ -75,13 +77,13 @@ void ofApp::setupSceneManager() {
 	inkScene->horizontalFlip = true;	
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));														postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofMovingSquares(IntToString(i++)));															postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++)));										postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));							postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = false;
 	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));															postEnabledByScene[i-1] = false;
 
-	
+
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
@@ -113,21 +115,14 @@ void ofApp::setupSceneManager() {
 
 string ofApp::IntToString(int i) {
 	std::ostringstream oss;
-    oss << std::setw(2) << std::setfill('0') << i;
-    return oss.str();
+	oss << std::setw(2) << std::setfill('0') << i;
+	return oss.str();
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
 
 	// the current scene is automatically updated before this function
-
-#ifdef HAVE_OFX_GUI
-	// update the transform panel when in debug mode
-	if(isDebug()) {
-		panel.update();
-	}
-#endif
 }
 
 //--------------------------------------------------------------
@@ -135,54 +130,41 @@ void ofApp::draw() {
 
 	ofClear(255);
 	ofEnableAntiAliasing();
-    
-	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
-        post.begin(cam);
-    } else {
-        ofEnableAntiAliasing();
-        cam.begin();
-    }
-	
-    ofPushMatrix();
 
-	
+	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
+		post.begin(cam);
+	} else {
+		ofEnableAntiAliasing();
+		cam.begin();
+	}
+
+	ofPushMatrix();
+
+
 	ofTranslate(-ofGetWidth()/2, ofGetHeight()/2);
 	ofScale (1,-1,1);
 	// the current scene is automatically drawn before this function
 	sceneManager.draw();
 
 	ofPopMatrix();
-    if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
-        post.end();
-    } else {
-        cam.end();
-    }
-    
-	// show the render area edges with a white rect
-	if(isDebug()) {
-		ofNoFill();
-		ofSetColor(255);
-		ofSetRectMode(OF_RECTMODE_CORNER);
-		ofRect(1, 1, getRenderWidth()-2, getRenderHeight()-2);
-		ofFill();
+	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
+		post.end();
+	} else {
+		cam.end();
 	}
 
 	// drop out of the auto transform space back to OF screen space
 	transformer.pop();
 
-#ifdef HAVE_OFX_GUI
 	// draw the transform panel when in debug mode
 	if(isDebug()) {
-		panel.draw();
+		// draw current scene info using the ofxBitmapString stream interface
+		// to ofDrawBitmapString
+		ofSetColor(200);
+		ofxBitmapString(12, ofGetHeight()-8)
+			<< "Current Scene: " << sceneManager.getCurrentSceneIndex()
+			<< " " << sceneManager.getCurrentSceneName() << endl;
 	}
-#endif
-
-	// draw current scene info using the ofxBitmapString stream interface
-	// to ofDrawBitmapString
-	ofSetColor(200);
-	ofxBitmapString(12, ofGetHeight()-8)
-		<< "Current Scene: " << sceneManager.getCurrentSceneIndex()
-		<< " " << sceneManager.getCurrentSceneName() << endl;
 
 	// go back to the auto transform space
 	//
@@ -210,8 +192,8 @@ void ofApp::keyPressed(int key) {
 
 			  } break;
 
-        case 'e': cam.disableMouseInput(); break;
-        case 'E' : cam.enableMouseInput(); break;
+	case 'e': cam.disableMouseInput(); break;
+	case 'E' : cam.enableMouseInput(); break;
 	case 'D':
 		bDebug = !bDebug;
 		break;

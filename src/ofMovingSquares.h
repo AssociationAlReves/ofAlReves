@@ -56,7 +56,8 @@ class ofMovingSquares : public ofxScene {
 	
 public:
     
-	ofMovingSquares(string prefix = "scene") : ofxScene(prefix + ": " + "Moving squares"){
+	ofMovingSquares(string prefix = "scene", bool isMirrored = false) 
+		: isMirrored(isMirrored),  ofxScene(prefix + ": " + "Moving squares"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 		}
 
@@ -96,6 +97,7 @@ private:
 
 	bool isRotating;
 	bool isStopFadeOut;
+	bool isMirrored;
 
 	float currentAngle;
 

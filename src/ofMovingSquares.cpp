@@ -275,7 +275,11 @@ void ofMovingSquares::draw(){
 		ofPushMatrix();
 		ofSetCircleResolution(50);
 
-		ofScale (1,-1,1);
+		if (isMirrored) {
+			ofScale (1,1,1);
+		} else {
+			ofScale (1,-1,1);
+		}		
 
 		float posAngle = 0;
 		float shapeAngle = 0;

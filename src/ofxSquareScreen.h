@@ -19,12 +19,11 @@
 #define SC_MODE_CLOSE 4
 #define SC_MODE_VOPEN 5
 
-class ofxSquareScreen : public ofxFadeScene
+class ofxSquareScreen : public ofxScene
 {
 public:
-	ofxSquareScreen(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Square screen"){
+	ofxSquareScreen(string prefix = "scene") : ofxScene(prefix + ": " + "Square screen"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 		}
 
 	void setup();

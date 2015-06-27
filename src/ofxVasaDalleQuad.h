@@ -13,14 +13,13 @@
 #include "ofxBingQuad.h"
 #include "ofxVasaDalle.h"
 
-class ofxVasaDalleQuad : public ofxFadeScene {
+class ofxVasaDalleQuad : public ofxScene {
     
 public:
     
 	ofxVasaDalleQuad(bool blackAndWhite, string prefix = "scene") 
-		: blackAndWhite(blackAndWhite), ofxFadeScene(prefix + ": " + "Vasa dalles"){
+		: blackAndWhite(blackAndWhite), ofxScene(prefix + ": " + "Vasa dalles"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 		}
 	void setup();
     void setup(int width, int height, int sizeOfTiles = 256, int maxDepthLevel = 3);

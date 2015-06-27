@@ -5,7 +5,7 @@
 void ofxKinecticon::setup(){
 
 #ifdef USE_KINECT
-    kinectEnabled = true;
+	kinectEnabled = true;
 	bKinectUseBg = true;
 	bKinectSetup = true;
 	bKinectAltColor = false;
@@ -75,8 +75,8 @@ void ofxKinecticon::setup(){
 	gui->addIntSlider("diffThresh", 0, 255, &threshold);
 	gui->addLabelToggle("Use background (b)", &bKinectUseBg);
 	gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
-    gui->setVisible(false);
-    
+	gui->setVisible(false);
+
 #endif
 
 }
@@ -236,7 +236,7 @@ void ofxKinecticon::draw() {
 
 	if (bKinectSetup){
 		if(bDrawPointCloud) {
-drawPointCloud();
+			drawPointCloud();
 		} else {
 
 			kinectMeshes.clear();
@@ -259,71 +259,75 @@ drawPointCloud();
 #endif
 		}
 
-        if (bShowHelp) {
-            // draw instructions
-            ofSetColor(255, 255, 255);
-            stringstream reportStream;
-            
-            if(kinect.hasAccelControl()) {
-                reportStream << "accel is: " << ofToString(kinect.getMksAccel().x, 2) << " / "
-                << ofToString(kinect.getMksAccel().y, 2) << " / "
-                << ofToString(kinect.getMksAccel().z, 2) << endl;
-            } else {
-                reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
-                << "motor / led / accel controls are not currently supported" << endl << endl;
-            }
-            
-            reportStream << "press p to switch between images and point cloud, rotate the point cloud with the mouse" << endl
-            //<< "using opencv threshold = " << bThreshWithOpenCV <<" (press spacebar)" << endl
-            << "set near threshold " << nearThreshold << " (press: + -)" << endl
-            << "set far threshold " << farThreshold << " (press: < >) num blobs found " << contourFinder.nBlobs
-            << ", fps: " << ofGetFrameRate() << endl
-            << "press c to close the connection and o to open it again, connection is: " << kinect.isConnected() << endl;
-            
-            if(kinect.hasCamTiltControl()) {
-                reportStream << "press UP and DOWN to change the tilt angle: " << angle << " degrees" << endl
-                << "press 1-5 & 0 to change the led mode" << endl;
-            }
-            
-            ofDrawBitmapString(reportStream.str(), 20, 652);
-        }
+		if (bShowHelp) {
+			// draw instructions
+			ofSetColor(255, 255, 255);
+			stringstream reportStream;
+
+			if(kinect.hasAccelControl()) {
+				reportStream << "accel is: " << ofToString(kinect.getMksAccel().x, 2) << " / "
+					<< ofToString(kinect.getMksAccel().y, 2) << " / "
+					<< ofToString(kinect.getMksAccel().z, 2) << endl;
+			} else {
+				reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
+					<< "motor / led / accel controls are not currently supported" << endl << endl;
+			}
+
+			reportStream << "press p to switch between images and point cloud, rotate the point cloud with the mouse" << endl
+				//<< "using opencv threshold = " << bThreshWithOpenCV <<" (press spacebar)" << endl
+				<< "set near threshold " << nearThreshold << " (press: + -)" << endl
+				<< "set far threshold " << farThreshold << " (press: < >) num blobs found " << contourFinder.nBlobs
+				<< ", fps: " << ofGetFrameRate() << endl
+				<< "press c to close the connection and o to open it again, connection is: " << kinect.isConnected() << endl;
+
+			if(kinect.hasCamTiltControl()) {
+				reportStream << "press UP and DOWN to change the tilt angle: " << angle << " degrees" << endl
+					<< "press 1-5 & 0 to change the led mode" << endl;
+			}
+
+			ofDrawBitmapString(reportStream.str(), 20, 652);
+		}
 	}
-    
-    
+
+
 #endif
 }
 
 //--------------------------------------------------------------
 void ofxKinecticon::drawPointCloud(){
-    ofBackground(0);
-    
-    glPointSize(2);
-    ofPushMatrix();
-    // the projected points are 'upside down' and 'backwards'
-    ofScale(1, 1, -1);
-    ofTranslate(0, 0, -1000); // center the points a bit
-    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    ofDisableDepthTest();
-    kinectMeshCurColor = 0;
-    if (kinectMeshes.size() == VASA_KINECT_FRAMECOUNT){
-        for(int i = VASA_KINECT_FRAMECOUNT-1; i >= 0; i-=VASA_KINECT_FRAMEDELAY)
-        {
-            kinectMeshCurColor = (kinectMeshCurColor + 1) % kinectMeshColors.size();
-            ofSetColor(kinectMeshColors[kinectMeshCurColor]);
-            
-            ofMesh curMesh = kinectMeshes[i];
-            //            vector<ofFloatColor> meshColors = curMesh.getColorsPointer();
-            //            for (int col = 0; col < meshColors.size();col++){
-            //                meshColors[col].setHue(128);
-            //            }
-            
-            curMesh.draw();
-        }
-    } else if (kinectMeshes.size()>0) {
-        kinectMeshes[kinectMeshes.size()-1].draw();
-    }
-    ofDisableDepthTest();
-    ofPopMatrix();
+
+#ifdef USE_KINECT
+	ofBackground(0);
+
+	glPointSize(2);
+	ofPushMatrix();
+	// the projected points are 'upside down' and 'backwards'
+	ofScale(1, 1, -1);
+	ofTranslate(0, 0, -1000); // center the points a bit
+	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+	ofDisableDepthTest();
+	kinectMeshCurColor = 0;
+	if (kinectMeshes.size() == VASA_KINECT_FRAMECOUNT){
+		for(int i = VASA_KINECT_FRAMECOUNT-1; i >= 0; i-=VASA_KINECT_FRAMEDELAY)
+		{
+			kinectMeshCurColor = (kinectMeshCurColor + 1) % kinectMeshColors.size();
+			ofSetColor(kinectMeshColors[kinectMeshCurColor]);
+
+			ofMesh curMesh = kinectMeshes[i];
+			//            vector<ofFloatColor> meshColors = curMesh.getColorsPointer();
+			//            for (int col = 0; col < meshColors.size();col++){
+			//                meshColors[col].setHue(128);
+			//            }
+
+			curMesh.draw();
+		}
+	} else if (kinectMeshes.size()>0) {
+		kinectMeshes[kinectMeshes.size()-1].draw();
+	}
+	ofDisableDepthTest();
+	ofPopMatrix();
+
+#endif
 }
 
 //--------------------------------------------------------------
@@ -339,10 +343,10 @@ void ofxKinecticon::keyPressed(int key){
 		case'p':
 			bDrawPointCloud = !bDrawPointCloud;
 			break;
-        
-        case 'h': bShowHelp = !bShowHelp;
-                break;
-        
+
+		case 'h': bShowHelp = !bShowHelp;
+			break;
+
 		case 'b':
 			bKinectUseBg = !bKinectUseBg;
 			break;
@@ -408,7 +412,7 @@ void ofxKinecticon::keyPressed(int key){
 		case '0':
 			kinect.setLed(ofxKinect::LED_OFF);
 			break;
-        case 'g' : gui->setVisible(!gui->isVisible());
+		case 'g' : gui->setVisible(!gui->isVisible());
 
 		case OF_KEY_UP:
 			angle++;

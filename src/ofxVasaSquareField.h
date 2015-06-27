@@ -20,13 +20,12 @@
 #include "globals.h"
 #include "ofxAppUtils.h"
 
-class ofxVasaSquareField : public ofxFadeScene {
+class ofxVasaSquareField : public ofxScene {
     
 public:
   	
-	ofxVasaSquareField(string prefix = "scene") : ofxFadeScene(prefix + ": " + "SquareField"){
+	ofxVasaSquareField(string prefix = "scene") : ofxScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 
 			mode = VASA_SQUARE_MODE_FULL;
 		}

@@ -21,13 +21,12 @@
 #include "globals.h"
 #include "ofxAppUtils.h"
 
-class ofxSquarePath : public ofxFadeScene {
+class ofxSquarePath : public ofxScene {
     
 public:
   	
-	ofxSquarePath(string prefix = "scene") : ofxFadeScene(prefix + ": " + "SquarePath"){
+	ofxSquarePath(string prefix = "scene") : ofxScene(prefix + ": " + "SquarePath"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 
 			mode = SQUAREPATH_MODE_INIT;
 		}

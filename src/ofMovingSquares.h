@@ -52,13 +52,12 @@
 
 // This is meant to be sync with beethoven sonata
 
-class ofMovingSquares : public ofxFadeScene {
+class ofMovingSquares : public ofxScene {
 	
 public:
     
-	ofMovingSquares(string prefix = "scene") : ofxFadeScene(prefix + ": " + "Moving squares"){
+	ofMovingSquares(string prefix = "scene") : ofxScene(prefix + ": " + "Moving squares"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 		}
 
 	void setup();

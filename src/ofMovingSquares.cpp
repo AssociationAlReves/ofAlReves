@@ -7,7 +7,7 @@ void ofMovingSquares::setup(){
 
 	isRotating = false;
 
-	currentMode = 0;
+	currentMode = 2;
 	currentAngle = 0;
 
 	shapes.clear();
@@ -408,8 +408,8 @@ void ofMovingSquares::draw(){
 						|| (currentMode ==  MOV_state_MoveRed	 && shape.name == "red")
 						|| (currentMode ==  MOV_state_MoveYellow && shape.name == "yellow")
 						|| (currentMode ==  MOV_state_MoveBlue	 && shape.name == "blue")) {
-						float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
-						ofTranslate(localNoise * ofNoise(ofGetElapsedTimef()*5.3) *40,localNoise * ofNoise(ofGetElapsedTimef()*4.3f + 12.34) *40);
+							float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
+							ofTranslate(localNoise * ofNoise(ofGetElapsedTimef()*5.3) *40,localNoise * ofNoise(ofGetElapsedTimef()*4.3f + 12.34) *40);
 					} 
 				}
 				break;
@@ -467,42 +467,42 @@ void ofMovingSquares::draw(){
 		cam.end();
 	}
 
-#ifdef _DEBUG
-	//def MOV_SQUARES_DEBUGd
-	ofSetColor(ofColor::black);
-	string strMode = "";
-	switch (currentMode) {
-	case MOV_state_BlackToBlank: strMode = "modeBlackToBlank"; break; //0;	// initial screen
-	case MOV_state_StartFadeIn: strMode = "modeStartFadeIn"; break; //1;	// before song
-	case MOV_state_StartTimer: strMode = "modeStartTimer"; break; //2;	// start chrono for song - 0s
+	if (ofxGetAppPtr()->isDebug()) {
+		//def MOV_SQUARES_DEBUGd
+		ofSetColor(ofColor::black);
+		string strMode = "";
+		switch (currentMode) {
+		case MOV_state_BlackToBlank: strMode = "modeBlackToBlank"; break; //0;	// initial screen
+		case MOV_state_StartFadeIn: strMode = "modeStartFadeIn"; break; //1;	// before song
+		case MOV_state_StartTimer: strMode = "modeStartTimer"; break; //2;	// start chrono for song - 0s
 
-	case MOV_state_Slow: strMode = "modeSlow"; break; //3;			// start slow motion - 195s (3:15)
-	case MOV_state_Accelerate: strMode = "modeAccelerate"; break; //4;	// start slow-> fast - 214s (3:34)
-	case MOV_state_Noise: strMode = "modeNoise"; break; //5;			// start fast w accelerating noise - 220s (3:40)
-	case MOV_state_FullStop: strMode = "modeFullStop"; break; //6;		// start going to full stop - 239s (3:59)
-	case MOV_state_Reset: strMode = "modeReset"; break; //7;			// reset to initial state - 245s (4:05)
-	case MOV_state_MoveViolet	: strMode = "MoveViolet"; break;
-	case MOV_state_MoveGreen	: strMode = "MoveGreen"; break;
-	case MOV_state_MoveRed		: strMode = "MoveRed"; break;
-	case MOV_state_MoveYellow	: strMode = "MoveYellow"; break;
-	case MOV_state_MoveBlue		: strMode = "MoveBlue"; break;
-	case MOV_state_StopMoveBlue	: strMode = "StopMoveBlue"; break;
-	case MOV_state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
-	case MOV_state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
-	case MOV_state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)
-	case MOV_state_NoYellow: strMode = "modeNoYellow"; break; //11;		// yellow goes away - 292s (4:52)
-	case MOV_state_NoRed: strMode = "modeNoRed"; break; //12;		// red goes away - 332s (5:32)
+		case MOV_state_Slow: strMode = "modeSlow"; break; //3;			// start slow motion - 195s (3:15)
+		case MOV_state_Accelerate: strMode = "modeAccelerate"; break; //4;	// start slow-> fast - 214s (3:34)
+		case MOV_state_Noise: strMode = "modeNoise"; break; //5;			// start fast w accelerating noise - 220s (3:40)
+		case MOV_state_FullStop: strMode = "modeFullStop"; break; //6;		// start going to full stop - 239s (3:59)
+		case MOV_state_Reset: strMode = "modeReset"; break; //7;			// reset to initial state - 245s (4:05)
+		case MOV_state_MoveViolet	: strMode = "MoveViolet"; break;
+		case MOV_state_MoveGreen	: strMode = "MoveGreen"; break;
+		case MOV_state_MoveRed		: strMode = "MoveRed"; break;
+		case MOV_state_MoveYellow	: strMode = "MoveYellow"; break;
+		case MOV_state_MoveBlue		: strMode = "MoveBlue"; break;
+		case MOV_state_StopMoveBlue	: strMode = "StopMoveBlue"; break;
+		case MOV_state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
+		case MOV_state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
+		case MOV_state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)
+		case MOV_state_NoYellow: strMode = "modeNoYellow"; break; //11;		// yellow goes away - 292s (4:52)
+		case MOV_state_NoRed: strMode = "modeNoRed"; break; //12;		// red goes away - 332s (5:32)
+		}
+		int posY = 5;
+		stringstream ss;
+		ss << "current mode : " + strMode << endl;
+		ss << "time : " + ofToString(floorf(ofGetElapsedTimef()/60.0)) + ":" + ofToString(ofGetElapsedTimef() - 60*floorf(ofGetElapsedTimef()/60.0)) << endl;
+		ss << "adj. time : " + ofToString(adjustedTime) << endl;
+		ss << "amout : " + ofToString(amout) << endl;
+		ss << "noise amout : " + ofToString(noiseAmount) << endl;
+		ss << "FPS : " + ofToString(ofGetFrameRate());
+		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 	}
-	int posY = 5;
-	stringstream ss;
-	ss << "current mode : " + strMode << endl;
-	ss << "time : " + ofToString(floorf(ofGetElapsedTimef()/60.0)) + ":" + ofToString(ofGetElapsedTimef() - 60*floorf(ofGetElapsedTimef()/60.0)) << endl;
-	ss << "adj. time : " + ofToString(adjustedTime) << endl;
-	ss << "amout : " + ofToString(amout) << endl;
-	ss << "noise amout : " + ofToString(noiseAmount) << endl;
-	ss << "FPS : " + ofToString(ofGetFrameRate());
-	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
-#endif
 }
 
 

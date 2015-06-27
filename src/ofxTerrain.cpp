@@ -395,8 +395,6 @@ void ofxTerrain::keyPressed(int key) {
 	case 'j': addHole(ofGetMouseX(),ofGetMouseY()); break;
 	case 'J': addHill(ofGetMouseX(),ofGetMouseY(),15); break;
 	case 'K': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
-	case 'm' : ofHideCursor(); break;
-	case 'M' : ofShowCursor(); break;
 	case 'C' : bSmallCursor = !bSmallCursor; break;
 	case 'B' : {
 		/*ofxPostProcessing postTerrain;

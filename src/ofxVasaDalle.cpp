@@ -9,8 +9,8 @@
 #include "ofMain.h"
 #include "ofxVasaDalle.h"
 
-float fadeoutRate = 0.05; // 0.05
-float lifeTime = 8.5;
+float fadeoutRate = 0.03; // 0.05
+float lifeTime = 3.5; // 8.5
 
 //--------------------------------------------------------------
 void ofxVasaDalle::setup(int dalleSize){
@@ -48,8 +48,8 @@ void ofxVasaDalle::setup(int dalleSize){
 
 void ofxVasaDalle::update(){
 
-	boxHeight = ofNoise(ofGetElapsedTimef()+seed)*20;
-	shapeHeight = ofNoise(ofGetElapsedTimef()*1.-5.+seed)*(VASA_DALLE_SHAPE_HEIGHT_RATIO * size);
+	boxHeight = ofNoise(ofGetElapsedTimef()+seed)*15*alpha;
+	shapeHeight = ofNoise(ofGetElapsedTimef()*1.-5.+seed)*(VASA_DALLE_SHAPE_HEIGHT_RATIO * size * alpha);
 
 	if (ofGetElapsedTimef()-createdTime>lifeTime){
 		alpha = ofClamp(alpha-fadeoutRate, 0, 1);
@@ -85,11 +85,14 @@ void ofxVasaDalle::draw(){
 	material.end();
 
 	material.begin();
+	if (!blackAndWhite) {
+		shapeColor.a = alpha; // because black base becomes visible while fading out
+	}
 	material.setAmbientColor(shapeColor);
 	material.setSpecularColor(ofColor::white);
 	material.setDiffuseColor(shapeColor);
 
-	shapeColor.a = alpha;
+	
 	ofSetColor(shapeColor);
 	//ofPushMatrix();
 	int zOffset = 0.1;

@@ -397,6 +397,9 @@
     <ClCompile Include="src\ofxVideoScene.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxSquarePath.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1145,7 +1148,6 @@
     <ClInclude Include="src\scenes.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ofxVideoScene.h" />
     <ClInclude Include="..\..\..\addons\ofxPostProcessing\src\BleachBypassPass.h">
       <Filter>addons\ofxPostProcessing\src</Filter>
     </ClInclude>
@@ -1246,6 +1248,12 @@
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxVasaSquareField.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxSquarePath.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxVideoScene.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
   </ItemGroup>

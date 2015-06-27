@@ -4,10 +4,13 @@
 
 //--------------------------------------------------------------
 void ofxVideoScene::setup(){
+	tweenEnabled = false;
 	player.loadMovie(fileName);
 	player.play();
 	aspectRatio = player.getWidth()/player.getHeight();
-	player.stop();
+	if (autoPlay == false) {
+		player.stop();
+	}
 }
 
 
@@ -27,15 +30,19 @@ void ofxVideoScene::draw(){
 		ofScale (1,-1,1);
 	}
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-	ofBackground(255,255,255, 255 * alpha);
-	ofSetColor(255, 255, 255, 255 * alpha);
+	ofBackground(255,255,255, 255);
+	if (tweenEnabled) {
+		ofSetColor(255, 255, 255, tween.update());
+	} else {
+		ofSetColor(255, 255, 255, 255);
+	}
 	float pw = ofGetHeight() * aspectRatio;
 	float ph = ofGetHeight();
 	float xCenterOrigin = -(pw-ofGetWidth())/2;
 	ofTranslate(xCenterOrigin, 0);
 	player.draw(0, 0, pw, ph);
 	if (boxed) {
-		ofSetColor(0,0,0,255*alpha);
+		ofSetColor(0,0,0,255);
 		ofSetLineWidth(5);
 		ofLine(0,0,pw,0);
 		ofLine(pw,0,pw,ph);
@@ -56,7 +63,8 @@ void ofxVideoScene::keyPressed(int key){
 	{
 	case ' ' : {
 				if (player.isPlaying()) {
-					player.stop();
+					tweenEnabled = true;
+					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);
 				} else { 
 					player.play(); 
 				}

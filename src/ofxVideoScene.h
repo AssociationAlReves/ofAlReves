@@ -9,16 +9,16 @@
 
 #include "ofMain.h"
 #include "globals.h"
+#include "ofxTween.h"
 #include "ofxAppUtils.h"
 
-class ofxVideoScene : public ofxFadeScene
+class ofxVideoScene : public ofxScene
 {
 public:
-	ofxVideoScene(string fileName, string prefix = "scene", bool boxed = false) : 
-		ofxFadeScene(prefix + ": " + "VideoScene " + fileName )
-			, fileName(fileName), boxed(boxed) {
+	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool boxed = false) : 
+		ofxScene(prefix + ": " + "VideoScene " + fileName )
+			, fileName(fileName), autoPlay(autoPlay), boxed(boxed) {
 			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(1000, 1000); // 1 second fade in/out
 		}
 
 	void setup();
@@ -29,11 +29,27 @@ public:
 	ofVideoPlayer player;
 
 	string fileName;
+	bool autoPlay;
 	bool boxed;
 	float aspectRatio;
 
 	bool horizontalFlip;
 
+	bool tweenEnabled;
+	// transitions
+	ofxTween tween;
+    
+	ofxEasingBack 	easingback;
+	ofxEasingBounce 	easingbounce;
+	ofxEasingCirc 	easingcirc;
+	ofxEasingSine	easingsine;
+	ofxEasingCubic 	easingcubic;
+	ofxEasingElastic easingelastic;
+	ofxEasingExpo 	easingexpo;
+	ofxEasingLinear 	easinglinear;
+	ofxEasingQuad 	easingquad;
+	ofxEasingQuart 	easingquart;
+	ofxEasingQuint 	easingquint;
 
 };
 

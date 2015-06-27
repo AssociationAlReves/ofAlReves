@@ -65,6 +65,7 @@ void ofApp::setupSceneManager() {
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));	postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = false;
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));													postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofMovingSquares(IntToString(i++), true));															postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));						postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = true;
@@ -76,7 +77,7 @@ void ofApp::setupSceneManager() {
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false)); postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = true;	
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));														postEnabledByScene[i-1] = true;
-	sceneManager.add(new ofMovingSquares(IntToString(i++)));															postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofMovingSquares(IntToString(i++), false));															postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));							postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = false;
@@ -194,6 +195,8 @@ void ofApp::keyPressed(int key) {
 
 	case 'e': cam.disableMouseInput(); break;
 	case 'E' : cam.enableMouseInput(); break;
+	case 'm' : ofHideCursor(); break;
+	case 'M' : ofShowCursor(); break;
 	case 'D':
 		bDebug = !bDebug;
 		break;
@@ -206,9 +209,9 @@ void ofApp::keyPressed(int key) {
 		transformer.setCentering(!transformer.getCentering());
 		break;
 
-	case 'm':
-		transformer.setMirrorX(!transformer.getMirrorX());
-		break;
+	//case 'm':
+	//	transformer.setMirrorX(!transformer.getMirrorX());
+	//	break;
 
 	case 'n':
 		transformer.setMirrorY(!transformer.getMirrorY());

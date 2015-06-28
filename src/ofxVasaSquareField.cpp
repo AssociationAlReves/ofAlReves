@@ -21,7 +21,6 @@ void ofxVasaSquareField::setup(){
 	case VASA_SQUARE_MODE_LINE:
 		break;
 	}
-
 }
 
 //--------------------------------------------------------------

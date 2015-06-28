@@ -106,8 +106,30 @@ void ofMovingSquares::setup(){
 	shapes.push_back(blue);
 	shapes.push_back(green);
 	shapes.push_back(fuchsia);
+    
+    gui = new ofxUISuperCanvas("Moving Squares", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+    
+    gui->addSlider("green angle", 0, 2*PI, greenAngle);
+    ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
+    gui->autoSizeToFitWidgets();
 
 }
+
+void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
+{
+    if (e.getName() == "green angle") {
+        ofxUISlider *slider = e.getSlider();
+        shapes[3].angleOffset = slider->getValue();
+    }
+    //    if (e.getName() == "tilt angle") {
+    //        ofxUISlider *silder = e.getSlider();
+    //        angle = (int)(silder->getValue());
+    //        kinect.setCameraTiltAngle(angle);
+    //
+    //    }
+    
+}
+
 
 //--------------------------------------------------------------
 void ofMovingSquares::update(){

@@ -26,7 +26,7 @@ void ofxSquareScreen::nextMode(){
 		tween.setParameters(easingsine, ofxTween::easeInOut
 			, ofGetWidth()
 			, 0
-			, 30000,0);
+			, 28000,0);
 						 } break;
 	case SC_MODE_LINE: {
 		tween.setParameters(easingexpo, ofxTween::easeInOut

@@ -10,11 +10,12 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
+#include "ofxUI.h"
 #include "ofxTween.h"
 
 #define MOV_SQUARES_MIN_SIZE 50.f
 #define MOV_SQUARES_SMOOTH 0.01f
-#define MOV_SQUARES_DEBUG
+//#define MOV_SQUARES_DEBUG
 #define MOV_SQUARE_DEF_NO_TIME 99999
 
 #ifdef MOV_SQUARES_DEBUG
@@ -66,7 +67,11 @@ public:
 	void draw();
 
 	void keyPressed(int key);
-
+    
+    float greenAngle;
+    ofxUISuperCanvas *gui;
+    void guiEvent(ofxUIEventArgs &e);
+    
 private:
 
 	struct ShapeDef {

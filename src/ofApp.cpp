@@ -65,7 +65,7 @@ void ofApp::setupSceneManager() {
 	inkScene = (ofxVideoScene*) sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++)));	postEnabledByScene[i-1] = false;
 	inkScene->horizontalFlip = false;
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));													postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofMovingSquares(IntToString(i++), true));															postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofMovingSquares(IntToString(i++), false));															postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true));										postEnabledByScene[i-1] = false;
 	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));						postEnabledByScene[i-1] = true;
 	squareScreen->openFromBottom = true;

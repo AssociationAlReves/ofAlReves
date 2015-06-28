@@ -21,17 +21,17 @@ void ofMovingSquares::setup(){
 
 	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
 	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
-	curTime += 5; timeTriggers[MOV_state_StartTimer] = curTime;
-	curTime += 30; timeTriggers[MOV_state_Slow] = curTime;
-	curTime += 6; timeTriggers[MOV_state_Accelerate] = curTime;
-	curTime += 19; timeTriggers[MOV_state_Noise] = curTime;
-	curTime += 6; timeTriggers[MOV_state_FullStop] = curTime;
-	curTime += 37; timeTriggers[MOV_state_Reset] = curTime;
-	curTime += 3; timeTriggers[MOV_state_NoGreen] = curTime;
-	curTime += 4; timeTriggers[MOV_state_NoViolet] = curTime;
-	curTime += 3; timeTriggers[MOV_state_NoBlue] = curTime;
-	curTime += 40; timeTriggers[MOV_state_NoYellow] = curTime;
-	curTime += 30; timeTriggers[MOV_state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
+	curTime += 100;	timeTriggers[MOV_state_StartTimer] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_Slow] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_Accelerate] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_Noise] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_FullStop] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_Reset] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_NoGreen] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_NoViolet] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_NoBlue] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_NoYellow] = curTime;
+	curTime += 100;	timeTriggers[MOV_state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
 #else
 	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
 	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME; // 195 !!!
@@ -399,6 +399,17 @@ void ofMovingSquares::draw(){
 				break;
 			default:
 				{
+					if (ofxGetAppPtr()->isDebug()){
+						ofNoFill();
+						ofBeginShape();
+						for (float rad = 0; rad <2*PI; rad+=0.1) {
+							float curMargin = shape.margin;//+ 100 * ofSignedNoise(ofGetElapsedTimef()*0.2+i);
+							ofVertex(cos(rad + posAngle) * ( ofGetWidth() / 2 - curMargin)
+								, sin(rad + posAngle) * ( ofGetHeight()/2 - curMargin));
+						}
+						ofEndShape();
+						ofFill();
+					}
 					float curMargin = shape.margin;//+ 100 * ofSignedNoise(ofGetElapsedTimef()*0.2+i);
 					ofTranslate(cos(shape.angleOffset + posAngle) * ( ofGetWidth() / 2 - curMargin)
 						, sin(shape.angleOffset + posAngle) * ( ofGetHeight()/2 - curMargin));

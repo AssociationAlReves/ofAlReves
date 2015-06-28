@@ -59,7 +59,8 @@ public:
     
 	ofMovingSquares(string prefix = "scene", bool isMirrored = false) 
 		: isMirrored(isMirrored),  ofxScene(prefix + ": " + "Moving squares"){
-			setSingleSetup(false); // call setup each time the scene is loaded
+			setSingleSetup(true); // call setup each time the scene is loaded
+			initDone = false;
 		}
 
 	void setup();
@@ -73,6 +74,7 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     
 private:
+	bool initDone;
 
 	struct ShapeDef {
 		std::string name;

@@ -19,19 +19,25 @@ void ofMovingSquares::setup(){
 #ifdef MOV_SQUARES_DEBUG
 	int curTime = 0;
 
-	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
-	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME;
-	curTime += 100;	timeTriggers[MOV_state_StartTimer] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_Slow] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_Accelerate] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_Noise] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_FullStop] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_Reset] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_NoGreen] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_NoViolet] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_NoBlue] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_NoYellow] = curTime;
-	curTime += 100;	timeTriggers[MOV_state_NoRed] = MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_BlackToBlank]	= MOV_SQUARE_DEF_NO_TIME;
+	timeTriggers[MOV_state_StartFadeIn]		= MOV_SQUARE_DEF_NO_TIME; // 195 !!!
+	timeTriggers[MOV_state_StartTimer]		= MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 47 s
+	timeTriggers[MOV_state_MoveViolet] =MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 53.5 s
+	timeTriggers[MOV_state_MoveGreen] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:02 s
+	timeTriggers[MOV_state_MoveRed] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:10 s
+	timeTriggers[MOV_state_MoveYellow] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveBlue] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:30 s
+	timeTriggers[MOV_state_StopMoveBlue] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 195 s
+	timeTriggers[MOV_state_Slow		] = MOV_SQUARE_DEF_NO_TIME;	// start slow motion - 195s (3:15)					-  19 s
+	timeTriggers[MOV_state_Accelerate	] = MOV_SQUARE_DEF_NO_TIME;	// start slow-> fast - 214s (3:34)					-   6 s
+	timeTriggers[MOV_state_Noise		] = MOV_SQUARE_DEF_NO_TIME;	// start fast w accelerating noise - 220s (3:40)		-  19 s
+	timeTriggers[MOV_state_FullStop	] = MOV_SQUARE_DEF_NO_TIME;	// start going to full stop - 239s (3:59)			-   6 s
+	timeTriggers[MOV_state_Reset		] = MOV_SQUARE_DEF_NO_TIME;	// reset to initial state - 245s (4:05)				-   6 s
+	timeTriggers[MOV_state_NoGreen		] = MOV_SQUARE_DEF_NO_TIME;	// green goes away - 282s (4:42)						-  37 s
+	timeTriggers[MOV_state_NoViolet	] = MOV_SQUARE_DEF_NO_TIME;	// violet goes away - 285s (4:45)					-   3 s
+	timeTriggers[MOV_state_NoBlue		] = MOV_SQUARE_DEF_NO_TIME;	// blue goes away - 289s (4:49)						-   4 s
+	timeTriggers[MOV_state_NoYellow	] = MOV_SQUARE_DEF_NO_TIME;	// yellow goes away - 292s (4:52)					-   3 s
+	timeTriggers[MOV_state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s				
 #else
 	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
 	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME; // 195 !!!
@@ -59,7 +65,7 @@ void ofMovingSquares::setup(){
 	// red circle
 	ShapeDef red = ShapeDef("red", ofPoint(250,250)
 		, 0
-		, 3*PI/4
+		, 0.76*PI
 		, 130
 		, ofColor::red
 		, MOV_circle);
@@ -68,8 +74,8 @@ void ofMovingSquares::setup(){
 	// yellow
 	ShapeDef yellow = ShapeDef("yellow", ofPoint(200,400)
 		, 0
-		, -PI/3
-		, 200
+		, 1.86*PI
+		, 197.04
 		, ofColor::yellow
 		, MOV_triangle);
 
@@ -86,8 +92,8 @@ void ofMovingSquares::setup(){
 	// green
 	ShapeDef green = ShapeDef("green", ofPoint(125,125)
 		, 0
-		, PI/3+0.2
-		, 140
+		, 0.27*PI
+		, 171.43
 		, ofColor::green
 		, MOV_rectangle);
 
@@ -95,8 +101,8 @@ void ofMovingSquares::setup(){
 	// fuchsia
 	ShapeDef fuchsia = ShapeDef("fuchsia", ofPoint(150,200)
 		, PI/6
-		, -3*PI/4
-		, 140
+		, 1.34*PI
+		, 179.31
 		, ofColor::fuchsia
 		, MOV_parallelogram);
 
@@ -106,28 +112,59 @@ void ofMovingSquares::setup(){
 	shapes.push_back(blue);
 	shapes.push_back(green);
 	shapes.push_back(fuchsia);
-    
-    gui = new ofxUISuperCanvas("Moving Squares", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
-    
-    gui->addSlider("green angle", 0, 2*PI, greenAngle);
-    ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
-    gui->autoSizeToFitWidgets();
 
+	if (initDone == false) {
+		gui = new ofxUISuperCanvas("Moving Squares", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+
+		float dummy=0;
+		gui->addSpacer("Green");
+		gui->addSlider("green angle", 0, 2, green.angleOffset/PI);
+		gui->addSlider("green margin", 0, ofGetHeight()/2, green.margin);
+		gui->addSpacer("Red");
+		gui->addSlider("red angle", 0, 2, red.angleOffset/PI);
+		gui->addSlider("red margin", 0, ofGetHeight()/2, red.margin);
+		gui->addSpacer("Yellow");
+		gui->addSlider("yellow angle", 0, 2, yellow.angleOffset/PI);
+		gui->addSlider("yellow margin", 0, ofGetHeight()/2, yellow.margin);
+		gui->addSpacer("Blue");
+		gui->addSlider("blue angle", 0, 2, blue.angleOffset/PI);
+		gui->addSlider("blue margin", 0, ofGetHeight()/2, blue.margin);
+		gui->addSpacer("Fuchsia");
+		gui->addSlider("fuchsia angle", 0, 2, fuchsia.angleOffset/PI);
+		gui->addSlider("fuchsia margin", 0, ofGetHeight()/2, fuchsia.margin);
+		ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
+		gui->autoSizeToFitWidgets();
+		gui->setVisible(false);
+
+		initDone = true;
+	}
 }
 
 void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
 {
-    if (e.getName() == "green angle") {
-        ofxUISlider *slider = e.getSlider();
-        shapes[3].angleOffset = slider->getValue();
-    }
-    //    if (e.getName() == "tilt angle") {
-    //        ofxUISlider *silder = e.getSlider();
-    //        angle = (int)(silder->getValue());
-    //        kinect.setCameraTiltAngle(angle);
-    //
-    //    }
-    
+	ofxUISlider *slider = e.getSlider();
+	float value = slider->getValue();
+
+	if(e.getName() == "red angle") shapes[0].angleOffset = slider->getValue()*PI;
+	if(e.getName() == "yellow angle") shapes[1].angleOffset = slider->getValue()*PI;
+	if(e.getName() == "blue angle") shapes[2].angleOffset = slider->getValue()*PI;
+	if(e.getName() == "green angle") shapes[3].angleOffset = slider->getValue()*PI;
+	if(e.getName() == "fuchsia angle") shapes[4].angleOffset = slider->getValue()*PI;
+
+	if(e.getName() == "red margin") shapes[0].margin = slider->getValue();
+	if(e.getName() == "yellow margin") shapes[1].margin = slider->getValue();
+	if(e.getName() == "blue margin") shapes[2].margin = slider->getValue();
+	if(e.getName() == "green margin") shapes[3].margin = slider->getValue();
+	if(e.getName() == "fuchsia margin") shapes[4].margin = slider->getValue();
+
+
+	//    if (e.getName() == "tilt angle") {
+	//        ofxUISlider *silder = e.getSlider();
+	//        angle = (int)(silder->getValue());
+	//        kinect.setCameraTiltAngle(angle);
+	//
+	//    }
+
 }
 
 
@@ -138,6 +175,9 @@ void ofMovingSquares::update(){
 	{
 		nextMode("time trigger");
 	}
+
+	gui->setVisible(ofxGetAppPtr()->isDebug());
+
 
 }
 
@@ -173,7 +213,7 @@ void ofMovingSquares::nextMode(std::string reason){
 		} else {
 			tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
 		}
-		updateTween(tweenFadein, easingsine,ofxTween::easeOut,0,PI,tweenDuration);
+		updateTween(tweenFadein, easingexpo,ofxTween::easeOut,0,PI,tweenDuration);
 							 } break;
 	case MOV_state_Slow:
 		{
@@ -560,6 +600,8 @@ void ofMovingSquares::keyPressed(int key){
 		}
 		nextMode("keyPressed");
 		break;
+	case 'e': cam.disableMouseInput(); break;
+	case 'E' : cam.enableMouseInput(); break;
 	case 'r':
 		setup(); 
 		break;

@@ -53,9 +53,17 @@ void ofMovingSquares::setup(){
 	timeTriggers[MOV_state_MoveViolet] = 53.5;		// start chrono for song							- 53.5 s
 	timeTriggers[MOV_state_MoveGreen] = 62;		// start chrono for song							- 1:02 s
 	timeTriggers[MOV_state_MoveRed] = 70;		// start chrono for song							- 1:10 s
-	timeTriggers[MOV_state_MoveYellow] = 81.5;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveYellow] = 81.75;		// start chrono for song							- 1:21.5 s
 	timeTriggers[MOV_state_MoveBlue] = 90;		// start chrono for song							- 1:30 s
-	timeTriggers[MOV_state_StopMoveBlue] = 195;		// start chrono for song							- 195 s
+	timeTriggers[MOV_state_StopMoveBlue] = 140;		// start chrono for song							- 195 s
+
+	timeTriggers[MOV_state_MoveViolet2] = 146.5;		// start chrono for song							- 53.5 s
+	timeTriggers[MOV_state_MoveGreen2] = 155;		// start chrono for song							- 1:02 s
+	timeTriggers[MOV_state_MoveRed2] = 163;		// start chrono for song							- 1:10 s
+	timeTriggers[MOV_state_MoveYellow2] = 174.5;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveBlue2] = 182.75;		// start chrono for song							- 1:30 s
+	timeTriggers[MOV_state_StopMoveBlue2] = 195;		// start chrono for song							- 195 s
+
 	timeTriggers[MOV_state_Slow		] = 214;	// start slow motion - 195s (3:15)					-  19 s
 	timeTriggers[MOV_state_Accelerate	] = 220;	// start slow-> fast - 214s (3:34)					-   6 s
 	timeTriggers[MOV_state_Noise		] = 239;	// start fast w accelerating noise - 220s (3:40)		-  19 s
@@ -67,12 +75,7 @@ void ofMovingSquares::setup(){
 	timeTriggers[MOV_state_NoYellow	] = 332.5;	// yellow goes away - 292s (4:52)					-   3 s
 	timeTriggers[MOV_state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s										// red goes away - 332s (5:32)
 
-	timeTriggers[MOV_state_MoveViolet2] = 53.5;		// start chrono for song							- 53.5 s
-	timeTriggers[MOV_state_MoveGreen2] = 62;		// start chrono for song							- 1:02 s
-	timeTriggers[MOV_state_MoveRed2] = 70;		// start chrono for song							- 1:10 s
-	timeTriggers[MOV_state_MoveYellow2] = 81.5;		// start chrono for song							- 1:21.5 s
-	timeTriggers[MOV_state_MoveBlue2] = 90;		// start chrono for song							- 1:30 s
-	timeTriggers[MOV_state_StopMoveBlue2] = 195;		// start chrono for song							- 195 s
+	
 
 
 #endif							  		
@@ -234,7 +237,7 @@ void ofMovingSquares::nextMode(std::string reason){
 		} else {
 			tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
 		}
-		updateTween(tweenFadein, easingexpo,ofxTween::easeOut,0,PI,tweenDuration);
+		updateTween(tweenFadein, easingexpo,ofxTween::easeOut,0,PI*0.9,tweenDuration);
 							 } break;
 	case MOV_state_Slow:
 		{
@@ -513,7 +516,7 @@ void ofMovingSquares::draw(){
 						|| (currentMode ==  MOV_state_MoveBlue2	 && shape.name == "blue")
 						) {
 							float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
-							ofTranslate(localNoise * ofNoise(ofGetElapsedTimef()*5.3) *40,localNoise * ofNoise(ofGetElapsedTimef()*4.3f + 12.34) *40);
+							ofTranslate(localNoise * ofSignedNoise(ofGetElapsedTimef()*5.3) *35,localNoise * ofSignedNoise(ofGetElapsedTimef()*4.3f + 12.34) *35);
 					} 
 				}
 				break;

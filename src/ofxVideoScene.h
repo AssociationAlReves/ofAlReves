@@ -15,9 +15,9 @@
 class ofxVideoScene : public ofxScene
 {
 public:
-	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool boxed = false) : 
+	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool boxed = false, bool hFlip = false) : 
 		ofxScene(prefix + ": " + "VideoScene " + fileName )
-			, fileName(fileName), autoPlay(autoPlay), boxed(boxed) {
+		, fileName(fileName), autoPlay(autoPlay), boxed(boxed), horizontalFlip(hFlip) {
 			setSingleSetup(false); // call setup each time the scene is loaded
 		}
 

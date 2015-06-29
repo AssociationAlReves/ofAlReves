@@ -397,9 +397,6 @@
     <ClCompile Include="src\ofxVideoScene.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="src\ofxSquarePath.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1248,9 +1245,6 @@
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxVasaSquareField.h">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxSquarePath.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxVideoScene.h">

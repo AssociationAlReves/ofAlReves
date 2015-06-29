@@ -38,7 +38,15 @@ void ofMovingSquares::setup(){
 	timeTriggers[MOV_state_NoBlue		] = MOV_SQUARE_DEF_NO_TIME;	// blue goes away - 289s (4:49)						-   4 s
 	timeTriggers[MOV_state_NoYellow	] = MOV_SQUARE_DEF_NO_TIME;	// yellow goes away - 292s (4:52)					-   3 s
 	timeTriggers[MOV_state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s				
+
+	timeTriggers[MOV_state_MoveViolet2] =MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 53.5 s
+	timeTriggers[MOV_state_MoveGreen2] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:02 s
+	timeTriggers[MOV_state_MoveRed2] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:10 s
+	timeTriggers[MOV_state_MoveYellow2] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveBlue2] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 1:30 s
+	timeTriggers[MOV_state_StopMoveBlue2] = MOV_SQUARE_DEF_NO_TIME;		// start chrono for song							- 195 s
 #else
+	// Times are all absolute times
 	timeTriggers[MOV_state_BlackToBlank] = MOV_SQUARE_DEF_NO_TIME;
 	timeTriggers[MOV_state_StartFadeIn] = MOV_SQUARE_DEF_NO_TIME; // 195 !!!
 	timeTriggers[MOV_state_StartTimer] = 47;		// start chrono for song							- 47 s
@@ -58,6 +66,14 @@ void ofMovingSquares::setup(){
 	timeTriggers[MOV_state_NoBlue		] = 292.5;	// blue goes away - 289s (4:49)						-   4 s
 	timeTriggers[MOV_state_NoYellow	] = 332.5;	// yellow goes away - 292s (4:52)					-   3 s
 	timeTriggers[MOV_state_NoRed	] = MOV_SQUARE_DEF_NO_TIME;		 // red goes away - 332s (5:32)		-  40 s										// red goes away - 332s (5:32)
+
+	timeTriggers[MOV_state_MoveViolet2] = 53.5;		// start chrono for song							- 53.5 s
+	timeTriggers[MOV_state_MoveGreen2] = 62;		// start chrono for song							- 1:02 s
+	timeTriggers[MOV_state_MoveRed2] = 70;		// start chrono for song							- 1:10 s
+	timeTriggers[MOV_state_MoveYellow2] = 81.5;		// start chrono for song							- 1:21.5 s
+	timeTriggers[MOV_state_MoveBlue2] = 90;		// start chrono for song							- 1:30 s
+	timeTriggers[MOV_state_StopMoveBlue2] = 195;		// start chrono for song							- 195 s
+
 
 #endif							  		
 
@@ -206,9 +222,14 @@ void ofMovingSquares::nextMode(std::string reason){
 	case MOV_state_MoveGreen:
 	case MOV_state_MoveRed:
 	case MOV_state_MoveYellow:
-	case MOV_state_MoveBlue: {
+	case MOV_state_MoveBlue:
+	case MOV_state_MoveViolet2:
+	case MOV_state_MoveGreen2:
+	case MOV_state_MoveRed2:
+	case MOV_state_MoveYellow2:
+	case MOV_state_MoveBlue2:{
 		float tweenDuration = 0;
-		if (currentMode == MOV_state_MoveViolet) {
+		if (currentMode == MOV_state_MoveViolet || currentMode == MOV_state_MoveViolet2 ) {
 			tweenDuration = 6.5*1000;
 		} else {
 			tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
@@ -484,7 +505,13 @@ void ofMovingSquares::draw(){
 						|| (currentMode ==  MOV_state_MoveGreen	 && shape.name == "green")
 						|| (currentMode ==  MOV_state_MoveRed	 && shape.name == "red")
 						|| (currentMode ==  MOV_state_MoveYellow && shape.name == "yellow")
-						|| (currentMode ==  MOV_state_MoveBlue	 && shape.name == "blue")) {
+						|| (currentMode ==  MOV_state_MoveBlue	 && shape.name == "blue")
+						|| (currentMode == MOV_state_MoveViolet2 && shape.name == "fuchsia")
+						|| (currentMode ==  MOV_state_MoveGreen2	 && shape.name == "green")
+						|| (currentMode ==  MOV_state_MoveRed2	 && shape.name == "red")
+						|| (currentMode ==  MOV_state_MoveYellow2 && shape.name == "yellow")
+						|| (currentMode ==  MOV_state_MoveBlue2	 && shape.name == "blue")
+						) {
 							float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
 							ofTranslate(localNoise * ofNoise(ofGetElapsedTimef()*5.3) *40,localNoise * ofNoise(ofGetElapsedTimef()*4.3f + 12.34) *40);
 					} 
@@ -564,6 +591,12 @@ void ofMovingSquares::draw(){
 		case MOV_state_MoveYellow	: strMode = "MoveYellow"; break;
 		case MOV_state_MoveBlue		: strMode = "MoveBlue"; break;
 		case MOV_state_StopMoveBlue	: strMode = "StopMoveBlue"; break;
+		case MOV_state_MoveViolet2	: strMode = "MoveViolet2"; break;
+		case MOV_state_MoveGreen2	: strMode = "MoveGreen2"; break;
+		case MOV_state_MoveRed2		: strMode = "MoveRed2"; break;
+		case MOV_state_MoveYellow2	: strMode = "MoveYellow2"; break;
+		case MOV_state_MoveBlue2		: strMode = "MoveBlue2"; break;
+		case MOV_state_StopMoveBlue2	: strMode = "StopMoveBlue2"; break;
 		case MOV_state_NoGreen: strMode = "modeNoGreen"; break; //8;		// green goes away - 282s (4:42)
 		case MOV_state_NoViolet: strMode = "modeNoViolet"; break; //9;		// violet goes away - 285s (4:45)
 		case MOV_state_NoBlue: strMode = "modeNoBlue"; break; //10;		// blue goes away - 289s (4:49)

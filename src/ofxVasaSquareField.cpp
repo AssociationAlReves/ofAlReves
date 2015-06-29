@@ -18,8 +18,6 @@ void ofxVasaSquareField::setup(){
 	case VASA_SQUARE_MODE_ONE:
 		setup(ofGetHeight()-100,ofGetHeight()-100,ofGetHeight()-100);
 		break;
-	case VASA_SQUARE_MODE_LINE:
-		break;
 	}
 }
 
@@ -96,7 +94,6 @@ void ofxVasaSquareField::draw(){
 				ofPopMatrix();
 
 			}
-	} else if (mode == VASA_SQUARE_MODE_LINE) {
 	}
 
 	ofPopMatrix();

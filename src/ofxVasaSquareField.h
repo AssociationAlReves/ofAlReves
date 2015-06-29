@@ -13,7 +13,6 @@
 #define VASA_SQUARE_SPEED 75
 #define VASA_SQUARE_MODE_FULL 0
 #define VASA_SQUARE_MODE_ONE 1
-#define VASA_SQUARE_MODE_LINE 2
 
 
 #include "ofMain.h"
@@ -24,7 +23,7 @@ class ofxVasaSquareField : public ofxScene {
     
 public:
   	
-	ofxVasaSquareField(string prefix = "scene") : ofxScene(prefix + ": " + "SquareField"){
+	ofxVasaSquareField(string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL) : ofxScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 
 			mode = VASA_SQUARE_MODE_FULL;

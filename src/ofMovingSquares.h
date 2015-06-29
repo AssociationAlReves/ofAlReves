@@ -45,6 +45,13 @@
 #define MOV_state_NoYellow			17	// yellow goes away - 292s (4:52)
 #define MOV_state_NoRed				18	// red goes away - 332s (5:32)
 
+#define MOV_state_MoveViolet2		30	// 45s
+#define MOV_state_MoveGreen2			40	// 53.5
+#define MOV_state_MoveRed2			50	// start chrono for song - 0s
+#define MOV_state_MoveYellow2		60	// start chrono for song - 0s
+#define MOV_state_MoveBlue2			70	// start chrono for song - 0s
+#define MOV_state_StopMoveBlue2		80	// start chrono for song - 0s
+
 #define MOV_rectangle		 1
 #define MOV_circle			 2
 #define MOV_triangle		 3

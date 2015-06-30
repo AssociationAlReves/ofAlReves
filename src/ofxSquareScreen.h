@@ -22,7 +22,8 @@
 class ofxSquareScreen : public ofxScene
 {
 public:
-	ofxSquareScreen(string prefix = "scene") : ofxScene(prefix + ": " + "Square screen"){
+	ofxSquareScreen(string prefix = "scene", bool openFromBottom = false) 
+		: openFromBottom(openFromBottom), ofxScene(prefix + ": " + "Square screen"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 		}
 
@@ -32,10 +33,13 @@ public:
 
 	void nextMode();
 
-	int mode;
-	bool openFromBottom;
-
 	void keyPressed(int key);
+
+private:
+	int mode;
+	
+	
+	bool openFromBottom;
 
 	float sWidth;
 	float sHeight;

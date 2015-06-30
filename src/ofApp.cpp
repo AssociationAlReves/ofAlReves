@@ -63,24 +63,22 @@ void ofApp::setupSceneManager() {
 	// Bellegarde (mac - front with kinect)
 	int i = 0;
 	sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));													postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofMovingSquares(IntToString(i++), true));															postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));										postEnabledByScene[i-1] = false;
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));						postEnabledByScene[i-1] = true;
-	squareScreen->openFromBottom = true;
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxKinecticon(IntToString(i++)));															postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
-	sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false, false, true)); postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofMovingSquares(IntToString(i++), false));															postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));										postEnabledByScene[i-1] = false;
-	squareScreen = (ofxSquareScreen*) sceneManager.add(new ofxSquareScreen(IntToString(i++)));							postEnabledByScene[i-1] = true;
-	squareScreen->openFromBottom = false;
-	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));															postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Sepio Ink in Water.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofMovingSquares(IntToString(i++), false));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxSquareScreen(IntToString(i++),false));											postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
 
 
 #endif
@@ -92,8 +90,7 @@ void ofApp::setupSceneManager() {
 
 	// start with a specific scene
 	// set now to true in order to ignore the scene fade and change now
-	sceneManager.gotoScene("SquareScreen", true);
-	lastScene = sceneManager.getCurrentSceneIndex();
+	sceneManager.noScene();
 
 	// overlap scenes when transitioning
 	sceneManager.setOverlap(true);
@@ -243,9 +240,6 @@ void ofApp::keyPressed(int key) {
 	case OF_KEY_F10: sceneManager.gotoScene(9); break;
 
 	case OF_KEY_BACKSPACE:
-		if(sceneManager.getCurrentScene()) { // returns NULL if no scene selected
-			lastScene = sceneManager.getCurrentSceneIndex();
-		}
 		sceneManager.noScene();
 		break;
 

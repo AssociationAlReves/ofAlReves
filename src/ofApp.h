@@ -16,10 +16,6 @@
 #include "ofxTransformPanel.h"
 #endif
 
-// we only specify a pointer to the ofxSquareScreen Scene here, so tell the compiler
-// that it exists as a class and we can include the class header in testApp.cpp
-class ofxSquareScreen;
-
 class ofApp : public ofxApp { // <-- inherits ofxApp instead of ofBaseApp
 
 public:
@@ -45,8 +41,6 @@ public:
 
 	// handles the scenes
 	ofxSceneManager sceneManager;
-	int lastScene;
-	ofxSquareScreen *squareScreen;
 
 	ofEasyCam cam;
     

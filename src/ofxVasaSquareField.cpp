@@ -11,13 +11,60 @@
 //--------------------------------------------------------------
 void ofxVasaSquareField::setup(){
 
+	distRange = 300;
+	scaleFactor = 0.6;
+	devAngle = 90;
+	distRangeAuto = false;
+	scaleFactorAuto = false;
+	devAngleAuto = false;
+	
+	distRangeSpeed = 1;
+	scaleFactorSpeed = 1;
+	devAngleSpeed = 1;
+
+	distRangeMIN = 0.1;
+	scaleFactorMIN = 1;
+	devAngleMIN = 0;
+
+	distRangeMAX = 1000;
+	scaleFactorMAX = 0.01;
+	devAngleMAX = 360;		
+
 	switch (mode) {
-	case VASA_SQUARE_MODE_FULL:
+	case VASA_SQUARE_MODE_FULL_RND_ROTATION:
 		setup(ofGetWidth(), ofGetHeight(), 50 /* 50 */);
 		break;
-	case VASA_SQUARE_MODE_ONE:
-		setup(ofGetHeight()-100,ofGetHeight()-100,ofGetHeight()-100);
+	case VASA_SQUARE_MODE_FULL_DIST_ROTATION:
+		setup(ofGetWidth(), ofGetHeight(), 50 /* 50 */);
 		break;
+	}
+
+	if (guiInitDone == false) {
+		gui = new ofxUISuperCanvas("Square Field", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+
+		float dummy=0;
+		gui->addSpacer("force");
+			gui->addSlider("force distance", 0.1, 1000, &distRange);
+			gui->addToggle("noise force", &distRangeAuto);
+			gui->addRangeSlider("force range",distRangeMIN, distRangeMAX, &distRangeMIN, &distRangeMAX);
+			gui->addSlider("speed", 0.1, 10, &distRangeSpeed);
+		gui->addSpacer("scale");
+			gui->addSlider("scale factor", 1, 0, &scaleFactor);
+			gui->addToggle("noise scale", &scaleFactorAuto);
+			gui->addRangeSlider("scale range",scaleFactorMIN, scaleFactorMAX, &scaleFactorMIN, &scaleFactorMAX);
+			gui->addSlider("speed", 0.1, 10, &scaleFactorSpeed);
+		gui->addSpacer("angle");
+			gui->addSlider("dev angle", 0, 360, &devAngle);
+			gui->addToggle("noise angle", &devAngleAuto);
+			gui->addRangeSlider("angle range",devAngleMIN, devAngleMAX, &devAngleMIN, &devAngleMAX);
+			gui->addSlider("speed", 0.1, 10, &devAngleSpeed);
+		
+
+		//ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
+		gui->autoSizeToFitWidgets();
+		gui->setVisible(false);
+
+		guiInitDone = true;
 	}
 }
 
@@ -29,52 +76,78 @@ void ofxVasaSquareField::setup(int width, int height, int squareSize){
 	//ary[i*sizeY+j]
 	sizeX = width/squareSize+1;
 	sizeY = height/squareSize+1;
-	rotSpeed.reserve(sizeX*sizeY);
-	rotDecay.reserve(sizeX*sizeY);
-	for (int j = 0; j<sizeY;j++)
-		for (int i = 0; i<sizeX;i++) {
-			float speed = ofRandom(1, VASA_SQUARE_SPEED);
-			rotMaxSpeed.push_back(speed);
-			rotSpeed.push_back(speed);
-			rotDecay.push_back(ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX));
-		}
+	this->squareTotalSize = squareSize;
+	this->padding = squareSize*VASA_SQUARE_PADDING_FACTOR;
+	this->squareSize = squareSize-padding;
 
-		this->squareTotalSize = squareSize;
-		this->padding = squareSize*VASA_SQUARE_PADDING_FACTOR;
-		this->squareSize = squareSize-padding;
+	rotMaxSpeed.clear();
+	rotSpeed.clear();
+	rotDecay.clear();
+	actors.clear();
+
+	if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
+		rotSpeed.reserve(sizeX*sizeY);
+		rotDecay.reserve(sizeX*sizeY);
+		for (int j = 0; j<sizeY;j++)
+			for (int i = 0; i<sizeX;i++) {
+				float speed = 0; //ofRandom(1, VASA_SQUARE_SPEED);
+				rotMaxSpeed.push_back(speed);
+				rotSpeed.push_back(speed);
+				rotDecay.push_back(ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX));
+			}
+
+
+	}
 
 }
 
 //--------------------------------------------------------------
 void ofxVasaSquareField::update(){
 
-	clearActors();
-	addActor(mouseX, mouseY);
+	if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
 
-	for (int i = 0; i<sizeX;i++)
-		for (int j = 0; j<sizeY;j++)
-		{
-			int idx = i*sizeY+j;
-			rotSpeed[idx] *= rotDecay[idx];
+		clearActors();
+		addActor(mouseX, mouseY);
 
+		for (int i = 0; i<sizeX;i++)
+			for (int j = 0; j<sizeY;j++)
+			{
+				int idx = i*sizeY+j;
+				rotSpeed[idx] *= rotDecay[idx];
+			}
+	} else if (mode == VASA_SQUARE_MODE_FULL_DIST_ROTATION) {
+		if (distRangeAuto) {
+			distRange = ofNoise(ofGetElapsedTimef() * distRangeSpeed + 1.23)* distRangeMAX + distRangeMIN;
 		}
+		if (scaleFactorAuto) {
+			scaleFactor = ofNoise(ofGetElapsedTimef() * scaleFactorSpeed +2.34) * scaleFactorMAX+ scaleFactorMIN;
+		}
+		if (devAngleAuto) {
+			devAngle = ofNoise(ofGetElapsedTimef() * devAngleSpeed +3.45) * devAngleMAX + devAngleMIN;
+		}
+		 
+	}
+	gui->setVisible(ofxGetAppPtr()->isDebug());
 }
 
 //--------------------------------------------------------------
 void ofxVasaSquareField::draw(){
 
-    ofEnableAlphaBlending();
+	ofEnableAlphaBlending();
+#ifdef VASA_SQUARE_DEBUG_SPIR
+	ofBackground(239,239,239,255);
+	ofNoFill();
+	ofSetColor(255,255,255,255);
+#else
 	ofBackground(0,0,0,255);
-
 	ofFill();
 	ofSetColor(255,255,255,255);
+#endif
+
+
 
 	ofPushMatrix();
-	if (mode == VASA_SQUARE_MODE_ONE){
-		ofTranslate(ofGetWidth()/2,ofGetHeight()/2);
-		int rad = ofGetHeight() - 100;
-		ofRect(-rad/2,-rad/2, rad,rad);
-	} else if (mode == VASA_SQUARE_MODE_FULL) {
+	if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
 		ofTranslate(squareSize,squareSize);
 		for (int i = 0; i<sizeX;i++)
 			for (int j = 0; j<sizeY;j++)
@@ -94,18 +167,37 @@ void ofxVasaSquareField::draw(){
 				ofPopMatrix();
 
 			}
+	} else if (mode == VASA_SQUARE_MODE_FULL_DIST_ROTATION) {
+
+		ofTranslate(squareSize,squareSize);
+		for (int i = 0; i<sizeX;i++)
+			for (int j = 0; j<sizeY;j++)
+			{
+				float squareX = i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR);
+				float squareY = j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR);
+				ofPushMatrix();
+				ofTranslate(squareX, squareY);
+
+				// the closer, the greater is the force
+				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
+				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
+				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
+				ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+				ofPopMatrix();
+
+			}
 	}
 
 	ofPopMatrix();
 
 	ofSetColor(0,0,0,255);
-    ofDisableAlphaBlending();
+	ofDisableAlphaBlending();
 
 }
 
 //--------------------------------------------------------------
 void ofxVasaSquareField::nextMode() {
-	mode = (mode + 1) % 3;
+	mode = (mode + 1) % 2;
 
 	setup();
 }
@@ -166,6 +258,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case ' ': nextMode();	break;
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
+	case 'r' : setup(); break;
 	}
 }
 

@@ -36,3 +36,7 @@ Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to 
  - ofxTween
  - ofxUI
  - ofxKinect
+
+# Prerequisites for Windows
+- Install QuickTime
+- If not working, -move- C:\Program Files\QuickTime\QTSystem\QTCF.dll to system32 or SysWOW64

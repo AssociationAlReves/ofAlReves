@@ -8,13 +8,13 @@
 #pragma once
 
 #define VASA_SQUARE_PADDING_FACTOR 0.25
-#define VASA_SQUARE_DECAY_MIN 0.97
-#define VASA_SQUARE_DECAY_MAX 0.985
+#define VASA_SQUARE_DECAY_MIN 0.93  //0.97
+#define VASA_SQUARE_DECAY_MAX 0.97 // 0.985
 #define VASA_SQUARE_SPEED 75
 #define VASA_SQUARE_MODE_FULL_RND_ROTATION 0
 #define VASA_SQUARE_MODE_FULL_DIST_ROTATION 1
 
-#define VASA_SQUARE_DEBUG_SPIR
+//#define VASA_SQUARE_DEBUG_SPIR
 
 
 #include "ofMain.h"
@@ -44,6 +44,8 @@ public:
     void smoothReset();
 
 	void nextMode();
+	int squareIndex;
+	bool squareAutoComplete;
 
 	bool guiInitDone;
 	ofxUISuperCanvas *gui;
@@ -59,8 +61,9 @@ private:
     
     int sizeX;
     int sizeY;
+	int squareCount;
 	int mode;
-
+		
     int lastActorX;
     int lastActoxY;
 
@@ -72,5 +75,6 @@ private:
     vector<float> rotSpeed;
     vector<float> rotDecay;
     vector<ofVec2f> actors;
+	vector<ofVec2f> randIndexes;
     
 };

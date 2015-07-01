@@ -7,6 +7,7 @@
 #include "ofxSquareScreen.h"
 #include "ofxCrossedLines.h"
 #include "ofxVideoScene.h"
+#include "ofxRibbon.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #endif

@@ -7,10 +7,16 @@ void ofxRibbon::setup(){
 	sHeight = ofGetHeight();
 
 	points.clear();
+	endLine = false;
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::update(){
+
+	if (endLine && tween.isCompleted())
+	{
+		points.clear();
+	}
 
 	ofVec3f sumOfAllPoints(0,0,0);
 	for(unsigned int i = 0; i < points.size(); i++){
@@ -19,17 +25,24 @@ void ofxRibbon::update(){
 	}
 	center = sumOfAllPoints / points.size();
 
+
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::clear(){
 
-	points.clear();
-
+	endLine = true;
+	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 5000, 0);
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::draw(){
+
+	float tweenFactor = 1;
+	if (endLine)
+	{
+		tweenFactor = tween.update();
+	}
 
 	int w = ofGetWidth();
 	int h = ofGetHeight();
@@ -39,7 +52,7 @@ void ofxRibbon::draw(){
 
 	ofSetColor(0);
 	//do the same thing from the first example...
-    ofMesh mesh;
+	ofMesh mesh;
 	mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 	for(unsigned int i = 1; i < points.size(); i++){
 
@@ -66,6 +79,7 @@ void ofxRibbon::draw(){
 		//the longer the distance, the narrower the line.
 		//this makes it look a bit like brush strokes
 		float thickness = ofMap(distance, 0, 60, 20, 2, true);
+		thickness *= tweenFactor;
 
 		//calculate the points to the left and to the right
 		//by extending the current point in the direction of left/right by the length
@@ -76,13 +90,13 @@ void ofxRibbon::draw(){
 		mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
 		mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
 
-		float noiseR = 1 - 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
-		float noiseG = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
-		float noiseB = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
+		float noiseR = ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
+		float noiseG = 0; //0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
+		float noiseB = 0; //0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		
+		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,0.01));
+		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,0.01));
 	}
-	
+
 	//end the shape
 	mesh.draw();
 }

@@ -5,7 +5,7 @@
 #include "ofxAppUtils.h"
 #include "globals.h"
 #include "ofxPostProcessing.h"
-
+#include "ofxSphereCam.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project
@@ -42,7 +42,7 @@ public:
 	// handles the scenes
 	ofxSceneManager sceneManager;
 
-	ofEasyCam cam;
+	ofxSphereCam cam;
     
     ofxPostProcessing post;
 	map<int, bool> postEnabledByScene;

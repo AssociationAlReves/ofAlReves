@@ -160,6 +160,9 @@
     <ClCompile Include="..\..\..\addons\ofxTween\src\ofxTween.cpp">
       <Filter>addons\ofxTween\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSphereCam\src\ofxSphereCam.cpp">
+      <Filter>addons\ofxSphereCam\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.cpp">
       <Filter>addons\ofxUI\src</Filter>
     </ClCompile>
@@ -400,6 +403,9 @@
     <ClCompile Include="src\ofxRibbon.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSphereCam\src\ofxSphereCam.h">
+      <Filter>addons\ofxSphereCam\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -530,6 +536,12 @@
     </Filter>
     <Filter Include="addons\ofxTween\src\Easings">
       <UniqueIdentifier>{EF0F6A8B-B04F-E782-21EF-D4BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSphereCam">
+      <UniqueIdentifier>{FF0F6A8B-B04F-E782-21EF-D4BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSphereCam\src">
+      <UniqueIdentifier>{FF0F6A8B-B04F-E782-21EF-D4BB}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxUI">
       <UniqueIdentifier>{B492C5B0-FF91-9C5A-638A-3142}</UniqueIdentifier>

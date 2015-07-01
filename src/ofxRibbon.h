@@ -38,6 +38,7 @@ private:
     //this keeps track of the center of all the points
     ofVec3f center;
 
+	bool endLine;
 
 
 	float sWidth;

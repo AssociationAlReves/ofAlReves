@@ -27,6 +27,8 @@
 		222C3AB10FA3158602718602 /* ofxUIMultiImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17E06821FB98542FDB806E50 /* ofxUIMultiImageButton.cpp */; };
 		235F650AC06759134BAA7849 /* ofxTransformPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAC2843824B062FDEF5E0C62 /* ofxTransformPanel.cpp */; };
 		250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9C7160245B19131DAE6128 /* ofxCvColorImage.cpp */; };
+		250B7A4C1B44985000F4AC6E /* ofxSphereCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 250B7A4A1B44985000F4AC6E /* ofxSphereCam.cpp */; };
+		250B7A4F1B4498A600F4AC6E /* ofxRibbon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 250B7A4D1B4498A600F4AC6E /* ofxRibbon.cpp */; };
 		2521C7C21B3C788600DD4394 /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */; };
 		2521C7C31B3C788600DD4394 /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */; };
 		255A7B680DC81E543C875794 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 28F9707464BA3FF98E05096C /* usb_libusb10.c */; };
@@ -248,6 +250,10 @@
 		1E95EFD35ED9C5D97F2F015E /* timer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = timer.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/timer.h; sourceTree = SOURCE_ROOT; };
 		23FA31CAEA236B2C1E218497 /* ofxUIWidgets.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidgets.h; path = ../../../addons/ofxUI/src/ofxUIWidgets.h; sourceTree = SOURCE_ROOT; };
 		241AAF7769D555E4ECD57E17 /* cameras.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cameras.h; path = ../../../addons/ofxKinect/libs/libfreenect/src/cameras.h; sourceTree = SOURCE_ROOT; };
+		250B7A4A1B44985000F4AC6E /* ofxSphereCam.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSphereCam.cpp; sourceTree = "<group>"; };
+		250B7A4B1B44985000F4AC6E /* ofxSphereCam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSphereCam.h; sourceTree = "<group>"; };
+		250B7A4D1B4498A600F4AC6E /* ofxRibbon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRibbon.cpp; sourceTree = "<group>"; };
+		250B7A4E1B4498A600F4AC6E /* ofxRibbon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRibbon.h; sourceTree = "<group>"; };
 		2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCrossedLines.cpp; sourceTree = "<group>"; };
 		2521C7BF1B3C788600DD4394 /* ofxCrossedLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCrossedLines.h; sourceTree = "<group>"; };
 		2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoScene.cpp; sourceTree = "<group>"; };
@@ -791,9 +797,29 @@
 			name = ofxXmlSettings;
 			sourceTree = "<group>";
 		};
+		250B7A481B44985000F4AC6E /* ofxSphereCam */ = {
+			isa = PBXGroup;
+			children = (
+				250B7A491B44985000F4AC6E /* src */,
+			);
+			name = ofxSphereCam;
+			sourceTree = "<group>";
+		};
+		250B7A491B44985000F4AC6E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				250B7A4A1B44985000F4AC6E /* ofxSphereCam.cpp */,
+				250B7A4B1B44985000F4AC6E /* ofxSphereCam.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxSphereCam/src;
+			sourceTree = "<group>";
+		};
 		2521C7C41B3CA6E100DD4394 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				250B7A4D1B4498A600F4AC6E /* ofxRibbon.cpp */,
+				250B7A4E1B4498A600F4AC6E /* ofxRibbon.h */,
 				2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */,
 				2521C7BF1B3C788600DD4394 /* ofxCrossedLines.h */,
 				2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */,
@@ -1245,6 +1271,7 @@
 				A492CE86424AB8905550BFD8 /* ofxUI */,
 				9683228C705CA3FF4F2EA945 /* ofxKinect */,
 				BD52EC6DCE402D90869A80A1 /* ofxPostProcessing */,
+				250B7A481B44985000F4AC6E /* ofxSphereCam */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1718,6 +1745,7 @@
 				9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */,
 				4B3ED367CA852D522E2EE996 /* ofxUI2DPad.cpp in Sources */,
 				F1E8DE8734BA6F69A5112FA8 /* ofxUIBaseDraws.cpp in Sources */,
+				250B7A4F1B4498A600F4AC6E /* ofxRibbon.cpp in Sources */,
 				C381F2B7CFD84C0E540EB4BC /* ofxUIBiLabelSlider.cpp in Sources */,
 				7D393646FB859A930EF58917 /* ofxUIButton.cpp in Sources */,
 				7BE46522B64E24FAEDE1A25D /* ofxUICanvas.cpp in Sources */,
@@ -1766,6 +1794,7 @@
 				CE5D89B9893EAA12F511DCAC /* ofxUIWidgetWithLabel.cpp in Sources */,
 				7ADB04AF67C568EAFAEBA546 /* ofxKinectExtras.cpp in Sources */,
 				25F1B5E31B388B74009F2794 /* ofxSquareScreen.cpp in Sources */,
+				250B7A4C1B44985000F4AC6E /* ofxSphereCam.cpp in Sources */,
 				686B0DF6249B52E1A85B39EC /* ofxKinect.cpp in Sources */,
 				0F8F016776681D468C0D0949 /* audio.c in Sources */,
 				ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */,
@@ -2100,6 +2129,7 @@
 					"-l/scenes/quads",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2191,6 +2221,7 @@
 					"-l/scenes/quads",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

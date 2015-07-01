@@ -48,14 +48,13 @@ void ofxRibbon::clear(){
 
 	endLine = true;
 	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 4000, 0);
-	ofVec3f dest  = ofVec3f(1000,1000,maxZ);
+	ofVec3f dest  = ofVec3f(0,0,maxZ + 200);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	/*app->cam.moveTo(ofVec3f(0,-500,maxZ+200
 		), 5000);
 	app->cam.lookAtTo(ofVec3f(0,0,maxZ), 5000);*/
-	app->cam.moveTo(ofVec3f(0,0,maxZ+200
-		), 5000);
-	app->cam.lookAtTo(ofVec3f(0,0,maxZ+200), 5000);
+	app->cam.moveTo(dest, 5000);
+	app->cam.lookAtTo(dest, 5000);
 	maxZ = 0;
 }
 

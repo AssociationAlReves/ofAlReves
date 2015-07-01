@@ -11,10 +11,9 @@ void ofxRibbon::setup(){
 	endLine = false;
 	maxZ = 0;
 
-	
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.moveTo(ofVec3f(0,0,500), 200);
-	app->cam.lookAtTo(ofVec3f(0,0,-5000), 200);
+	app->cam.reset();
 }
 
 //--------------------------------------------------------------
@@ -26,20 +25,22 @@ void ofxRibbon::update(){
 			points.clear();
 			maxZ = 0;
 		} 
-		
+
+		ofApp *app = (ofApp *)ofxGetAppPtr();
+		app->cam.update();
+
 	}
 
-	
+
 	ofVec3f sumOfAllPoints(0,0,0);
 	for(unsigned int i = 0; i < points.size(); i++){
-		points[i].z -= (endLine ? 0 : 4);
+		points[i].z -= (endLine ? 0 : 2);
 		maxZ = min(maxZ,points[i].z);
 		sumOfAllPoints += points[i];
 	}
 	center = sumOfAllPoints / points.size();
 
-	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.update();
+
 }
 
 //--------------------------------------------------------------
@@ -49,8 +50,12 @@ void ofxRibbon::clear(){
 	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 4000, 0);
 	ofVec3f dest  = ofVec3f(1000,1000,maxZ);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.moveTo(ofVec3f(0,0,maxZ+200), 5000);
-	//app->cam.lookAtTo(ofVec3f(0,0,maxZ), 5000);
+	/*app->cam.moveTo(ofVec3f(0,-500,maxZ+200
+		), 5000);
+	app->cam.lookAtTo(ofVec3f(0,0,maxZ), 5000);*/
+	app->cam.moveTo(ofVec3f(0,0,maxZ+200
+		), 5000);
+	app->cam.lookAtTo(ofVec3f(0,0,maxZ+200), 5000);
 	maxZ = 0;
 }
 
@@ -70,6 +75,7 @@ void ofxRibbon::draw(){
 
 
 	ofSetColor(0);
+	//ofEnableLighting();
 	//do the same thing from the first example...
 	ofMesh mesh;
 	mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
@@ -105,20 +111,24 @@ void ofxRibbon::draw(){
 		ofVec3f leftPoint = thisPoint+toTheLeft*thickness;
 		ofVec3f rightPoint = thisPoint+toTheRight*thickness;
 
+		float noiseR = ofNoise(i*0.123);// ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
+		/*float noiseG = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
+		float noiseB = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		*/
+
 		//add these points to the triangle strip
 		mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
+		mesh.addColor(ofFloatColor(noiseR,0,0,1));
 		mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
+		mesh.addColor(ofFloatColor(noiseR,0,0,1));
 
-		float noiseR = ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
-		float noiseG = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
-		float noiseB = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
+
+
+
 	}
 
 	//end the shape
 	mesh.draw();
-
+	//ofDisableLighting();
 }
 
 //--------------------------------------------------------------

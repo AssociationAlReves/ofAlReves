@@ -1,4 +1,5 @@
 #include "ofxRibbon.h"
+#include "ofApp.h"
 
 
 //--------------------------------------------------------------
@@ -8,35 +9,54 @@ void ofxRibbon::setup(){
 
 	points.clear();
 	endLine = false;
+	maxZ = 0;
+
+	
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.moveTo(ofVec3f(0,0,500), 200);
+	app->cam.lookAtTo(ofVec3f(0,0,-5000), 200);
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::update(){
 
-	if (endLine && tween.isCompleted())
-	{
-		points.clear();
+	float tweenFactor = 1;
+	if (endLine) {
+		if ( tween.isCompleted()) {
+			points.clear();
+			maxZ = 0;
+		} 
+		
 	}
 
+	
 	ofVec3f sumOfAllPoints(0,0,0);
 	for(unsigned int i = 0; i < points.size(); i++){
-		points[i].z -= 4;
+		points[i].z -= (endLine ? 0 : 4);
+		maxZ = min(maxZ,points[i].z);
 		sumOfAllPoints += points[i];
 	}
 	center = sumOfAllPoints / points.size();
 
-
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.update();
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::clear(){
 
 	endLine = true;
-	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 5000, 0);
+	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 4000, 0);
+	ofVec3f dest  = ofVec3f(1000,1000,maxZ);
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.moveTo(ofVec3f(0,0,maxZ+200), 5000);
+	//app->cam.lookAtTo(ofVec3f(0,0,maxZ), 5000);
+	maxZ = 0;
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::draw(){
+
 
 	float tweenFactor = 1;
 	if (endLine)
@@ -47,8 +67,7 @@ void ofxRibbon::draw(){
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
-	ofApp *app = (ofApp *)ofxGetAppPtr();
-	ofEasyCam cam = app->cam;
+
 
 	ofSetColor(0);
 	//do the same thing from the first example...
@@ -91,14 +110,15 @@ void ofxRibbon::draw(){
 		mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
 
 		float noiseR = ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
-		float noiseG = 0; //0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
-		float noiseB = 0; //0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,0.01));
-		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,0.01));
+		float noiseG = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
+		float noiseB = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		
+		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
+		mesh.addColor(ofFloatColor(noiseR,noiseG,noiseB,1));
 	}
 
 	//end the shape
 	mesh.draw();
+
 }
 
 //--------------------------------------------------------------

@@ -12,7 +12,6 @@
 #include "globals.h"
 #include "ofxTween.h"
 #include "ofxAppUtils.h"
-#include "ofApp.h" // to enable cam access (ugly !!)
 
 class ofxRibbon : public ofxScene
 {
@@ -38,9 +37,10 @@ private:
     //this keeps track of the center of all the points
     ofVec3f center;
 
+	float maxZ;
+
 	bool endLine;
-
-
+	
 	float sWidth;
 	float sHeight;
 

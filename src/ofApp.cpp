@@ -80,7 +80,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxSquareScreen(IntToString(i++),false));											postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++), VASA_SQUARE_MODE_FULL_RND_ROTATION));			postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
 
 
 #endif

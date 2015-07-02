@@ -71,7 +71,7 @@ void ofxRibbon::draw(){
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
-
+	ofBackground(255);
 
 	ofSetColor(0);
 	//ofEnableLighting();
@@ -110,18 +110,25 @@ void ofxRibbon::draw(){
 		ofVec3f leftPoint = thisPoint+toTheLeft*thickness;
 		ofVec3f rightPoint = thisPoint+toTheRight*thickness;
 
-		float noiseR = ofNoise(i*0.123);// ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
-		/*float noiseG = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.456);
-		float noiseB = 0.3 * ofNoise(ofGetElapsedTimef()*0.5+i*0.789);		*/
+		
 
 		//add these points to the triangle strip
 		mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
-		mesh.addColor(ofFloatColor(noiseR,0,0,1));
 		mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
-		mesh.addColor(ofFloatColor(noiseR,0,0,1));
 
 
+		float noiseR1 = ofNoise(i*1.123);// ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
+		float noiseR2 = ofNoise(i*2.234 + 1.23);// ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
 
+		ofColor color;
+		float hue = 255 * (0.12 * abs(ofSignedNoise((i+1.23)*0.1)));
+		float brightness = 255 * (1 - abs(ofSignedNoise((i-2.324)*0.12)));
+		color.setHsb(hue, 255, brightness);
+		mesh.addColor(color);
+		hue = 255 * (0.12 * abs(ofSignedNoise((i-0.257)*0.1)));
+		brightness = 255 * (1 - abs(ofSignedNoise((i-0.324)*0.12)));
+		color.setHsb(hue, 255, brightness);
+		mesh.addColor(color);
 
 	}
 

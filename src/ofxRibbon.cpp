@@ -47,7 +47,7 @@ void ofxRibbon::update(){
 void ofxRibbon::clear(){
 
 	endLine = true;
-	tween.setParameters(easinglinear, ofxTween::easeInOut, 1, 0, 4000, 0);
+	tween.setParameters(easingquad, ofxTween::easeInOut, 1, 0, 4000, 0);
 	ofVec3f dest  = ofVec3f(0,0,maxZ + 200);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	/*app->cam.moveTo(ofVec3f(0,-500,maxZ+200

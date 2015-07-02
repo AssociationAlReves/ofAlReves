@@ -103,7 +103,7 @@ void ofxRibbon::draw(){
 		//the longer the distance, the narrower the line.
 		//this makes it look a bit like brush strokes
 		float thickness = ofMap(distance, 0, 60, 20, 2, true);
-		thickness *= tweenFactor;
+		thickness *= tweenFactor*1.5;
 
 		//calculate the points to the left and to the right
 		//by extending the current point in the direction of left/right by the length
@@ -121,12 +121,17 @@ void ofxRibbon::draw(){
 		float noiseR2 = ofNoise(i*2.234 + 1.23);// ofNoise(ofGetElapsedTimef()*0.5+i*0.123);
 
 		ofColor color;
-		float hue = 255 * (0.12 * abs(ofSignedNoise((i+1.23)*0.1)));
-		float brightness = 255 * (1 - abs(ofSignedNoise((i-2.324)*0.12)));
+		// red to black
+		/*float hue = 255 * (0.1 * abs(ofSignedNoise((i+1.23)*0.1))); 
+		float brightness = 255 * (1 - abs(ofSignedNoise((i*0.2-2.324)*0.75)));*/
+
+		// rainbow
+		float hue = 255 * 0.5 * (1+sin(i*0.1));
+		float brightness = 255;
 		color.setHsb(hue, 255, brightness);
 		mesh.addColor(color);
-		hue = 255 * (0.12 * abs(ofSignedNoise((i-0.257)*0.1)));
-		brightness = 255 * (1 - abs(ofSignedNoise((i-0.324)*0.12)));
+		//hue = 255; //255 * (0.1 * abs(ofSignedNoise((i-0.257)*0.1)));
+		//brightness = 255 * (1 - abs(ofSignedNoise((i-0.324)*0.25)));
 		color.setHsb(hue, 255, brightness);
 		mesh.addColor(color);
 
@@ -136,6 +141,8 @@ void ofxRibbon::draw(){
 	mesh.draw();
 	//ofDisableLighting();
 }
+
+
 
 //--------------------------------------------------------------
 void ofxRibbon::mouseMoved(int x, int y ){

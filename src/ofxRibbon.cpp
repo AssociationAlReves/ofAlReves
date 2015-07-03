@@ -43,12 +43,6 @@ void ofxRibbon::update(){
 
 }
 
-void ofxRibbon::updateExit() {
-	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.reset();
-
-	isExiting();
-}
 
 //--------------------------------------------------------------
 void ofxRibbon::clear(){

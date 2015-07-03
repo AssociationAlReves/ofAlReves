@@ -78,12 +78,13 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofMovingSquares(IntToString(i++), false));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxSquareScreen(IntToString(i++),false));											postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++), VASA_SQUARE_MODE_FULL_RND_ROTATION));			postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
-
+	
 
 #endif
 	//sceneManager.add(new ofxTerrain());

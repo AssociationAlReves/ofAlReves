@@ -90,6 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ofxBgScene.cpp" />
     <ClCompile Include="src\ofxRibbon.cpp" />
     <ClCompile Include="src\ofxVideoScene.cpp" />
     <ClCompile Include="src\ofxCrossedLines.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="src\ofxVasaSquareField.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ofxBgScene.h" />
     <ClInclude Include="src\ofxRibbon.h" />
     <ClInclude Include="src\ofxVideoScene.h" />
     <ClInclude Include="src\ofxCrossedLines.h" />

@@ -8,6 +8,7 @@
 #include "ofxCrossedLines.h"
 #include "ofxVideoScene.h"
 #include "ofxRibbon.h"
+#include "ofxBgScene.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #endif

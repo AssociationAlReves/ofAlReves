@@ -406,6 +406,9 @@
     <ClCompile Include="..\..\..\addons\ofxSphereCam\src\ofxSphereCam.h">
       <Filter>addons\ofxSphereCam\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxBgScene.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1266,6 +1269,9 @@
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxRibbon.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxBgScene.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
   </ItemGroup>

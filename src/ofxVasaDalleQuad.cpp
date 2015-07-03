@@ -142,6 +142,7 @@ void ofxVasaDalleQuad::clear(){
 void ofxVasaDalleQuad::draw(){
     
 	ofEnableDepthTest();
+	ofEnableAlphaBlending();
 
 	if (bLights) {
 		ofEnableLighting();
@@ -150,7 +151,7 @@ void ofxVasaDalleQuad::draw(){
 		material.begin();
 	}
     
-    ofClear(ofColor::white);    
+    ofClear(255,alpha);    
     std::map<string,ofxVasaDalle>::iterator it;
     for (it=dalles.begin(); it!=dalles.end(); ++it){
         it->second.draw();
@@ -162,6 +163,7 @@ void ofxVasaDalleQuad::draw(){
 		material.end();
 		ofDisableLighting();
 	}
+	ofDisableAlphaBlending();
 	ofDisableDepthTest();
 }
 

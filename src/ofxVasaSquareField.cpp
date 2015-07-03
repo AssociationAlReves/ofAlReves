@@ -146,15 +146,15 @@ void ofxVasaSquareField::update(){
 //--------------------------------------------------------------
 void ofxVasaSquareField::draw(){
 
-	ofEnableAlphaBlending();
+	ofDisableAlphaBlending();
 #ifdef VASA_SQUARE_DEBUG_SPIR
 	ofBackground(239,239,239,255);
 	ofNoFill();
 	ofSetColor(255,255,255,255);
 #else
-	ofBackground(0,0,0,255);
-	ofFill();
-	ofSetColor(255,255,255,255);
+	ofSetColor(0,alpha);ofFill();
+	ofRect(0,0,0,ofGetWidth(),ofGetHeight());
+	ofSetColor(255,alpha);
 #endif
 
 
@@ -166,7 +166,7 @@ void ofxVasaSquareField::draw(){
 		if (squareIndex < squareCount) {
 			for (int idx = 0; idx < squareIndex; idx++)
 			{
-				int i = randIndexes[idx].x;
+				int i = randIndexes[idx].x; 
 				int j = randIndexes[idx].y;
 				ofPushMatrix();
 				ofTranslate(i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR), j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR));
@@ -223,7 +223,7 @@ void ofxVasaSquareField::draw(){
 
 	ofPopMatrix();
 
-	ofSetColor(0,0,0,255);
+	ofSetColor(0,0,0,alpha);
 	ofDisableAlphaBlending();
 
 }

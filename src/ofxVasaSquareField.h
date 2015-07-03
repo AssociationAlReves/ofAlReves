@@ -22,13 +22,14 @@
 #include "ofxUI.h"
 #include "ofxAppUtils.h"
 
-class ofxVasaSquareField : public ofxScene {
+class ofxVasaSquareField : public ofxFadeScene {
     
 public:
   	
 	ofxVasaSquareField(string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION) 
-		: mode(startMode), ofxScene(prefix + ": " + "SquareField"){
+		: mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
+            setFade(5000, 5000);
 			guiInitDone = false;
 		}
 
@@ -64,6 +65,8 @@ private:
 	int squareCount;
 	int mode;
 		
+    int fadeMode;
+    
     int lastActorX;
     int lastActoxY;
 

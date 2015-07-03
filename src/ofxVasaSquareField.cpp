@@ -14,20 +14,20 @@ void ofxVasaSquareField::setup(){
 	distRange = 300;
 	scaleFactor = 0.6;
 	devAngle = 90;
-	distRangeAuto = false;
-	scaleFactorAuto = false;
-	devAngleAuto = false;
+	distRangeAuto = true;
+	scaleFactorAuto = true;
+	devAngleAuto = true;
 
-	distRangeSpeed = 1;
-	scaleFactorSpeed = 1;
-	devAngleSpeed = 1;
+	distRangeSpeed = 0.08;
+	scaleFactorSpeed = 0.07;
+	devAngleSpeed = 0.07;
 
 	distRangeMIN = 0.1;
-	scaleFactorMIN = 1;
+	scaleFactorMIN = 0.1;
 	devAngleMIN = 0;
 
-	distRangeMAX = 1000;
-	scaleFactorMAX = 0.01;
+	distRangeMAX = 800;
+	scaleFactorMAX = 1;
 	devAngleMAX = 360;		
 
 	switch (mode) {
@@ -99,6 +99,7 @@ void ofxVasaSquareField::setup(int width, int height, int squareSize){
 			}
 
 			// random index for square random appearance
+        ofSeedRandom(1234);
 			ofRandomize(randIndexes);
 			squareIndex = 0;
 			squareAutoComplete = false;
@@ -212,7 +213,7 @@ void ofxVasaSquareField::draw(){
 				ofTranslate(squareX, squareY);
 
 				// the closer, the greater is the force
-				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
+				float force = distRange - ofClamp(ofDist(squareX, squareY, ofGetWidth()/2, ofGetHeight()/2),0,distRange);
 				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
 				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
 				ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
@@ -294,6 +295,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
 	case 'r' : setup(); break;
+        case '-' : fadeMode = (fadeMode +1) % 3; break;
 	}
 }
 

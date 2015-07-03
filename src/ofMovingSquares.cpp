@@ -159,6 +159,12 @@ void ofMovingSquares::setup(){
 	}
 }
 
+//--------------------------------------------------------------
+void ofMovingSquares::updateEnter(){
+	setup(); 
+	finishedEntering();
+}
+
 void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
 {
 	ofxUISlider *slider = e.getSlider();
@@ -200,6 +206,7 @@ void ofMovingSquares::update(){
 
 }
 
+//--------------------------------------------------------------
 void ofMovingSquares::nextMode(std::string reason){
 	currentMode+=1; // next mode
 
@@ -338,7 +345,7 @@ bool ofMovingSquares::beforeDraw(){
 	default:
 		{
 			bDrawShapes = true;
-			ofBackground(255);
+			ofBackground(255,255,255,alpha*255);
 		}
 		break;
 	}

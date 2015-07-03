@@ -59,19 +59,22 @@
 
 // This is meant to be sync with beethoven sonata
 
-class ofMovingSquares : public ofxScene {
+class ofMovingSquares : public ofxFadeScene {
 	
 public:
     
 	ofMovingSquares(string prefix = "scene", bool isMirrored = false) 
-		: isMirrored(isMirrored),  ofxScene(prefix + ": " + "Moving squares"){
+		: isMirrored(isMirrored),  ofxFadeScene(prefix + ": " + "Moving squares"){
 			setSingleSetup(true); // call setup each time the scene is loaded
+			setFade(5000,5000);
 			initDone = false;
 		}
 
 	void setup();
 	void update();
 	void draw();
+	
+	void updateEnter();
 
 	void keyPressed(int key);
     

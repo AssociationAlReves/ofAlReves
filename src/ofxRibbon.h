@@ -25,7 +25,7 @@ public:
 	void update();
 	void draw();
 
-	//void updateExit(); // called by scene manager
+	void updateExit(); // called by scene manager
 
 	void keyPressed(int key);
 	void mouseMoved(int x, int y );

@@ -12,13 +12,14 @@
 #include "ofxTween.h"
 #include "ofxAppUtils.h"
 
-class ofxVideoScene : public ofxScene
+class ofxVideoScene : public ofxFadeScene
 {
 public:
 	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool boxed = false, bool hFlip = false) : 
-		ofxScene(prefix + ": " + "VideoScene " + fileName )
+		ofxFadeScene(prefix + ": " + "VideoScene " + fileName )
 		, fileName(fileName), autoPlay(autoPlay), boxed(boxed), horizontalFlip(hFlip) {
 			setSingleSetup(false); // call setup each time the scene is loaded
+			setFade(5000,5000);
 		}
 
 	void setup();

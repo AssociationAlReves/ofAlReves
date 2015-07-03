@@ -7,6 +7,7 @@ void ofxVideoScene::setup(){
 	tweenEnabled = false;
 	player.loadMovie(fileName);
 	player.play();
+	player.setVolume(0);
 	aspectRatio = player.getWidth()/player.getHeight();
 	if (autoPlay == false) {
 		player.stop();
@@ -30,11 +31,11 @@ void ofxVideoScene::draw(){
 		ofScale (1,-1,1);
 	}
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-	ofBackground(255,255,255, 255);
+	//ofBackground(255,255,255, alpha);
 	if (tweenEnabled) {
 		ofSetColor(255, 255, 255, tween.update());
 	} else {
-		ofSetColor(255, 255, 255, 255);
+		ofSetColor(255, 255, 255, alpha*255);
 	}
 	float pw = ofGetHeight() * aspectRatio;
 	float ph = ofGetHeight();
@@ -63,11 +64,17 @@ void ofxVideoScene::keyPressed(int key){
 	{
 	case ' ' : {
 				if (player.isPlaying()) {
-					tweenEnabled = true;
-					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);
+					/*tweenEnabled = true;
+					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);*/
 				} else { 
 					player.play(); 
 				}
+			   }break;
+	case OF_KEY_RETURN: {
+				if (player.isPlaying()) {
+					tweenEnabled = true;
+					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);
+				} 
 			   }break;
 	case 'r': setup(); break;
 	default:

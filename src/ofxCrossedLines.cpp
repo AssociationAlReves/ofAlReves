@@ -1,6 +1,7 @@
 #include "ofxCrossedLines.h"
 
-unsigned duration = 3700;
+unsigned durationStart = 4400;
+unsigned durationEnd = 5350;
 float m = 25; // margin at end
 float sm = 5; // margin at start
 float direction = 1;
@@ -9,8 +10,8 @@ float direction = 1;
 void ofxCrossedLines::setup(){
 	numLine = -1;
 	direction = 1;
-	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,duration,0);
-
+	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,durationStart,0);
+	
 }
 
 //--------------------------------------------------------------
@@ -41,9 +42,10 @@ void ofxCrossedLines::nextMode() {
 
 	float start = direction > 0 ? 0 : 1;
 	float end = direction > 0 ? 1 : 0;
+	unsigned duration = direction > 0 ? durationStart : durationEnd;
 	tween.setParameters(easingsine, ofxTween::easeInOut, start, end, duration, 0);
 
-	cout << "NumLine : " << ofToString(numLine) << endl;
+	cout << "NumLine : " << ofToString(numLine) << ", duration: " << ofToString(duration) << endl;
 }
 
 //--------------------------------------------------------------

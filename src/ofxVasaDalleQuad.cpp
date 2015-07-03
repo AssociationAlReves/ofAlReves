@@ -11,6 +11,7 @@
 //--------------------------------------------------------------
 void ofxVasaDalleQuad::setup() {
 	setup(PROJECTOR_RESOLUTION_X*2, PROJECTOR_RESOLUTION_Y*2, 256, 5);
+    autoDalle3 = false;
 }
 
 //--------------------------------------------------------------
@@ -73,8 +74,11 @@ void ofxVasaDalleQuad::update(){
         bing.freeQuad(quad);
     }
 
-	light.setPosition(mouseX, mouseY, 400);	
+	light.setPosition(mouseX, mouseY, 400);
     
+    if (autoDalle3) {
+    createDalle(ofRandomWidth(),ofRandomHeight(),0);
+    }
 }
 
 void ofxVasaDalleQuad::createDalle(int x, int y, int depth, int shapeType){
@@ -189,9 +193,9 @@ void ofxVasaDalleQuad::keyPressed(int key){
 	case 's' : ofSetSmoothLighting(false);
 	case 'S' : ofSetSmoothLighting(true);
 	case 'v' : dynamicPathEnabled = !dynamicPathEnabled; break;
-	case '1': {clear(); createDalle(640,400,0,VASA_DALLE_SHAPE_SQUARE); } break;
-	case '2': {clear(); createDalle(640,400,0,VASA_DALLE_SHAPE_CIRCLE); } break;
-	case '3': createDalle(ofRandomWidth(),ofRandomHeight(),0); break; // taken
+	case '1': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_SQUARE);} break;
+	case '2': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_CIRCLE); } break;
+        case '3': autoDalle3 = !autoDalle3; break;//createDalle(ofRandomWidth(),ofRandomHeight(),0); break; // taken
 	case '4': createDalle(ofRandomWidth(),ofRandomHeight(),(int)ofRandom(5)); break; // taken
 	case 'm' : ofHideCursor(); break;
 	case 'M' : ofShowCursor(); break;

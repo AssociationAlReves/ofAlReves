@@ -32,6 +32,7 @@
 		2521C7C21B3C788600DD4394 /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */; };
 		2521C7C31B3C788600DD4394 /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */; };
 		255A7B680DC81E543C875794 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 28F9707464BA3FF98E05096C /* usb_libusb10.c */; };
+		25CED43D1B46CD8E0038EB95 /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25CED43B1B46CD8E0038EB95 /* ofxBgScene.cpp */; };
 		25F1B5E01B388B74009F2794 /* ofMovingSquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25F1B5CF1B388B74009F2794 /* ofMovingSquares.cpp */; };
 		25F1B5E11B388B74009F2794 /* ofxBingQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25F1B5D11B388B74009F2794 /* ofxBingQuad.cpp */; };
 		25F1B5E21B388B74009F2794 /* ofxKinecticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25F1B5D31B388B74009F2794 /* ofxKinecticon.cpp */; };
@@ -259,6 +260,8 @@
 		2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoScene.cpp; sourceTree = "<group>"; };
 		2521C7C11B3C788600DD4394 /* ofxVideoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoScene.h; sourceTree = "<group>"; };
 		2556100026B425E8370BCF75 /* ofxUICircleSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUICircleSlider.cpp; path = ../../../addons/ofxUI/src/ofxUICircleSlider.cpp; sourceTree = SOURCE_ROOT; };
+		25CED43B1B46CD8E0038EB95 /* ofxBgScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBgScene.cpp; sourceTree = "<group>"; };
+		25CED43C1B46CD8E0038EB95 /* ofxBgScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBgScene.h; sourceTree = "<group>"; };
 		25F1B5CE1B388B74009F2794 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		25F1B5CF1B388B74009F2794 /* ofMovingSquares.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofMovingSquares.cpp; sourceTree = "<group>"; };
 		25F1B5D01B388B74009F2794 /* ofMovingSquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofMovingSquares.h; sourceTree = "<group>"; };
@@ -837,6 +840,8 @@
 				25F1B5DC1B388B74009F2794 /* ofxVasaDalleQuad.h */,
 				25F1B5DD1B388B74009F2794 /* ofxVasaSquareField.cpp */,
 				25F1B5DE1B388B74009F2794 /* ofxVasaSquareField.h */,
+				25CED43B1B46CD8E0038EB95 /* ofxBgScene.cpp */,
+				25CED43C1B46CD8E0038EB95 /* ofxBgScene.h */,
 			);
 			name = scenes;
 			sourceTree = "<group>";
@@ -1758,6 +1763,7 @@
 				22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */,
 				3D4EA8E172D3E4A30FEFA969 /* ofxUIImage.cpp in Sources */,
 				2521C7C21B3C788600DD4394 /* ofxCrossedLines.cpp in Sources */,
+				25CED43D1B46CD8E0038EB95 /* ofxBgScene.cpp in Sources */,
 				7F2CD93F681F3C1547B3BF2C /* ofxUIImageButton.cpp in Sources */,
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,

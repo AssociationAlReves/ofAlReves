@@ -66,11 +66,14 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxBgScene(IntToString(i++)));
+        postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
+    sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
@@ -242,7 +245,7 @@ void ofApp::keyPressed(int key) {
 	case OF_KEY_F8: sceneManager.gotoScene(7);  break;
 	case OF_KEY_F9:  sceneManager.gotoScene(8); break;
 	case OF_KEY_F10: sceneManager.gotoScene(9); break;
-
+    case OF_KEY_F11: sceneManager.gotoScene(10); break;
 	case OF_KEY_BACKSPACE:
 		sceneManager.noScene();
 		break;

@@ -49,8 +49,8 @@ void ofxKinecticon::setup(){
 	grayBgImage.allocate(kinect.width, kinect.height);
 	grayDiff.allocate(kinect.width, kinect.height);
 
-	nearThreshold = 230;
-	farThreshold = 70;
+	nearThreshold = 255;
+	farThreshold = 0;
 	threshold = 80;
 	bLearnBackground = false;
 	numFramesBg = 0;
@@ -59,14 +59,14 @@ void ofxKinecticon::setup(){
 	//ofSetFrameRate(60);
 
 	// zero the tilt on startup
-	angle = 0;
+	angle = 17;
 	kinect.setCameraTiltAngle(angle);
 
 	// start from the front
-	bDrawPointCloud = false;
+	bDrawPointCloud = true;
 
 
-	bShowHelp = true;
+	bShowHelp = false;
 	gui = new ofxUISuperCanvas("Vasarely", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
 
 	gui->addLabel("kinect");

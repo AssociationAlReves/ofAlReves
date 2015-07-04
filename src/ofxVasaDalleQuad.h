@@ -39,6 +39,7 @@ public:
     bool enabled;
     bool dynamicPathEnabled;
 	bool bLights;
+    bool autoDalle3;
 private:
     
 	bool blackAndWhite;

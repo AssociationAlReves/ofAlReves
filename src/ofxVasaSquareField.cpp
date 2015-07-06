@@ -295,7 +295,6 @@ void ofxVasaSquareField::keyPressed(int key){
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
 	case 'r' : setup(); break;
-        case '-' : fadeMode = (fadeMode +1) % 3; break;
 	}
 }
 

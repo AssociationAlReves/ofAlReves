@@ -7,6 +7,7 @@
 //
 #include "ofMain.h"
 #include "ofxTerrain.h"
+#include "ofApp.h"
 
 
 void ofxTerrain::setup() {
@@ -346,10 +347,8 @@ void ofxTerrain::update(){
 
 //--------------------------------------------------------------
 void ofxTerrain::draw(){
-	
-	ofEnableDepthTest();
 
-	ofxApp *app = ofxGetAppPtr();
+	ofEnableDepthTest();
 
 	if (bSmallCursor){
 		ofSetColor(ofColor::white);
@@ -389,7 +388,7 @@ void ofxTerrain::keyPressed(int key) {
 	{
 	case ' ': { mode = (mode +1)  % 4;
 			  } break;
-	
+
 	case 'h': addHole(800,400); break;
 	case 'H': addHill(800,400,15); break;
 	case 'j': addHole(ofGetMouseX(),ofGetMouseY()); break;
@@ -424,7 +423,14 @@ void ofxTerrain::keyPressed(int key) {
 		////postDalles.createPass<BloomPass>();
 		//postList[VASA_MODE_DALLES] = postDalles;
 			   } break;
-	
+
+	case 'd': {
+		//
+		ofApp *app = (ofApp *)ofxGetAppPtr();
+		app->cam.setOrientation(ofVec3f(43.1984,0,0));
+		app->cam.setPosition(-200, -200.867, 208.106);
+
+			  } break;
 
 	}
 

@@ -60,18 +60,11 @@ void ofApp::setupSceneManager() {
 	//sceneManager.add(new ofxVasaSquareField());
 
 #if __APPLE__
-	// Bellegarde (mac - front with kinect)
+	// Vasarely (mac - front with kinect)
 	int i = 0;
-	sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxBgScene(IntToString(i++)));
-        postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxRibbon(IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
-    sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = true;
+	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
 #else
@@ -185,16 +178,6 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key) {
 
 	switch (key) {
-
-	case 'd': {
-		//
-		cout << "pos: " << cam.getPosition() << endl;
-		cout << "ori: " << cam.getOrientationEuler() << endl;
-		//float o = cam.getOrientationEuler().x;
-		cam.setOrientation(ofVec3f(43.1984,0,0));
-		cam.setPosition(-200, -200.867, 208.106);
-
-			  } break;
 
 	case 'e': cam.disableMouseInput(); break;
 	case 'E' : cam.enableMouseInput(); break;

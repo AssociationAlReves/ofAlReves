@@ -5,27 +5,32 @@ A set of OpenFrameworks scenes used for "Compagnie Al Reves", Aix en Provence.
 Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to access specific scenes.
 
 ## Scene setup - Espace Jeunesse Bellegarde
-###Top computer scenes (floor screen)
+###Top computer scenes (floor screen - PC)
  1. WHITE
  2. Droplet video (https://www.youtube.com/watch?v=PmYK-i8EKuU)
- 3. Red line (star alike)
- 4. Red line fadeout
- 5. Moving square with timer starting on bell sound
- 6. (after two musics) Light bulb video (https://www.youtube.com/watch?v=fcbm8SvlRYk)
- 7. (after one music) Screen square closing scene
- 8. WHITE
- 9. WHITE
+ 3. Crossed lines (Red lines horizontal)
+ 4. Moving square with timer starting on bell sound
+ 5. Leaf video (https://www.youtube.com/watch?v=umEj8Gh6EDk)
+ 6. Bg scene (orange red gradient background)
+ 7. Light bulb video (https://www.youtube.com/watch?v=fcbm8SvlRYk)
+ 8. Ribbon rainbow
+ 9. (after one music) Screen square closing scene
+ 10. Vasarely quads
+ 11. Vasarely squares tracks
 
-###Bottom computer scenes (back screen)
+###Bottom computer scenes (back screen - Mac)
  1. WHITE
  2. Droplet video y-inverted (https://www.youtube.com/watch?v=PmYK-i8EKuU)
- 3. Red line (horizontal)
- 4. Red line fadeout
- 5. WHITE
- 6. (after two musics) WHITE
- 7. (after one music) Screen square closing scene
- 8. Vasarely quads
- 9. Vasarely squares tracks
+ 3. Crossed lines (Red lines horizontal)
+ 4. Moving square with timer starting on bell sound (y - mirrored)
+ 5. Leaf video (https://www.youtube.com/watch?v=umEj8Gh6EDk)
+ 6. Bg scene (orange red gradient background)
+ 7. Light bulb video (https://www.youtube.com/watch?v=fcbm8SvlRYk)
+ 8. Ribbon rainbow
+ 9. Screen square closing scene
+ 10. Vasarely quads
+ 11. Vasarely squares tracks
+ 12. Kinect final scene
 
 # Addons
  - ofxGui

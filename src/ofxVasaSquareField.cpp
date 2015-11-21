@@ -247,7 +247,7 @@ void ofxVasaSquareField::addActor(int x, int y){
 	lastActorX = x;
 	lastActoxY = y;
 	//actors.push_back(ofVec2f(x,y));
-	int radius = 1;
+	int radius = VASA_SQUARE_ACTOR_RADIUS;
 	for (int j = ofClamp(y-radius, 0, sizeY); j<ofClamp(y+radius, 0, sizeY);j++)
 		for (int i = ofClamp(x-radius, 0, sizeX); i<ofClamp(x+radius, 0, sizeX);i++) {
 			float speed = ofRandom(1, VASA_SQUARE_SPEED);

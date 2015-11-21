@@ -44,6 +44,7 @@ void ofxVasaDalleQuad::setup(int screenWidth, int screenHeight, int sizeOfTiles,
 	clear();
 
 	bLights = false;
+    dynamicPathEnabled = false;
 }
 
 //--------------------------------------------------------------

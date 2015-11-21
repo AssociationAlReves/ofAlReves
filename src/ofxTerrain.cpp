@@ -428,6 +428,8 @@ void ofxTerrain::keyPressed(int key) {
             
         case 'm' : bSmallCursor = true; break;
         case 'M' : bSmallCursor=false; break;
+            
+        case 'r': setup(planeWidth, planeHeight, planeResolution, planeVelocity); break;
 
 	}
 

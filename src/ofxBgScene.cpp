@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void ofxBgScene::setup(){
+    bBlue = true;
 }
 
 //--------------------------------------------------------------
@@ -11,9 +12,16 @@ void ofxBgScene::update(){
 
 //--------------------------------------------------------------
 void ofxBgScene::draw(){
-    ofColor startColor = ofColor::orange;
-    ofColor endColor = ofColor::orangeRed;
-    
+    ofColor startColor;
+    ofColor endColor;
+
+    if (bBlue){
+        startColor = ofColor(0, 140, 255);
+        endColor = ofColor(0, 51, 255);
+    } else {
+        startColor = ofColor::orange;
+        endColor = ofColor::orangeRed;
+    }
 	ofColor cs; cs.setHsb(startColor.getHue() + (ofSignedNoise(ofGetElapsedTimef()*0.29 -0.896)) * 22
                           , startColor.getSaturation()
                           , startColor.getBrightness());
@@ -39,6 +47,7 @@ void ofxBgScene::keyPressed(int key){
     {
         case ' ' : clear(); break;
         case 'r': setup(); break;
+        case 'c' : bBlue = !bBlue;
         default:
             break;
     }

@@ -18,7 +18,7 @@ class ofxBgScene : public ofxFadeScene
 public:
     ofxBgScene(string prefix = "scene")
     : ofxFadeScene(prefix + ": " + "BgScene"){
-        setSingleSetup(false); // call setup each time the scene is loaded
+        setSingleSetup(false); // jjjjjmjmMmjj setup each time the scene is loaded
         setFade(1000,1000);
     }
     
@@ -44,6 +44,8 @@ private:
     
     float sWidth;
     float sHeight;
+    
+    bool bBlue;
     
     // transitions
     ofxTween tween;

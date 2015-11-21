@@ -7,6 +7,7 @@
 //
 #include "ofMain.h"
 #include "ofxTerrain.h"
+#include "ofApp.h"
 
 
 void ofxTerrain::setup() {
@@ -39,10 +40,12 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 	noiseAmp2 = 0.15;
 	drawYLines = false;
 
+    mode = 3;
+    speedRate = 0;
+    
 	setupLineMesh(meshSize.x, meshSize.y, planeResolution);
 
-	mode = 3;
-	speedRate = 0;
+	
 
 
 }
@@ -346,18 +349,8 @@ void ofxTerrain::update(){
 
 //--------------------------------------------------------------
 void ofxTerrain::draw(){
-	
+
 	ofEnableDepthTest();
-
-	ofxApp *app = ofxGetAppPtr();
-
-	if (bSmallCursor){
-		ofSetColor(ofColor::white);
-		ofSetLineWidth(2);
-		int lw = 1;
-		ofLine(mouseX-lw, mouseY,mouseX+lw, mouseY);
-		ofLine(mouseX, mouseY-lw,mouseX, mouseY+lw);
-	}
 
 	ofClear(ofColor::fromHex(0x00008C));
 
@@ -371,9 +364,9 @@ void ofxTerrain::draw(){
 	ofSetColor(ofColor::white); // draw text
 
 	if (bSmallCursor){
-		ofSetColor(ofColor::white);
+		ofSetColor(ofColor::red);
 		ofSetLineWidth(2);
-		int lw = 1;
+		int lw = 2;
 		ofLine(mouseX-lw, mouseY,mouseX+lw, mouseY);
 		ofLine(mouseX, mouseY-lw,mouseX, mouseY+lw);
 	}
@@ -389,12 +382,12 @@ void ofxTerrain::keyPressed(int key) {
 	{
 	case ' ': { mode = (mode +1)  % 4;
 			  } break;
-	
+
 	case 'h': addHole(800,400); break;
 	case 'H': addHill(800,400,15); break;
 	case 'j': addHole(ofGetMouseX(),ofGetMouseY()); break;
 	case 'J': addHill(ofGetMouseX(),ofGetMouseY(),15); break;
-	case 'K': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
+	case 'k': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
 	case 'C' : bSmallCursor = !bSmallCursor; break;
 	case 'B' : {
 		/*ofxPostProcessing postTerrain;
@@ -424,7 +417,17 @@ void ofxTerrain::keyPressed(int key) {
 		////postDalles.createPass<BloomPass>();
 		//postList[VASA_MODE_DALLES] = postDalles;
 			   } break;
-	
+
+	case 'd': {
+		//
+		ofApp *app = (ofApp *)ofxGetAppPtr();
+		app->cam.setOrientation(ofVec3f(43.1984,0,0));
+		app->cam.setPosition(-200, -200.867, 208.106);
+
+			  } break;
+            
+        case 'm' : bSmallCursor = true; break;
+        case 'M' : bSmallCursor=false; break;
 
 	}
 

@@ -1,22 +1,14 @@
-#include "ofxKinecticon.h"
+#include "ofxKinectListener.h"
 
 
 //--------------------------------------------------------------
-void ofxKinecticon::setup(){
+void ofxKinectListener::setup(){
 
 #ifdef USE_KINECT
 	kinectEnabled = true;
 	bKinectUseBg = true;
 	bKinectSetup = true;
-	bKinectAltColor = false;
-	kinectMeshCurColor = 0;
-
-	kinectMeshColors.push_back(ofColor::fromHex(0x0000FF));
-	kinectMeshColors.push_back(ofColor::fromHex(0x00FF00));
-	kinectMeshColors.push_back(ofColor::fromHex(0xFF0000));
-	kinectMeshColors.push_back(ofColor::fromHex(0x00FFFF));
-	kinectMeshColors.push_back(ofColor::fromHex(0xFFFF00));
-	kinectMeshColors.push_back(ofColor::fromHex(0xFF00FF));
+    bRotate = false;
 
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
@@ -59,7 +51,7 @@ void ofxKinecticon::setup(){
 	//ofSetFrameRate(60);
 
 	// zero the tilt on startup
-	angle = 17;
+	angle = 0;
 	kinect.setCameraTiltAngle(angle);
 
 	// start from the front
@@ -74,7 +66,6 @@ void ofxKinecticon::setup(){
 	gui->addIntSlider("farThresh", 0, 255, &farThreshold);
 	gui->addIntSlider("diffThresh", 0, 255, &threshold);
 	gui->addLabelToggle("Use background (b)", &bKinectUseBg);
-	gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
 	gui->setVisible(false);
 
 #endif
@@ -82,7 +73,7 @@ void ofxKinecticon::setup(){
 }
 
 //--------------------------------------------------------------
-void ofxKinecticon::update(){
+void ofxKinectListener::update(){
 
 
 #ifdef USE_KINECT
@@ -188,33 +179,51 @@ void ofxKinecticon::update(){
 
 			int w = kinect.width;
 			int h = kinect.height;
-			ofMesh mesh;
-			mesh.setMode(OF_PRIMITIVE_POINTS);
+            kinectMesh.clear();
+			kinectMesh.setMode(OF_PRIMITIVE_POINTS);
 			unsigned char * mask = grayDiff.getPixels();
+            float pitch = -angle; //kinect.getAccelPitch();
+            ofMatrix4x4 mat;
+            ofMatrix4x4 matRot;
+            matRot.makeRotationMatrix(90-pitch, 1, 0, 0);
+            mat.makeTranslationMatrix(0, 0, 5000);
+            mat = matRot * mat;
+            
+            //rollRot.makeRotate(kinect.getAccelRoll(), 0, 0, 1);
 
 			// retrieve only pixels from blobs
 			// TODO take pixels only in found blobs rects
 
-			for(int y = 0; y < h; y += VASA_KINECT_POINTCLOUD_STEP) {
-				for(int x = 0; x < w; x += VASA_KINECT_POINTCLOUD_STEP) {
-					if(mask[y * w + x] > 128) {
-						if (!bKinectAltColor) {
-							ofColor color = kinect.getColorAt(x, y);
-							//                            float b = color.getBrightness();
-							//                            if (b<200) color.setBrightness(200);
-							//                            color.a = 200;
-							mesh.addColor(color);
-						}
+            minZ = 99999;
+            maxZ = -99999;
+            
+            for(int y = 0; y < h; y += VASA_KINECT_POINTCLOUD_STEP) {
+                for(int x = 0; x < w; x += VASA_KINECT_POINTCLOUD_STEP) {
+                    if(mask[y * w + x] > 128) {
+                        
+                        ofColor color = ofColor::white; //kinect.getColorAt(x, y);
+                        ofVec3f coord = kinect.getWorldCoordinateAt(x, y);
+                        
+                        if (bRotate) {
+                            
+                            coord = coord * mat;// * rollRot;
+                            minZ = min(minZ, coord.z);
+                            maxZ = max(maxZ, coord.z);
+                            color = ofColor::white;
+                            
+                            
+                        } else {
+                            minZ = min(minZ, coord.z);
+                            maxZ = max(maxZ, coord.z);
 
-						mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
-					}
-				}
-			}
-
-			if (kinectMeshes.size() == VASA_KINECT_FRAMECOUNT){
-				kinectMeshes.erase(kinectMeshes.begin());
-			}
-			kinectMeshes.push_back(mesh);
+                        }
+                        
+                        kinectMesh.addColor(color);
+                        kinectMesh.addVertex(coord);
+                        
+                    }
+                }
+            }
 
 		}
 	}
@@ -227,7 +236,7 @@ void ofxKinecticon::update(){
 }
 
 //--------------------------------------------------------------
-void ofxKinecticon::draw() {
+void ofxKinectListener::draw() {
 
 #ifdef USE_KINECT
 	if (!kinectEnabled) return;
@@ -238,8 +247,6 @@ void ofxKinecticon::draw() {
 		if(bDrawPointCloud) {
 			drawPointCloud();
 		} else {
-
-			kinectMeshes.clear();
 
 			// draw from the live kinect
 			kinect.drawDepth(10, 10, 400, 300);
@@ -270,6 +277,8 @@ void ofxKinecticon::draw() {
 					<< ofToString(kinect.getMksAccel().z, 2) << endl;
                 reportStream << "accel is: pitch: " << ofToString(kinect.getAccelPitch(), 2) << " / roll: "
                 << ofToString(kinect.getAccelRoll(), 2) << endl;
+                reportStream << "minZ: " << ofToString(minZ, 2) << " / maxZ: "
+                << ofToString(maxZ, 2) << endl;
 			} else {
 				reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
 					<< "motor / led / accel controls are not currently supported" << endl << endl;
@@ -296,7 +305,7 @@ void ofxKinecticon::draw() {
 }
 
 //--------------------------------------------------------------
-void ofxKinecticon::drawPointCloud(){
+void ofxKinectListener::drawPointCloud(){
 
 #ifdef USE_KINECT
 	ofBackground(0);
@@ -308,24 +317,10 @@ void ofxKinecticon::drawPointCloud(){
 	ofTranslate(0, 0, -1000); // center the points a bit
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	ofDisableDepthTest();
-	kinectMeshCurColor = 0;
-	if (kinectMeshes.size() == VASA_KINECT_FRAMECOUNT){
-		for(int i = VASA_KINECT_FRAMECOUNT-1; i >= 0; i-=VASA_KINECT_FRAMEDELAY)
-		{
-			kinectMeshCurColor = (kinectMeshCurColor + 1) % kinectMeshColors.size();
-			ofSetColor(kinectMeshColors[kinectMeshCurColor]);
 
-			ofMesh curMesh = kinectMeshes[i];
-			//            vector<ofFloatColor> meshColors = curMesh.getColorsPointer();
-			//            for (int col = 0; col < meshColors.size();col++){
-			//                meshColors[col].setHue(128);
-			//            }
-
-			curMesh.draw();
-		}
-	} else if (kinectMeshes.size()>0) {
-		kinectMeshes[kinectMeshes.size()-1].draw();
-	}
+			kinectMesh.draw();
+		
+	
 	ofDisableDepthTest();
 	ofPopMatrix();
 
@@ -333,7 +328,7 @@ void ofxKinecticon::drawPointCloud(){
 }
 
 //--------------------------------------------------------------
-void ofxKinecticon::keyPressed(int key){
+void ofxKinectListener::keyPressed(int key){
 
 #ifdef USE_KINECT
 	if (kinectEnabled){
@@ -379,13 +374,13 @@ void ofxKinecticon::keyPressed(int key){
 		case 'w':
 			kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
 			break;
+                
+        case 'r':
+                bRotate = !bRotate;
+                break;
 
 		case 'a':
 			kinect.setCameraTiltAngle(18); // go back to prev tilt
-			break;
-
-		case 'c':
-			bKinectAltColor = !bKinectAltColor;
 			break;
 
 		case 'd':
@@ -434,7 +429,7 @@ void ofxKinecticon::keyPressed(int key){
 }
 
 //--------------------------------------------------------------
-void ofxKinecticon::exit() {
+void ofxKinectListener::exit() {
 #ifdef USE_KINECT
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();

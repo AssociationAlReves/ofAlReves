@@ -16,26 +16,26 @@ void ofxVasaSquareField::setup(){
 	devAngle = 90;
 	distRangeAuto = true;
 	scaleFactorAuto = true;
-	devAngleAuto = true;
+	devAngleAuto = false;
 
 	distRangeSpeed = 0.08;
 	scaleFactorSpeed = 0.07;
 	devAngleSpeed = 0.07;
 
-	distRangeMIN = 0.1;
+	distRangeMIN = 20;
 	scaleFactorMIN = 0.1;
 	devAngleMIN = 0;
 
 	distRangeMAX = 800;
 	scaleFactorMAX = 1;
-	devAngleMAX = 360;		
+	devAngleMAX = 90;
 
 	switch (mode) {
 	case VASA_SQUARE_MODE_FULL_RND_ROTATION:
-		setup(ofGetWidth(), ofGetHeight(), 50 /* 50 */);
+		setup(ofGetWidth(), ofGetHeight(), VASA_SQUARE_SIZE /* 50 */);
 		break;
 	case VASA_SQUARE_MODE_FULL_DIST_ROTATION:
-		setup(ofGetWidth(), ofGetHeight(), 50 /* 50 */);
+		setup(ofGetWidth(), ofGetHeight(), VASA_SQUARE_SIZE /* 50 */);
 		break;
 	}
 
@@ -213,7 +213,7 @@ void ofxVasaSquareField::draw(){
 				ofTranslate(squareX, squareY);
 
 				// the closer, the greater is the force
-				float force = distRange - ofClamp(ofDist(squareX, squareY, ofGetWidth()/2, ofGetHeight()/2),0,distRange);
+				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
 				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
 				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
 				ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);

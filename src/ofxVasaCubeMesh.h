@@ -1,11 +1,11 @@
 //
-//  ofxBgScene.h
+//  ofxVasaCubeMesh.h
 //  ofAlReves
-//	Inspired from Camera Ribbon example
 //
-//  Created by Xavier Fischer on 01/07/2015.
+//  Created by Xavier Fischer on 16/07/2015.
 //
 //
+
 #pragma once
 
 #include "ofMain.h"
@@ -13,13 +13,13 @@
 #include "ofxTween.h"
 #include "ofxAppUtils.h"
 
-class ofxBgScene : public ofxFadeScene
+class ofxVasaCubeMesh : public ofxFadeScene
 {
 public:
-    ofxBgScene(string prefix = "scene")
-    : ofxFadeScene(prefix + ": " + "BgScene"){
-        setSingleSetup(false); // jjjjjmjmMmjj setup each time the scene is loaded
-        setFade(1000,1000);
+    ofxVasaCubeMesh(string prefix = "scene")
+    : ofxFadeScene(prefix + ": " + "Vasa Cube Mesh"){
+        setSingleSetup(false); // call setup each time the scene is loaded
+        setFade(200,200);
     }
     
     void setup();
@@ -33,19 +33,7 @@ public:
     
 private:
     
-    //this holds all of our points
-    vector<ofVec3f> points;
-    //this keeps track of the center of all the points
-    ofVec3f center;
-    
-    float maxZ;
-    
-    bool endLine;
-    
-    float sWidth;
-    float sHeight;
-    
-    bool bBlue;
+    ofVboMesh mesh;
     
     // transitions
     ofxTween tween;

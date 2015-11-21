@@ -9,6 +9,8 @@
 #include "ofxVideoScene.h"
 #include "ofxRibbon.h"
 #include "ofxBgScene.h"
+#include "ofxVasaCubeMesh.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
+#include "ofxKinectListener.h"
 #endif

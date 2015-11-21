@@ -25,6 +25,7 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 	planeVelocity = velocity;
 	meshSize = ofVec2f(ceilf(planeWidth/planeResolution), ceilf(planeHeight/planeResolution));
 	sumDeltaX = 0;
+    deltaX=0;
 	//heightMap.reserve(width*height);
 
 	// ary[i][j] is then rewritten as ary[i*sizeY+j]
@@ -37,7 +38,7 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 
 	noiseScale2 = 0.13;
 	noiseSeed2 = 0.3;
-	noiseAmp2 = 0.15;
+    noiseAmp2 = 0.15;
 	drawYLines = false;
 
     mode = 3;
@@ -389,35 +390,8 @@ void ofxTerrain::keyPressed(int key) {
 	case 'J': addHill(ofGetMouseX(),ofGetMouseY(),15); break;
 	case 'k': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
 	case 'C' : bSmallCursor = !bSmallCursor; break;
-	case 'B' : {
-		/*ofxPostProcessing postTerrain;
-		postTerrain.init(ofGetWidth(), ofGetHeight());
-		postTerrain.createPass<FxaaPass>();
-		postTerrain.createPass<FxaaPass>();
-		postTerrain.createPass<BloomPass>();
-		postList[VASA_MODE_TERRAIN] = postTerrain;
-		ofxPostProcessing postDalles;
-		postDalles.init(ofGetWidth(), ofGetHeight());
-		postDalles.createPass<FxaaPass>();
-		postDalles.createPass<FxaaPass>();
-		postDalles.createPass<BloomPass>();
-		postList[VASA_MODE_DALLES] = postDalles;*/
-			   } break;
-	case 'b' : {
-		//ofxPostProcessing postTerrain;
-		//postTerrain.init(ofGetWidth(), ofGetHeight());
-		//postTerrain.createPass<FxaaPass>();
-		//postTerrain.createPass<FxaaPass>();
-		////postTerrain.createPass<BloomPass>();
-		//postList[VASA_MODE_TERRAIN] = postTerrain;
-		//ofxPostProcessing postDalles;
-		//postDalles.init(ofGetWidth(), ofGetHeight());
-		//postDalles.createPass<FxaaPass>();
-		//postDalles.createPass<FxaaPass>();
-		////postDalles.createPass<BloomPass>();
-		//postList[VASA_MODE_DALLES] = postDalles;
-			   } break;
-
+    case 'm' : bSmallCursor = true; break;
+        case 'M' : bSmallCursor=false; break;
 	case 'd': {
 		//
 		ofApp *app = (ofApp *)ofxGetAppPtr();
@@ -426,8 +400,7 @@ void ofxTerrain::keyPressed(int key) {
 
 			  } break;
             
-        case 'm' : bSmallCursor = true; break;
-        case 'M' : bSmallCursor=false; break;
+        
             
         case 'r': setup(planeWidth, planeHeight, planeResolution, planeVelocity); break;
 

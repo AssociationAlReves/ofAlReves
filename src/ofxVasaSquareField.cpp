@@ -158,7 +158,8 @@ void ofxVasaSquareField::draw(){
 	ofSetColor(255,alpha);
 #endif
 
-
+    
+    float speed = 0.25f; //1.f;
 
 	ofPushMatrix();
 	if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
@@ -173,18 +174,29 @@ void ofxVasaSquareField::draw(){
 				ofTranslate(i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR), j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR));
 
 				// noise rotation going to 0 when all squares are drawn
-				ofRotateZ(ofSignedNoise( ofGetElapsedTimef() *2.f + i*1.23 + j*2.34 ) 
+				ofRotateZ(ofSignedNoise( ofGetElapsedTimef() *2*speed + i*1.23 + j*2.34 )
 					* ofMap(squareIndex, 0, squareCount, 180, 0));
 
 				// noise scale  going to 1 when all squares are drawn
-				float scaleXY = 1 + ofSignedNoise( ofGetElapsedTimef() *1.f + i*7.89 + j*1.23) * ofMap(squareIndex, 0, squareCount, 2, 0);
+				float scaleXY = 1 + ofSignedNoise( ofGetElapsedTimef() *speed + i*7.89 + j*1.23) * ofMap(squareIndex, 0.75, squareCount, 15, 0);
 				ofScale( scaleXY, scaleXY, 1);
 
-				float xTrans = ofSignedNoise( ofGetElapsedTimef() *1.f + (i+j)*7.89) * ofMap(squareIndex, 0, squareCount, 100, 0);
-				float yTrans = ofSignedNoise( ofGetElapsedTimef() *1.f + (i-j)*4.56) * ofMap(squareIndex, 0, squareCount, 100, 0);
+				float xTrans = ofSignedNoise( ofGetElapsedTimef() *speed + (i+j)*7.89) * ofMap(squareIndex, 0, squareCount, 100, 0);
+				float yTrans = ofSignedNoise( ofGetElapsedTimef() *speed + (i-j)*4.56) * ofMap(squareIndex, 0, squareCount, 100, 0);
 				ofTranslate(xTrans, yTrans);
 
-				ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+                //ofSetColor(255);
+                
+                ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+                
+                /* squares outline
+                 
+                 ofSetColor(0);
+                ofLine(-squareSize/2,-squareSize/2, squareSize/2,-squareSize/2);
+                ofLine(squareSize/2,-squareSize/2, squareSize/2,squareSize/2);
+                ofLine(squareSize/2,squareSize/2,-squareSize/2,squareSize/2);
+                ofLine(-squareSize/2,squareSize/2,-squareSize/2,-squareSize/2);
+                */
 				ofPopMatrix();
 			}
 		}

@@ -390,8 +390,8 @@ void ofxTerrain::keyPressed(int key) {
 	case 'J': addHill(ofGetMouseX(),ofGetMouseY(),15); break;
 	case 'k': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
 	case 'C' : bSmallCursor = !bSmallCursor; break;
-    case 'm' : bSmallCursor = true; break;
-        case 'M' : bSmallCursor=false; break;
+        case 'm' : {bSmallCursor = true; ofHideCursor();} break;
+        case 'M' : { bSmallCursor=false; ofShowCursor();} break;
 	case 'd': {
 		//
 		ofApp *app = (ofApp *)ofxGetAppPtr();

@@ -69,6 +69,19 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxKinectListener(IntToString(i++)));												postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));												postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVasaCubeMesh(IntToString(i++)));                                            postEnabledByScene[i-1] = false;
+    /*
+     // Bellegarde (mac - front with kinect)
+     int i = 0;
+     sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
+     sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
+     sceneManager.add(new ofxRibbon(IntToString(i++)));
+     */
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)

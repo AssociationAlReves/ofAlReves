@@ -268,6 +268,8 @@ void ofxKinecticon::draw() {
 				reportStream << "accel is: " << ofToString(kinect.getMksAccel().x, 2) << " / "
 					<< ofToString(kinect.getMksAccel().y, 2) << " / "
 					<< ofToString(kinect.getMksAccel().z, 2) << endl;
+                reportStream << "accel is: pitch: " << ofToString(kinect.getAccelPitch(), 2) << " / roll: "
+                << ofToString(kinect.getAccelRoll(), 2) << endl;
 			} else {
 				reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
 					<< "motor / led / accel controls are not currently supported" << endl << endl;

@@ -40,10 +40,12 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 	noiseAmp2 = 0.15;
 	drawYLines = false;
 
+    mode = 3;
+    speedRate = 0;
+    
 	setupLineMesh(meshSize.x, meshSize.y, planeResolution);
 
-	mode = 3;
-	speedRate = 0;
+	
 
 
 }
@@ -350,14 +352,6 @@ void ofxTerrain::draw(){
 
 	ofEnableDepthTest();
 
-	if (bSmallCursor){
-		ofSetColor(ofColor::white);
-		ofSetLineWidth(2);
-		int lw = 1;
-		ofLine(mouseX-lw, mouseY,mouseX+lw, mouseY);
-		ofLine(mouseX, mouseY-lw,mouseX, mouseY+lw);
-	}
-
 	ofClear(ofColor::fromHex(0x00008C));
 
 	ofPushMatrix();
@@ -370,9 +364,9 @@ void ofxTerrain::draw(){
 	ofSetColor(ofColor::white); // draw text
 
 	if (bSmallCursor){
-		ofSetColor(ofColor::white);
+		ofSetColor(ofColor::red);
 		ofSetLineWidth(2);
-		int lw = 1;
+		int lw = 2;
 		ofLine(mouseX-lw, mouseY,mouseX+lw, mouseY);
 		ofLine(mouseX, mouseY-lw,mouseX, mouseY+lw);
 	}
@@ -393,7 +387,7 @@ void ofxTerrain::keyPressed(int key) {
 	case 'H': addHill(800,400,15); break;
 	case 'j': addHole(ofGetMouseX(),ofGetMouseY()); break;
 	case 'J': addHill(ofGetMouseX(),ofGetMouseY(),15); break;
-	case 'K': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
+	case 'k': addHill(ofGetMouseX(),ofGetMouseY(),5); break;
 	case 'C' : bSmallCursor = !bSmallCursor; break;
 	case 'B' : {
 		/*ofxPostProcessing postTerrain;
@@ -431,6 +425,9 @@ void ofxTerrain::keyPressed(int key) {
 		app->cam.setPosition(-200, -200.867, 208.106);
 
 			  } break;
+            
+        case 'm' : bSmallCursor = true; break;
+        case 'M' : bSmallCursor=false; break;
 
 	}
 

@@ -13,6 +13,13 @@
 #define VASA_HILL_MAX_AMP 0.1
 #define VASA_HILL_RADIUS 15
 
+#define VASA_TERRAIN_NORMAL 0
+#define VASA_TERRAIN_TOPLANE 1
+#define VASA_TERRAIN_STOPPED 2
+#define VASA_TERRAIN_PLANEMOVING 3
+
+#define VASA_TERRAIN_MINHOLE_DISTANCE 25.0
+
 
 #include "ofMain.h"
 #include "globals.h"
@@ -33,11 +40,19 @@ public:
     void draw();
 	void keyPressed(int key);
 
+	ofPoint lastHoleCoords;
     void addHole(int x, int y);
     void addHill(int x, int y, float radius);
     
-    int mode; // 0: normal, 1: to plane, 2: stop plane, 3: plane moving
-    
+
+private:
+	/*	0: VASA_TERRAIN_NORMAL, 
+		1: VASA_TERRAIN_TOPLANE
+		2: VASA_TERRAIN_STOPPED
+		3: VASA_TERRAIN_PLANEMOVING
+	*/
+    int mode; 
+
     int planeWidth;
     int planeHeight;
 
@@ -45,26 +60,29 @@ public:
 
     ofVboMesh mesh;
     
+	// Terrain scrolling
     double deltaX;
-    float sumDeltaX;
-    
+    float sumDeltaX;    
     double planeVelocity;
     float planeZscale;
-    float noiseScale;
-    float noiseSeed;
-    float noiseAmp;
-    
-    float noiseScale2;
-    float noiseSeed2;
-    float noiseAmp2;
-
+   
     ofFloatColor defaultColor;
 	bool bSmallCursor;
     
-private:
     bool drawYLines;
+
+	//____________________________________________
+	// Noise (little bumps)
     float genNoise(int x, int y);
     float genNoise2(int x, int y);
+	float noiseScale;
+	float noiseSeed;
+	float noiseAmp;
+
+	float noiseScale2;
+	float noiseSeed2;
+	float noiseAmp2;
+
     ofFloatColor getColor(float a);
     ofxEasingCubic tweenEasing;
     
@@ -76,6 +94,9 @@ private:
     vector<ofVec2f> hills;
     vector<float> hillsAmp;
     vector<float> hillsRadius;
+
+	ofVec2f lastCursor;
+	void updateCursor(ofVec2f position, bool direction);
     
     
     double speedRate;

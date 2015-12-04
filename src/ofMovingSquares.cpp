@@ -201,7 +201,7 @@ void ofMovingSquares::update(){
 		nextMode("time trigger");
 	}
 
-	gui->setVisible(ofxGetAppPtr()->isDebug());
+	//gui->setVisible(ofxGetAppPtr()->isDebug());
 
 
 }

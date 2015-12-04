@@ -26,7 +26,7 @@ void ofxVasaSquareField::setup(){
 	scaleFactorMIN = 0.1;
 	devAngleMIN = 0;
 
-	distRangeMAX = 800;
+	distRangeMAX = PROJECTOR_RESOLUTION_Y;
 	scaleFactorMAX = 1;
 	devAngleMAX = 90;
 
@@ -141,12 +141,12 @@ void ofxVasaSquareField::update(){
 		}
 
 	}
-	gui->setVisible(ofxGetAppPtr()->isDebug());
+	//gui->setVisible(ofxGetAppPtr()->isDebug());
 }
 
 //--------------------------------------------------------------
 void ofxVasaSquareField::draw(){
-
+	
 	ofDisableAlphaBlending();
 #ifdef VASA_SQUARE_DEBUG_SPIR
 	ofBackground(239,239,239,255);
@@ -158,7 +158,6 @@ void ofxVasaSquareField::draw(){
 	ofSetColor(255,alpha);
 #endif
 
-    
     float speed = 0.25f; //1.f;
 
 	ofPushMatrix();
@@ -307,6 +306,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
 	case 'r' : setup(); break;
+	case 'h': gui->toggleVisible(); break;
 	}
 }
 

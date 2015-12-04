@@ -212,7 +212,7 @@ void ofxTerrain::addHole(int x, int y){
 	// Causing 500+ holes and a bad lagging
 	if (currentCoords.distance(lastHoleCoords) > VASA_TERRAIN_MINHOLE_DISTANCE)
 	{
-		float nx = ofMap(x, 0, 1280, meshSize.x - planeWidth / planeResolution, meshSize.x);
+		float nx = ofMap(x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
 		holes.push_back(ofVec2f(nx, y / planeResolution));
 		holesAmp.push_back(0);
 		lastHoleCoords = currentCoords;
@@ -275,7 +275,7 @@ void ofxTerrain::updateHoles(){
 //--------------------------------------------------------------
 void ofxTerrain::addHill(int x, int y, float radius){
 
-	float nx = ofMap(x, 0, 1280, meshSize.x - planeWidth / planeResolution, meshSize.x);
+	float nx = ofMap(x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
 	hills.push_back(ofVec2f(nx, y / planeResolution));
 	hillsAmp.push_back(0);
 	hillsRadius.push_back(radius);
@@ -343,7 +343,7 @@ void ofxTerrain::updateHills(){
 //--------------------------------------------------------------
 void ofxTerrain::updateCursor(ofVec2f position, bool direction){
 
-	float nx = ofMap(position.x, 0, 1280, meshSize.x - planeWidth / planeResolution, meshSize.x);
+	float nx = ofMap(position.x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
 	ofVec2f pos = ofVec2f(nx, position.y / planeResolution);
 
 	float amp = 2;

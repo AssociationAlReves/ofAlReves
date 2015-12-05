@@ -14,9 +14,8 @@
 #define VASA_SQUARE_MODE_FULL_RND_ROTATION 0
 #define VASA_SQUARE_MODE_FULL_DIST_ROTATION 1
 #define VASA_SQUARE_SIZE 50 // 30
-#define VASA_SQUARE_ACTOR_RADIUS 2 // 1
+#define VASA_SQUARE_ACTOR_RADIUS 1.5 // 1
 
-//#define VASA_SQUARE_DEBUG_SPIR
 
 
 #include "ofMain.h"
@@ -28,8 +27,8 @@ class ofxVasaSquareField : public ofxFadeScene {
     
 public:
   	
-	ofxVasaSquareField(string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION) 
-		: mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
+	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION)
+		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(5000, 5000);
 			guiInitDone = false;
@@ -69,6 +68,10 @@ private:
 		
     int lastActorX;
     int lastActoxY;
+    
+    // if true then squares spawns with space key
+    // if false, all squares appears on startup
+    bool squareSpawn;
 
 	float distRange;	bool distRangeAuto;		float distRangeSpeed;		float distRangeMIN;		float distRangeMAX;	
 	float scaleFactor;	bool scaleFactorAuto;	float scaleFactorSpeed; 	float scaleFactorMIN;	float scaleFactorMAX;	

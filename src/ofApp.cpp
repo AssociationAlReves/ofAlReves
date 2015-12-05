@@ -65,7 +65,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinectListener(IntToString(i++)));												postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));												postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVasaCubeMesh(IntToString(i++)));                                            postEnabledByScene[i-1] = false;

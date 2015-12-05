@@ -86,24 +86,33 @@ void ofxVasaSquareField::setup(int width, int height, int squareSize){
 	rotDecay.clear();
 	actors.clear();
 
-	if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
-		rotSpeed.reserve(squareCount);
-		rotDecay.reserve(squareCount);
-		for (int j = 0; j<sizeY;j++)
-			for (int i = 0; i<sizeX;i++) {
-				randIndexes.push_back(ofVec2f(i,j));
-				float speed = 0; //ofRandom(1, VASA_SQUARE_SPEED);
-				rotMaxSpeed.push_back(speed);
-				rotSpeed.push_back(speed);
-				rotDecay.push_back(ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX));
-			}
-
-			// random index for square random appearance
+    if (mode == VASA_SQUARE_MODE_FULL_RND_ROTATION) {
+        rotSpeed.reserve(squareCount);
+        rotDecay.reserve(squareCount);
+        
+        
+        
+        
+        for (int j = 0; j<sizeY;j++)
+            for (int i = 0; i<sizeX;i++) {
+                randIndexes.push_back(ofVec2f(i,j));
+                float speed = 0; //ofRandom(1, VASA_SQUARE_SPEED);
+                rotMaxSpeed.push_back(speed);
+                rotSpeed.push_back(speed);
+                rotDecay.push_back(ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX));
+            }
+        
+        // random index for square random appearance
         ofSeedRandom(1234);
-			ofRandomize(randIndexes);
-			squareIndex = 0;
-			squareAutoComplete = false;
-	}
+        ofRandomize(randIndexes);
+        squareAutoComplete = false;
+        if (squareSpawn)
+        {
+            squareIndex = 0;
+        } else {
+            squareIndex = squareCount;
+        }
+    }
 
 }
 
@@ -148,15 +157,11 @@ void ofxVasaSquareField::update(){
 void ofxVasaSquareField::draw(){
 	
 	ofDisableAlphaBlending();
-#ifdef VASA_SQUARE_DEBUG_SPIR
-	ofBackground(239,239,239,255);
-	ofNoFill();
-	ofSetColor(255,255,255,255);
-#else
+
 	ofSetColor(0,alpha);ofFill();
 	ofRect(0,0,0,ofGetWidth(),ofGetHeight());
 	ofSetColor(255,alpha);
-#endif
+
 
     float speed = 0.25f; //1.f;
 

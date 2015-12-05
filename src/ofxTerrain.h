@@ -10,8 +10,8 @@
 #define VASA_HOLE_MAX_AMP 5
 #define VASA_HOLE_RADIUS 3
 
-#define VASA_HILL_MAX_AMP 0.1
-#define VASA_HILL_RADIUS 15
+#define VASA_HILL_MAX_AMP 0.35
+#define VASA_HILL_RADIUS 15.0
 
 #define VASA_TERRAIN_NORMAL 0
 #define VASA_TERRAIN_TOPLANE 1
@@ -70,6 +70,9 @@ private:
 	bool bSmallCursor;
     
     bool drawYLines;
+    
+    void addHill_internal(float x, float y, float radius);
+
 
 	//____________________________________________
 	// Noise (little bumps)

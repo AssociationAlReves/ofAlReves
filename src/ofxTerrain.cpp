@@ -75,13 +75,17 @@ void ofxTerrain::setupLineMesh(int width, int height, int segmentLength){
 		for (int y = 0; y < height; y++) {
 
 			if (mode == VASA_TERRAIN_NORMAL || mode == VASA_TERRAIN_STOPPED) {
-				float noiseValue = genNoise(x, y);
+                float noiseValue = genNoise(x, y);
 				heightMap.push_back(noiseValue);
 			}
 			else
 			{
-				float noiseValue = 1 - noiseAmp2 + genNoise2(x, y); // background noise only
+                float noiseValue = genNoise2(x, y); // background noise only
 				heightMap.push_back(noiseValue);
+//                float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
+//                if (noiseValue>0.99)
+//                {addHill(x, y, 5);}
+//                heightMap.push_back(0);
 			}
 		}
 	}
@@ -128,14 +132,15 @@ float ofxTerrain::genNoise(int x, int y){
 
 //--------------------------------------------------------------
 float ofxTerrain::genNoise2(int x, int y){
-	float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
-	if (noiseValue > 0.9) {
-		noiseValue *= noiseAmp2;
-	}
-	else {
-		noiseValue = 0;
-	}
-	return noiseValue;
+    
+    float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
+    if (noiseValue > 0.9) {
+        noiseValue *= noiseAmp2;
+    }
+    else {
+        noiseValue = 0;
+    }
+    return 1 - noiseAmp2 + noiseValue;
 }
 
 //--------------------------------------------------------------
@@ -157,7 +162,7 @@ void ofxTerrain::meshAppendX(int segmentLength, int numSegments){
 			case 1:
 			case 3:
 			{
-				float noiseValue = 1 - noiseAmp2 + genNoise2(x, y); // background noise only
+				float noiseValue = genNoise2(x, y); // background noise only
 				heightMap.push_back(noiseValue);
 			}
 			break;
@@ -276,9 +281,17 @@ void ofxTerrain::updateHoles(){
 void ofxTerrain::addHill(int x, int y, float radius){
 
 	float nx = ofMap(x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
-	hills.push_back(ofVec2f(nx, y / planeResolution));
-	hillsAmp.push_back(0);
-	hillsRadius.push_back(radius);
+//	hillsAmp.push_back(0);
+//	hillsRadius.push_back(radius);
+    addHill_internal(nx, y / planeResolution, radius);
+}
+
+//--------------------------------------------------------------
+void ofxTerrain::addHill_internal(float x, float y, float radius){
+    
+    hills.push_back(ofVec2f(x, y));
+    hillsAmp.push_back(0);
+    hillsRadius.push_back(radius);
 }
 
 //--------------------------------------------------------------
@@ -289,11 +302,13 @@ void ofxTerrain::updateHills(){
 		ofVec2f pos = hills[i];
 		float amp = hillsAmp[i];
 		float ampTween = ofxTween::map(amp, 0, VASA_HILL_MAX_AMP, 0, VASA_HILL_MAX_AMP, true, tweenEasing, ofxTween::easeInOut);
+        float hillRadius = hillsRadius[i];
 
-		if (amp > VASA_HILL_MAX_AMP)
+		if (amp > hillRadius * VASA_HILL_MAX_AMP / VASA_HILL_RADIUS) // Hil
 		{
 			hills.erase(hills.begin() + i);
 			hillsAmp.erase(hillsAmp.begin() + i);
+            hillsRadius.erase(hillsRadius.begin() + i);
 			i--;
 			continue;
 		}
@@ -301,8 +316,7 @@ void ofxTerrain::updateHills(){
 		//   (coef d'amplitude)   x  exp^(  (Distance x coef d'ouverture) ^2)
 		int xFrom = pos.x;
 		int yFrom = pos.y;
-		float hillRadius = hillsRadius[i];
-		float radius = hillRadius*hillRadius;
+        float radius = hillRadius*hillRadius;
 
 		float xMin = ofClamp(xFrom - hillRadius, 0, meshSize.x);
 		float xMax = ofClamp(xFrom + hillRadius, 0, meshSize.x);
@@ -466,8 +480,8 @@ void ofxTerrain::keyPressed(int key) {
 	case 'h': addHole(800, 400); break;
 	case 'H': addHill(800, 400, 15); break;
 	case 'j': addHole(ofGetMouseX(), ofGetMouseY()); break;
-	case 'J': addHill(ofGetMouseX(), ofGetMouseY(), 15); break;
-	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), 5); break;
+	case 'J': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS); break;
+	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/3.0); break;
 	case 'c': bSmallCursor = !bSmallCursor; break;
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;

@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofxBgScene::setup(){
     bBlue = true;
+    bBackground = false;
 }
 
 //--------------------------------------------------------------
@@ -16,9 +17,19 @@ void ofxBgScene::draw(){
     ofColor endColor;
 
     if (bBlue){
+        if (bBackground) {
+           ofClear(ofColor::red);
+        } else {
+            ofClear(255);
+        }
         startColor = ofColor(0, 140, 255);
         endColor = ofColor(0, 51, 255);
     } else {
+        if (bBackground) {
+            ofClear(ofColor(0, 0, 255));
+        } else {
+            ofClear(255);
+        }
         startColor = ofColor::orange;
         endColor = ofColor::orangeRed;
     }
@@ -47,7 +58,8 @@ void ofxBgScene::keyPressed(int key){
     {
         case ' ' : clear(); break;
         case 'r': setup(); break;
-        case 'c' : bBlue = !bBlue;
+        case 'c' : bBlue = !bBlue; break;
+        case 'b' : bBackground = !bBackground; break;
         default:
             break;
     }

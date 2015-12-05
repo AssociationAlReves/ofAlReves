@@ -46,6 +46,7 @@ private:
     float sHeight;
     
     bool bBlue;
+    bool bBackground;
     
     // transitions
     ofxTween tween;

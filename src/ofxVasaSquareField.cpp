@@ -266,11 +266,13 @@ void ofxVasaSquareField::addActor(int x, int y){
 	int radius = VASA_SQUARE_ACTOR_RADIUS;
 	for (int j = ofClamp(y-radius, 0, sizeY); j<ofClamp(y+radius, 0, sizeY);j++)
 		for (int i = ofClamp(x-radius, 0, sizeX); i<ofClamp(x+radius, 0, sizeX);i++) {
-			float speed = ofRandom(1, VASA_SQUARE_SPEED);
-			rotMaxSpeed[i*sizeY+j] = speed;
-			rotSpeed[i*sizeY+j] = speed;
-			rotDecay[i*sizeY+j] = ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX);
-		}
+            if (ofDist(x,y,i,j) <= radius) { // distance check (better for having a round displacement shape instead of a squared shape)
+                float speed = ofRandom(1, VASA_SQUARE_SPEED);
+                rotMaxSpeed[i*sizeY+j] = speed;
+                rotSpeed[i*sizeY+j] = speed;
+                rotDecay[i*sizeY+j] = ofMap(ofNoise(i, j),0,1,VASA_SQUARE_DECAY_MIN,VASA_SQUARE_DECAY_MAX) ;// * ofRandom(VASA_SQUARE_DECAY_MIN, VASA_SQUARE_DECAY_MAX);
+            }
+        }
 }
 
 //--------------------------------------------------------------

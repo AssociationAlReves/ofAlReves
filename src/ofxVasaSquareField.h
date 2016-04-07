@@ -9,12 +9,12 @@
 
 #define VASA_SQUARE_PADDING_FACTOR 0.25
 #define VASA_SQUARE_DECAY_MIN 0.97  //0.97
-#define VASA_SQUARE_DECAY_MAX 0.98 // 0.985
-#define VASA_SQUARE_SPEED 75
+#define VASA_SQUARE_DECAY_MAX 0.985 // 0.98
+#define VASA_SQUARE_SPEED 75 //75
 #define VASA_SQUARE_MODE_FULL_RND_ROTATION 0
 #define VASA_SQUARE_MODE_FULL_DIST_ROTATION 1
 #define VASA_SQUARE_SIZE 50 // 30
-#define VASA_SQUARE_ACTOR_RADIUS 1.5 // 1
+#define VASA_SQUARE_ACTOR_RADIUS 3 // 1
 
 
 
@@ -27,7 +27,7 @@ class ofxVasaSquareField : public ofxFadeScene {
     
 public:
   	
-	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION)
+	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_DIST_ROTATION)
 		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(5000, 5000);

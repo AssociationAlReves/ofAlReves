@@ -8,7 +8,7 @@ void ofxKinecticon::setup(){
 	kinectEnabled = true;
 	bKinectUseBg = true;
 	bKinectSetup = true;
-	bKinectAltColor = false;
+	bKinectAltColor = true;
 	kinectMeshCurColor = 0;
 
 	kinectMeshColors.push_back(ofColor::fromHex(0x0000FF));
@@ -353,28 +353,28 @@ void ofxKinecticon::keyPressed(int key){
 			bKinectUseBg = !bKinectUseBg;
 			break;
 
-			//        case '>':
-			//        case '.':
-			//            farThreshold ++;
-			//            if (farThreshold > 255) farThreshold = 255;
-			//            break;
-			//            
-			//        case '<':
-			//        case ',':
-			//            farThreshold --;
-			//            if (farThreshold < 0) farThreshold = 0;
-			//            break;
-			//            
-			//        case '+':
-			//        case '=':
-			//            nearThreshold ++;
-			//            if (nearThreshold > 255) nearThreshold = 255;
-			//            break;
-			//            
-			//        case '-':
-			//            nearThreshold --;
-			//            if (nearThreshold < 0) nearThreshold = 0;
-			//            break;
+			        case '>':
+			        case '.':
+			            farThreshold ++;
+			            if (farThreshold > 255) farThreshold = 255;
+			            break;
+			            
+			        case '<':
+			        case ',':
+			            farThreshold --;
+			            if (farThreshold < 0) farThreshold = 0;
+			            break;
+			            
+			        case '+':
+			        case '=':
+			            nearThreshold ++;
+			            if (nearThreshold > 255) nearThreshold = 255;
+			            break;
+			            
+			        case '-':
+			            nearThreshold --;
+			            if (nearThreshold < 0) nearThreshold = 0;
+			            break;
 
 		case 'w':
 			kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
@@ -387,6 +387,15 @@ void ofxKinecticon::keyPressed(int key){
 		case 'c':
 			bKinectAltColor = !bKinectAltColor;
 			break;
+                
+        case 'C':
+            kinect.setCameraTiltAngle(0); // zero the tilt on exit
+            kinect.close();
+            break;
+        case 'O':
+                kinect.open();
+                kinect.setCameraTiltAngle(angle);
+                break;
 
 		case 'd':
 			bKinectSetup = !bKinectSetup;

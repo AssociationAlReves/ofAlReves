@@ -112,6 +112,7 @@ void ofApp::setupSceneManager() {
 	// Bellegarde (PC - top without kinect)
 
 	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	oceanScene = (ofxOcean*)sceneManager.add(new ofxOcean(IntToString(i++)));									postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));											postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVasaSquareField(false,IntToString(i++)));			postEnabledByScene[i - 1] = false;
@@ -223,9 +224,6 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
-    if (sceneManager.getCurrentScene() == oceanScene ) {
-        oceanScene->keyPressed(key);
-    }
     
 	switch (key) {
 

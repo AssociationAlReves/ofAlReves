@@ -7,10 +7,13 @@
 //
 
 #include "ofxOcean.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofxOcean::setup(){
     
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.reset();
     // turn on smooth lighting //
     smoothLighting     = true;
     ofSetSmoothLighting(true);
@@ -43,7 +46,7 @@ void ofxOcean::setup(){
     gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
     gui.add(filled.set("bFill", true));
     gui.add(useLights.set("Use lights", true));
-    gui.add(smoothLighting.set("Smooth Lighting", true));
+    gui.add(smoothLighting.set("Smooth Lighting", false));
     gui.add(usePointLight.set("usePointLight", false));
     gui.add(useDirLight.set("useDirLight", true));
     gui.add(useMaterial.set("useMaterial", true));
@@ -234,6 +237,8 @@ void ofxOcean::update(){
 
 //--------------------------------------------------------------
 void ofxOcean::draw(){
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.end();
 
     ofEnableDepthTest();
     ofEnableAlphaBlending();
@@ -256,7 +261,7 @@ void ofxOcean::draw(){
     
     
 
-    
+	app->cam.begin();
     
     ofPushMatrix();
     ofTranslate(-width/2, -height/2, -500);
@@ -274,7 +279,8 @@ void ofxOcean::draw(){
     }
     
     ofPopMatrix();
-    
+
+	app->cam.end();
     
     if (useLights) {
         // activate the lights //
@@ -292,6 +298,7 @@ void ofxOcean::draw(){
         ofDisableDepthTest();
         gui.draw();
     }
+	app->cam.begin();
 }
 
 
@@ -335,15 +342,20 @@ void ofxOcean::setNormals( ofMesh &mesh ){
 void ofxOcean::keyPressed(int key){
     if( key == 'h' ){
         bShowGui = !bShowGui;
+		ofApp *app = (ofApp *)ofxGetAppPtr();
+		if (bShowGui){			
+			app->cam.disableMouseInput();
+		}
+		else {
+			app->cam.enableMouseInput();
+		}
     }
+
     if(key == 's') {
         gui.saveToFile("settings.xml");
     }
     if(key == 'l') {
         gui.loadFromFile("settings.xml");
-    }
-    if(key == 'f') {
-        ofToggleFullscreen();
     }
    
 }

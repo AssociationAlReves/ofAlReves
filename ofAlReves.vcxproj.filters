@@ -409,6 +409,9 @@
     <ClCompile Include="src\ofxBgScene.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxOcean.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1272,6 +1275,9 @@
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxBgScene.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxOcean.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -445,6 +445,7 @@ void ofxTerrain::update(){
 void ofxTerrain::draw(){
 
 	ofEnableDepthTest();
+    ofEnableAlphaBlending();
 
 	ofClear(ofColor::fromHex(0x00008C));
 
@@ -481,7 +482,7 @@ void ofxTerrain::keyPressed(int key) {
 	case 'H': addHill(800, 400, 15); break;
 	case 'j': addHole(ofGetMouseX(), ofGetMouseY()); break;
 	case 'J': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS); break;
-	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/3.0); break;
+	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/2.0); break;
 	case 'c': bSmallCursor = !bSmallCursor; break;
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;

@@ -61,26 +61,40 @@ void ofApp::setupSceneManager() {
 
 #if __APPLE__
 	int i = 0;
-
-    /*  Katia
-     *  Spectacle A1
-     *  Vendredi 08/04/16
-     */
-    sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
-    oceanScene = (ofxOcean*) sceneManager.add(new ofxOcean(IntToString(i++)));
-    sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
+//
+//    /*  Katia
+//     *  Spectacle A1
+//     *  Vendredi 08/04/16
+//     */
+//    sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
+//    
+//    /*  Katia
+//     *  Spectacle A2
+//     *  Vendredi 08/04/16
+//     */
+//    sceneManager.add(new ofxVideoScene("lamer-long.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxVideoScene("russie.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxVideoScene("savane.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxVasaSquareField(true, IntToString(i++)));                           postEnabledByScene[i-1] = false;
+//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
     
     /*  Katia
-     *  Spectacle A2
-     *  Vendredi 08/04/16
+     *  Spectacle B
+     *  Vendredi 14/04/16
      */
-    sceneManager.add(new ofxVideoScene("lamer-long.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("russie.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+        sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
+
+    sceneManager.add(new ofxVideoScene("KatiaDiapo.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
+    oceanScene = (ofxOcean*) sceneManager.add(new ofxOcean(IntToString(i++)));postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVideoScene("savane.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVasaSquareField(true, IntToString(i++)));                           postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
+    
+    
     
     /*
     // Vasarely (mac - front with kinect)

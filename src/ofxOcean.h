@@ -20,7 +20,7 @@ class ofxOcean : public ofxScene
 public:
      ofxOcean(string prefix = "scene") :
      ofxScene(prefix + ": " + "Ocean") {
-         setSingleSetup(false); // call setup each time the scene is loaded
+         setSingleSetup(true); // call setup each time the scene is loaded
      }
     void setup();
     void update();

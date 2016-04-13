@@ -10,7 +10,7 @@
 #define VASA_HOLE_MAX_AMP 5
 #define VASA_HOLE_RADIUS 3
 
-#define VASA_HILL_MAX_AMP 0.35
+#define VASA_HILL_MAX_AMP 0.2  
 #define VASA_HILL_RADIUS 15.0
 
 #define VASA_TERRAIN_NORMAL 0
@@ -31,7 +31,7 @@ class ofxTerrain : public ofxScene {
 public:
     
     ofxTerrain(string prefix = "scene") : ofxScene(prefix + ": " + "Terrain"){
-			setSingleSetup(false); // call setup each time the scene is loaded
+			setSingleSetup(true); // call setup each time the scene is loaded
 		}
     
 	void setup();

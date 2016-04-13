@@ -32,6 +32,7 @@
 		2521C7C21B3C788600DD4394 /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */; };
 		2521C7C31B3C788600DD4394 /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */; };
 		255A7B680DC81E543C875794 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 28F9707464BA3FF98E05096C /* usb_libusb10.c */; };
+		25878B601CBEF2430068D9B0 /* ofxOcean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */; settings = {ASSET_TAGS = (); }; };
 		25B5C9AE1B4DCE2100E08D09 /* ofxKinectListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25B5C9AC1B4DCE2100E08D09 /* ofxKinectListener.cpp */; };
 		25BE30A41B57E3A100A59A5E /* ofxVasaCubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25BE30A21B57E3A100A59A5E /* ofxVasaCubeMesh.cpp */; };
 		25CED43D1B46CD8E0038EB95 /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25CED43B1B46CD8E0038EB95 /* ofxBgScene.cpp */; };
@@ -262,6 +263,8 @@
 		2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoScene.cpp; sourceTree = "<group>"; };
 		2521C7C11B3C788600DD4394 /* ofxVideoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoScene.h; sourceTree = "<group>"; };
 		2556100026B425E8370BCF75 /* ofxUICircleSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUICircleSlider.cpp; path = ../../../addons/ofxUI/src/ofxUICircleSlider.cpp; sourceTree = SOURCE_ROOT; };
+		25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOcean.cpp; sourceTree = "<group>"; };
+		25878B5F1CBEF2430068D9B0 /* ofxOcean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOcean.h; sourceTree = "<group>"; };
 		25B5C9AC1B4DCE2100E08D09 /* ofxKinectListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinectListener.cpp; sourceTree = "<group>"; };
 		25B5C9AD1B4DCE2100E08D09 /* ofxKinectListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinectListener.h; sourceTree = "<group>"; };
 		25BE30A21B57E3A100A59A5E /* ofxVasaCubeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVasaCubeMesh.cpp; sourceTree = "<group>"; };
@@ -827,6 +830,8 @@
 		2521C7C41B3CA6E100DD4394 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */,
+				25878B5F1CBEF2430068D9B0 /* ofxOcean.h */,
 				25B5C9AC1B4DCE2100E08D09 /* ofxKinectListener.cpp */,
 				25B5C9AD1B4DCE2100E08D09 /* ofxKinectListener.h */,
 				250B7A4D1B4498A600F4AC6E /* ofxRibbon.cpp */,
@@ -1753,6 +1758,7 @@
 				6E062274743F6716A9AD4395 /* ofxEasingElastic.cpp in Sources */,
 				59EEACB88F062457FF86492C /* ofxEasingExpo.cpp in Sources */,
 				152EAECABD008D84AF7F27F8 /* ofxEasingLinear.cpp in Sources */,
+				25878B601CBEF2430068D9B0 /* ofxOcean.cpp in Sources */,
 				6D7B53ED56654ABBF2FF13B1 /* ofxEasingQuad.cpp in Sources */,
 				85A41526FDFA1A8CDAEE81F7 /* ofxEasingQuart.cpp in Sources */,
 				7E769097DE6561633305B24C /* ofxEasingQuint.cpp in Sources */,

@@ -67,6 +67,7 @@ void ofApp::setupSceneManager() {
      *  Vendredi 08/04/16
      */
     sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
+    oceanScene = (ofxOcean*) sceneManager.add(new ofxOcean(IntToString(i++)));
     sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
@@ -222,6 +223,10 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
+    if (sceneManager.getCurrentScene() == oceanScene ) {
+        oceanScene->keyPressed(key);
+    }
+    
 	switch (key) {
 
 	case 'e': cam.disableMouseInput(); break;

@@ -5,6 +5,7 @@
 #include "ofxAppUtils.h"
 #include "globals.h"
 #include "ofxPostProcessing.h"
+#include "ofxOcean.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project
@@ -41,6 +42,8 @@ public:
 	// handles the scenes
 	ofxSceneManager sceneManager;
 
+    ofxOcean *oceanScene;
+    
 	ofEasyCam cam;
     
     ofxPostProcessing post;

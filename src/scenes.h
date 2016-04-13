@@ -10,6 +10,7 @@
 #include "ofxRibbon.h"
 #include "ofxBgScene.h"
 #include "ofxVasaCubeMesh.h"
+#include "ofxOcean.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #include "ofxKinectListener.h"

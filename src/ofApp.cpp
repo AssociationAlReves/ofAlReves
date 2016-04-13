@@ -68,6 +68,7 @@ void ofApp::setupSceneManager() {
      */
     sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
     
     /*  Katia
@@ -77,7 +78,7 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofxVideoScene("lamer-long.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVideoScene("russie.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxVideoScene("savane.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));                           postEnabledByScene[i-1] = false;
+    sceneManager.add(new ofxVasaSquareField(true, IntToString(i++)));                           postEnabledByScene[i-1] = false;
     sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
     
     /*

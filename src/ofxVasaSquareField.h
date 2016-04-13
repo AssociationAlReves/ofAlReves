@@ -27,7 +27,7 @@ class ofxVasaSquareField : public ofxFadeScene {
     
 public:
   	
-	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_DIST_ROTATION)
+	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION)
 		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(5000, 5000);

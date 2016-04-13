@@ -114,7 +114,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));											postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaSquareField(IntToString(i++)));			postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVasaSquareField(false,IntToString(i++)));			postEnabledByScene[i - 1] = false;
 
 	/*sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));											postEnabledByScene[i-1] = false;

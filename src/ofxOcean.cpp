@@ -14,6 +14,11 @@ void ofxOcean::setup(){
     
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
+    
+    app->cam.lookAt(ofVec3f(0.151753, 0.923233, -0.353005));
+    app->cam.setPosition(ofVec3f(-600.906, -3368.04, 538.046));
+    
+    
     // turn on smooth lighting //
     smoothLighting     = true;
     ofSetSmoothLighting(true);
@@ -83,7 +88,7 @@ void ofxOcean::setup(){
     materialParams.add(matEmissiveColor.set("matEmissiveColor", ofFloatColor(0, 0.540816, 1, 1), ofFloatColor(0,0,0,0),ofColor::white));
     materialParams.add(matAmbientColor.set("matAmbientColor", ofFloatColor(0, 0.55102, 1, 1), ofFloatColor(0,0,0,0),ofColor::white));
     gui.add(materialParams);
-    bShowGui = true;
+    bShowGui = false;
     
 }
 
@@ -231,7 +236,11 @@ void ofxOcean::update(){
     material.setShininess(shininess);
     material.setColors(matDiffuseColor, matAmbientColor, matSpecularColor, matEmissiveColor);
     
+    ofApp *app = (ofApp *)ofxGetAppPtr();
+
+    cout << "llokAt" << app->cam.getLookAtDir() << endl;
     
+    cout << "pos" << app->cam.getPosition() << endl;
     
 }
 
@@ -240,6 +249,7 @@ void ofxOcean::draw(){
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
 
+    ofBackgroundGradient(ofColor::fromHex(0xFFFFFF), ofColor::fromHex(0x82CAFF));
     ofEnableDepthTest();
     ofEnableAlphaBlending();
     
@@ -262,6 +272,10 @@ void ofxOcean::draw(){
     
 
 	app->cam.begin();
+    
+    
+    app->cam.setFarClip(100000);
+
     
     ofPushMatrix();
     ofTranslate(-width/2, -height/2, -500);
@@ -340,22 +354,31 @@ void ofxOcean::setNormals( ofMesh &mesh ){
 
 //--------------------------------------------------------------
 void ofxOcean::keyPressed(int key){
+    ofApp *app = (ofApp *)ofxGetAppPtr();
+
+    
     if( key == 'h' ){
         bShowGui = !bShowGui;
-		ofApp *app = (ofApp *)ofxGetAppPtr();
-		if (bShowGui){			
+				if (bShowGui){
 			app->cam.disableMouseInput();
 		}
 		else {
 			app->cam.enableMouseInput();
 		}
     }
-
+    if (key =='<') {
+        waveHeight -= 10;
+        waveHeight = ofClamp(waveHeight, 0, 500);
+    }
+    if (key =='>') {
+        waveHeight += 10;
+    }
     if(key == 's') {
         gui.saveToFile("settings.xml");
     }
     if(key == 'l') {
         gui.loadFromFile("settings.xml");
+        
     }
    
 }

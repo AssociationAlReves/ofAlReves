@@ -22,7 +22,7 @@ void ofxBgScene::draw(){
         } else {
             ofClear(255);
         }
-        startColor = ofColor(0, 140, 255);
+        startColor = ofColor(0, 200, 255);
         endColor = ofColor(0, 51, 255);
     } else {
         if (bBackground) {
@@ -30,16 +30,22 @@ void ofxBgScene::draw(){
         } else {
             ofClear(255);
         }
-        startColor = ofColor::orange;
-        endColor = ofColor::orangeRed;
+        startColor = ofColor::orangeRed;
+        endColor = ofColor::orangeRed; //ofColor::orangeRed;
     }
+    
+    if (bAnimate) {
 	ofColor cs; cs.setHsb(startColor.getHue() + (ofSignedNoise(ofGetElapsedTimef()*0.29 -0.896)) * 22
                           , startColor.getSaturation()
                           , startColor.getBrightness());
     ofColor ce; ce.setHsb(endColor.getHue() + (ofSignedNoise(ofGetElapsedTimef()*0.19 +7.12)) * 22
                           , endColor.getSaturation()
                           , endColor.getBrightness());
-    ofBackgroundGradient(cs, ce);
+        
+        ofBackgroundGradient(cs, ce);
+    } else {
+        ofBackgroundGradient(startColor, startColor);
+    }
 }
 
 //--------------------------------------------------------------

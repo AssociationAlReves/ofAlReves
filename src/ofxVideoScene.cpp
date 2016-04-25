@@ -8,7 +8,10 @@ void ofxVideoScene::setup(){
 	player.loadMovie(fileName);
 	player.play();
 	player.setVolume(0);
-	aspectRatio = player.getWidth()/player.getHeight();
+    if (!autoLoop) {
+        player.setLoopState(OF_LOOP_NONE);
+    }
+    aspectRatio = player.getWidth()/player.getHeight();
 	if (autoPlay == false) {
 		player.stop();
 	}

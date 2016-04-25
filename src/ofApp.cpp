@@ -123,14 +123,8 @@ void ofApp::setupSceneManager() {
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
 
-	 sceneManager.add(new ofxBgScene(false,IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxSquareScreen(IntToString(i++),false));											postEnabledByScene[i-1] = true;
-	 sceneManager.add(new ofxVideoScene("Aroundcut.mp4", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux1.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux2.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux3.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux4.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxVasaSquareField(true,IntToString(i++)));											postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxBgScene(false,IntToString(i++)));												postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i-1] = false;
 
 	/*sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));											postEnabledByScene[i-1] = false;

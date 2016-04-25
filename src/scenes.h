@@ -11,6 +11,7 @@
 #include "ofxBgScene.h"
 #include "ofxVasaCubeMesh.h"
 #include "ofxOcean.h"
+#include "ofxCity.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #include "ofxKinectListener.h"

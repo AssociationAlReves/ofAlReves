@@ -32,6 +32,7 @@ public:
     
     ofxTerrain(string prefix = "scene") : ofxScene(prefix + ": " + "Terrain"){
 			setSingleSetup(false); // call setup each time the scene is loaded
+			setSingleSetup(true); // call setup each time the scene is loaded
 		}
     
 	void setup();

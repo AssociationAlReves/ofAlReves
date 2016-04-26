@@ -4,6 +4,8 @@
 //--------------------------------------------------------------
 void ofxCity::setup(){
 
+	roads.clear();
+
 	roadParamsHash = 0;
 	gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
 	gui.add(bWireframe.set("Wireframe", false));
@@ -20,6 +22,8 @@ void ofxCity::setup(){
 	bShowGui = false;
 
 	setupTextures();
+
+	setupRoad();
 }
 
 //--------------------------------------------------------------
@@ -34,12 +38,25 @@ void ofxCity::setupTextures(){
 	float lineWidth = ofMap(roadLineWidth, 0, 100, 0, roadTexWidth, true);
 	float lineHeight = ofMap(roadLineHeight, 0, 100, 0, roadTexHeight, true);
 	ofRect((roadTexWidth - lineWidth) / 2.0, (roadTexHeight - lineHeight) / 2.0, 0
-			, lineWidth, lineHeight);
+		, lineWidth, lineHeight);
 
 	fboRoad.end();
 
 	texRoad = fboRoad.getTextureReference();
 }
+
+//--------------------------------------------------------------
+void ofxCity::setupRoad(){
+
+	for (int i=0; i < 100; i++) {
+		ofPlanePrimitive plane = ofPlanePrimitive(roadTexWidth, roadTexHeight, 2, 2);
+		plane.resizeToTexture( texRoad );
+		plane.rotate(90, 1, 0, 0);
+		plane.setPosition(0,0,-roadTexHeight * i);
+		roads.push_back(plane);
+	}
+}
+
 
 //--------------------------------------------------------------
 void ofxCity::update(){
@@ -55,38 +72,53 @@ void ofxCity::update(){
 //--------------------------------------------------------------
 void ofxCity::draw(){
 	
+
 	ofEnableAlphaBlending();
 	ofBackground(255,255,255,255);
+	ofPushMatrix();
 
-	//ofNoFill();
-	//ofSetColor(ofColor::red, 255);
-	//fboRoad.draw(500,500,100,100);
-	ofSetColor(255);
-	plane.set(100,100);
-	plane.setResolution(3,3);
-	plane.resizeToTexture( texRoad );
-	plane.setPosition(100,100, 0);
-	texRoad.bind();
+	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+	ofTranslate(0, 20);
 
-	if (bWireframe)
-	{
-		plane.drawWireframe();
+
+	for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
+		ofPlanePrimitive plane = *planeIt;
+
+
+		ofSetColor(255);	
+		texRoad.bind();
+
+
+		if (bWireframe)
+		{
+			plane.drawWireframe();
+		}
+		else
+		{
+			plane.draw();
+		}
+
+
+		texRoad.unbind();
 	}
-	else
-	{
-		plane.draw();
-	}
 
-	texRoad.unbind();
+
 
 	//ofFill();
-
+	ofDrawAxis(50);
 	ofDisableAlphaBlending();
-
+	
+	
+	ofPopMatrix();
+	
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.end();
 	if (bShowGui) {
 		ofDisableDepthTest();
 		gui.draw();
 	}
+	app->cam.begin();
+
 }
 
 //--------------------------------------------------------------

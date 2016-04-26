@@ -32,8 +32,9 @@ public:
 private:
 
 	void setupTextures();
+	void setupRoad();
 
-	ofPlanePrimitive plane;
+	vector<ofPlanePrimitive> roads;
 	ofFbo fboRoad;
 	ofTexture texRoad;
 

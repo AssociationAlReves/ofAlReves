@@ -4,17 +4,37 @@
 //--------------------------------------------------------------
 void ofxCity::setup(){
 
+	roadParamsHash = 0;
 	gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
-    gui.add(bWireframe.set("Wireframe", false));	
-    bShowGui = false;
+	gui.add(bWireframe.set("Wireframe", false));
+	roadParams.setName("Road params");
+	roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
+	roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
+	roadParams.add(roadLineWidth.set("Road line width %", 10,1,100));
+	roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
+	roadParams.add(roadWidth.set("Road width", 100,10,1000));
+	roadParams.add(roadHeight.set("Road height", 100,10,1000));
 
-	fboRoad.allocate(100,100);
+	gui.add(roadParams);
+
+	bShowGui = false;
+
+	setupTextures();
+}
+
+//--------------------------------------------------------------
+void ofxCity::setupTextures(){
+
+	fboRoad.allocate(roadTexWidth,roadTexHeight);
 	fboRoad.begin();
 
 	ofBackground(ofColor::darkSlateGray);
 	ofSetColor(ofColor::white);
 	ofFill();
-	ofRect(47,25,0,6,50);
+	float lineWidth = ofMap(roadLineWidth, 0, 100, 0, roadTexWidth, true);
+	float lineHeight = ofMap(roadLineHeight, 0, 100, 0, roadTexHeight, true);
+	ofRect((roadTexWidth - lineWidth) / 2.0, (roadTexHeight - lineHeight) / 2.0, 0
+			, lineWidth, lineHeight);
 
 	fboRoad.end();
 
@@ -23,17 +43,20 @@ void ofxCity::setup(){
 
 //--------------------------------------------------------------
 void ofxCity::update(){
+	int hash = roadWidth ^ roadHeight ^ roadLineWidth ^ roadLineHeight ^ roadTexWidth ^ roadTexHeight;
+	if (hash != roadParamsHash)
+	{
+		setupTextures();
 
+		roadParamsHash = hash;
+	}
 }
 
 //--------------------------------------------------------------
 void ofxCity::draw(){
-
 	
-
 	ofEnableAlphaBlending();
 	ofBackground(255,255,255,255);
-
 
 	//ofNoFill();
 	//ofSetColor(ofColor::red, 255);
@@ -60,10 +83,10 @@ void ofxCity::draw(){
 
 	ofDisableAlphaBlending();
 
-	 if (bShowGui) {
-        ofDisableDepthTest();
-        gui.draw();
-    }
+	if (bShowGui) {
+		ofDisableDepthTest();
+		gui.draw();
+	}
 }
 
 //--------------------------------------------------------------

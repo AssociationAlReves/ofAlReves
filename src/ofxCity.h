@@ -21,7 +21,7 @@ public:
 	ofxCity(string prefix = "scene") : 
 		ofxScene(prefix + ": " + "City") {
 			setSingleSetup(false); // call setup each time the scene is loaded
-		}
+	}
 
 	void setup();
 	void update();
@@ -30,13 +30,23 @@ public:
 	void keyPressed(int key);
 
 private:
+
+	void setupTextures();
+
 	ofPlanePrimitive plane;
 	ofFbo fboRoad;
 	ofTexture texRoad;
 
-	
-     ofxPanel gui;	 
-     ofParameter<bool> bWireframe;	 
-     bool bShowGui;
+	int roadParamsHash;
+	ofxPanel gui;	 
+	ofParameter<bool> bWireframe;
+	ofParameter<int> roadWidth;
+	ofParameter<int> roadHeight;	
+	ofParameter<int> roadLineWidth;
+	ofParameter<int> roadLineHeight;
+	ofParameter<int> roadTexWidth;
+	ofParameter<int> roadTexHeight;
+	ofParameterGroup roadParams;
+	bool bShowGui;
 };
 

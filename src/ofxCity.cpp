@@ -5,6 +5,13 @@
 void ofxCity::setup(){
 
 	roads.clear();
+	curSpeed = 0;
+	desiredSpeed = 0;
+	tween.setParameters(easingsine, ofxTween::easeInOut
+			, curSpeed
+			, desiredSpeed
+			, 0,0);
+
 
 	roadParamsHash = 0;
 	gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
@@ -48,7 +55,7 @@ void ofxCity::setupTextures(){
 //--------------------------------------------------------------
 void ofxCity::setupRoad(){
 
-	for (int i=0; i < 100; i++) {
+	for (int i=0; i < 30; i++) {
 		ofPlanePrimitive plane = ofPlanePrimitive(roadTexWidth, roadTexHeight, 2, 2);
 		plane.resizeToTexture( texRoad );
 		plane.rotate(90, 1, 0, 0);
@@ -67,6 +74,15 @@ void ofxCity::update(){
 
 		roadParamsHash = hash;
 	}
+
+	curSpeed = tween.update();
+	curDistance += curSpeed;
+	curDistanceOffset += curSpeed;
+
+	// Swap first and last road plane
+	if (curDistanceOffset >= roadTexHeight + 5 * roadTexHeight) {
+		curDistanceOffset = 5 * roadTexHeight;
+	}
 }
 
 //--------------------------------------------------------------
@@ -80,25 +96,19 @@ void ofxCity::draw(){
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	ofTranslate(0, 20);
 
-
-	for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
-		ofPlanePrimitive plane = *planeIt;
-
-
+	ofTranslate(0, 0, curDistance);
+	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
+	//ofPlanePrimitive plane = *planeIt;
+	for(auto & plane: roads) {
+	
 		ofSetColor(255);	
 		texRoad.bind();
 
-
-		if (bWireframe)
-		{
+		if (bWireframe) {
 			plane.drawWireframe();
-		}
-		else
-		{
+		} else {
 			plane.draw();
 		}
-
-
 		texRoad.unbind();
 	}
 
@@ -128,15 +138,21 @@ void ofxCity::keyPressed(int key){
 	switch (key)
 	{
 	case 'r': setup(); break;
-	case 'h': {
+	case 'h': 
 		bShowGui = !bShowGui;
 		if (bShowGui){
 			app->cam.disableMouseInput();
 		}
 		else {
 			app->cam.enableMouseInput();
-		}
-			  }
+		}			  
+		break;
+	case 'z': desiredSpeed += SPEED_INCR;
+		tween.setParameters(easingsine, ofxTween::easeInOut
+			, curSpeed
+			, desiredSpeed
+			, 2000,0);
+		break;
 	default:
 		break;
 	}

@@ -14,6 +14,7 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
+#define SPEED_INCR 1.
 
 class ofxCity: public ofxScene
 {
@@ -31,6 +32,10 @@ public:
 
 private:
 
+	float curSpeed;
+	float curDistance;
+	float curDistanceOffset;
+	float desiredSpeed;
 	void setupTextures();
 	void setupRoad();
 
@@ -49,5 +54,21 @@ private:
 	ofParameter<int> roadTexHeight;
 	ofParameterGroup roadParams;
 	bool bShowGui;
+
+
+	// transitions
+	ofxTween tween;
+    
+	ofxEasingBack 	easingback;
+	ofxEasingBounce 	easingbounce;
+	ofxEasingCirc 	easingcirc;
+	ofxEasingSine	easingsine;
+	ofxEasingCubic 	easingcubic;
+	ofxEasingElastic easingelastic;
+	ofxEasingExpo 	easingexpo;
+	ofxEasingLinear 	easinglinear;
+	ofxEasingQuad 	easingquad;
+	ofxEasingQuart 	easingquart;
+	ofxEasingQuint 	easingquint;
 };
 

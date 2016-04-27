@@ -14,13 +14,14 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
-#define SPEED_INCR 1.
+#define CITY_SPEED_INCR 1.
+#define CITY_NUM_ROAD_PLANES 30
 
 class ofxCity: public ofxScene
 {
 public:
 	ofxCity(string prefix = "scene") : 
-		ofxScene(prefix + ": " + "City") {
+		bGuiLoaded(false), ofxScene(prefix + ": " + "City") {
 			setSingleSetup(false); // call setup each time the scene is loaded
 	}
 
@@ -31,25 +32,27 @@ public:
 	void keyPressed(int key);
 
 private:
-
+	bool bGuiLoaded;
 	float curSpeed;
 	float curDistance;
 	float curDistanceOffset;
 	float desiredSpeed;
+
 	void setupTextures();
 	void setupRoad();
+	void updateRoad();
 
 	vector<ofPlanePrimitive> roads;
 	ofFbo fboRoad;
 	ofTexture texRoad;
 
-	int roadParamsHash;
+	float roadParamsHash;
 	ofxPanel gui;	 
 	ofParameter<bool> bWireframe;
-	ofParameter<int> roadWidth;
-	ofParameter<int> roadHeight;	
-	ofParameter<int> roadLineWidth;
-	ofParameter<int> roadLineHeight;
+	ofParameter<float> roadWidth;
+	ofParameter<float> roadHeight;	
+	ofParameter<float> roadLineWidth;
+	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;
 	ofParameter<int> roadTexHeight;
 	ofParameterGroup roadParams;

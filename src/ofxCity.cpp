@@ -4,27 +4,34 @@
 //--------------------------------------------------------------
 void ofxCity::setup(){
 
-	roads.clear();
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.reset();
 	curSpeed = 0;
 	desiredSpeed = 0;
+	curDistanceOffset = 0;
+	curDistance = 0;
 	tween.setParameters(easingsine, ofxTween::easeInOut
-			, curSpeed
-			, desiredSpeed
-			, 0,0);
+		, curSpeed
+		, desiredSpeed
+		, 0,0);
 
 
 	roadParamsHash = 0;
-	gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
-	gui.add(bWireframe.set("Wireframe", false));
-	roadParams.setName("Road params");
-	roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
-	roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
-	roadParams.add(roadLineWidth.set("Road line width %", 10,1,100));
-	roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
-	roadParams.add(roadWidth.set("Road width", 100,10,1000));
-	roadParams.add(roadHeight.set("Road height", 100,10,1000));
+	if (!bGuiLoaded) {
+		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
+		gui.add(bWireframe.set("Wireframe", false));
+		roadParams.setName("Road params");
+		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
+		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
+		roadParams.add(roadLineWidth.set("Road line width %", 1.5,1,100));
+		roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
+		roadParams.add(roadWidth.set("Road width", 100,10,1000));
+		roadParams.add(roadHeight.set("Road height", 100,10,1000));
 
-	gui.add(roadParams);
+		bGuiLoaded = true;
+
+		gui.add(roadParams);
+	}
 
 	bShowGui = false;
 
@@ -54,8 +61,9 @@ void ofxCity::setupTextures(){
 
 //--------------------------------------------------------------
 void ofxCity::setupRoad(){
-
-	for (int i=0; i < 30; i++) {
+	
+	roads.clear();
+	for (int i=0; i < CITY_NUM_ROAD_PLANES; i++) {
 		ofPlanePrimitive plane = ofPlanePrimitive(roadTexWidth, roadTexHeight, 2, 2);
 		plane.resizeToTexture( texRoad );
 		plane.rotate(90, 1, 0, 0);
@@ -64,10 +72,34 @@ void ofxCity::setupRoad(){
 	}
 }
 
+//--------------------------------------------------------------
+void ofxCity::updateRoad(){
+
+	// Swap first and last road plane
+	if (curDistanceOffset >= roadTexHeight) {
+		cout << "here" <<endl;
+
+		for(auto & plane: roads) {
+			ofVec3f pos = plane.getPosition();
+			pos.z -= curDistanceOffset;
+			plane.setPosition(pos);
+		}
+
+		curDistanceOffset = 0;
+	}
+
+
+}
+
 
 //--------------------------------------------------------------
 void ofxCity::update(){
-	int hash = roadWidth ^ roadHeight ^ roadLineWidth ^ roadLineHeight ^ roadTexWidth ^ roadTexHeight;
+	float hash = roadWidth * 2. 
+				+ roadHeight * 3. 
+				+ roadLineWidth * 5.
+				+ roadLineHeight * 7.
+				+ roadTexWidth * 11.
+				+ roadTexHeight * 13.;
 	if (hash != roadParamsHash)
 	{
 		setupTextures();
@@ -79,48 +111,46 @@ void ofxCity::update(){
 	curDistance += curSpeed;
 	curDistanceOffset += curSpeed;
 
-	// Swap first and last road plane
-	if (curDistanceOffset >= roadTexHeight + 5 * roadTexHeight) {
-		curDistanceOffset = 5 * roadTexHeight;
-	}
+	updateRoad();
 }
 
 //--------------------------------------------------------------
 void ofxCity::draw(){
-	
+
 
 	ofEnableAlphaBlending();
 	ofBackground(255,255,255,255);
 	ofPushMatrix();
+	texRoad.bind();
 
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	ofTranslate(0, 20);
 
-	ofTranslate(0, 0, curDistance);
+	ofTranslate(0, 0, curDistance + 650);
 	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
 	//ofPlanePrimitive plane = *planeIt;
 	for(auto & plane: roads) {
-	
+
 		ofSetColor(255);	
-		texRoad.bind();
+
 
 		if (bWireframe) {
 			plane.drawWireframe();
 		} else {
 			plane.draw();
 		}
-		texRoad.unbind();
 	}
 
 
+	texRoad.unbind();
 
 	//ofFill();
 	ofDrawAxis(50);
 	ofDisableAlphaBlending();
-	
-	
+
+
 	ofPopMatrix();
-	
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
 	if (bShowGui) {
@@ -147,7 +177,7 @@ void ofxCity::keyPressed(int key){
 			app->cam.enableMouseInput();
 		}			  
 		break;
-	case 'z': desiredSpeed += SPEED_INCR;
+	case 'z': desiredSpeed += CITY_SPEED_INCR;
 		tween.setParameters(easingsine, ofxTween::easeInOut
 			, curSpeed
 			, desiredSpeed

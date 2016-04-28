@@ -16,6 +16,12 @@
 
 #define CITY_SPEED_INCR 1.
 #define CITY_NUM_ROAD_PLANES 30
+#define CITY_BLOCK_TOTAL_WIDTH 1000
+#define CITY_BLOCK_SIZE 50
+#define CITY_BLOCKS_ROWS 5
+#define CITY_BLOCKS_COLS 20
+#define CITY_BLOCK_MAXHEIGHT 1000;
+
 
 class ofxCity: public ofxScene
 {
@@ -32,7 +38,7 @@ public:
 	void keyPressed(int key);
 
 private:
-	bool bGuiLoaded;
+	// Movement
 	float curSpeed;
 	float curDistance;
 	float curDistanceOffset;
@@ -41,11 +47,22 @@ private:
 	void setupTextures();
 	void setupRoad();
 	void updateRoad();
+	void generateBlocks();
+	void setupBlocks();
+	void updateBlocks();
 
+	// road
 	vector<ofPlanePrimitive> roads;
 	ofFbo fboRoad;
 	ofTexture texRoad;
 
+	// buildings (aka blocks)
+	float blockProbability;
+	vector<ofBoxPrimitive> blockMeshes;
+	vector<int> blocksL;	
+	vector<int> blocksR;	
+
+	// gui params
 	float roadParamsHash;
 	ofxPanel gui;	 
 	ofParameter<bool> bWireframe;
@@ -57,6 +74,7 @@ private:
 	ofParameter<int> roadTexHeight;
 	ofParameterGroup roadParams;
 	bool bShowGui;
+	bool bGuiLoaded;
 
 
 	// transitions

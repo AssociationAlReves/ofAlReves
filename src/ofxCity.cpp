@@ -15,7 +15,7 @@ void ofxCity::setup(){
 		, desiredSpeed
 		, 0,0);
 
-
+	// GUI
 	roadParamsHash = 0;
 	if (!bGuiLoaded) {
 		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
@@ -32,12 +32,13 @@ void ofxCity::setup(){
 
 		gui.add(roadParams);
 	}
-
 	bShowGui = false;
 
 	setupTextures();
 
 	setupRoad();
+	setupBlocks();
+
 }
 
 //--------------------------------------------------------------
@@ -61,7 +62,7 @@ void ofxCity::setupTextures(){
 
 //--------------------------------------------------------------
 void ofxCity::setupRoad(){
-	
+
 	roads.clear();
 	for (int i=0; i < CITY_NUM_ROAD_PLANES; i++) {
 		ofPlanePrimitive plane = ofPlanePrimitive(roadTexWidth, roadTexHeight, 2, 2);
@@ -75,15 +76,20 @@ void ofxCity::setupRoad(){
 //--------------------------------------------------------------
 void ofxCity::updateRoad(){
 
-	// Swap first and last road plane
+	// if plane is offsight
+	// translate all planes along negative z axis
 	if (curDistanceOffset >= roadTexHeight) {
 		cout << "here" <<endl;
 
+		// translate all road planes
 		for(auto & plane: roads) {
 			ofVec3f pos = plane.getPosition();
 			pos.z -= curDistanceOffset;
 			plane.setPosition(pos);
 		}
+
+		// generate new blocks on incoming line
+		generateBlocks();
 
 		curDistanceOffset = 0;
 	}
@@ -92,14 +98,82 @@ void ofxCity::updateRoad(){
 }
 
 
+
+//--------------------------------------------------------------
+void ofxCity::setupBlocks(){
+
+	blockProbability = 0;
+
+	blocksL.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
+	blocksR.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
+
+	for (int row = 0; row < CITY_BLOCKS_ROWS; row++) {
+		for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+
+			blocksL[row * CITY_BLOCKS_COLS + col] = 0;
+			blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void ofxCity::updateBlocks(){
+	// translate all planes along negative z axis
+
+	for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+		for (int row = 0; row < CITY_BLOCKS_ROWS; row++) {
+
+			blocksL[row * CITY_BLOCKS_COLS + col] = 0;
+			blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void ofxCity::generateBlocks() {
+
+	if (blockProbability > 0) {
+
+		float rnd = ofRandom(1);
+
+		if (rnd > 1 - blockProbability) {
+			// create block
+
+			// search next available place
+			for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+				if (blocksL[col] == 0) {
+
+					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+
+					float height = ofRandom(100, blockProbability * 2000.);
+
+					for (int i = col; i < ofClamp(CITY_BLOCKS_COLS + requestedCols, col, CITY_BLOCKS_COLS); i++) {						
+						for (int j = 0; j < ofClamp(CITY_BLOCKS_ROWS + requestedRows, 0, CITY_BLOCKS_ROWS); j++) {
+							blocksL[j * CITY_BLOCKS_COLS + i] = height;
+						}
+					}
+
+
+					break;
+
+				}
+			}
+		}
+
+	}
+}
+
 //--------------------------------------------------------------
 void ofxCity::update(){
 	float hash = roadWidth * 2. 
-				+ roadHeight * 3. 
-				+ roadLineWidth * 5.
-				+ roadLineHeight * 7.
-				+ roadTexWidth * 11.
-				+ roadTexHeight * 13.;
+		+ roadHeight * 3. 
+		+ roadLineWidth * 5.
+		+ roadLineHeight * 7.
+		+ roadTexWidth * 11.
+		+ roadTexHeight * 13.;
 	if (hash != roadParamsHash)
 	{
 		setupTextures();
@@ -107,11 +181,13 @@ void ofxCity::update(){
 		roadParamsHash = hash;
 	}
 
+	updateRoad();
+
 	curSpeed = tween.update();
 	curDistance += curSpeed;
 	curDistanceOffset += curSpeed;
 
-	updateRoad();
+	updateBlocks();
 }
 
 //--------------------------------------------------------------
@@ -182,6 +258,10 @@ void ofxCity::keyPressed(int key){
 			, curSpeed
 			, desiredSpeed
 			, 2000,0);
+		break;
+	case 'b': 
+		blockProbability = ofClamp(blockProbability+0.1,0,1);
+		generateBlocks(); 
 		break;
 	default:
 		break;

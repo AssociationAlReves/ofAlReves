@@ -6,10 +6,13 @@ void ofxCity::setup(){
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
+	
+    app->cam.setFarClip(100000);
 	curSpeed = 0;
 	desiredSpeed = 0;
 	curDistanceOffset = 0;
 	curDistance = 0;
+	buildings.clear();
 	tween.setParameters(easingsine, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
@@ -20,17 +23,29 @@ void ofxCity::setup(){
 	if (!bGuiLoaded) {
 		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
-		roadParams.setName("Road params");
+		roadParams.setName("Road");
 		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
 		roadParams.add(roadLineWidth.set("Road line width %", 1.5,1,100));
 		roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
 		roadParams.add(roadWidth.set("Road width", 100,10,1000));
 		roadParams.add(roadHeight.set("Road height", 100,10,1000));
+		roadParams.add(curSpeed.set("Velocity", 0, 0, 50));
+		gui.add(roadParams);
+
+		buildingParams.setName("Buildings");
+		buildingParams.add(blockProbability.set("Proba",0,0,1));
+		gui.add(buildingParams);
+
+		lightParams.setName("Lights");
+		lightParams.add(dirLightOrientation.set("Orientation (x,z,y angles)", ofVec3f(180, -42.2449, 117.551), ofVec3f(-180), ofVec3f(180)));
+		lightParams.add(diffuseColor.set("diffuseColor", ofFloatColor(1, 0, 0, 1),ofFloatColor(0,0,0,0),ofColor::white));
+		lightParams.add(ambientColor.set("ambientColor", ofFloatColor(0), ofFloatColor(0,0,0,0),ofColor::white));
+		gui.add(lightParams);
 
 		bGuiLoaded = true;
 
-		gui.add(roadParams);
+
 	}
 	bShowGui = false;
 
@@ -38,6 +53,8 @@ void ofxCity::setup(){
 
 	setupRoad();
 	setupBlocks();
+
+	ofSetLogLevel("ofxCity", OF_LOG_VERBOSE);
 
 }
 
@@ -89,7 +106,7 @@ void ofxCity::updateRoad(){
 		}
 
 		// generate new blocks on incoming line
-		generateBlocks();
+		//generateBlocks();
 
 		curDistanceOffset = 0;
 	}
@@ -118,51 +135,87 @@ void ofxCity::setupBlocks(){
 }
 
 //--------------------------------------------------------------
-void ofxCity::updateBlocks(){
-	// translate all planes along negative z axis
+void ofxCity::updateBlocks() {
 
+	// Translate all heights one row down
 	for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
-		for (int row = 0; row < CITY_BLOCKS_ROWS; row++) {
+		for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
 
-			blocksL[row * CITY_BLOCKS_COLS + col] = 0;
-			blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+			blocksL[(row-1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
+			blocksR[(row-1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+
+			if (row == CITY_BLOCKS_ROWS - 1) {
+				blocksL[row * CITY_BLOCKS_COLS + col] = 0;
+				blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+			}
 
 		}
 	}
-}
-
-//--------------------------------------------------------------
-void ofxCity::generateBlocks() {
 
 	if (blockProbability > 0) {
+		
+		int numCols = 0;
+		int lastReservedCol = 0;
 
-		float rnd = ofRandom(1);
-
-		if (rnd > 1 - blockProbability) {
+		while (ofRandom(1) > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
 			// create block
 
 			// search next available place
-			for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
 				if (blocksL[col] == 0) {
+					// found empty block
 
 					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
 
-					float height = ofRandom(100, blockProbability * 2000.);
+					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
 
-					for (int i = col; i < ofClamp(CITY_BLOCKS_COLS + requestedCols, col, CITY_BLOCKS_COLS); i++) {						
-						for (int j = 0; j < ofClamp(CITY_BLOCKS_ROWS + requestedRows, 0, CITY_BLOCKS_ROWS); j++) {
-							blocksL[j * CITY_BLOCKS_COLS + i] = height;
+					float height = ofRandom(100, blockProbability * CITY_BLOCK_MAXHEIGHT);
+					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
+
+						// Check if all rows are available
+						bool canReserveRows = true;
+						for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+
+							int index = j * CITY_BLOCKS_COLS + i;
+							if (blocksL[index] > 0) {
+								canReserveRows = false;
+								break;
+							}
+							maxRow = j;
 						}
+
+						if (canReserveRows) {
+							for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+
+								int index = j * CITY_BLOCKS_COLS + i;
+
+								blocksL[index] = height;
+
+								lastReservedCol = max(lastReservedCol,i);
+							}
+						}
+
+						maxCol = i;						
 					}
 
-
-					break;
-
+					// Create building
+					float w = 0, h = 0, x = 0, z = 0;
+					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
+					float margin = CITY_BLOCK_SIZE * CITY_BLOCK_MARGIN_FACTOR;
+					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
+					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
+					x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
+					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
+					ofBoxPrimitive building = ofBoxPrimitive(w, height, h);
+					building.setPosition(x, -height / 2., z);
+					buildings.push_back(building);
+					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
 				}
+				break; // for (int col = lastReservedCol
 			}
 		}
-
 	}
 }
 
@@ -183,11 +236,15 @@ void ofxCity::update(){
 
 	updateRoad();
 
-	curSpeed = tween.update();
+	//curSpeed = tween.update();
 	curDistance += curSpeed;
 	curDistanceOffset += curSpeed;
-
-	updateBlocks();
+	
+	directionalLight.setDiffuseColor(diffuseColor);
+    directionalLight.setSpecularColor(specularColor);
+    directionalLight.setAmbientColor(ambientColor);
+	directionalLight.setDirectional();
+	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
 }
 
 //--------------------------------------------------------------
@@ -195,7 +252,12 @@ void ofxCity::draw(){
 
 
 	ofEnableAlphaBlending();
+	ofEnableDepthTest();
+
 	ofBackground(255,255,255,255);
+	stringstream ss;
+	ss << "FPS : " + ofToString(ofGetFrameRate());
+	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 	ofPushMatrix();
 	texRoad.bind();
 
@@ -216,12 +278,32 @@ void ofxCity::draw(){
 			plane.draw();
 		}
 	}
-
-
 	texRoad.unbind();
 
 	//ofFill();
 	ofDrawAxis(50);
+	
+	ofEnableLighting();
+	directionalLight.enable();
+	for(auto & building: buildings) {
+
+		ofSetColor(255);
+
+		if (bWireframe) {
+			building.drawWireframe();
+		} else {
+			building.draw();
+		}
+	}
+	directionalLight.disable();
+	ofDisableLighting();
+
+	/* Test box
+	ofSetColor(ofColor::red);
+	ofBoxPrimitive box = ofBoxPrimitive(100,500,100);
+	box.setPosition(0,0,0);
+	box.drawWireframe();*/
+	ofDisableDepthTest();
 	ofDisableAlphaBlending();
 
 
@@ -260,8 +342,7 @@ void ofxCity::keyPressed(int key){
 			, 2000,0);
 		break;
 	case 'b': 
-		blockProbability = ofClamp(blockProbability+0.1,0,1);
-		generateBlocks(); 
+		updateBlocks(); 
 		break;
 	default:
 		break;

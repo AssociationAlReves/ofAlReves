@@ -15,12 +15,13 @@
 #include "ofxGui.h"
 
 #define CITY_SPEED_INCR 1.
-#define CITY_NUM_ROAD_PLANES 30
+#define CITY_NUM_ROAD_PLANES 500
 #define CITY_BLOCK_TOTAL_WIDTH 1000
-#define CITY_BLOCK_SIZE 50
+#define CITY_BLOCK_SIZE 150
+#define CITY_BLOCK_MARGIN_FACTOR 0.2
 #define CITY_BLOCKS_ROWS 5
-#define CITY_BLOCKS_COLS 20
-#define CITY_BLOCK_MAXHEIGHT 1000;
+#define CITY_BLOCKS_COLS 50
+#define CITY_BLOCK_MAXHEIGHT 3000.
 
 
 class ofxCity: public ofxScene
@@ -39,7 +40,7 @@ public:
 
 private:
 	// Movement
-	float curSpeed;
+	//float curSpeed;
 	float curDistance;
 	float curDistanceOffset;
 	float desiredSpeed;
@@ -47,7 +48,6 @@ private:
 	void setupTextures();
 	void setupRoad();
 	void updateRoad();
-	void generateBlocks();
 	void setupBlocks();
 	void updateBlocks();
 
@@ -57,10 +57,10 @@ private:
 	ofTexture texRoad;
 
 	// buildings (aka blocks)
-	float blockProbability;
-	vector<ofBoxPrimitive> blockMeshes;
+	//float blockProbability;
+	vector<ofBoxPrimitive> buildings;
 	vector<int> blocksL;	
-	vector<int> blocksR;	
+	vector<int> blocksR;
 
 	// gui params
 	float roadParamsHash;
@@ -72,14 +72,18 @@ private:
 	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;
 	ofParameter<int> roadTexHeight;
+	ofParameter<float> curSpeed;
 	ofParameterGroup roadParams;
+
+	ofParameter<float> blockProbability;
+	ofParameterGroup buildingParams;
 	bool bShowGui;
 	bool bGuiLoaded;
 
 
 	// transitions
 	ofxTween tween;
-    
+
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;
 	ofxEasingCirc 	easingcirc;
@@ -91,5 +95,14 @@ private:
 	ofxEasingQuad 	easingquad;
 	ofxEasingQuart 	easingquart;
 	ofxEasingQuint 	easingquint;
+
+	// lights
+	ofLight directionalLight;
+	// lights params
+	ofParameter<ofVec3f> dirLightOrientation;
+	ofParameter<ofFloatColor> diffuseColor;
+	ofParameter<ofFloatColor> specularColor;
+	ofParameter<ofFloatColor> ambientColor;
+	ofParameterGroup lightParams;
 };
 

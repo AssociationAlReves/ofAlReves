@@ -15,13 +15,13 @@
 #include "ofxGui.h"
 
 #define CITY_SPEED_INCR 1.
-#define CITY_NUM_ROAD_PLANES 500
+#define CITY_NUM_ROAD_PLANES 100
 #define CITY_BLOCK_TOTAL_WIDTH 1000
 #define CITY_BLOCK_SIZE 150
 #define CITY_BLOCK_MARGIN_FACTOR 0.2
 #define CITY_BLOCKS_ROWS 5
-#define CITY_BLOCKS_COLS 50
-#define CITY_BLOCK_MAXHEIGHT 3000.
+#define CITY_BLOCKS_COLS 20
+#define CITY_BLOCK_MAXHEIGHT 1000.
 
 
 class ofxCity: public ofxScene
@@ -66,6 +66,7 @@ private:
 	float roadParamsHash;
 	ofxPanel gui;	 
 	ofParameter<bool> bWireframe;
+	ofParameter<float> fov;
 	ofParameter<float> roadWidth;
 	ofParameter<float> roadHeight;	
 	ofParameter<float> roadLineWidth;

@@ -8,6 +8,7 @@ void ofxCity::setup(){
 	app->cam.reset();
 	
     app->cam.setFarClip(100000);
+	
 	curSpeed = 0;
 	desiredSpeed = 0;
 	curDistanceOffset = 0;
@@ -23,6 +24,7 @@ void ofxCity::setup(){
 	if (!bGuiLoaded) {
 		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
+		gui.add(fov.set("FOV", 60,0,360));
 		roadParams.setName("Road");
 		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
@@ -30,7 +32,7 @@ void ofxCity::setup(){
 		roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
 		roadParams.add(roadWidth.set("Road width", 100,10,1000));
 		roadParams.add(roadHeight.set("Road height", 100,10,1000));
-		roadParams.add(curSpeed.set("Velocity", 0, 0, 50));
+		roadParams.add(curSpeed.set("Velocity", 0, 0, 150));
 		gui.add(roadParams);
 
 		buildingParams.setName("Buildings");
@@ -54,14 +56,14 @@ void ofxCity::setup(){
 	setupRoad();
 	setupBlocks();
 
-	ofSetLogLevel("ofxCity", OF_LOG_VERBOSE);
+	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);
 
 }
 
 //--------------------------------------------------------------
 void ofxCity::setupTextures(){
 
-	fboRoad.allocate(roadTexWidth,roadTexHeight);
+	fboRoad.allocate(roadTexWidth,roadTexHeight, GL_RGB32F_ARB);
 	fboRoad.begin();
 
 	ofBackground(ofColor::darkSlateGray);
@@ -96,7 +98,7 @@ void ofxCity::updateRoad(){
 	// if plane is offsight
 	// translate all planes along negative z axis
 	if (curDistanceOffset >= roadTexHeight) {
-		cout << "here" <<endl;
+		cout << ".";
 
 		// translate all road planes
 		for(auto & plane: roads) {
@@ -106,7 +108,7 @@ void ofxCity::updateRoad(){
 		}
 
 		// generate new blocks on incoming line
-		//generateBlocks();
+		updateBlocks();
 
 		curDistanceOffset = 0;
 	}
@@ -155,7 +157,7 @@ void ofxCity::updateBlocks() {
 	if (blockProbability > 0) {
 		
 		int numCols = 0;
-		int lastReservedCol = 0;
+		int lastReservedCol = -1;
 
 		while (ofRandom(1) > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
 			// create block
@@ -234,6 +236,9 @@ void ofxCity::update(){
 		roadParamsHash = hash;
 	}
 
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.setFov(fov);
+
 	updateRoad();
 
 	//curSpeed = tween.update();
@@ -255,9 +260,7 @@ void ofxCity::draw(){
 	ofEnableDepthTest();
 
 	ofBackground(255,255,255,255);
-	stringstream ss;
-	ss << "FPS : " + ofToString(ofGetFrameRate());
-	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+	
 	ofPushMatrix();
 	texRoad.bind();
 
@@ -315,8 +318,12 @@ void ofxCity::draw(){
 		ofDisableDepthTest();
 		gui.draw();
 	}
+	
+	stringstream ss;
+	ss << "FPS : " + ofToString(ofGetFrameRate());
+	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 	app->cam.begin();
-
+	
 }
 
 //--------------------------------------------------------------

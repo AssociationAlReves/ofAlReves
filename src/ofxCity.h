@@ -19,7 +19,7 @@
 #define CITY_BLOCK_TOTAL_WIDTH 1000
 #define CITY_BLOCK_SIZE 100
 #define CITY_BLOCK_MARGIN_FACTOR 0.2
-#define CITY_BLOCKS_ROWS 5
+#define CITY_BLOCKS_ROWS 3
 #define CITY_BLOCKS_COLS 5
 #define CITY_BLOCK_MAXHEIGHT 1000.
 
@@ -103,12 +103,14 @@ private:
 	ofxEasingQuint 	easingquint;
 
 	// lights
-	ofLight directionalLight;
+	ofLight directionalLight;	
+    ofMaterial material;
 	// lights params
 	ofParameter<ofVec3f> dirLightOrientation;
 	ofParameter<ofFloatColor> diffuseColor;
 	ofParameter<ofFloatColor> specularColor;
 	ofParameter<ofFloatColor> ambientColor;
 	ofParameterGroup lightParams;
+	vector<ofLight> roadLights;
 };
 

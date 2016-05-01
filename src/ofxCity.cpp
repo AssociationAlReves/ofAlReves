@@ -6,6 +6,10 @@ void ofxCity::setup(){
 
 	ofSeedRandom(123456);	
 
+	// shininess is a value between 0 - 128, 128 being the most shiny //
+	material.setShininess( 120 );
+	material.setSpecularColor(ofColor(255, 255, 255, 255));
+
 	img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
@@ -48,6 +52,7 @@ void ofxCity::setup(){
 		lightParams.setName("Lights");
 		lightParams.add(dirLightOrientation.set("Orientation (x,z,y angles)", ofVec3f(180, -42.2449, 117.551), ofVec3f(-180), ofVec3f(180)));
 		lightParams.add(diffuseColor.set("diffuseColor", ofFloatColor(1, 0, 0, 1),ofFloatColor(0,0,0,0),ofColor::white));
+		lightParams.add(specularColor.set("specularColor", ofFloatColor(1, 0, 0, 1),ofFloatColor(0,0,0,0),ofColor::white));
 		lightParams.add(ambientColor.set("ambientColor", ofFloatColor(0), ofFloatColor(0,0,0,0),ofColor::white));
 		gui.add(lightParams);
 
@@ -97,6 +102,19 @@ void ofxCity::setupRoad(){
 		plane.setPosition(0,0,-roadTexHeight * i);
 		roads.push_back(plane);
 	}
+
+	roadLights.clear();
+	for (int i=0; i < 5; i++) {
+		
+		ofLight light;
+		light.setDiffuseColor( ofFloatColor(.85, .85, .55) );
+		light.setSpecularColor( ofFloatColor(1.f, 1.f, 1.f));
+		
+		light.setParent(roads[i]);
+		light.setOrientation(ofVec3f(0,1,0));
+		roadLights.push_back(light);
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -124,8 +142,6 @@ void ofxCity::updateRoad(){
 
 
 }
-
-
 
 //--------------------------------------------------------------
 void ofxCity::setupBlocks(){
@@ -167,6 +183,95 @@ void ofxCity::updateBlocks() {
 	updateBlockSide(false);	
 }
 
+////--------------------------------------------------------------
+//void ofxCity::updateBlockSide(bool isLeftSide) {
+//
+//	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
+//
+//	if (blockProbability > 0) {
+//
+//		int numCols = 0;
+//		int lastReservedCol = -1;
+//
+//
+//		while (ofRandom(1) > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
+//			// DBG
+//			//while (true > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
+//			// create block
+//
+//			// search next available place
+//			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
+//				if (blocks[col] > 0) {
+//					lastReservedCol = col;
+//				}
+//				else
+//				{
+//					// found empty block
+//
+//
+//					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+//					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_COLS));
+//					// DBG
+//					//int requestedCols = 1;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+//					//int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+//					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
+//
+//					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
+//
+//					float height = ofRandom(100, blockProbability * blockProbability * CITY_BLOCK_MAXHEIGHT);
+//					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
+//
+//						// Check if all rows are available
+//						bool canReserveRows = true;
+//						for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
+//							
+//							maxRow = j;
+//							int index = j * CITY_BLOCKS_COLS + i;
+//							if (blocks[index] > 0) {
+//								canReserveRows = false;
+//								break;
+//							}
+//						}
+//
+//						if (canReserveRows) {
+//							for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
+//
+//								int index = j * CITY_BLOCKS_COLS + i;
+//
+//								blocks[index] = height;
+//
+//								lastReservedCol = max(lastReservedCol,i);
+//							}
+//						}
+//
+//						maxCol = i;						
+//					}
+//
+//					// Create building
+//					float w = 0, h = 0, x = 0, z = 0;
+//					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
+//					float margin = CITY_BLOCK_SIZE * ofRandom(0,0.3);
+//					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
+//					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
+//					if (isLeftSide) {
+//						x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
+//					} else {
+//
+//						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
+//					}
+//					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z - h /2.;
+//					ofBoxPrimitive building = ofBoxPrimitive(w, height, h,10,10,10);
+//					building.setPosition(x, -height / 2., z);
+//					buildings.push_back(building);
+//					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
+//				}
+//				break; // for (int col = lastReservedCol
+//			}
+//		}
+//	}
+//}
+
+
 //--------------------------------------------------------------
 void ofxCity::updateBlockSide(bool isLeftSide) {
 
@@ -193,11 +298,11 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 					// found empty block
 
 
-					/*int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));*/
+					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_COLS));
 					// DBG
-					int requestedCols = 1;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					//int requestedCols = 1;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					//int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
 
 					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
@@ -205,29 +310,18 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 					float height = ofRandom(100, blockProbability * blockProbability * CITY_BLOCK_MAXHEIGHT);
 					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
 
-						// Check if all rows are available
-						bool canReserveRows = true;
-						for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
-							
-							maxRow = j;
-							int index = j * CITY_BLOCKS_COLS + i;
-							if (blocks[index] > 0) {
-								canReserveRows = false;
-								break;
-							}
-						}
-
-						if (canReserveRows) {
+						if (true) {
 							for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
 
+								maxRow = j;
 								int index = j * CITY_BLOCKS_COLS + i;
 
 								blocks[index] = height;
 
-								lastReservedCol = max(lastReservedCol,i);
 							}
 						}
-
+						
+						lastReservedCol = max(lastReservedCol,i);
 						maxCol = i;						
 					}
 
@@ -254,7 +348,6 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 		}
 	}
 }
-
 
 //--------------------------------------------------------------
 void ofxCity::update(){
@@ -285,16 +378,29 @@ void ofxCity::update(){
 	directionalLight.setAmbientColor(ambientColor);
 	directionalLight.setDirectional();
 	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
+
+	int i = 0;
+	float road0z = roads[0].getPosition().z;
+	while (i < buildings.size()) {
+		if (buildings[i].getPosition().z >= road0z + 650) {
+			buildings[i] = buildings.back(); buildings.pop_back(); i--;
+		} else {
+			i++;
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofxCity::draw(){
 
-
+	ofSetSmoothLighting(true);
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 	
+	ofEnableLighting();
+	
 	directionalLight.enable();
+	material.begin();
 
 	ofBackground(255,255,255,255);
 
@@ -305,6 +411,13 @@ void ofxCity::draw(){
 	ofTranslate(0, 20);
 
 	ofTranslate(0, 0, curDistance + 650);
+
+	for (auto & light: roadLights) {
+		//light.enable();
+		ofSetColor(ofColor::red);
+		ofDrawSphere(light.getPosition(), 20);
+	}	
+
 	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
 	//ofPlanePrimitive plane = *planeIt;
 	for(auto & plane: roads) {
@@ -317,25 +430,30 @@ void ofxCity::draw(){
 			plane.draw();
 		}
 	}
+	
 	texRoad.unbind();
 
 	//ofFill();
 	//ofDrawAxis(50);
 
-	ofEnableLighting();
 	float road0z = roads[0].getPosition().z;
-	float roadnz = roads[roads.size()-1].getPosition().z;
-	for(auto & building: buildings) {
+	for (int i = 0; i<buildings.size(); i++) {
 
-		if (building.getPosition().z < roads[0].getPosition().z + 650) {
+		if (buildings[i].getPosition().z < road0z + 650) {
 			ofSetColor(255);
 
 			if (bWireframe) {
-				building.drawWireframe();
+				buildings[i].drawWireframe();
 			} else {
-				building.draw();
+				buildings[i].draw();
 			}
 		}
+
+	}
+	
+	material.end();
+	for (auto & light: roadLights) {
+		//light.disable();
 	}
 	directionalLight.disable();
 	ofDisableLighting();

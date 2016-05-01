@@ -15,12 +15,12 @@
 #include "ofxGui.h"
 
 #define CITY_SPEED_INCR 1.
-#define CITY_NUM_ROAD_PLANES 100
+#define CITY_NUM_ROAD_PLANES 10//100
 #define CITY_BLOCK_TOTAL_WIDTH 1000
-#define CITY_BLOCK_SIZE 150
+#define CITY_BLOCK_SIZE 100
 #define CITY_BLOCK_MARGIN_FACTOR 0.2
-#define CITY_BLOCKS_ROWS 5
-#define CITY_BLOCKS_COLS 20
+#define CITY_BLOCKS_ROWS 3
+#define CITY_BLOCKS_COLS 10
 #define CITY_BLOCK_MAXHEIGHT 1000.
 
 
@@ -50,6 +50,8 @@ private:
 	void updateRoad();
 	void setupBlocks();
 	void updateBlocks();
+	
+	void updateBlockSide(bool isLeftSide);
 
 	// road
 	vector<ofPlanePrimitive> roads;
@@ -65,6 +67,9 @@ private:
 	// gui params
 	float roadParamsHash;
 	ofxPanel gui;	 
+	ofParameter<bool> autoGenerateBuildings;
+	ofParameter<bool> debugFbo; 
+		ofImage img;
 	ofParameter<bool> bWireframe;
 	ofParameter<float> fov;
 	ofParameter<float> roadWidth;

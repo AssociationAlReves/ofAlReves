@@ -4,11 +4,15 @@
 //--------------------------------------------------------------
 void ofxCity::setup(){
 
+	ofSeedRandom(123456);	
+	
+		img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
-	
-    app->cam.setFarClip(100000);
-	
+
+	app->cam.setFarClip(100000);
+
 	curSpeed = 0;
 	desiredSpeed = 0;
 	curDistanceOffset = 0;
@@ -25,6 +29,7 @@ void ofxCity::setup(){
 		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
 		gui.add(fov.set("FOV", 60,0,360));
+		gui.add(debugFbo.set("Debug FBO", false));
 		roadParams.setName("Road");
 		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
@@ -36,7 +41,8 @@ void ofxCity::setup(){
 		gui.add(roadParams);
 
 		buildingParams.setName("Buildings");
-		buildingParams.add(blockProbability.set("Proba",0,0,1));
+		buildingParams.add(blockProbability.set("Proba",0.5,0,1));
+		buildingParams.add(autoGenerateBuildings.set("Auto generated", false));
 		gui.add(buildingParams);
 
 		lightParams.setName("Lights");
@@ -56,7 +62,8 @@ void ofxCity::setup(){
 	setupRoad();
 	setupBlocks();
 
-	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);
+	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);	
+	//ofSetLogLevel("ofxCity", OF_LOG_VERBOSE);
 
 }
 
@@ -103,12 +110,14 @@ void ofxCity::updateRoad(){
 		// translate all road planes
 		for(auto & plane: roads) {
 			ofVec3f pos = plane.getPosition();
-			pos.z -= curDistanceOffset;
+			pos.z -= curDistanceOffset-1;
 			plane.setPosition(pos);
 		}
 
 		// generate new blocks on incoming line
-		updateBlocks();
+		if (autoGenerateBuildings) {
+			updateBlocks();
+		}
 
 		curDistanceOffset = 0;
 	}
@@ -120,8 +129,6 @@ void ofxCity::updateRoad(){
 
 //--------------------------------------------------------------
 void ofxCity::setupBlocks(){
-
-	blockProbability = 0;
 
 	blocksL.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
 	blocksR.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
@@ -139,12 +146,14 @@ void ofxCity::setupBlocks(){
 //--------------------------------------------------------------
 void ofxCity::updateBlocks() {
 
+	long elapsed = ofGetElapsedTimeMillis();
+	int numIterations = 0;
 	// Translate all heights one row down
 	for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
 		for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
 
-			blocksL[(row-1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
-			blocksR[(row-1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+			blocksL[(row - 1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
+			blocksR[(row - 1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
 
 			if (row == CITY_BLOCKS_ROWS - 1) {
 				blocksL[row * CITY_BLOCKS_COLS + col] = 0;
@@ -154,21 +163,37 @@ void ofxCity::updateBlocks() {
 		}
 	}
 
+	updateBlockSide(true);
+	updateBlockSide(false);	
+}
+
+//--------------------------------------------------------------
+void ofxCity::updateBlockSide(bool isLeftSide) {
+
+	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
+
 	if (blockProbability > 0) {
-		
+
 		int numCols = 0;
 		int lastReservedCol = -1;
 
+		
 		while (ofRandom(1) > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
+		// DBG
+		//while (true > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
 			// create block
 
 			// search next available place
 			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
-				if (blocksL[col] == 0) {
+				if (blocks[col] == 0) {
 					// found empty block
 
+					
 					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					// DBG
+					//int requestedCols = 3;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					//int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
 
 					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
@@ -178,10 +203,10 @@ void ofxCity::updateBlocks() {
 
 						// Check if all rows are available
 						bool canReserveRows = true;
-						for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+						for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
 
 							int index = j * CITY_BLOCKS_COLS + i;
-							if (blocksL[index] > 0) {
+							if (blocks[index] > 0) {
 								canReserveRows = false;
 								break;
 							}
@@ -189,11 +214,11 @@ void ofxCity::updateBlocks() {
 						}
 
 						if (canReserveRows) {
-							for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+							for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
 
 								int index = j * CITY_BLOCKS_COLS + i;
 
-								blocksL[index] = height;
+								blocks[index] = height;
 
 								lastReservedCol = max(lastReservedCol,i);
 							}
@@ -208,8 +233,13 @@ void ofxCity::updateBlocks() {
 					float margin = CITY_BLOCK_SIZE * CITY_BLOCK_MARGIN_FACTOR;
 					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
 					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
-					x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
-					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
+					if (isLeftSide) {
+						x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
+					} else {
+
+						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
+					}
+					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z - h /2.;
 					ofBoxPrimitive building = ofBoxPrimitive(w, height, h);
 					building.setPosition(x, -height / 2., z);
 					buildings.push_back(building);
@@ -220,6 +250,84 @@ void ofxCity::updateBlocks() {
 		}
 	}
 }
+
+////--------------------------------------------------------------
+//void ofxCity::updateBlockSide(bool isLeftSide) {
+//
+//	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
+//
+//	if (blockProbability > 0) {
+//
+//		int numCols = 0;
+//		int lastReservedCol = -1;
+//
+//		while (true && numCols++ < CITY_BLOCKS_COLS) {
+//			// create block
+//
+//			// search next available place
+//			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
+//				if (blocks[col] == 0) {
+//					// found empty block
+//
+//					int requestedCols = 2;
+//					int requestedRows = isLeftSide ? 1 : 3;
+//					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
+//
+//					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
+//
+//					float height = 10;
+//					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
+//
+//						// Check if all rows are available
+//						bool canReserveRows = true;
+//						for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+//
+//							int index = j * CITY_BLOCKS_COLS + i;
+//							if (blocks[index] > 0) {
+//								canReserveRows = false;
+//								break;
+//							}
+//							maxRow = j;
+//						}
+//
+//						if (canReserveRows) {
+//							for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
+//
+//								int index = j * CITY_BLOCKS_COLS + i;
+//
+//								blocks[index] = height;
+//
+//								lastReservedCol = max(lastReservedCol,i);
+//							}
+//						}
+//
+//						maxCol = i;						
+//					}
+//
+//					// Create building
+//					float w = 0, h = 0, x = 0, z = 0;
+//					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
+//					float margin = CITY_BLOCK_SIZE * CITY_BLOCK_MARGIN_FACTOR;
+//					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
+//					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
+//					if (isLeftSide) {
+//						x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
+//					} else {
+//
+//						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
+//					}
+//					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z; // box center
+//					
+//					ofBoxPrimitive building = ofBoxPrimitive(w, height, h);
+//					building.setPosition(x, -height / 2., z);
+//					buildings.push_back(building);
+//					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
+//				}
+//				break; // for (int col = lastReservedCol
+//			}
+//		}
+//	}
+//}
 
 //--------------------------------------------------------------
 void ofxCity::update(){
@@ -244,10 +352,10 @@ void ofxCity::update(){
 	//curSpeed = tween.update();
 	curDistance += curSpeed;
 	curDistanceOffset += curSpeed;
-	
+
 	directionalLight.setDiffuseColor(diffuseColor);
-    directionalLight.setSpecularColor(specularColor);
-    directionalLight.setAmbientColor(ambientColor);
+	directionalLight.setSpecularColor(specularColor);
+	directionalLight.setAmbientColor(ambientColor);
 	directionalLight.setDirectional();
 	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
 }
@@ -260,7 +368,7 @@ void ofxCity::draw(){
 	ofEnableDepthTest();
 
 	ofBackground(255,255,255,255);
-	
+
 	ofPushMatrix();
 	texRoad.bind();
 
@@ -285,7 +393,9 @@ void ofxCity::draw(){
 
 	//ofFill();
 	ofDrawAxis(50);
-	
+
+
+
 	ofEnableLighting();
 	directionalLight.enable();
 	for(auto & building: buildings) {
@@ -312,18 +422,52 @@ void ofxCity::draw(){
 
 	ofPopMatrix();
 
+	
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
 	if (bShowGui) {
 		ofDisableDepthTest();
 		gui.draw();
 	}
-	
+
 	stringstream ss;
 	ss << "FPS : " + ofToString(ofGetFrameRate());
 	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
-	app->cam.begin();
+
+	if (debugFbo) {
+
+		for (int x = 0; x < CITY_BLOCKS_COLS; x++) {
+			for (int y = 0; y < CITY_BLOCKS_ROWS; y++) {
+				img.setColor(CITY_BLOCKS_COLS+1,y,ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS+2,y,ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS+3,y,ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS+4,y,ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS+5,y,ofColor::red);
+
+				ofColor color = ofColor::black;
+				if (blocksL[y * CITY_BLOCKS_COLS + x] > 0) {
+					color = ofColor::white;
+				}				
+				/*img.setColor((CITY_BLOCKS_COLS - x),(CITY_BLOCKS_ROWS- y),color);*/
+				img.setColor(CITY_BLOCKS_COLS - x,y,color);
+
+				color = ofColor::black;
+				if (blocksR[y * CITY_BLOCKS_COLS + x] > 0) {
+					color = ofColor::white;
+				}
+				/*img.setColor((CITY_BLOCKS_COLS - x) + CITY_BLOCKS_COLS + 5,(CITY_BLOCKS_ROWS- y),color);*/
+				img.setColor(x + CITY_BLOCKS_COLS + 5,y,color);
+
+			}
+		}
+		img.update();
+		img.draw(200,200,CITY_BLOCKS_COLS*50,-CITY_BLOCKS_ROWS*50);
+	}
 	
+
+	app->cam.begin();
+
 }
 
 //--------------------------------------------------------------
@@ -333,6 +477,7 @@ void ofxCity::keyPressed(int key){
 	switch (key)
 	{
 	case 'r': setup(); break;
+	case 'l' : gui.loadFromFile("city_settings.xml"); break;
 	case 'h': 
 		bShowGui = !bShowGui;
 		if (bShowGui){

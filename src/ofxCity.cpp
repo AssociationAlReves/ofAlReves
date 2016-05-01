@@ -5,8 +5,8 @@
 void ofxCity::setup(){
 
 	ofSeedRandom(123456);	
-	
-		img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
+
+	img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
@@ -42,7 +42,7 @@ void ofxCity::setup(){
 
 		buildingParams.setName("Buildings");
 		buildingParams.add(blockProbability.set("Proba",0.5,0,1));
-		buildingParams.add(autoGenerateBuildings.set("Auto generated", false));
+		buildingParams.add(autoGenerateBuildings.set("Auto generated", true));
 		gui.add(buildingParams);
 
 		lightParams.setName("Lights");
@@ -177,40 +177,44 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 		int numCols = 0;
 		int lastReservedCol = -1;
 
-		
+
 		while (ofRandom(1) > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
-		// DBG
-		//while (true > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
+			// DBG
+			//while (true > (1 - blockProbability) && numCols++ < CITY_BLOCKS_COLS) {
 			// create block
 
 			// search next available place
 			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
-				if (blocks[col] == 0) {
+				if (blocks[col] > 0) {
+					lastReservedCol = col;
+				}
+				else
+				{
 					// found empty block
 
-					
-					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+
+					/*int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));*/
 					// DBG
-					//int requestedCols = 3;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					//int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					int requestedCols = 1;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
+					int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
 
 					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
 
-					float height = ofRandom(100, blockProbability * CITY_BLOCK_MAXHEIGHT);
+					float height = ofRandom(100, blockProbability * blockProbability * CITY_BLOCK_MAXHEIGHT);
 					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
 
 						// Check if all rows are available
 						bool canReserveRows = true;
 						for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
-
+							
+							maxRow = j;
 							int index = j * CITY_BLOCKS_COLS + i;
 							if (blocks[index] > 0) {
 								canReserveRows = false;
 								break;
 							}
-							maxRow = j;
 						}
 
 						if (canReserveRows) {
@@ -230,7 +234,7 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 					// Create building
 					float w = 0, h = 0, x = 0, z = 0;
 					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
-					float margin = CITY_BLOCK_SIZE * CITY_BLOCK_MARGIN_FACTOR;
+					float margin = CITY_BLOCK_SIZE * ofRandom(0,0.3);
 					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
 					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
 					if (isLeftSide) {
@@ -240,7 +244,7 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
 					}
 					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z - h /2.;
-					ofBoxPrimitive building = ofBoxPrimitive(w, height, h);
+					ofBoxPrimitive building = ofBoxPrimitive(w, height, h,10,10,10);
 					building.setPosition(x, -height / 2., z);
 					buildings.push_back(building);
 					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
@@ -251,83 +255,6 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 	}
 }
 
-////--------------------------------------------------------------
-//void ofxCity::updateBlockSide(bool isLeftSide) {
-//
-//	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
-//
-//	if (blockProbability > 0) {
-//
-//		int numCols = 0;
-//		int lastReservedCol = -1;
-//
-//		while (true && numCols++ < CITY_BLOCKS_COLS) {
-//			// create block
-//
-//			// search next available place
-//			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
-//				if (blocks[col] == 0) {
-//					// found empty block
-//
-//					int requestedCols = 2;
-//					int requestedRows = isLeftSide ? 1 : 3;
-//					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
-//
-//					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
-//
-//					float height = 10;
-//					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
-//
-//						// Check if all rows are available
-//						bool canReserveRows = true;
-//						for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
-//
-//							int index = j * CITY_BLOCKS_COLS + i;
-//							if (blocks[index] > 0) {
-//								canReserveRows = false;
-//								break;
-//							}
-//							maxRow = j;
-//						}
-//
-//						if (canReserveRows) {
-//							for (int j = 0; j < min(requestedRows, CITY_BLOCKS_ROWS); j++) {
-//
-//								int index = j * CITY_BLOCKS_COLS + i;
-//
-//								blocks[index] = height;
-//
-//								lastReservedCol = max(lastReservedCol,i);
-//							}
-//						}
-//
-//						maxCol = i;						
-//					}
-//
-//					// Create building
-//					float w = 0, h = 0, x = 0, z = 0;
-//					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
-//					float margin = CITY_BLOCK_SIZE * CITY_BLOCK_MARGIN_FACTOR;
-//					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
-//					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
-//					if (isLeftSide) {
-//						x = - (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 -  + minCol * CITY_BLOCK_SIZE;
-//					} else {
-//
-//						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
-//					}
-//					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z; // box center
-//					
-//					ofBoxPrimitive building = ofBoxPrimitive(w, height, h);
-//					building.setPosition(x, -height / 2., z);
-//					buildings.push_back(building);
-//					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
-//				}
-//				break; // for (int col = lastReservedCol
-//			}
-//		}
-//	}
-//}
 
 //--------------------------------------------------------------
 void ofxCity::update(){
@@ -366,6 +293,8 @@ void ofxCity::draw(){
 
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
+	
+	directionalLight.enable();
 
 	ofBackground(255,255,255,255);
 
@@ -380,8 +309,7 @@ void ofxCity::draw(){
 	//ofPlanePrimitive plane = *planeIt;
 	for(auto & plane: roads) {
 
-		ofSetColor(255);	
-
+		ofSetColor(255);
 
 		if (bWireframe) {
 			plane.drawWireframe();
@@ -392,20 +320,21 @@ void ofxCity::draw(){
 	texRoad.unbind();
 
 	//ofFill();
-	ofDrawAxis(50);
-
-
+	//ofDrawAxis(50);
 
 	ofEnableLighting();
-	directionalLight.enable();
+	float road0z = roads[0].getPosition().z;
+	float roadnz = roads[roads.size()-1].getPosition().z;
 	for(auto & building: buildings) {
 
-		ofSetColor(255);
+		if (building.getPosition().z < roads[0].getPosition().z + 650) {
+			ofSetColor(255);
 
-		if (bWireframe) {
-			building.drawWireframe();
-		} else {
-			building.draw();
+			if (bWireframe) {
+				building.drawWireframe();
+			} else {
+				building.draw();
+			}
 		}
 	}
 	directionalLight.disable();
@@ -422,7 +351,7 @@ void ofxCity::draw(){
 
 	ofPopMatrix();
 
-	
+
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
@@ -464,7 +393,7 @@ void ofxCity::draw(){
 		img.update();
 		img.draw(200,200,CITY_BLOCKS_COLS*50,-CITY_BLOCKS_ROWS*50);
 	}
-	
+
 
 	app->cam.begin();
 

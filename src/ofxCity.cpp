@@ -21,7 +21,6 @@ void ofxCity::setup(){
 	desiredSpeed = 0;
 	curDistanceOffset = 0;
 	curDistance = 0;
-	buildings.clear();
 	tween.setParameters(easingsine, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
@@ -103,17 +102,6 @@ void ofxCity::setupRoad(){
 		roads.push_back(plane);
 	}
 
-	roadLights.clear();
-	for (int i=0; i < 5; i++) {
-		
-		ofLight light;
-		light.setDiffuseColor( ofFloatColor(.85, .85, .55) );
-		light.setSpecularColor( ofFloatColor(1.f, 1.f, 1.f));
-		
-		light.setParent(roads[i]);
-		light.setOrientation(ofVec3f(0,1,0));
-		roadLights.push_back(light);
-	}
 	
 }
 
@@ -412,11 +400,6 @@ void ofxCity::draw(){
 
 	ofTranslate(0, 0, curDistance + 650);
 
-	for (auto & light: roadLights) {
-		//light.enable();
-		ofSetColor(ofColor::red);
-		ofDrawSphere(light.getPosition(), 20);
-	}	
 
 	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
 	//ofPlanePrimitive plane = *planeIt;
@@ -436,25 +419,24 @@ void ofxCity::draw(){
 	//ofFill();
 	//ofDrawAxis(50);
 
-	float road0z = roads[0].getPosition().z;
-	for (int i = 0; i<buildings.size(); i++) {
+	float road0z = roads[0].getPosition().z + 650;
+	for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 
-		if (buildings[i].getPosition().z < road0z + 650) {
+		ofBoxPrimitive building = *buildingIt;
+		if (building.getPosition().z < road0z) {
 			ofSetColor(255);
 
 			if (bWireframe) {
-				buildings[i].drawWireframe();
+				building.drawWireframe();
 			} else {
-				buildings[i].draw();
+				building.draw();
 			}
 		}
 
 	}
 	
 	material.end();
-	for (auto & light: roadLights) {
-		//light.disable();
-	}
+	
 	directionalLight.disable();
 	ofDisableLighting();
 

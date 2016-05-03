@@ -20,7 +20,7 @@
 #define CITY_BLOCK_SIZE 100
 #define CITY_BLOCK_MARGIN_FACTOR 0.2
 #define CITY_BLOCKS_ROWS 3
-#define CITY_BLOCKS_COLS 5
+#define CITY_BLOCKS_COLS 20
 #define CITY_BLOCK_MAXHEIGHT 1000.
 
 
@@ -111,6 +111,5 @@ private:
 	ofParameter<ofFloatColor> specularColor;
 	ofParameter<ofFloatColor> ambientColor;
 	ofParameterGroup lightParams;
-	vector<ofLight> roadLights;
 };
 

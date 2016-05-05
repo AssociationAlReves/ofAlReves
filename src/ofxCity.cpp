@@ -102,7 +102,7 @@ void ofxCity::setupRoad(){
 		roads.push_back(plane);
 	}
 
-	
+
 }
 
 //--------------------------------------------------------------
@@ -308,7 +308,7 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 
 							}
 						}
-						
+
 						lastReservedCol = max(lastReservedCol,i);
 						maxCol = i;						
 					}
@@ -384,11 +384,8 @@ void ofxCity::draw(){
 	ofSetSmoothLighting(true);
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
-	
-	ofEnableLighting();
-	
-	directionalLight.enable();
-	material.begin();
+
+
 
 	ofBackground(255,255,255,255);
 
@@ -413,32 +410,72 @@ void ofxCity::draw(){
 			plane.draw();
 		}
 	}
-	
+
 	texRoad.unbind();
 
 	//ofFill();
 	//ofDrawAxis(50);
 
+
+	ofEnableLighting();
+
 	float road0z = roads[0].getPosition().z + 650;
-	for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+	if (bWireframe) {
+		//for(auto & building: buildings) {
+		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBoxPrimitive building = *buildingIt;
+			if (building.getPosition().z < road0z) {
+				ofSetColor(255);
 
-		ofBoxPrimitive building = *buildingIt;
-		if (building.getPosition().z < road0z) {
-			ofSetColor(255);
-
-			if (bWireframe) {
-				building.drawWireframe();
-			} else {
 				building.draw();
-			}
-		}
 
+
+			}
+
+		}
+		directionalLight.enable();
+		material.begin();
+		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBoxPrimitive building = *buildingIt;
+			if (building.getPosition().z < road0z) {
+				ofSetColor(255);
+
+
+				building.drawWireframe();
+
+
+			}
+
+		}
+		material.end();
+		directionalLight.disable();
+	} else 
+	{
+		directionalLight.enable();
+		material.begin();
+		//for(auto & building: buildings) {
+		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBoxPrimitive building = *buildingIt;
+			if (building.getPosition().z < road0z) {
+				ofSetColor(255);
+
+
+				building.draw();
+
+
+			}
+
+		}
+		material.end();
+		directionalLight.disable();
 	}
-	
-	material.end();
-	
-	directionalLight.disable();
+
+
 	ofDisableLighting();
+
+
+
+
 
 	/* Test box
 	ofSetColor(ofColor::red);

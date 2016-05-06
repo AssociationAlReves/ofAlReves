@@ -460,6 +460,9 @@
     <ClCompile Include="src\ofxCity.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofBuilding.cpp">
+      <Filter>src\city</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -665,6 +668,9 @@
     </Filter>
     <Filter Include="src\quad">
       <UniqueIdentifier>{e33a18a4-1ebe-4598-95f2-6ce12f79de53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\city">
+      <UniqueIdentifier>{bdf13953-e303-4efa-95ea-c1902b3d9626}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1447,6 +1453,9 @@
     </ClInclude>
     <ClInclude Include="src\ofxCity.h">
       <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofBuilding.h">
+      <Filter>src\city</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

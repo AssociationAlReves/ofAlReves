@@ -468,6 +468,7 @@ void ofxTerrain::draw(){
 		ofLine(mouseX, mouseY - lw, mouseX, mouseY + lw);
 	}
 
+	ofSetLineWidth(1);
 	ofDisableDepthTest();
 }
 

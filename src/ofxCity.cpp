@@ -400,14 +400,13 @@ void ofxCity::draw(){
 
 	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
 	//ofPlanePrimitive plane = *planeIt;
-	for(auto & plane: roads) {
-
-		ofSetColor(255);
+	for (int i = 0; i < roads.size(); i++) {
+			ofSetColor(255);
 
 		if (bWireframe) {
-			plane.drawWireframe();
+			roads[i].drawWireframe();
 		} else {
-			plane.draw();
+			roads[i].draw();
 		}
 	}
 
@@ -457,7 +456,7 @@ void ofxCity::draw(){
 		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBoxPrimitive building = *buildingIt;
 			if (building.getPosition().z < road0z) {
-				ofSetColor(255);
+				
 
 
 				building.draw();

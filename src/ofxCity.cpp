@@ -326,8 +326,7 @@ void ofxCity::updateBlockSide(bool isLeftSide) {
 						x = + (w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE;
 					}
 					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z - h /2.;
-					ofBoxPrimitive building = ofBoxPrimitive(w, height, h,10,10,10);
-					building.setPosition(x, -height / 2., z);
+					ofBuilding building = ofBuilding(ofVec3f(x, -height / 2., z), w, height, h);
 					buildings.push_back(building);
 					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
 				}
@@ -370,7 +369,7 @@ void ofxCity::update(){
 	int i = 0;
 	float road0z = roads[0].getPosition().z;
 	while (i < buildings.size()) {
-		if (buildings[i].getPosition().z >= road0z + 650) {
+		if (buildings[i].position.z >= road0z + 650) {
 			buildings[i] = buildings.back(); buildings.pop_back(); i--;
 		} else {
 			i++;
@@ -421,9 +420,9 @@ void ofxCity::draw(){
 	float road0z = roads[0].getPosition().z + 650;
 	if (bWireframe) {
 		//for(auto & building: buildings) {
-		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBoxPrimitive building = *buildingIt;
-			if (building.getPosition().z < road0z) {
+		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBuilding building = *buildingIt;
+			if (building.position.z < road0z) {
 				ofSetColor(255);
 
 				building.draw();
@@ -434,9 +433,9 @@ void ofxCity::draw(){
 		}
 		directionalLight.enable();
 		material.begin();
-		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBoxPrimitive building = *buildingIt;
-			if (building.getPosition().z < road0z) {
+		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBuilding building = *buildingIt;
+			if (building.position.z < road0z) {
 				ofSetColor(255);
 
 
@@ -453,9 +452,9 @@ void ofxCity::draw(){
 		directionalLight.enable();
 		material.begin();
 		//for(auto & building: buildings) {
-		for(std::vector<ofBoxPrimitive>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBoxPrimitive building = *buildingIt;
-			if (building.getPosition().z < road0z) {
+		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBuilding building = *buildingIt;
+			if (building.position.z < road0z) {
 				
 
 

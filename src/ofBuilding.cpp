@@ -22,6 +22,9 @@ void ofBuilding::update(){
 }
 
 void ofBuilding::draw(){
+	box.draw();
+}
 
-
+void ofBuilding::drawWireframe(){
+	box.drawWireframe();
 }

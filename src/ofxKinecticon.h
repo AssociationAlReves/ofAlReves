@@ -10,23 +10,26 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxUI.h"
+#include "ofxGui.h"
 #include "ofxOpenCv.h"
+
 #ifdef USE_KINECT
 #include "ofxKinect.h"
 #endif
 
 #define VASA_KINECT_NUM_BG_FRAMES 200
-#define VASA_KINECT_POINTCLOUD_STEP 2
-#define VASA_KINECT_FRAMECOUNT 100
+#define VASA_KINECT_POINTCLOUD_STEP 6
+#define VASA_KINECT_FRAMECOUNT 1
 #define VASA_KINECT_FRAMEDELAY 20
+
+#define VASA_KINECT_ARMNUMFRAMES 1
 
 class ofxKinecticon : public ofxScene
 {
 public:
 	ofxKinecticon(string prefix = "scene") : ofxScene(prefix + ": " + "Kinecticon") {
-			setSingleSetup(false); // call setup each time the scene is loaded
-		}
+		setSingleSetup(false); // call setup each time the scene is loaded
+	}
 
 	void setup();
 	void update();
@@ -37,42 +40,57 @@ public:
 	void keyPressed(int key);
 
 	// ---------------------------------------------
-    // kinect related suff
-    bool kinectEnabled;
-    bool bKinectSetup;
+	// kinect related suff
+	bool kinectEnabled;
+	bool bKinectSetup;
 	bool bShowHelp;
 
-	ofxUISuperCanvas *gui;
-    
-	#ifdef USE_KINECT
-    ofxKinect kinect;
-    vector<ofMesh> kinectMeshes; // meshes for kinect delayed point cloud (see https://vimeo.com/89527246 )
-    vector<ofColor> kinectMeshColors;
-    int kinectMeshCurColor;
-    
-    
-    ofxCvColorImage colorImg;
-    
-    ofxCvGrayscaleImage liveImage; // grayscale depth image
-    ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-    ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
+	ofxPanel gui;	 
 
-    ofxCvGrayscaleImage grayBgImage; // the average background image
-    ofxCvGrayscaleImage grayDiff;
-    ofxCvContourFinder contourFinder;
+#ifdef USE_KINECT
+	ofxKinect kinect;
+	vector<ofMesh> kinectMeshes; // meshes for kinect delayed point cloud (see https://vimeo.com/89527246 )
+	vector<ofColor> kinectMeshColors;
+	int kinectMeshCurColor;
+
+
+	ofxCvColorImage colorImg;
+
+	ofxCvGrayscaleImage liveImage; // grayscale depth image
+	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
+	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
+
+	ofxCvGrayscaleImage grayBgImage; // the average background image
+	ofxCvGrayscaleImage grayDiff;
+	ofxCvContourFinder contourFinder;
+
+	ofParameter<int> nearThreshold;
+	ofParameter<int> farThreshold;
+	ofParameter<int> threshold;
+	ofParameter<bool> bKinectUseBg;
 	
-    
-    bool bLearnBackground;
-    int numFramesBg;
-    bool bDrawPointCloud;
-    bool bKinectUseBg;
-    bool bKinectAltColor;
-    
-    int nearThreshold;
-    int farThreshold;
-    int threshold;
-    
-    int angle;
-    #endif
+	ofParameter<float> repeatMsLeft;	
+	ofParameter<float> repeatMsRight;
+	
+	ofParameter<int> center;
+	ofParameter<int> margin;
+
+	bool bLearnBackground;
+	int numFramesBg;
+	bool bDrawPointCloud;
+	bool bKinectAltColor;
+	bool showGui;
+
+	int angle;
+
+	ofSoundPlayer playerCCRight;
+	ofSoundPlayer playerKickLeft;
+	ofSoundPlayer playerCompteurCenter;
+
+
+	int lastArm;
+	int arm;
+	int numFrames;
+#endif
 };
 

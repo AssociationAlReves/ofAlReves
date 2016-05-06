@@ -24,6 +24,8 @@
 #define CITY_BLOCK_MAXHEIGHT 1500
 
 
+#define CITY_SETTINGS_FILE  "city_settings.xml"
+
 class ofxCity: public ofxScene
 {
 public:

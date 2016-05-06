@@ -29,15 +29,15 @@ void ofxCity::setup(){
 	// GUI
 	roadParamsHash = 0;
 	if (!bGuiLoaded) {
-		gui.setup("cityPanel","city_settings.xml"); // most of the time you don't need a name but don't forget to call setup
+		gui.setup("cityPanel",CITY_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
 		gui.add(fov.set("FOV", 60,0,360));
 		gui.add(debugFbo.set("Debug FBO", false));
 		roadParams.setName("Road");
 		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
-		roadParams.add(roadLineWidth.set("Road line width %", 1.5,1,100));
-		roadParams.add(roadLineHeight.set("Road line height %", 50,1,100));	
+		roadParams.add(roadLineWidth.set("Road line width", 1.5,1,100));
+		roadParams.add(roadLineHeight.set("Road line height", 50,1,100));	
 		roadParams.add(roadWidth.set("Road width", 100,10,1000));
 		roadParams.add(roadHeight.set("Road height", 100,10,1000));
 		roadParams.add(curSpeed.set("Velocity", 0, 0, 150));
@@ -542,7 +542,8 @@ void ofxCity::keyPressed(int key){
 	switch (key)
 	{
 	case 'r': setup(); break;
-	case 'l' : gui.loadFromFile("city_settings.xml"); break;
+	case 'l' : gui.loadFromFile(CITY_SETTINGS_FILE); break;
+	case 's' : gui.saveToFile(CITY_SETTINGS_FILE); break;
 	case 'h': 
 		bShowGui = !bShowGui;
 		if (bShowGui){

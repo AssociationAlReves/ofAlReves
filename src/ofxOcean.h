@@ -14,6 +14,8 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
+#define OCEAN_SETTINGS_FILE  "ocean_settings.xml"
+
 class ofxOcean : public ofxScene
  {
     

@@ -13,6 +13,7 @@
 #include "ofxTween.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
+#include "ofBuilding.h"
 
 #define CITY_SPEED_INCR 1.
 #define CITY_NUM_ROAD_PLANES 150
@@ -62,7 +63,7 @@ private:
 
 	// buildings (aka blocks)
 	//float blockProbability;
-	vector<ofBoxPrimitive> buildings;
+	vector<ofBuilding> buildings;
 	vector<int> blocksL;	
 	vector<int> blocksR;
 

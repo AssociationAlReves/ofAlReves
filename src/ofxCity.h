@@ -16,7 +16,8 @@
 #include "ofBuilding.h"
 
 #define CITY_SPEED_INCR 1.
-#define CITY_NUM_ROAD_PLANES 150
+#define CITY_NUM_ROAD_PLANES 100
+#define CITY_NUM_ROAD_PLANES_FADEIN 40
 #define CITY_BLOCK_TOTAL_WIDTH 1000
 #define CITY_BLOCK_SIZE 100
 #define CITY_BLOCK_MARGIN_FACTOR 0.2
@@ -50,11 +51,11 @@ private:
 
 	void setupTextures();
 	void setupRoad();
-	void updateRoad();
+	void updateRoad(bool createNewRow);
 	void setupBlocks();
-	void updateBlocks();
+	void updateBlocks(bool createNewRow);
 	
-	void updateBlockSide(bool isLeftSide);
+	void generateBlockSide(bool isLeftSide);
 
 	// road
 	vector<ofPlanePrimitive> roads;

@@ -106,23 +106,20 @@ void ofxCity::setupRoad(){
 }
 
 //--------------------------------------------------------------
-void ofxCity::updateRoad(){
+void ofxCity::updateRoad(bool createNewRow) {
 
 	// if plane is offsight
 	// translate all planes along negative z axis
-	if (curDistanceOffset >= roadTexHeight) {
+	if (createNewRow) {
 		cout << ".";
+
 
 		// translate all road planes
 		for(auto & plane: roads) {
+
 			ofVec3f pos = plane.getPosition();
 			pos.z -= curDistanceOffset-1;
 			plane.setPosition(pos);
-		}
-
-		// generate new blocks on incoming line
-		if (autoGenerateBuildings) {
-			updateBlocks();
 		}
 
 		curDistanceOffset = 0;
@@ -148,27 +145,30 @@ void ofxCity::setupBlocks(){
 }
 
 //--------------------------------------------------------------
-void ofxCity::updateBlocks() {
+void ofxCity::updateBlocks(bool createNewRow) {
 
-	long elapsed = ofGetElapsedTimeMillis();
-	int numIterations = 0;
-	// Translate all heights one row down
-	for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
-		for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
+	if (createNewRow && autoGenerateBuildings) {
 
-			blocksL[(row - 1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
-			blocksR[(row - 1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+		long elapsed = ofGetElapsedTimeMillis();
+		int numIterations = 0;
+		// Translate all heights one row down
+		for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+			for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
 
-			if (row == CITY_BLOCKS_ROWS - 1) {
-				blocksL[row * CITY_BLOCKS_COLS + col] = 0;
-				blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+				blocksL[(row - 1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
+				blocksR[(row - 1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+
+				if (row == CITY_BLOCKS_ROWS - 1) {
+					blocksL[row * CITY_BLOCKS_COLS + col] = 0;
+					blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+				}
+
 			}
-
 		}
-	}
 
-	updateBlockSide(true);
-	updateBlockSide(false);	
+		generateBlockSide(true);
+		generateBlockSide(false);	
+	}
 }
 
 ////--------------------------------------------------------------
@@ -261,7 +261,7 @@ void ofxCity::updateBlocks() {
 
 
 //--------------------------------------------------------------
-void ofxCity::updateBlockSide(bool isLeftSide) {
+void ofxCity::generateBlockSide(bool isLeftSide) {
 
 	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
 
@@ -354,7 +354,10 @@ void ofxCity::update(){
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.setFov(fov);
 
-	updateRoad();
+	if (curDistanceOffset >= roadTexHeight) {
+		updateRoad(true);
+		updateBlocks(true);
+	}
 
 	//curSpeed = tween.update();
 	curDistance += curSpeed;
@@ -384,8 +387,6 @@ void ofxCity::draw(){
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 
-
-
 	ofBackground(255,255,255,255);
 
 	ofPushMatrix();
@@ -399,8 +400,10 @@ void ofxCity::draw(){
 
 	//for(std::vector<ofPlanePrimitive>::iterator planeIt = roads.begin(); planeIt != roads.end(); ++planeIt) {
 	//ofPlanePrimitive plane = *planeIt;
+
 	for (int i = 0; i < roads.size(); i++) {
-			ofSetColor(255);
+
+		ofSetColor(ofColor::white, ofMap(i,CITY_NUM_ROAD_PLANES-CITY_NUM_ROAD_PLANES_FADEIN,CITY_NUM_ROAD_PLANES-1,255,0,true));
 
 		if (bWireframe) {
 			roads[i].drawWireframe();
@@ -417,17 +420,19 @@ void ofxCity::draw(){
 
 	ofEnableLighting();
 
+	int maxDepth = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
+	int minDepth = roads[CITY_NUM_ROAD_PLANES-1-CITY_NUM_ROAD_PLANES_FADEIN].getPosition().z;
+
 	float road0z = roads[0].getPosition().z + 650;
 	if (bWireframe) {
 		//for(auto & building: buildings) {
 		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
 			if (building.position.z < road0z) {
-				ofSetColor(255);
+				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
+
 
 				building.draw();
-
-
 			}
 
 		}
@@ -436,11 +441,9 @@ void ofxCity::draw(){
 		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
 			if (building.position.z < road0z) {
-				ofSetColor(255);
-
+				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
 
 				building.drawWireframe();
-
 
 			}
 
@@ -455,8 +458,8 @@ void ofxCity::draw(){
 		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
 			if (building.position.z < road0z) {
-				
 
+				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
 
 				building.draw();
 
@@ -559,7 +562,7 @@ void ofxCity::keyPressed(int key){
 			, 2000,0);
 		break;
 	case 'b': 
-		updateBlocks(); 
+		updateBlocks(true); 
 		break;
 	default:
 		break;

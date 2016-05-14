@@ -404,12 +404,12 @@ void ofxCity::draw(){
 	for (int i = 0; i < roads.size(); i++) {
 
 		ofSetColor(ofColor::white, ofMap(i,CITY_NUM_ROAD_PLANES-CITY_NUM_ROAD_PLANES_FADEIN,CITY_NUM_ROAD_PLANES-1,255,0,true));
-
-		if (bWireframe) {
-			roads[i].drawWireframe();
+		roads[i].draw();
+		/*if (bWireframe) {
+		roads[i].drawWireframe();
 		} else {
-			roads[i].draw();
-		}
+		roads[i].draw();
+		}*/
 	}
 
 	texRoad.unbind();
@@ -419,59 +419,45 @@ void ofxCity::draw(){
 
 
 	ofEnableLighting();
+	directionalLight.enable();
+	material.begin();
+
+	ofFill();
+	ofSetColor(255);
 
 	int maxDepth = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
 	int minDepth = roads[CITY_NUM_ROAD_PLANES-1-CITY_NUM_ROAD_PLANES_FADEIN].getPosition().z;
 
 	float road0z = roads[0].getPosition().z + 650;
+	for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+		ofBuilding building = *buildingIt;
+		if (building.position.z < road0z) {
+			ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
+			building.draw();
+		}
+
+	}
 	if (bWireframe) {
 		//for(auto & building: buildings) {
+		ofNoFill();
+        ofSetColor(0, 0, 0);
 		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
 			if (building.position.z < road0z) {
-				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
-
-
-				building.draw();
-			}
-
-		}
-		directionalLight.enable();
-		material.begin();
-		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBuilding building = *buildingIt;
-			if (building.position.z < road0z) {
-				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
-
+				ofSetColor(ofColor::darkGray, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
+				building.box.setScale(1.01f);
 				building.drawWireframe();
-
+				building.box.setScale(1.f);
 			}
 
 		}
-		material.end();
-		directionalLight.disable();
-	} else 
-	{
-		directionalLight.enable();
-		material.begin();
-		//for(auto & building: buildings) {
-		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBuilding building = *buildingIt;
-			if (building.position.z < road0z) {
 
-				ofSetColor(ofColor::white, ofMap(building.position.z,minDepth,maxDepth,255,0,true));
-
-				building.draw();
-
-
-			}
-
-		}
-		material.end();
-		directionalLight.disable();
 	}
+	ofFill();
+	ofSetColor(255);
 
-
+	material.end();
+	directionalLight.disable();
 	ofDisableLighting();
 
 

@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 
-#define CITY_BOX_RESOLUTION 10
+#define CITY_BOX_RESOLUTION 5
 
 class ofBuilding {
 
@@ -34,11 +34,11 @@ public:
 	float alpha; 
 
 	ofVec3f position;
-
+	
+	ofBoxPrimitive box;
 
 private:
 
-	ofBoxPrimitive box;
 	
 	float width;
 	float height;

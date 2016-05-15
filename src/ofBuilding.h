@@ -21,6 +21,7 @@ public:
 
 			box = ofBoxPrimitive(width, height, depth, CITY_BOX_RESOLUTION,CITY_BOX_RESOLUTION,CITY_BOX_RESOLUTION);
 			box.setPosition(pos);
+			initialDistance = pos.z;
 	}
 
 	void setup();
@@ -34,6 +35,7 @@ public:
 	float alpha; 
 
 	ofVec3f position;
+	float initialDistance;
 	
 	ofBoxPrimitive box;
 

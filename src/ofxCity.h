@@ -24,7 +24,14 @@
 #define CITY_BLOCKS_ROWS 3
 #define CITY_BLOCKS_COLS 50
 #define CITY_BLOCK_MAXHEIGHT 4000
+#define CITY_BLOCK_PAVEMENT_SIZE 50
 
+
+enum CITY_MODE { enCityIdle = 0, 
+	enCityStart,	// road appearance, opacity
+	enCityBuildings,
+	enCityRotate,
+};
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"
 
@@ -32,8 +39,8 @@ class ofxCity: public ofxScene
 {
 public:
 	ofxCity(string prefix = "scene") : 
-		bGuiLoaded(false), ofxScene(prefix + ": " + "City") {
-			setSingleSetup(false); // call setup each time the scene is loaded
+		mode(enCityStart), bGuiLoaded(false), ofxScene(prefix + ": " + "City") {
+			setSingleSetup(true); // call setup each time the scene is loaded
 	}
 
 	void setup();
@@ -42,6 +49,9 @@ public:
 
 	void keyPressed(int key);
 
+	int mode;
+
+
 private:
 	// Movement
 	//float curSpeed;
@@ -49,12 +59,13 @@ private:
 	float curDistanceOffset;
 	float desiredSpeed;
 
+
 	void setupTextures();
 	void setupRoad();
 	void updateRoad(bool createNewRow);
 	void setupBlocks();
 	void updateBlocks(bool createNewRow);
-	
+
 	void generateBlockSide(bool isLeftSide);
 
 	// road
@@ -73,16 +84,16 @@ private:
 	ofxPanel gui;	 
 	ofParameter<bool> autoGenerateBuildings;
 	ofParameter<bool> debugFbo; 
-		ofImage img;
+	ofParameter<bool> bTweenSpeed;
+	ofImage img;
 	ofParameter<bool> bWireframe;
 	ofParameter<float> fov;
-	ofParameter<float> roadWidth;
-	ofParameter<float> roadHeight;	
 	ofParameter<float> roadLineWidth;
 	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;
 	ofParameter<int> roadTexHeight;
 	ofParameter<float> curSpeed;
+	ofParameter<float> roadOpacity;
 	ofParameterGroup roadParams;
 
 	ofParameter<float> blockProbability;
@@ -93,6 +104,8 @@ private:
 
 	// transitions
 	ofxTween tween;
+	ofxTween tweenRoadOpactity;	
+	ofxTween tweenRotate;
 
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;
@@ -108,7 +121,7 @@ private:
 
 	// lights
 	ofLight directionalLight;	
-    ofMaterial material;
+	ofMaterial material;
 	// lights params
 	ofParameter<ofVec3f> dirLightOrientation;
 	ofParameter<ofFloatColor> diffuseColor;

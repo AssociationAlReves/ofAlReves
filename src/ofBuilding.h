@@ -26,8 +26,8 @@ public:
 
 	void setup();
 	void update();
-	void draw();
-	void drawWireframe();
+	void draw(float rotateAngle);
+	void drawWireframe(float rotateAngle, float margin = 10.);
 
 	int x,y;
 	int size;
@@ -37,11 +37,11 @@ public:
 	ofVec3f position;
 	float initialDistance;
 	
-	ofBoxPrimitive box;
 
 private:
 
 	
+	ofBoxPrimitive box;
 	float width;
 	float height;
 	float depth;

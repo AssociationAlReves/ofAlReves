@@ -342,10 +342,11 @@ void ofxCity::draw(){
 		float road0z = roads[0].getPosition().z + 650;
 		float roadnz = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
 
+		float rotationAngle = 0;
 		if (mode == enCityRotate) {
 			ofPushMatrix();
 			//ofTranslate(0,0,-CITY_NUM_ROAD_PLANES*CITY_BLOCK_SIZE-curDistance);
-			ofRotateX(-tweenRotate.update());
+			rotationAngle = tweenRotate.update();
 		}
 
 		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
@@ -354,7 +355,7 @@ void ofxCity::draw(){
 				int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
 				float alpha = ofMap(curDepth,minDepth,maxDepth,255,0,true);
 				ofSetColor(ofColor::white, alpha);
-				building.draw();
+				building.draw(rotationAngle);
 			}
 
 		}
@@ -369,11 +370,7 @@ void ofxCity::draw(){
 					int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
 					float alpha = ofMap(curDepth,minDepth,maxDepth,255,0,true);
 					ofSetColor(ofColor::white, alpha);
-					building.box.setDepth(building.box.getDepth()+10);
-					building.box.setWidth(building.box.getWidth()+10);
-					building.drawWireframe();
-					building.box.setDepth(building.box.getDepth()-10);
-					building.box.setWidth(building.box.getWidth()-10);
+					building.drawWireframe(rotationAngle);
 				}
 
 			}

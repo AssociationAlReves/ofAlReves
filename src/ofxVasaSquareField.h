@@ -20,7 +20,6 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxUI.h"
 #include "ofxAppUtils.h"
 
 class ofxVasaSquareField : public ofxFadeScene {
@@ -31,7 +30,7 @@ public:
 		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(0, 0);
-			guiInitDone = false;
+			//guiInitDone = false;
 		}
 
 	void setup();
@@ -49,9 +48,9 @@ public:
 	int squareIndex;
 	bool squareAutoComplete;
 
-	bool guiInitDone;
+	/*bool guiInitDone;
 	ofxUISuperCanvas *gui;
-    void guiEvent(ofxUIEventArgs &e);
+    void guiEvent(ofxUIEventArgs &e);*/
     
 private:
     

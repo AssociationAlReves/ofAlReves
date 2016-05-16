@@ -132,31 +132,31 @@ void ofMovingSquares::setup(){
 	shapes.push_back(green);
 	shapes.push_back(fuchsia);
 
-	if (initDone == false) {
-		gui = new ofxUISuperCanvas("Moving Squares", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+	//if (initDone == false) {
+	//	gui = new ofxUISuperCanvas("Moving Squares", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
 
-		float dummy=0;
-		gui->addSpacer("Green");
-		gui->addSlider("green angle", 0, 2, green.angleOffset/PI);
-		gui->addSlider("green margin", 0, ofGetHeight()/2, green.margin);
-		gui->addSpacer("Red");
-		gui->addSlider("red angle", 0, 2, red.angleOffset/PI);
-		gui->addSlider("red margin", 0, ofGetHeight()/2, red.margin);
-		gui->addSpacer("Yellow");
-		gui->addSlider("yellow angle", 0, 2, yellow.angleOffset/PI);
-		gui->addSlider("yellow margin", 0, ofGetHeight()/2, yellow.margin);
-		gui->addSpacer("Blue");
-		gui->addSlider("blue angle", 0, 2, blue.angleOffset/PI);
-		gui->addSlider("blue margin", 0, ofGetHeight()/2, blue.margin);
-		gui->addSpacer("Fuchsia");
-		gui->addSlider("fuchsia angle", 0, 2, fuchsia.angleOffset/PI);
-		gui->addSlider("fuchsia margin", 0, ofGetHeight()/2, fuchsia.margin);
-		ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
-		gui->autoSizeToFitWidgets();
-		gui->setVisible(false);
+	//	float dummy=0;
+	//	gui->addSpacer("Green");
+	//	gui->addSlider("green angle", 0, 2, green.angleOffset/PI);
+	//	gui->addSlider("green margin", 0, ofGetHeight()/2, green.margin);
+	//	gui->addSpacer("Red");
+	//	gui->addSlider("red angle", 0, 2, red.angleOffset/PI);
+	//	gui->addSlider("red margin", 0, ofGetHeight()/2, red.margin);
+	//	gui->addSpacer("Yellow");
+	//	gui->addSlider("yellow angle", 0, 2, yellow.angleOffset/PI);
+	//	gui->addSlider("yellow margin", 0, ofGetHeight()/2, yellow.margin);
+	//	gui->addSpacer("Blue");
+	//	gui->addSlider("blue angle", 0, 2, blue.angleOffset/PI);
+	//	gui->addSlider("blue margin", 0, ofGetHeight()/2, blue.margin);
+	//	gui->addSpacer("Fuchsia");
+	//	gui->addSlider("fuchsia angle", 0, 2, fuchsia.angleOffset/PI);
+	//	gui->addSlider("fuchsia margin", 0, ofGetHeight()/2, fuchsia.margin);
+	//	ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
+	//	gui->autoSizeToFitWidgets();
+	//	gui->setVisible(false);
 
-		initDone = true;
-	}
+	//	initDone = true;
+	//}
 }
 
 //--------------------------------------------------------------
@@ -165,32 +165,32 @@ void ofMovingSquares::updateEnter(){
 	finishedEntering();
 }
 
-void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
-{
-	ofxUISlider *slider = e.getSlider();
-	float value = slider->getValue();
-
-	if(e.getName() == "red angle") shapes[0].angleOffset = slider->getValue()*PI;
-	if(e.getName() == "yellow angle") shapes[1].angleOffset = slider->getValue()*PI;
-	if(e.getName() == "blue angle") shapes[2].angleOffset = slider->getValue()*PI;
-	if(e.getName() == "green angle") shapes[3].angleOffset = slider->getValue()*PI;
-	if(e.getName() == "fuchsia angle") shapes[4].angleOffset = slider->getValue()*PI;
-
-	if(e.getName() == "red margin") shapes[0].margin = slider->getValue();
-	if(e.getName() == "yellow margin") shapes[1].margin = slider->getValue();
-	if(e.getName() == "blue margin") shapes[2].margin = slider->getValue();
-	if(e.getName() == "green margin") shapes[3].margin = slider->getValue();
-	if(e.getName() == "fuchsia margin") shapes[4].margin = slider->getValue();
-
-
-	//    if (e.getName() == "tilt angle") {
-	//        ofxUISlider *silder = e.getSlider();
-	//        angle = (int)(silder->getValue());
-	//        kinect.setCameraTiltAngle(angle);
-	//
-	//    }
-
-}
+//void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
+//{
+//	ofxUISlider *slider = e.getSlider();
+//	float value = slider->getValue();
+//
+//	if(e.getName() == "red angle") shapes[0].angleOffset = slider->getValue()*PI;
+//	if(e.getName() == "yellow angle") shapes[1].angleOffset = slider->getValue()*PI;
+//	if(e.getName() == "blue angle") shapes[2].angleOffset = slider->getValue()*PI;
+//	if(e.getName() == "green angle") shapes[3].angleOffset = slider->getValue()*PI;
+//	if(e.getName() == "fuchsia angle") shapes[4].angleOffset = slider->getValue()*PI;
+//
+//	if(e.getName() == "red margin") shapes[0].margin = slider->getValue();
+//	if(e.getName() == "yellow margin") shapes[1].margin = slider->getValue();
+//	if(e.getName() == "blue margin") shapes[2].margin = slider->getValue();
+//	if(e.getName() == "green margin") shapes[3].margin = slider->getValue();
+//	if(e.getName() == "fuchsia margin") shapes[4].margin = slider->getValue();
+//
+//
+//	//    if (e.getName() == "tilt angle") {
+//	//        ofxUISlider *silder = e.getSlider();
+//	//        angle = (int)(silder->getValue());
+//	//        kinect.setCameraTiltAngle(angle);
+//	//
+//	//    }
+//
+//}
 
 
 //--------------------------------------------------------------

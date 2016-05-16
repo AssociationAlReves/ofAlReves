@@ -67,15 +67,15 @@ void ofxKinecticon::setup(){
 
 
 	bShowHelp = false;
-	gui = new ofxUISuperCanvas("Vasarely", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+	//gui = new ofxUISuperCanvas("Vasarely", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
 
-	gui->addLabel("kinect");
-	gui->addIntSlider("nearThresh", 0, 255, &nearThreshold);
-	gui->addIntSlider("farThresh", 0, 255, &farThreshold);
-	gui->addIntSlider("diffThresh", 0, 255, &threshold);
-	gui->addLabelToggle("Use background (b)", &bKinectUseBg);
-	gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
-	gui->setVisible(false);
+	//gui->addLabel("kinect");
+	//gui->addIntSlider("nearThresh", 0, 255, &nearThreshold);
+	//gui->addIntSlider("farThresh", 0, 255, &farThreshold);
+	//gui->addIntSlider("diffThresh", 0, 255, &threshold);
+	//gui->addLabelToggle("Use background (b)", &bKinectUseBg);
+	//gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
+	//gui->setVisible(false);
 
 #endif
 
@@ -423,7 +423,7 @@ void ofxKinecticon::keyPressed(int key){
 		case '0':
 			kinect.setLed(ofxKinect::LED_OFF);
 			break;
-		case 'g' : gui->setVisible(!gui->isVisible());
+		//case 'g' : gui->setVisible(!gui->isVisible());
 
 		case OF_KEY_UP:
 			angle++;

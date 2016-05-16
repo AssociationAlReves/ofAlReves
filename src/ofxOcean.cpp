@@ -48,7 +48,7 @@ void ofxOcean::setup(){
     
     setupMesh(width,height,gridSize);
     
-    gui.setup("panel"); // most of the time you don't need a name but don't forget to call setup
+    gui.setup("panel",OCEAN_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
     gui.add(filled.set("bFill", true));
     gui.add(useLights.set("Use lights", true));
     gui.add(smoothLighting.set("Smooth Lighting", false));
@@ -374,10 +374,10 @@ void ofxOcean::keyPressed(int key){
         waveHeight += 10;
     }
     if(key == 's') {
-        gui.saveToFile("settings.xml");
+        gui.saveToFile(OCEAN_SETTINGS_FILE);
     }
     if(key == 'l') {
-        gui.loadFromFile("settings.xml");
+        gui.loadFromFile(OCEAN_SETTINGS_FILE);
         
     }
    

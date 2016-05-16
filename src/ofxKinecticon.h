@@ -10,7 +10,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxUI.h"
+//#include "ofxUI.h"
 #include "ofxOpenCv.h"
 #ifdef USE_KINECT
 #include "ofxKinect.h"
@@ -42,7 +42,7 @@ public:
     bool bKinectSetup;
 	bool bShowHelp;
 
-	ofxUISuperCanvas *gui;
+	//ofxUISuperCanvas *gui;
     
 	#ifdef USE_KINECT
     ofxKinect kinect;

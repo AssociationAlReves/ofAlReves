@@ -39,33 +39,33 @@ void ofxVasaSquareField::setup(){
 		break;
 	}
 
-	if (guiInitDone == false) {
-		gui = new ofxUISuperCanvas("Square Field", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+	//if (guiInitDone == false) {
+	//	gui = new ofxUISuperCanvas("Square Field", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
 
-		float dummy=0;
-		gui->addSpacer("force");
-		gui->addSlider("force distance", 0.1, 1000, &distRange);
-		gui->addToggle("noise force", &distRangeAuto);
-		gui->addRangeSlider("force range",distRangeMIN, distRangeMAX, &distRangeMIN, &distRangeMAX);
-		gui->addSlider("speed", 0.1, 10, &distRangeSpeed);
-		gui->addSpacer("scale");
-		gui->addSlider("scale factor", 1, 0, &scaleFactor);
-		gui->addToggle("noise scale", &scaleFactorAuto);
-		gui->addRangeSlider("scale range",scaleFactorMIN, scaleFactorMAX, &scaleFactorMIN, &scaleFactorMAX);
-		gui->addSlider("speed", 0.1, 10, &scaleFactorSpeed);
-		gui->addSpacer("angle");
-		gui->addSlider("dev angle", 0, 360, &devAngle);
-		gui->addToggle("noise angle", &devAngleAuto);
-		gui->addRangeSlider("angle range",devAngleMIN, devAngleMAX, &devAngleMIN, &devAngleMAX);
-		gui->addSlider("speed", 0.1, 10, &devAngleSpeed);
+	//	float dummy=0;
+	//	gui->addSpacer("force");
+	//	gui->addSlider("force distance", 0.1, 1000, &distRange);
+	//	gui->addToggle("noise force", &distRangeAuto);
+	//	gui->addRangeSlider("force range",distRangeMIN, distRangeMAX, &distRangeMIN, &distRangeMAX);
+	//	gui->addSlider("speed", 0.1, 10, &distRangeSpeed);
+	//	gui->addSpacer("scale");
+	//	gui->addSlider("scale factor", 1, 0, &scaleFactor);
+	//	gui->addToggle("noise scale", &scaleFactorAuto);
+	//	gui->addRangeSlider("scale range",scaleFactorMIN, scaleFactorMAX, &scaleFactorMIN, &scaleFactorMAX);
+	//	gui->addSlider("speed", 0.1, 10, &scaleFactorSpeed);
+	//	gui->addSpacer("angle");
+	//	gui->addSlider("dev angle", 0, 360, &devAngle);
+	//	gui->addToggle("noise angle", &devAngleAuto);
+	//	gui->addRangeSlider("angle range",devAngleMIN, devAngleMAX, &devAngleMIN, &devAngleMAX);
+	//	gui->addSlider("speed", 0.1, 10, &devAngleSpeed);
 
 
-		//ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
-		gui->autoSizeToFitWidgets();
-		gui->setVisible(false);
+	//	//ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
+	//	gui->autoSizeToFitWidgets();
+	//	gui->setVisible(false);
 
-		guiInitDone = true;
-	}
+	//	guiInitDone = true;
+	//}
 }
 
 //--------------------------------------------------------------
@@ -313,7 +313,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
 	case 'r' : setup(); break;
-	case 'h': gui->toggleVisible(); break;
+	//case 'h': gui->toggleVisible(); break;
 	}
 }
 

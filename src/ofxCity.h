@@ -88,6 +88,7 @@ private:
 	ofImage img;
 	ofParameter<bool> bWireframe;
 	ofParameter<float> fov;
+	ofParameter<float> rotationAngle;
 	ofParameter<float> roadLineWidth;
 	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;

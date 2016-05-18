@@ -21,25 +21,55 @@ void ofBuilding::update(){
 
 }
 
-void ofBuilding::draw(float rotateAngle){
+void ofBuilding::draw(float rotateAngle, float alpha, bool wireFrame, float margin){
+
+
 	ofPushMatrix();
 
-	ofVec3f pos = box.getPosition();
-	ofTranslate(-pos.x, -pos.y, -pos.z);
-	ofRotate(rotateAngle,-1,0,0);
-	ofTranslate(pos.x, pos.y, pos.z);
-	
+	if (rotateAngle == 0) {
+		ofTranslate(position);
+	}
+	else
+	{
+		ofTranslate(position);
+
+		// translate to box base front side center
+		ofTranslate(0,box.getHeight()/2,box.getDepth()/2);
+
+		ofRotate(rotateAngle,-1,0,0);	
+
+		ofTranslate(ofRandom(-10,10),ofRandom(-10,10),ofRandom(-10,10));
+
+		ofTranslate(0,-box.getHeight()/2,-box.getDepth()/2);		
+	}
+
+
+
+	ofFill();
+	ofSetColor(255);
+
+	ofSetColor(ofColor::white, alpha);
+
 	box.draw();
 
+	if (wireFrame) {
+		ofNoFill();
+		ofSetColor(0);
+		ofSetLineWidth(2);
+
+		ofSetColor(ofColor::white, alpha);
+
+		box.setDepth(box.getDepth()+10);
+		box.setWidth(box.getWidth()+10);
+		box.drawWireframe();
+		box.setDepth(box.getDepth()-10);
+		box.setWidth(box.getWidth()-10);
+
+		ofFill();
+		ofSetColor(255);
+		ofSetLineWidth(1);
+
+	}
+
 	ofPopMatrix();
-}
-
-void ofBuilding::drawWireframe(float rotateAngle, float margin){
-		
-	box.setDepth(box.getDepth()+10);
-	box.setWidth(box.getWidth()+10);
-	box.drawWireframe();
-	box.setDepth(box.getDepth()-10);
-	box.setWidth(box.getWidth()-10);
-
 }

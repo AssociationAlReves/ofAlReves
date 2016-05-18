@@ -22,6 +22,8 @@ void ofxCity::setup(){
 	desiredSpeed = 0;
 	curDistanceOffset = 0;
 	curDistance = 0;
+	rotationAngle = 0;
+	buildings.clear();
 	tween.setParameters(easinglinear, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
@@ -36,6 +38,8 @@ void ofxCity::setup(){
 		gui.add(fov.set("FOV", 60,0,360));
 		gui.add(debugFbo.set("Debug FBO", false));
 		roadParams.setName("Road");
+
+		roadParams.add(rotationAngle.set("rotationAngle", 0 ,-180 , 180));
 		roadParams.add(roadOpacity.set("Road opacity", 0 ,0 , 255));
 		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
@@ -342,10 +346,7 @@ void ofxCity::draw(){
 		float road0z = roads[0].getPosition().z + 650;
 		float roadnz = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
 
-		float rotationAngle = 0;
 		if (mode == enCityRotate) {
-			ofPushMatrix();
-			//ofTranslate(0,0,-CITY_NUM_ROAD_PLANES*CITY_BLOCK_SIZE-curDistance);
 			rotationAngle = tweenRotate.update();
 		}
 
@@ -355,31 +356,12 @@ void ofxCity::draw(){
 				int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
 				float alpha = ofMap(curDepth,minDepth,maxDepth,255,0,true);
 				ofSetColor(ofColor::white, alpha);
-				building.draw(rotationAngle);
-			}
-
-		}
-		if (bWireframe) {
-			//for(auto & building: buildings) {
-			ofNoFill();
-			ofSetColor(0, 0, 0);
-			ofSetLineWidth(2);
-			for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-				ofBuilding building = *buildingIt;
-				if (building.position.z < road0z) {
-					int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
-					float alpha = ofMap(curDepth,minDepth,maxDepth,255,0,true);
-					ofSetColor(ofColor::white, alpha);
-					building.drawWireframe(rotationAngle);
-				}
-
+				building.draw(rotationAngle, alpha, bWireframe);
 			}
 
 		}
 
-		if (mode == enCityRotate) {
-			ofPopMatrix();
-		}
+
 		ofFill();
 		ofSetColor(255);
 		ofSetLineWidth(1);

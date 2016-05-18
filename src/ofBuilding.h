@@ -20,14 +20,13 @@ public:
 		position(pos),width(width),height(height),depth(depth) {	
 
 			box = ofBoxPrimitive(width, height, depth, CITY_BOX_RESOLUTION,CITY_BOX_RESOLUTION,CITY_BOX_RESOLUTION);
-			box.setPosition(pos);
+			//box.setPosition(pos);
 			initialDistance = pos.z;
 	}
 
 	void setup();
 	void update();
-	void draw(float rotateAngle);
-	void drawWireframe(float rotateAngle, float margin = 10.);
+	void draw(float rotateAngle, float alpha = 255, bool wireFrame = false, float margin = 10.);
 
 	int x,y;
 	int size;

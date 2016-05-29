@@ -93,6 +93,7 @@
     <ClCompile Include="src\ofBuilding.cpp" />
     <ClCompile Include="src\ofxBgScene.cpp" />
     <ClCompile Include="src\ofxCity.cpp" />
+    <ClCompile Include="src\ofxKinectMemory.cpp" />
     <ClCompile Include="src\ofxOcean.cpp" />
     <ClCompile Include="src\ofxRibbon.cpp" />
     <ClCompile Include="src\ofxVideoScene.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="src\ofBuilding.h" />
     <ClInclude Include="src\ofxBgScene.h" />
     <ClInclude Include="src\ofxCity.h" />
+    <ClInclude Include="src\ofxKinectMemory.h" />
     <ClInclude Include="src\ofxOcean.h" />
     <ClInclude Include="src\ofxRibbon.h" />
     <ClInclude Include="src\ofxVideoScene.h" />

@@ -463,6 +463,9 @@
     <ClCompile Include="src\ofBuilding.cpp">
       <Filter>src\city</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxKinectMemory.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1456,6 +1459,9 @@
     </ClInclude>
     <ClInclude Include="src\ofBuilding.h">
       <Filter>src\city</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxKinectMemory.h">
+      <Filter>src\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,4 +15,5 @@
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #include "ofxKinectListener.h"
+#include "ofxKinectMemory.h"
 #endif

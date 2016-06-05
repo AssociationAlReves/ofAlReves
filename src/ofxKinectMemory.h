@@ -11,18 +11,8 @@
 #include "globals.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
-#include "ofxOpenCv.h"
-
-#ifdef USE_KINECT
+#include "ofxCv.h"
 #include "ofxKinect.h"
-#endif
-
-#define VASA_KINECT_NUM_BG_FRAMES 200
-#define VASA_KINECT_POINTCLOUD_STEP 3
-#define VASA_KINECT_FRAMECOUNT 1
-#define VASA_KINECT_FRAMEDELAY 20
-
-#define VASA_KINECT_ARMNUMFRAMES 1
 
 class ofxKinectMemory : public ofxScene
 {
@@ -40,46 +30,40 @@ public:
 
 	void keyPressed(int key);
 
-	// ---------------------------------------------
-	// kinect related suff
-	bool kinectEnabled;
-	bool bKinectSetup;
-	bool bShowHelp;
-
-	ofxPanel gui;	 
-
-#ifdef USE_KINECT
 	ofxKinect kinect;
+
+	ofImage grayImage;	
+	ofImage grayImageNear;
+	ofImage grayImageFar;	
+	ofxCv::ContourFinder contourFinder;
+
+	ofImage grayImageFiltered;
+
+	//ofEasyCam cam;
+
+	bool bGotImage;
+	bool bShowHelp;	
+	ofxPanel gui;	 
+	ofParameter<float> nearThreshold;
+	ofParameter<float> farThreshold;
+	ofParameter<float> thresholdParam;
+	ofParameter<int> blurSize;	
+	ofParameter<float> contourMinArea;
+	ofParameter<float> contourMaxArea;
+
+	ofParameter<int> numFramesDelay;
+	ofParameter<int> angle;
+
+	ofParameter<bool> bShowLabels;
+	ofParameter<bool> bShowImages;
+
+
+	ofParameterGroup cvGroup;
+	ofParameterGroup appGroup;
+	ofParameterGroup debugGroup;
+
 	
-	ofxCvColorImage colorImg;
+	vector<vector<ofPolyline>> actors;
 
-	ofxCvGrayscaleImage grayImage; // grayscale depth image
-	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
-
-	ofxCvGrayscaleImage grayBgImage; // the average background image
-	ofxCvGrayscaleImage grayDiff;
-	ofxCvContourFinder contourFinder;
-
-	ofParameter<int> nearThreshold;
-	ofParameter<int> farThreshold;
-	ofParameter<int> threshold;
-	ofParameter<bool> bKinectUseBg;
-	ofParameter<bool> bDrawHulls;
-
-	ofVboMesh mesh;
-		
-	bool bLearnBackground;
-	int numFramesBg;
-	bool bDrawPointCloud;
-	bool bKinectAltColor;
-	bool showGui;
-
-	int angle;
-#endif
-
-private:
-
-	ofPolyline hullAsPolyline(const ofxCvBlob& blob);
 };
 

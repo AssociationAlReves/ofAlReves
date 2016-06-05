@@ -33,11 +33,11 @@ void ofxKinectMemory::setup(){
 
 	//-----------------------------------------
 	// FBOs
-	fboWhite.allocate(kinect.width, kinect.height, GL_RGBA32F_ARB);
+	fboWhite.allocate(kinect.width*2, kinect.height*2, GL_RGBA32F_ARB);
 	fboWhite.begin();
 	ofClear(255);
 	fboWhite.end();
-	fboBlack.allocate(kinect.width, kinect.height, GL_RGBA32F_ARB);
+	fboBlack.allocate(kinect.width*2, kinect.height*2, GL_RGBA32F_ARB);
 	fboBlack.begin();
 	ofClear(255,255,255, 0);
 	fboBlack.end();
@@ -253,12 +253,13 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofDisableAntiAliasing();
 		}
 		ofSetLineWidth(lineWidth);
-		ofEnableSmoothing();
 		if (blackScreen) {
 			// BLACK
 			//--------------------------------------------------------------
 			ofBackground(0);
 			fboBlack.begin();
+			ofPushMatrix();
+			ofScale(2,2);
 			ofSetColor(0,0,0, fadeAmnt);
 			ofFill();
 			ofEnableAlphaBlending();
@@ -269,16 +270,25 @@ void ofxKinectMemory::drawMemoryTrails() {
 				
 				actor.second.draw();
 			}
+			ofPopMatrix();
 			fboBlack.end();
+			ofPushMatrix();
+			ofScale(0.5,0.5);
+			
+			ofDisableAlphaBlending();
 			fboBlack.draw(0,0);
+			ofPopMatrix();
 
 		} else {
 			// WHITE
 			ofBackground(255);
+			
 			fboWhite.begin();
+			ofPushMatrix();			
+			ofScale(2,2);
+
 			ofSetColor(0,0,0,fadeAmnt);
 			ofFill();
-			ofEnableAlphaBlending();
 			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 			ofNoFill();
 			ofSetColor(0);
@@ -286,8 +296,14 @@ void ofxKinectMemory::drawMemoryTrails() {
 				actor.second.simplify();
 				actor.second.draw();
 			}
+			ofPopMatrix();
 			fboWhite.end();
+			ofPushMatrix();
+			ofScale(0.5,0.5);			
+			
+			//ofDisableAlphaBlending();
 			fboWhite.draw(0,0);
+			ofPopMatrix();
 
 		}
 

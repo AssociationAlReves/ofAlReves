@@ -10,6 +10,7 @@ const string GUI_SETTINGS = "kinectmemory_settings.xml";
 void ofxKinectMemory::setup(){
 	ofSetVerticalSync(true);
 	ofBackground(0);
+	ofEnableArbTex();
 
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
@@ -27,8 +28,20 @@ void ofxKinectMemory::setup(){
 	bShowHelp = false;
 	bGotImage = false;
 
-	grayImage.allocate(kinect.width, kinect.width, ofImageType::OF_IMAGE_GRAYSCALE);
+	grayImage.allocate(kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE);
 	grayImage.clear();
+
+	//-----------------------------------------
+	// FBOs
+	fboWhite.allocate(kinect.width, kinect.height, GL_RGBA32F_ARB);
+	fboWhite.begin();
+	ofClear(255);
+	fboWhite.end();
+	fboBlack.allocate(kinect.width, kinect.height, GL_RGBA32F_ARB);
+	fboBlack.begin();
+	ofClear(255,255,255, 0);
+	fboBlack.end();
+	//-----------------------------------------
 
 	//-----------------------------------
 	// contour finder
@@ -52,12 +65,19 @@ void ofxKinectMemory::setup(){
 	cvGroup.add(contourMinArea.set("contourMinArea",1,0,640));	
 	cvGroup.add(contourMaxArea.set("contourMaxArea",800,0,640));
 	cvGroup.add(blurSize.set("blurSize",10,0,50));
+	cvGroup.add(maximumDistance.set("maximumDistance",32,0,300));
+	cvGroup.add(persistence.set("persistence",15,0,100));
 	gui.add(cvGroup);
 
 	appGroup.setName("App");
 	appGroup.add(numFramesDelay.set("numFramesDelay",35,1,50));
-	appGroup.add(angle.set("angle",13,-30,30));
+	appGroup.add(angle.set("kinect angle",13,-30,30));
 	appGroup.add(bStartMemory.set("StartMemory",false));
+	appGroup.add(fadeAmnt.set("fade amount", 10,0,50));
+	appGroup.add(blackScreen.set("blackScreen", true));
+	appGroup.add(antiAlias.set("antiAlias", true));
+	appGroup.add(lineWidth.set("lineWidth", 1,0,10));
+
 	gui.add(appGroup);
 
 	debugGroup.setName("debug");
@@ -75,6 +95,8 @@ void ofxKinectMemory::update(){
 	contourFinder.setMinAreaRadius(contourMinArea);
 	contourFinder.setMaxAreaRadius(contourMaxArea);
 	contourFinder.setThreshold(thresholdParam);
+	contourFinder.getTracker().setPersistence(persistence);
+	contourFinder.getTracker().setMaximumDistance(maximumDistance);
 
 	kinect.update();
 
@@ -99,24 +121,7 @@ void ofxKinectMemory::update(){
 		blur(grayImageFiltered, blurSize);
 		grayImageFiltered.update();
 		contourFinder.findContours(grayImageFiltered);
-
-		// we do two thresholds - one for the far plane and one for the near plane
-		// we then do a cvAnd to get the pixels which are a union of the two thresholds
-
-		/*grayThreshNear = grayImage;
-		grayThreshFar = grayImage;
-		threshold(grayThreshNear, nearThreshold, true);
-		threshold(grayThreshFar, farThreshold);
-		cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-		*/
-
-
-		// update the cv images
-		/*grayImage.flagImageChanged();*/
-
 	}
-
-
 }
 
 //--------------------------------------------------------------
@@ -126,27 +131,19 @@ void ofxKinectMemory::draw(){
 
 	ofPushMatrix();
 	//cam.begin();
-	ofClear(0);
+	//ofClear(0);
 	ofSetColor(255);
 
-	/*if (bShowHelp) {
-	app->cam.disableMouseInput();
-	} else {
-	app->cam.enableMouseInput();
-	}*/
+
 	app->cam.begin();
 
 	if (bGotImage) {
-		//ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 
 		if (bShowImages) {
 			grayImageFiltered.draw(0,0);
 			grayImage.draw(800,0);
 		}
 
-
-
-		//contourFinder.draw();
 		RectTracker& tracker = contourFinder.getTracker();
 
 		// delete dead actors
@@ -154,6 +151,7 @@ void ofxKinectMemory::draw(){
 		{
 			cout << "Dead actor: " << label << endl;
 			actors.erase(label);
+			actorsHullUnion.erase(label);
 		}
 		// delete new actors
 		for(auto & label: tracker.getNewLabels())
@@ -195,7 +193,7 @@ void ofxKinectMemory::draw(){
 				for (auto & curHull:  actor) {
 					mergedHulls.insert(mergedHulls.end(),curHull.begin(),curHull.end());
 				}
-				
+
 				// remove oldest hull for current actor
 				actor.pop_front();
 				vector<cv::Point> hull;
@@ -209,9 +207,10 @@ void ofxKinectMemory::draw(){
 				}
 				polyline.close();				
 				actorsHullUnion[label] = polyline;
+				/*
 				ofSetColor(ofColor::blue);
 				polyline.draw();
-				ofSetColor(255);
+				ofSetColor(255);*/
 
 
 			} else {
@@ -223,10 +222,13 @@ void ofxKinectMemory::draw(){
 				}
 				polyline.close();
 				polyline.draw();
-			}
+			} //if (bStartMemory) 
 		} // for each blob
-	}
+	} //if (bGotImage)
 	//cam.end();
+
+
+	drawMemoryTrails();
 
 
 	app->cam.end();
@@ -236,6 +238,62 @@ void ofxKinectMemory::draw(){
 	}
 
 	app->cam.begin();
+}
+
+
+//--------------------------------------------------------------
+void ofxKinectMemory::drawMemoryTrails() {
+
+	if (bStartMemory) {
+
+		ofEnableAlphaBlending();
+		if (antiAlias) {
+			ofEnableAntiAliasing(); 
+		} else {
+			ofDisableAntiAliasing();
+		}
+		ofSetLineWidth(lineWidth);
+		ofEnableSmoothing();
+		if (blackScreen) {
+			// BLACK
+			//--------------------------------------------------------------
+			ofBackground(0);
+			fboBlack.begin();
+			ofSetColor(0,0,0, fadeAmnt);
+			ofFill();
+			ofEnableAlphaBlending();
+			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());		
+			ofNoFill();
+			ofSetColor(255);
+			for (auto & actor: actorsHullUnion) {
+				
+				actor.second.draw();
+			}
+			fboBlack.end();
+			fboBlack.draw(0,0);
+
+		} else {
+			// WHITE
+			ofBackground(255);
+			fboWhite.begin();
+			ofSetColor(0,0,0,fadeAmnt);
+			ofFill();
+			ofEnableAlphaBlending();
+			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+			ofNoFill();
+			ofSetColor(0);
+			for (auto & actor: actorsHullUnion) {
+				actor.second.simplify();
+				actor.second.draw();
+			}
+			fboWhite.end();
+			fboWhite.draw(0,0);
+
+		}
+
+
+
+	}
 }
 
 //--------------------------------------------------------------

@@ -30,6 +30,10 @@ public:
 
 	void keyPressed(int key);
 
+private:
+
+	void drawMemoryTrails();
+
 	ofxKinect kinect;
 
 	ofImage grayImage;	
@@ -57,6 +61,13 @@ public:
 	ofParameter<bool> bShowLabels;
 	ofParameter<bool> bShowImages;
 	ofParameter<bool> bStartMemory;
+	ofParameter<float> maximumDistance;
+	ofParameter<float> persistence;
+	ofParameter<float> fadeAmnt;
+
+	ofParameter<bool> blackScreen;	
+	ofParameter<bool> antiAlias;	
+	ofParameter<float> lineWidth;
 
 
 	ofParameterGroup cvGroup;
@@ -66,7 +77,8 @@ public:
 	map<int,list<vector<cv::Point>>> actors;	
 	map<int,ofPolyline> actorsHullUnion;
 
-	ofFbo fbo;
+	ofFbo fboWhite;
+	ofFbo fboBlack;
 
 };
 

@@ -56,14 +56,17 @@ public:
 
 	ofParameter<bool> bShowLabels;
 	ofParameter<bool> bShowImages;
+	ofParameter<bool> bStartMemory;
 
 
 	ofParameterGroup cvGroup;
 	ofParameterGroup appGroup;
 	ofParameterGroup debugGroup;
 
-	
-	vector<vector<ofPolyline>> actors;
+	map<int,list<vector<cv::Point>>> actors;	
+	map<int,ofPolyline> actorsHullUnion;
+
+	ofFbo fbo;
 
 };
 

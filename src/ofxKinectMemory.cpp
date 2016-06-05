@@ -57,6 +57,7 @@ void ofxKinectMemory::setup(){
 	appGroup.setName("App");
 	appGroup.add(numFramesDelay.set("numFramesDelay",35,1,50));
 	appGroup.add(angle.set("angle",13,-30,30));
+	appGroup.add(bStartMemory.set("StartMemory",false));
 	gui.add(appGroup);
 
 	debugGroup.setName("debug");
@@ -147,13 +148,29 @@ void ofxKinectMemory::draw(){
 
 		//contourFinder.draw();
 		RectTracker& tracker = contourFinder.getTracker();
+
+		// delete dead actors
+		for(auto & label: tracker.getDeadLabels())
+		{
+			cout << "Dead actor: " << label << endl;
+			actors.erase(label);
+		}
+		// delete new actors
+		for(auto & label: tracker.getNewLabels())
+		{
+			cout << "New actor: " << label << endl;
+			actors[label] = list<vector<cv::Point>>();
+		}
+
+		// for each blob
 		for(int i = 0; i < contourFinder.size(); i++) {
+
+			int label = contourFinder.getLabel(i);
 
 			if (bShowLabels) {
 				ofPoint center = toOf(contourFinder.getCenter(i));
 				ofPushMatrix();
 				ofTranslate(center.x, center.y);
-				int label = contourFinder.getLabel(i);
 				string msg = ofToString(label) + ":" + ofToString(tracker.getAge(label));
 				ofDrawBitmapString(msg, 0, 0);
 				ofVec2f velocity = toOf(contourFinder.getVelocity(i));
@@ -162,20 +179,52 @@ void ofxKinectMemory::draw(){
 				ofPopMatrix();
 			}
 
+			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
+			if (bStartMemory) {
 
-			vector<cv::Point> hull = contourFinder.getConvexHull(i);
-			ofPolyline polyline;
-			polyline.resize(hull.size());
-			for(int i = 0; i < (int)hull.size(); i++) {
-				polyline[i].x = hull[i].x;
-				polyline[i].y = hull[i].y;
+				list<vector<cv::Point>>& actor = actors[label];
+				// add polyline
+				if (actor.size() == 0) {
+					actor.assign(numFramesDelay, hullPoints);
+				} else {
+					actor.push_back(hullPoints);
+				}
+
+				// union of all points
+				vector<cv::Point> mergedHulls;
+				for (auto & curHull:  actor) {
+					mergedHulls.insert(mergedHulls.end(),curHull.begin(),curHull.end());
+				}
+				
+				// remove oldest hull for current actor
+				actor.pop_front();
+				vector<cv::Point> hull;
+				convexHull(mergedHulls, hull);
+
+				ofPolyline polyline;
+				polyline.resize(hull.size());
+				for(int i = 0; i < (int)hull.size(); i++) {
+					polyline[i].x = hull[i].x;
+					polyline[i].y = hull[i].y;
+				}
+				polyline.close();				
+				actorsHullUnion[label] = polyline;
+				ofSetColor(ofColor::blue);
+				polyline.draw();
+				ofSetColor(255);
+
+
+			} else {
+				ofPolyline polyline;
+				polyline.resize(hullPoints.size());
+				for(int i = 0; i < (int)hullPoints.size(); i++) {
+					polyline[i].x = hullPoints[i].x;
+					polyline[i].y = hullPoints[i].y;
+				}
+				polyline.close();
+				polyline.draw();
 			}
-			polyline.close();
-
-			polyline.draw();
-
-		}
-
+		} // for each blob
 	}
 	//cam.end();
 

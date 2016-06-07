@@ -45,7 +45,7 @@ private:
 
 	//ofEasyCam cam;
 
-	bool bGotImage;
+	bool bKinectFrameReady;
 	bool bShowHelp;	
 	ofxPanel gui;	 
 	ofParameter<float> nearThreshold;

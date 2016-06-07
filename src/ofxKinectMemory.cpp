@@ -26,7 +26,7 @@ void ofxKinectMemory::setup(){
 
 
 	bShowHelp = false;
-	bGotImage = false;
+	bKinectFrameReady = false;
 
 	grayImage.allocate(kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE);
 	grayImage.clear();
@@ -34,10 +34,12 @@ void ofxKinectMemory::setup(){
 	//-----------------------------------------
 	// FBOs
 	fboWhite.allocate(kinect.width*2, kinect.height*2, GL_RGBA32F_ARB);
-	fboWhite.begin();
-	ofClear(255);
-	fboWhite.end();
 	fboBlack.allocate(kinect.width*2, kinect.height*2, GL_RGBA32F_ARB);
+
+	fboWhite.begin();
+	ofClear(255,255,255,0);
+	fboWhite.end();
+
 	fboBlack.begin();
 	ofClear(255,255,255, 0);
 	fboBlack.end();
@@ -55,7 +57,6 @@ void ofxKinectMemory::setup(){
 
 	// -----------------------
 	// GUI
-
 	gui.setup("Memory",GUI_SETTINGS);
 
 	cvGroup.setName("OpenCV");
@@ -70,7 +71,7 @@ void ofxKinectMemory::setup(){
 	gui.add(cvGroup);
 
 	appGroup.setName("App");
-	appGroup.add(numFramesDelay.set("numFramesDelay",35,1,50));
+	appGroup.add(numFramesDelay.set("numFramesDelay",35,1,200));
 	appGroup.add(angle.set("kinect angle",13,-30,30));
 	appGroup.add(bStartMemory.set("StartMemory",false));
 	appGroup.add(fadeAmnt.set("fade amount", 10,0,50));
@@ -84,8 +85,6 @@ void ofxKinectMemory::setup(){
 	debugGroup.add(bShowLabels.set("ShowLabels",true));
 	debugGroup.add(bShowImages.set("ShowImages",true));
 	gui.add(debugGroup);
-
-
 
 }
 
@@ -102,7 +101,7 @@ void ofxKinectMemory::update(){
 
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
-		bGotImage = true;
+		bKinectFrameReady = true;
 		// load grayscale depth image and color image from the kinect source
 		//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
 		grayImage.setFromPixels(kinect.getDepthPixels(),kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
@@ -116,7 +115,6 @@ void ofxKinectMemory::update(){
 		threshold(grayImageFar, (float)farThreshold, false);
 		bitwise_and(grayImageNear, grayImageFar, grayImageFiltered);
 		grayImageFiltered.update();
-
 
 		blur(grayImageFiltered, blurSize);
 		grayImageFiltered.update();
@@ -134,15 +132,9 @@ void ofxKinectMemory::draw(){
 	//ofClear(0);
 	ofSetColor(255);
 
-
 	app->cam.begin();
 
-	if (bGotImage) {
-
-		if (bShowImages) {
-			grayImageFiltered.draw(0,0);
-			grayImage.draw(800,0);
-		}
+	if (bKinectFrameReady) {
 
 		RectTracker& tracker = contourFinder.getTracker();
 
@@ -164,18 +156,6 @@ void ofxKinectMemory::draw(){
 		for(int i = 0; i < contourFinder.size(); i++) {
 
 			int label = contourFinder.getLabel(i);
-
-			if (bShowLabels) {
-				ofPoint center = toOf(contourFinder.getCenter(i));
-				ofPushMatrix();
-				ofTranslate(center.x, center.y);
-				string msg = ofToString(label) + ":" + ofToString(tracker.getAge(label));
-				ofDrawBitmapString(msg, 0, 0);
-				ofVec2f velocity = toOf(contourFinder.getVelocity(i));
-				ofScale(5, 5);
-				ofLine(0, 0, velocity.x, velocity.y);
-				ofPopMatrix();
-			}
 
 			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
 			if (bStartMemory) {
@@ -222,13 +202,31 @@ void ofxKinectMemory::draw(){
 				}
 				polyline.close();
 				polyline.draw();
+
+				if (bShowLabels) {
+					ofPoint center = toOf(contourFinder.getCenter(i));
+					ofPushMatrix();
+					ofTranslate(center.x, center.y);
+					string msg = ofToString(label) + ":" + ofToString(tracker.getAge(label));
+					ofDrawBitmapString(msg, 0, 0);
+					ofVec2f velocity = toOf(contourFinder.getVelocity(i));
+					ofScale(5, 5);
+					ofLine(0, 0, velocity.x, velocity.y);
+					ofPopMatrix();
+				}
 			} //if (bStartMemory) 
 		} // for each blob
 	} //if (bGotImage)
 	//cam.end();
 
+	if (bShowImages && !bStartMemory) {
+		grayImageFiltered.draw(0,0);
+		grayImage.draw(800,0);
+	}
+
 
 	drawMemoryTrails();
+	ofDrawAxis(50);
 
 
 	app->cam.end();
@@ -262,45 +260,53 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofScale(2,2);
 			ofSetColor(0,0,0, fadeAmnt);
 			ofFill();
-			ofEnableAlphaBlending();
 			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());		
 			ofNoFill();
 			ofSetColor(255);
 			for (auto & actor: actorsHullUnion) {
-				
 				actor.second.draw();
 			}
 			ofPopMatrix();
 			fboBlack.end();
 			ofPushMatrix();
-			ofScale(0.5,0.5);
+			ofScale(0.5,-0.5);
 			
+
 			ofDisableAlphaBlending();
 			fboBlack.draw(0,0);
 			ofPopMatrix();
 
 		} else {
 			// WHITE
-			ofBackground(255);
+			//ofBackground(255);
 			
+			ofBackground(255,255,255,0);
+
+			if( ofGetKeyPressed('c') ){
+				ofClear(255,255,255, 0);
+			}	
+
 			fboWhite.begin();
+			if( ofGetKeyPressed('c') ){
+				ofClear(255,255,255, 0);
+			}
 			ofPushMatrix();			
 			ofScale(2,2);
 
-			ofSetColor(0,0,0,fadeAmnt);
+			ofSetColor(255,255,255,fadeAmnt);
 			ofFill();
 			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+
 			ofNoFill();
 			ofSetColor(0);
 			for (auto & actor: actorsHullUnion) {
-				actor.second.simplify();
 				actor.second.draw();
 			}
 			ofPopMatrix();
 			fboWhite.end();
 			ofPushMatrix();
 			ofScale(0.5,0.5);			
-			
+
 			//ofDisableAlphaBlending();
 			fboWhite.draw(0,0);
 			ofPopMatrix();

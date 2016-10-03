@@ -38,7 +38,7 @@ void ofBuilding::draw(float rotateAngle, float alpha, bool wireFrame, float marg
 
 		ofRotate(rotateAngle,-1,0,0);	
 
-		ofTranslate(ofRandom(-10,10),ofRandom(-10,10),ofRandom(-10,10));
+		
 
 		ofTranslate(0,-box.getHeight()/2,-box.getDepth()/2);		
 	}

@@ -15,14 +15,14 @@
 #include "ofxGui.h"
 #include "ofBuilding.h"
 
-#define CITY_SPEED_INCR 1.
+#define CITY_SPEED_INCR 0.2
 #define CITY_NUM_ROAD_PLANES 100
 #define CITY_NUM_ROAD_PLANES_FADEIN 40
 #define CITY_BLOCK_TOTAL_WIDTH 1000
 #define CITY_BLOCK_SIZE 100
 #define CITY_BLOCK_MARGIN_FACTOR 0.4
 #define CITY_BLOCKS_ROWS 3
-#define CITY_BLOCKS_COLS 50
+#define CITY_BLOCKS_COLS 75
 #define CITY_BLOCK_MAXHEIGHT 4000
 #define CITY_BLOCK_PAVEMENT_SIZE 50
 
@@ -30,7 +30,8 @@
 enum CITY_MODE { enCityIdle = 0, 
 	enCityStart,	// road appearance, opacity
 	enCityBuildings,
-	enCityRotate,
+	enCityCollapsing,
+	enCityCollapsed,
 };
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"
@@ -59,14 +60,19 @@ private:
 	float curDistanceOffset;
 	float desiredSpeed;
 
+	bool bUpdateParamsFromCode;
+
 
 	void setupTextures();
 	void setupRoad();
 	void updateRoad(bool createNewRow);
 	void setupBlocks();
-	void updateBlocks(bool createNewRow);
+	void updateBlocks(int createRowsCount = 1);
+	void translateBlocksHeights();
 
-	void generateBlockSide(bool isLeftSide);
+	void generateBlockSide(bool isLeftSide, int nowRowForced = 0); // 0 means not forced
+	void generateBlock_TheBigOne(); // huge building covering EVERYTHING, including you and the audience
+
 
 	// road
 	vector<ofPlanePrimitive> roads;
@@ -95,6 +101,8 @@ private:
 	ofParameter<int> roadTexHeight;
 	ofParameter<float> curSpeed;
 	ofParameter<float> roadOpacity;
+	ofParameter<ofVec3f> camOrientation;
+	ofParameter<ofVec3f> camPosition;
 	ofParameterGroup roadParams;
 
 	ofParameter<float> blockProbability;

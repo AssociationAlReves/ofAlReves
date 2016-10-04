@@ -407,7 +407,7 @@ void ofxTerrain::updateCursor(ofVec2f position, bool direction){
 
 
 //--------------------------------------------------------------
-int ofxTerrain::indexFromXY(int x, int y, int totalHeight){
+int ofxTerrain::indexFromXY(const int x, const int y, const int totalHeight){
 	return x * totalHeight + y;
 }
 

@@ -65,6 +65,7 @@ private:
 
 	void setupTextures();
 	void setupRoad();
+	void setupTerrain();
 	void updateRoad(bool createNewRow);
 	void setupBlocks();
 	void updateBlocks(int createRowsCount = 1);
@@ -76,6 +77,10 @@ private:
 
 	// road
 	vector<ofPlanePrimitive> roads;
+	ofVboMesh terrain;
+	vector<float> heightMap;
+	float genNoise2(const int x, const int y);
+	int indexFromXY(const int x, const int y, const int totalHeight);
 	ofFbo fboRoad;
 	ofTexture texRoad;
 

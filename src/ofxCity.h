@@ -110,6 +110,17 @@ private:
 	ofParameter<ofVec3f> camPosition;
 	ofParameterGroup roadParams;
 
+	ofParameter<int> terrainWidth;
+	ofParameter<int> terrainHeight;
+	ofParameter<int> segmentLength;
+	ofParameter<bool> terrainDrawX;
+	ofParameter<bool> terrainDrawY;
+	ofParameter<float> terrainZScale;
+	ofParameter<float> terrainNoiseScale;
+	ofParameter<float> terrainNoiseSeed;
+	ofParameter<float> terrainNoiseAmp;
+	ofParameterGroup terrainParams;
+
 	ofParameter<float> blockProbability;
 	ofParameterGroup buildingParams;
 	bool bShowGui;

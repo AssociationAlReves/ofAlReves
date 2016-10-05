@@ -50,6 +50,18 @@ void ofxCity::setup() {
 		roadParams.add(curSpeed.set("Velocity", 0, 0, 150));
 		gui.add(roadParams);
 
+		terrainParams.setName("terrain");
+		terrainParams.add(terrainWidth.set("width", 200, 10, 1000));
+		terrainParams.add(terrainHeight.set("height", 200, 10, 1000));
+		terrainParams.add(segmentLength.set("segLength", 40, 1, 1000));
+		terrainParams.add(terrainDrawX.set("draw X", true));
+		terrainParams.add(terrainDrawY.set("draw Y", true));
+		terrainParams.add(terrainZScale.set("Z scale", 0.2, 0, 50));
+		terrainParams.add(terrainNoiseScale.set("noise scale", 1, 0, 10));
+		terrainParams.add(terrainNoiseSeed.set("noise seed", 1, 0, 10));
+		terrainParams.add(terrainNoiseAmp.set("noise amp", 50, 0, 100));
+		gui.add(terrainParams);
+
 		buildingParams.setName("Buildings");
 		buildingParams.add(blockProbability.set("Proba", 1, 0, 1));
 		buildingParams.add(autoGenerateBuildings.set("Auto generated", false));
@@ -115,22 +127,19 @@ void ofxCity::setupRoad() {
 //--------------------------------------------------------------
 void ofxCity::setupTerrain() {
 
-	terrain.setMode(OF_PRIMITIVE_LINES);
+
 	terrain.clear();
+	terrain.setMode(OF_PRIMITIVE_LINES);
 	terrain.enableColors();
 	terrain.enableIndices();
 	terrain.disableNormals();
 
-	int width = 200;;// ofGetWidth();
-	int height = 200;// ofGetHeight();
-	float planeZscale = 0.2;
 	heightMap.clear();
-	int segmentLength = 40;
 	bool drawYLines = false;
 
 	// setup height map
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
 
 
 			float noiseValue = genNoise2(x, y); // background noise only
@@ -141,32 +150,32 @@ void ofxCity::setupTerrain() {
 
 
 	// setup vertices
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
 			float Y = y * segmentLength;
 			float X = x * segmentLength;
-			float Z = heightMap[indexFromXY(x, y, height)];
-			terrain.addVertex(ofVec3f(X, Y, Z * planeZscale));
+			float Z = heightMap[indexFromXY(x, y, terrainHeight)];
+			terrain.addVertex(ofVec3f(X, Y, Z * terrainZScale));
 			terrain.addColor(ofColor::black);
 		}
 	}
 
 
 	// setup indexes
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
 
 			// -
-			if (x + 1 != width) {
-				terrain.addIndex(indexFromXY(x, y, height));
-				terrain.addIndex(indexFromXY(x + 1, y, height));
+			if (terrainDrawX && (x + 1 != terrainWidth)) {
+				terrain.addIndex(indexFromXY(x, y, terrainHeight));
+				terrain.addIndex(indexFromXY(x + 1, y, terrainHeight));
 			}
 
 			// |
-			if (drawYLines) {
-				if (y + 1 != height) {
-					terrain.addIndex(indexFromXY(x, y, height));
-					terrain.addIndex(indexFromXY(x, y + 1, height));
+			if (terrainDrawY) {
+				if (terrainDrawY && (y + 1 != terrainHeight)) {
+					terrain.addIndex(indexFromXY(x, y, terrainHeight));
+					terrain.addIndex(indexFromXY(x, y + 1, terrainHeight));
 				}
 			}
 		}
@@ -179,9 +188,9 @@ int ofxCity::indexFromXY(const int x, const int y, const int totalHeight) {
 //--------------------------------------------------------------
 float ofxCity::genNoise2(const int x, const int y) {
 
-	float noiseScale2 = 1;
-	float noiseSeed2 = 1;
-	float noiseAmp2 = 50;
+	float noiseScale2 = terrainNoiseScale;
+	float noiseSeed2 = terrainNoiseSeed;
+	float noiseAmp2 = terrainNoiseAmp;
 	float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
 	if (noiseValue > 0.9) {
 		noiseValue *= noiseAmp2;
@@ -611,7 +620,9 @@ void ofxCity::keyPressed(int key) {
 	case 'b':
 		updateBlocks(1);
 		break;
-
+	case 't':
+		setupTerrain();
+		break;
 	default:
 		break;
 	}

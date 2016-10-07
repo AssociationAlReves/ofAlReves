@@ -90,6 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ofxVideoMirror.cpp" />
     <ClCompile Include="src\ofBuilding.cpp" />
     <ClCompile Include="src\ofxBgScene.cpp" />
     <ClCompile Include="src\ofxCity.cpp" />
@@ -244,6 +245,7 @@
     <ClCompile Include="src\ofxVasaSquareField.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ofxVideoMirror.h" />
     <ClInclude Include="src\ofBuilding.h" />
     <ClInclude Include="src\ofxBgScene.h" />
     <ClInclude Include="src\ofxCity.h" />

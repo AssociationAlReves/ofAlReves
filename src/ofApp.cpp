@@ -126,6 +126,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxBgScene(false,IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	/*sceneManager.add(new ofxOcean(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;

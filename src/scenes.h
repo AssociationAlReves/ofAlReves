@@ -12,6 +12,7 @@
 #include "ofxVasaCubeMesh.h"
 #include "ofxOcean.h"
 #include "ofxCity.h"
+#include "ofxVideoMirror.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 #include "ofxKinectListener.h"

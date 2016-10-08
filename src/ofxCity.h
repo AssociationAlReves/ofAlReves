@@ -14,6 +14,7 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 #include "ofBuilding.h"
+#include "ofxCityPingPong.h"
 
 #define CITY_SPEED_INCR 0.2
 #define CITY_NUM_ROAD_PLANES 100
@@ -125,8 +126,7 @@ private:
 	ofParameterGroup buildingParams;
 	bool bShowGui;
 	bool bGuiLoaded;
-
-
+	
 	// transitions
 	ofxTween tween;
 	ofxTween tweenRoadOpactity;	

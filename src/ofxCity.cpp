@@ -379,6 +379,8 @@ void ofxCity::generateBlock_TheBigOne() {
 
 //--------------------------------------------------------------
 void ofxCity::update() {
+
+
 	float hash = roadLineWidth * 5.
 		+ roadLineHeight * 7.
 		+ roadTexWidth * 11.
@@ -424,11 +426,11 @@ void ofxCity::update() {
 			i++;
 		}
 	}
+
 }
 
 //--------------------------------------------------------------
 void ofxCity::draw() {
-
 
 	ofSetSmoothLighting(false);
 	ofEnableAlphaBlending();
@@ -524,10 +526,12 @@ void ofxCity::draw() {
 
 	}
 
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
 	if (bShowGui) {
 		ofDisableDepthTest();
+
 		gui.draw();
 	}
 
@@ -565,8 +569,8 @@ void ofxCity::draw() {
 		img.draw(100, 200, CITY_BLOCKS_COLS * 10, -CITY_BLOCKS_ROWS * 10);
 	}
 
-
 	app->cam.begin();
+
 
 }
 
@@ -602,7 +606,7 @@ void ofxCity::keyPressed(int key) {
 	case 'r': setup(); break;
 	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
-	case 'h':
+	case 'h': {
 		bShowGui = !bShowGui;
 		if (bShowGui) {
 			app->cam.disableMouseInput();
@@ -611,6 +615,7 @@ void ofxCity::keyPressed(int key) {
 			app->cam.enableMouseInput();
 		}
 		break;
+	}
 	case 'z': desiredSpeed += CITY_SPEED_INCR;
 		tween.setParameters(easingsine, ofxTween::easeInOut
 			, curSpeed

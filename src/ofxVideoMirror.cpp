@@ -7,6 +7,8 @@ void ofxVideoMirror::setup() {
 	camWidth = 640;
 	camHeight = 480;
 	frameReady = false;
+	curMode = enMirrorNormal;
+	curMirrorFactor = 0.5f;
 
 	if (running)
 	{
@@ -34,7 +36,7 @@ void ofxVideoMirror::update() {
 	if (running) {
 
 		vidGrabber.update();
-		
+
 		if (vidGrabber.isFrameNew()) {
 
 			//Initialize output pixels
@@ -42,20 +44,66 @@ void ofxVideoMirror::update() {
 			//Get pixel arrays for grabber
 			ofPixels &pixelsGrab = vidGrabber.getPixelsRef();
 
-			//Scan pixels
-			for (int y = 0; y<camHeight; y++) {
-				for (int x = 0; x<camWidth/2; x++) {
-					//Get grabber color
-					ofColor colorGrab = pixelsGrab.getColor(x, y);
-					
-					pixels.setColor(x, y, colorGrab);
-				}
-				for (int x = camWidth / 2; x<camWidth; x++) {
-					//Get grabber color
-					ofColor colorGrab = pixelsGrab.getColor(camWidth-x, y);
+			switch (curMode) {
+			case enMirrorNormal:
 
-					pixels.setColor(x, y, colorGrab);
+				//Scan pixels
+				for (int y = 0; y < camHeight; y++) {
+					for (int x = 0; x < camWidth * curMirrorFactor; x++) {
+						//Get grabber color
+						ofColor colorGrab = pixelsGrab.getColor(x, y);
+
+						pixels.setColor(x, y, colorGrab);
+					}
+					for (int x = camWidth * curMirrorFactor; x < camWidth; x++) {
+						//Get grabber color
+						ofColor colorGrab = pixelsGrab.getColor(camWidth - x, y);
+
+						pixels.setColor(x, y, colorGrab);
+					}
 				}
+				break;
+
+			case enMirror3Sides:
+
+				//Scan pixels
+				for (int y = 0; y < camHeight; y++) {
+					for (int x = camWidth * curMirrorFactor; x < camWidth * 2 * curMirrorFactor; x++) {
+						//Get grabber color
+						ofColor colorGrab = pixelsGrab.getColor(x, y);
+
+						pixels.setColor(x, y, colorGrab);
+					}
+					for (int x = 0; x < camWidth * curMirrorFactor; x++) {
+						//Get grabber color
+						int xIn = ofClamp(camWidth * 2 * curMirrorFactor - x, 0, camWidth - 1);
+						int xOut = ofClamp(x + camWidth * 2 * curMirrorFactor, 0, camWidth - 1);
+
+						ofColor colorGrab = pixelsGrab.getColor(xIn, y);
+
+						pixels.setColor(x, y, colorGrab);
+						pixels.setColor(xOut, y, colorGrab);
+					}
+
+				}
+				break;
+			case enMirrorMiddle:
+				//Scan pixels
+				for (int y = 0; y < camHeight; y++) {
+					int xMin = ofClamp(camWidth * curMirrorFactor, 0, camWidth);
+					int xMax = ofClamp(xMin + camWidth * 2 * curMirrorFactor, 0, camWidth);
+					for (int x = xMin; x <= xMax; x++) {
+						//Get grabber color
+						ofColor colorGrab = pixelsGrab.getColor(x, y);
+
+						int xOut1 = ofClamp(x - xMin, 0, camWidth - 1);
+						int xOut2 = ofClamp(camWidth - (xOut1), 0, camWidth - 1);
+
+						pixels.setColor(xOut1, y, colorGrab);
+						pixels.setColor(xOut2, y, colorGrab);
+					}
+				}
+				break;
 			}
 			//Update image pixels
 			image.setFromPixels(pixels);
@@ -78,7 +126,7 @@ void ofxVideoMirror::update() {
 			image.update();*/
 
 			frameReady = true;
-			
+
 		}
 	}
 }
@@ -87,27 +135,38 @@ void ofxVideoMirror::update() {
 void ofxVideoMirror::draw() {
 
 	ofEnableAlphaBlending();
-	ofPushMatrix();
-	
-	ofTranslate(translation);
 
-	//ofScale(1, -1, 1);
+
+	//ofTranslate(translation);
+
+	ofDrawAxis(500);
+	ofPushMatrix();
+	ofTranslate(0, ofGetScreenHeight());
+	ofScale(1, -1, 1);
 	if (frameReady) {
 
 		// draw the incoming, the grayscale, the bg and the thresholded difference
 		ofSetHexColor(0xffffff);
 		//vidGrabber.draw(0, -camHeight / 2.0);
-		image.draw(0, 0, 0,ofGetScreenWidth(),ofGetScreenHeight());
+		image.draw(0, 0, 0, ofGetScreenWidth(), ofGetScreenHeight());
 	}
-
-	ofDrawAxis(150);
-	
-
 	ofPopMatrix();
+
+
+
 	ofDisableAlphaBlending();
 
 	if (bShowGui) {
 		gui.draw();
+
+
+		stringstream ss;
+		ss << "r: start video" << endl;
+		ss << "s: stop video" << endl;
+		ss << "h: show/hide help" << endl;
+		ss << "q/d: change mirror width (current: " << curMirrorFactor << ")" << endl;
+		ss << "m: change mirror mode (current: " << curMode << ")" << endl;
+		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 	}
 }
 
@@ -126,6 +185,27 @@ void ofxVideoMirror::keyPressed(int key) {
 		frameReady = false;
 		vidGrabber.close();
 		break;
-	case 'h': bShowGui != bShowGui; break;
+	case 'm':
+		curMode = (curMode + 1) % 3;
+		switch (curMode) {
+		case enMirrorNormal:
+			curMirrorFactor = 0.5f;
+			break;
+		case enMirror3Sides:
+			curMirrorFactor = 1. / 3.0f;
+			break;
+		case enMirrorMiddle:
+			curMirrorFactor = 0.25f;
+			break;
+		}
+		break;
+	case 'q':
+		curMirrorFactor = ofClamp(curMirrorFactor - 0.01, 0, 1);
+		break;
+	case 'd':
+		curMirrorFactor = ofClamp(curMirrorFactor + 0.01, 0, 1);
+		break;
+	case 'h': bShowGui != bShowGui;
+		break;
 	}
 }

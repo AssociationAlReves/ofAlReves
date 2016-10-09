@@ -73,7 +73,7 @@ void ofxCityPingPong::draw() {
 
 	ofFill();
 	ofSetColor(255);
-	//ofDrawAxis(500);
+	ofDrawAxis(500);
 
 	if (bSpaceMode) {
 		if (rect1Vis[curRectVisIndex] == 1)

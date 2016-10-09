@@ -13,6 +13,12 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
+enum MIRROR_MODE {
+	enMirrorNormal = 0, // 50% screen left is projected to => screen / !screen (typical PhotoBooth effect)
+	enMirror3Sides = 1, // 30% screen center is projected to => !screen / screen / !screen
+	enMirrorMiddle = 2, // 50% screen center is projected to => screen / !screen
+};
+
 class ofxVideoMirror : public ofxFadeScene
 {
 public:
@@ -41,6 +47,9 @@ public:
 
 	int camWidth;
 	int camHeight;
+
+	int curMode;
+	float curMirrorFactor;
 
 
 	bool boxed;

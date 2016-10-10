@@ -61,71 +61,71 @@ void ofApp::setupSceneManager() {
 
 #if __APPLE__
 	int i = 0;
-//
-//    /*  Katia
-//     *  Spectacle A1
-//     *  Vendredi 08/04/16
-//     */
-//    sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
-//    
-//    /*  Katia
-//     *  Spectacle A2
-//     *  Vendredi 08/04/16
-//     */
-//    sceneManager.add(new ofxVideoScene("lamer-long.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxVideoScene("russie.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxVideoScene("savane.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxVasaSquareField(true, IntToString(i++)));                           postEnabledByScene[i-1] = false;
-//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
-    
-    /*  Katia
-     *  Spectacle B
-     *  Vendredi 14/04/16
-     */
-        sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
-   sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux1.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux2.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux3.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVideoScene("oiseaux4.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
-    
+	//
+	//    /*  Katia
+	//     *  Spectacle A1
+	//     *  Vendredi 08/04/16
+	//     */
+	//    sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
+	//    
+	//    /*  Katia
+	//     *  Spectacle A2
+	//     *  Vendredi 08/04/16
+	//     */
+	//    sceneManager.add(new ofxVideoScene("lamer-long.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxVideoScene("russie.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxVideoScene("savane.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxVasaSquareField(true, IntToString(i++)));                           postEnabledByScene[i-1] = false;
+	//    sceneManager.add(new ofxKinecticon(IntToString(i++)));										postEnabledByScene[i-1] = false;
 
-    /*
-    // Vasarely (mac - front with kinect)
-	
+		/*  Katia
+		 *  Spectacle B
+		 *  Vendredi 14/04/16
+		 */
+	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("oiseaux1.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("oiseaux2.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("oiseaux3.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("oiseaux4.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));											postEnabledByScene[i - 1] = false;
+
+
+	/*
+	// Vasarely (mac - front with kinect)
+
 	sceneManager.add(new ofxBgScene(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinectListener(IntToString(i++)));												postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxKinecticon(IntToString(i++)));												postEnabledByScene[i-1] = false;
-    sceneManager.add(new ofxVasaCubeMesh(IntToString(i++)));                                            postEnabledByScene[i-1] = false;
-    */
-    
-    /*
-     // Bellegarde (mac - front with kinect)
-     int i = 0;
-     sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
-     sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
-     sceneManager.add(new ofxRibbon(IntToString(i++)));
-     */
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));												postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxVasaCubeMesh(IntToString(i++)));                                            postEnabledByScene[i-1] = false;
+	*/
+
+	/*
+	 // Bellegarde (mac - front with kinect)
+	 int i = 0;
+	 sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxCrossedLines(true, IntToString(i++)));											postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofMovingSquares(IntToString(i++), true));											postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false));	postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxVideoScene("Light Bulbs.mov", IntToString(i++), true, false, false));			postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxSquareScreen(IntToString(i++), true));											postEnabledByScene[i-1] = true;
+	 sceneManager.add(new ofxVasaSquareField(IntToString(i++)));												postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxKinecticon(IntToString(i++)));													postEnabledByScene[i-1] = false;
+	 sceneManager.add(new ofxRibbon(IntToString(i++)));
+	 */
 #else
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
 
-	sceneManager.add(new ofxBgScene(false,IntToString(i++)));												postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i-1] = false;
-	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i-1] = false;
+	sceneManager.add(new ofxBgScene(false, IntToString(i++)));												postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	/*sceneManager.add(new ofxOcean(IntToString(i++)));														postEnabledByScene[i-1] = false;
@@ -133,7 +133,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));												postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxKinecticon(IntToString(i++)));												postEnabledByScene[i-1] = false;*/
-   
+
 
 	/*sceneManager.add(new ofxVideoScene("Sepio Ink in Water redux.mov", IntToString(i++), false, false, true));	postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxCrossedLines(false, IntToString(i++)));											postEnabledByScene[i-1] = false;
@@ -145,7 +145,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxSquareScreen(IntToString(i++),false));											postEnabledByScene[i-1] = true;
 	sceneManager.add(new ofxVasaDalleQuad(true,IntToString(i++)));											postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaSquareField(IntToString(i++), VASA_SQUARE_MODE_FULL_RND_ROTATION));			postEnabledByScene[i-1] = false;*/
-	
+
 
 #endif
 	//sceneManager.add(new ofxTerrain());
@@ -173,6 +173,13 @@ void ofApp::setupSceneManager() {
 	//
 	setSceneManager(&sceneManager);
 
+	stringstream ss;
+	ss << "Registered scenes !" << endl;
+	for (int i = 0; i < sceneManager.getNumScenes(); i++) {
+		ss << "F" << i + 1 << ": " << sceneManager.getSceneName(i) << endl;
+	}
+	cout << ss.str() << endl;;
+
 }
 
 string ofApp::IntToString(int i) {
@@ -185,17 +192,30 @@ string ofApp::IntToString(int i) {
 void ofApp::update() {
 
 	// the current scene is automatically updated before this function
+	// update the transform panel when in debug mode
+	if (isDebug()) {
+		panel.update();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+	if (isDebug()) {
+		ofNoFill();
+		ofSetColor(255);
+		ofSetRectMode(OF_RECTMODE_CORNER);
+		ofRect(1, 1, getRenderWidth() - 2, getRenderHeight() - 2);
+		ofFill();
+	}
+
 
 	ofClear(255);
 	ofEnableAntiAliasing();
 
 	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
 		post.begin(cam);
-	} else {
+	}
+	else {
 		ofEnableAntiAliasing();
 		cam.begin();
 	}
@@ -203,27 +223,36 @@ void ofApp::draw() {
 	ofPushMatrix();
 
 
-	ofTranslate(-ofGetWidth()/2, ofGetHeight()/2);
-	ofScale (1,-1,1);
+	ofTranslate(-ofGetWidth() / 2, ofGetHeight() / 2);
+	ofScale(1, -1, 1);
 	// the current scene is automatically drawn before this function
 	sceneManager.draw();
 
 	ofPopMatrix();
 	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
 		post.end();
-	} else {
+	}
+	else {
 		cam.end();
 	}
 
 	// drop out of the auto transform space back to OF screen space
-	//transformer.pop();
+	transformer.pop();
+
+	ofEnableAlphaBlending();
+#ifdef HAVE_OFX_GUI
+	// draw the transform panel when in debug mode
+	if (isDebug()) {
+		panel.draw();
+	}
+#endif
 
 	// draw the transform panel when in debug mode
-	if(isDebug()) {
+	if (isDebug()) {
 		// draw current scene info using the ofxBitmapString stream interface
 		// to ofDrawBitmapString
 		ofSetColor(200);
-		ofxBitmapString(12, ofGetHeight()-8)
+		ofxBitmapString(12, ofGetHeight() - 8)
 			<< "Current Scene: " << sceneManager.getCurrentSceneIndex()
 			<< " " << sceneManager.getCurrentSceneName() << endl;
 	}
@@ -232,7 +261,8 @@ void ofApp::draw() {
 	//
 	// this is actually done automatically if the transformer is set but
 	// included here for completeness
-	//transformer.push();
+	ofDisableAlphaBlending();
+	transformer.push();
 
 	// the warp editor is drawn automatically after this function
 	//ofDisableAntiAliasing();
@@ -242,13 +272,13 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
-    
+
 	switch (key) {
 
 	case 'e': cam.disableMouseInput(); break;
-	case 'E' : cam.enableMouseInput(); break;
-	case 'm' : ofHideCursor(); break;
-	case 'M' : ofShowCursor(); break;
+	case 'E': cam.enableMouseInput(); break;
+	case 'm': ofHideCursor(); break;
+	case 'M': ofShowCursor(); break;
 	case 'D':
 		bDebug = !bDebug;
 		break;
@@ -261,9 +291,9 @@ void ofApp::keyPressed(int key) {
 		transformer.setCentering(!transformer.getCentering());
 		break;
 
-	//case 'm':
-	//	transformer.setMirrorX(!transformer.getMirrorX());
-	//	break;
+		//case 'm':
+		//	transformer.setMirrorX(!transformer.getMirrorX());
+		//	break;
 
 	case 'n':
 		transformer.setMirrorY(!transformer.getMirrorY());
@@ -295,7 +325,7 @@ void ofApp::keyPressed(int key) {
 	case OF_KEY_F8: sceneManager.gotoScene(7);  break;
 	case OF_KEY_F9:  sceneManager.gotoScene(8); break;
 	case OF_KEY_F10: sceneManager.gotoScene(9); break;
-    case OF_KEY_F11: sceneManager.gotoScene(10); break;
+	case OF_KEY_F11: sceneManager.gotoScene(10); break;
 	case OF_KEY_BACKSPACE:
 		sceneManager.noScene();
 		break;
@@ -305,21 +335,21 @@ void ofApp::keyPressed(int key) {
 		break;
 
 	case OF_KEY_LEFT:
-		{
-			ofVec3f euler = cam.getOrientationEuler();
-			euler.x -= 0.1;
-			cam.setOrientation(euler);
+	{
+		ofVec3f euler = cam.getOrientationEuler();
+		euler.x -= 0.1;
+		cam.setOrientation(euler);
 
-		}
-		break;
+	}
+	break;
 	case OF_KEY_RIGHT:
-		{
-			ofVec3f euler = cam.getOrientationEuler();
-			euler.x += 0.1;
-			cam.setOrientation(euler);
+	{
+		ofVec3f euler = cam.getOrientationEuler();
+		euler.x += 0.1;
+		cam.setOrientation(euler);
 
-		}
-		break;
+	}
+	break;
 	}
 }
 

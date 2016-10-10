@@ -14,6 +14,7 @@
 #include "ofxCv.h"
 #include "ofxKinect.h"
 
+
 class ofxKinectMemory : public ofxScene
 {
 public:
@@ -24,8 +25,6 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void drawPointCloud();
-	void drawConvexHulls();
 	void exit();
 
 	void keyPressed(int key);
@@ -68,6 +67,8 @@ private:
 	ofParameter<bool> blackScreen;	
 	ofParameter<bool> antiAlias;	
 	ofParameter<float> lineWidth;
+
+	ofParameter<ofColor> lineColor;
 
 
 	ofParameterGroup cvGroup;

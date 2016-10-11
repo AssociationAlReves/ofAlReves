@@ -63,7 +63,7 @@ void ofxCity::setup() {
 		gui.add(terrainParams);
 
 		buildingParams.setName("Buildings");
-		buildingParams.add(blockProbability.set("Proba", 1, 0, 1));
+		buildingParams.add(blockProbability.set("Proba", 0.75, 0, 1));
 		buildingParams.add(autoGenerateBuildings.set("Auto generated", false));
 		gui.add(buildingParams);
 
@@ -262,6 +262,7 @@ void ofxCity::updateBlocks(int createRowsCount) {
 	//}
 }
 
+//--------------------------------------------------------------
 void ofxCity::translateBlocksHeights() {
 
 	// Translate all heights one row down
@@ -280,7 +281,6 @@ void ofxCity::translateBlocksHeights() {
 	}
 
 }
-
 
 //--------------------------------------------------------------
 void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
@@ -341,14 +341,15 @@ void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 					float margin = CITY_BLOCK_SIZE * ofRandom(0, CITY_BLOCK_MARGIN_FACTOR);
 					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
 					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
+					int roadPlaneIndex = 0; // CITY_NUM_ROAD_PLANES - 1
 					if (isLeftSide) {
-						x = -((w + roads[CITY_NUM_ROAD_PLANES - 1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
+						x = -((w + roads[roadPlaneIndex].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
 					}
 					else {
 
-						x = +((w + roads[CITY_NUM_ROAD_PLANES - 1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
+						x = +((w + roads[roadPlaneIndex].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
 					}
-					z = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z - h / 2. - CITY_BLOCK_SIZE * nowRowForced;
+					z = roads[roadPlaneIndex].getPosition().z - h / 2. - CITY_BLOCK_SIZE * nowRowForced;
 					ofBuilding building = ofBuilding(ofVec3f(x, -height / 2., z), w, height, h);
 					buildings.push_back(building);
 					ofLogVerbose("ofxCity") << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
@@ -419,9 +420,10 @@ void ofxCity::update() {
 	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
 
 	int i = 0;
-	float road0z = roads[0].getPosition().z;
+	float roadNearZ = roads[0].getPosition().z;
+	float roadFarZ = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 	while (i < buildings.size()) {
-		if (buildings[i].position.z >= road0z + 650) {
+		if (buildings[i].position.z < roadFarZ + 650) {
 			buildings[i] = buildings.back(); buildings.pop_back(); i--;
 		}
 		else {

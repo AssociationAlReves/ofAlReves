@@ -15,7 +15,7 @@ void ofxCity::setup() {
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
-	app->cam.setFarClip(100000);
+	app->cam.setFarClip(1000000);
 
 	mode = enCityIdle;
 	curSpeed = 0;
@@ -207,22 +207,20 @@ void ofxCity::updateRoad(bool createNewRow) {
 	// if plane is offsight
 	// translate all planes along negative z axis
 	if (createNewRow) {
-		cout << ".";
+		cout << "r" << endl;
 
 
 		// translate all road planes
 		for (auto & plane : roads) {
 
 			ofVec3f pos = plane.getPosition();
-			pos.z -= curDistanceOffset - 1;
+			pos.z -= (curDistanceOffset);
 			plane.setPosition(pos);
 		}
 
 		curDistanceOffset = 0;
 	}
 }
-
-
 
 //--------------------------------------------------------------
 void ofxCity::setupBlocks() {
@@ -396,19 +394,23 @@ void ofxCity::update() {
 	if (bUpdateParamsFromCode) {
 		app->cam.setFov(fov);
 		app->cam.setOrientation(camOrientation);
-		app->cam.setPosition(camPosition);
+		app->cam.setPosition(camPosition);	
+
+		bUpdateParamsFromCode = false;
 	}
 
-	if (curDistanceOffset >= roadTexHeight) {
+	if (bTweenSpeed) {
+		curSpeed = tween.update();
+	}
+
+	if (curDistanceOffset <= -roadTexHeight) {
 		updateRoad(true);
 		updateBlocks(1);
 	}
 
-	if (bTweenSpeed && bUpdateParamsFromCode) {
-		curSpeed = tween.update();
-	}
-	curDistance += curSpeed;
-	curDistanceOffset += curSpeed;
+	
+	curDistance -= curSpeed;
+	curDistanceOffset -= curSpeed;
 
 	directionalLight.setDiffuseColor(diffuseColor);
 	directionalLight.setSpecularColor(specularColor);

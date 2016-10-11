@@ -610,7 +610,7 @@ void ofxCity::keyPressed(int key) {
 	case 'r': setup(); break;
 	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
-	case 'h': {
+	case 'h': 
 		bShowGui = !bShowGui;
 		if (bShowGui) {
 			app->cam.disableMouseInput();
@@ -619,7 +619,6 @@ void ofxCity::keyPressed(int key) {
 			app->cam.enableMouseInput();
 		}
 		break;
-	}
 	case 'z': desiredSpeed += CITY_SPEED_INCR;
 		tween.setParameters(easingsine, ofxTween::easeInOut
 			, curSpeed

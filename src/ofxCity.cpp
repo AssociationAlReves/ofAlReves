@@ -23,6 +23,7 @@ void ofxCity::setup() {
 	curDistanceOffset = 0;
 	curDistance = 0;
 	rotationAngle = 0;
+	translationCollapse = 0;
 	buildings.clear();
 	tween.setParameters(easinglinear, ofxTween::easeInOut
 		, curSpeed
@@ -42,6 +43,7 @@ void ofxCity::setup() {
 		roadParams.setName("Road");
 
 		roadParams.add(rotationAngle.set("rotationAngle", 0, -180, 180));
+		roadParams.add(translationCollapse.set("translat", 0, 0, 100000));
 		roadParams.add(roadOpacity.set("Road opacity", 0, 0, 255));
 		roadParams.add(roadTexWidth.set("Road tex width", 100, 10, 1000));
 		roadParams.add(roadTexHeight.set("Road tex height", 100, 10, 1000));
@@ -447,11 +449,6 @@ void ofxCity::draw() {
 
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 	ofTranslate(0, 20);
-	if (tweenRotate.isCompleted() && mode == enCityCollapsing) {
-		float boomAmp = 30;
-		ofTranslate(ofRandomf()*boomAmp, 0, ofRandomf()*boomAmp);
-	}
-
 	ofTranslate(0, 0, curDistance + 650);
 
 	if (mode != enCityIdle) { // Road is moving
@@ -495,18 +492,22 @@ void ofxCity::draw() {
 
 		if (mode == enCityCollapsing) {
 			rotationAngle = tweenRotate.update();
+			translationCollapse = tweenTranslate.update();
 		}
 
+		/*ofPushMatrix();
+		ofTranslate(0, 0, translationCollapse);*/
 		for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
 			if (building.position.z < road0z) {
 				int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
 				float alpha = ofMap(curDepth, minDepth, maxDepth, 255, 0, true);
 				ofSetColor(ofColor::white, alpha);
-				building.draw(rotationAngle, alpha, bWireframe);
+				building.draw(rotationAngle, translationCollapse, alpha, bWireframe);
 			}
 
 		}
+		//ofPopMatrix();
 
 
 		ofFill();
@@ -594,13 +595,17 @@ void ofxCity::keyPressed(int key) {
 				, 10000, 0);
 			break;
 		case enCityBuildings:
-			updateBlocks(1);
+			autoGenerateBuildings = true;
 			break;
 		case enCityCollapsing:
-			tweenRotate.setParameters(easingexpo, ofxTween::easeIn
+
+			int collapseTimeMs = 2000;
+			tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 90, collapseTimeMs, 0);
+
+			tweenTranslate.setParameters(easinglinear, ofxTween::easeIn
 				, 0
-				, 90
-				, 7500, 0);
+				, -curDistance
+				, collapseTimeMs, 0);
 			break;
 		}
 		cout << ofToString(mode) << endl;

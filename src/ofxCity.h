@@ -101,6 +101,7 @@ private:
 	ofParameter<bool> bWireframe;
 	ofParameter<float> fov;
 	ofParameter<float> rotationAngle;
+	ofParameter<float> translationCollapse;
 	ofParameter<float> roadLineWidth;
 	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;
@@ -130,6 +131,7 @@ private:
 	// transitions
 	ofxTween tween;
 	ofxTween tweenRoadOpactity;	
+	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
 
 	ofxEasingBack 	easingback;

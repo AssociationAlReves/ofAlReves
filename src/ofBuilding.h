@@ -26,7 +26,7 @@ public:
 
 	void setup();
 	void update();
-	void draw(float rotateAngle, float alpha = 255, bool wireFrame = false, float margin = 10.);
+	void draw(float rotateAngle, float translation, float alpha = 255, bool wireFrame = false, float margin = 10.);
 
 	int x,y;
 	int size;

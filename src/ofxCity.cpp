@@ -599,12 +599,25 @@ void ofxCity::keyPressed(int key) {
 			break;
 		case enCityCollapsing:
 
-			int collapseTimeMs = 2000;
-			tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 90, collapseTimeMs, 0);
+			float lowestZ = 100000;
+			float highestZ = -10000;
+			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+				ofBuilding building = *buildingIt;
+				lowestZ = min(lowestZ, building.position.z);
+				highestZ = max(highestZ, building.position.z);
+			}
 
+			int collapseTimeMs = 2000;
+			//tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 90, collapseTimeMs, 0);
+
+			float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
+			float road0z = roads[0].getPosition().z;
+
+			float initialZ = lowestZ - 650;
+			float zOffsetAtEnd = ofGetFrameRate() * curDistanceOffset * collapseTimeMs/1000.0;
 			tweenTranslate.setParameters(easinglinear, ofxTween::easeIn
 				, 0
-				, -curDistance
+				, -zOffsetAtEnd
 				, collapseTimeMs, 0);
 			break;
 		}
@@ -625,6 +638,12 @@ void ofxCity::keyPressed(int key) {
 		}
 		break;
 	case 'z': desiredSpeed += CITY_SPEED_INCR;
+		tween.setParameters(easingsine, ofxTween::easeInOut
+			, curSpeed
+			, desiredSpeed
+			, 2000, 0);
+		break;
+	case 'Z': desiredSpeed -= CITY_SPEED_INCR*25;
 		tween.setParameters(easingsine, ofxTween::easeInOut
 			, curSpeed
 			, desiredSpeed

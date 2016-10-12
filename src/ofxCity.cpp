@@ -15,6 +15,7 @@ void ofxCity::setup() {
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
+	//float farClip = app->cam.getFarClip();
 	app->cam.setFarClip(1000000);
 
 	mode = enCityIdle;
@@ -453,7 +454,7 @@ void ofxCity::draw() {
 	ofBackground(255, 255, 255, 255);
 
 	ofPushMatrix();
-	texRoad.bind();
+	
 
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 	ofTranslate(0, 20);
@@ -467,7 +468,7 @@ void ofxCity::draw() {
 		ofClear(0);
 		break;
 	default:
-
+		texRoad.bind();
 		for (int i = 0; i < roads.size(); i++) {
 
 			float alpha = ofMap(i, CITY_NUM_ROAD_PLANES - CITY_NUM_ROAD_PLANES_FADEIN, CITY_NUM_ROAD_PLANES - 1, 255, 0, true);

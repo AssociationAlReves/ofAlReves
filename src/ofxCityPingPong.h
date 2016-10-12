@@ -11,14 +11,14 @@
 #include "ofMain.h"
 #include "ofxAppUtils.h"
 
-#define PING_PONG_NUM_STEPS 5
+#define PING_PONG_NUM_STEPS 6
 
 
 
-class ofxCityPingPong : public ofxFadeScene {
+class ofxCityPingPong : public ofxScene {
 
 public:
-	ofxCityPingPong(string prefix = "scene") : ofxFadeScene(prefix + ": " + "CityPP") 
+	ofxCityPingPong(string prefix = "scene") : ofxScene(prefix + ": " + "PPCityPP")
 	{
 		bShowHelp = false;
 		setSingleSetup(true); // call setup each time the scene is loaded

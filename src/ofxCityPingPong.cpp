@@ -9,13 +9,16 @@
 #include "ofApp.h"
 #include "ofxCityPingPong.h"
 
-int rect1Vis[PING_PONG_NUM_STEPS] = { 1, 0, 0, 0, 1 };
-int rect2Vis[PING_PONG_NUM_STEPS] = { 0, 1, 0, 0, 1 };
-int rect3Vis[PING_PONG_NUM_STEPS] = { 0, 0, 1, 0, 1 };
-int rect4Vis[PING_PONG_NUM_STEPS] = { 0, 0, 0, 1, 1 };
+int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1, 0, 0, 0, 1 };
+int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0, 1, 0, 0, 1 };
+int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 1, 0, 1 };
+int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 0, 1, 1 };
 
 //--------------------------------------------------------------
 void ofxCityPingPong::setup() {
+
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.reset();
 
 	rectSize = 400;
 	curMargin = 90;
@@ -25,9 +28,6 @@ void ofxCityPingPong::setup() {
 		rectsVisible.push_back(true);
 	}
 	updateRects();
-
-	
-
 }
 
 //--------------------------------------------------------------
@@ -73,7 +73,7 @@ void ofxCityPingPong::draw() {
 
 	ofFill();
 	ofSetColor(255);
-	ofDrawAxis(500);
+
 
 	if (bSpaceMode) {
 		if (rect1Vis[curRectVisIndex] == 1)
@@ -97,15 +97,20 @@ void ofxCityPingPong::draw() {
 
 	if (bShowHelp) {
 
+		ofDisableDepthTest();
 		ofApp *app = (ofApp *)ofxGetAppPtr();
 		app->cam.end();
 
 		stringstream ss;
 		ss << "z/s : block sizes (curSize: " << rectSize << ")" << endl;
 		ss << "q/d : margin (curMargin: " << curMargin << ")" << endl;
-		ss << "command by space: " << bSpaceMode << " (step=" << curRectVisIndex  << ")" << endl;
+		ss << "command by space: " << bSpaceMode << " (step=" << curRectVisIndex << ")" << endl;
 		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+
+
 		app->cam.begin();
+
+		ofEnableDepthTest();
 	}
 
 
@@ -117,6 +122,9 @@ void ofxCityPingPong::keyPressed(int key) {
 
 	int delta = 10;
 	switch (key) {
+	case 'r':
+		setup();
+		break;
 	case 'h':
 		bShowHelp = !bShowHelp;
 		break;
@@ -142,6 +150,30 @@ void ofxCityPingPong::keyPressed(int key) {
 		break;
 	case ' ':
 		curRectVisIndex = (curRectVisIndex + 1) % PING_PONG_NUM_STEPS;
+		break;
+	case 'l':
+		ofDisableLighting();
+		break;
+	case 'L':
+		ofEnableLighting();
+		break;
+	case 'p':
+		ofSetSmoothLighting(false);
+		break;
+	case 'P':
+		ofSetSmoothLighting(true);
+		break;
+	case 'e':
+		ofDisableDepthTest();
+		break;
+	case 'E':
+		ofEnableDepthTest();
+		break;
+	case 'a':
+		ofDisableAlphaBlending();
+		break;
+	case 'A':
+		ofEnableAlphaBlending();
 		break;
 	}
 }

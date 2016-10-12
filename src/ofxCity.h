@@ -16,7 +16,7 @@
 #include "ofBuilding.h"
 #include "ofxCityPingPong.h"
 
-#define CITY_SPEED_INCR 0.2
+#define CITY_SPEED_INCR 5 //0.2
 #define CITY_NUM_ROAD_PLANES 100
 #define CITY_NUM_ROAD_PLANES_FADEIN 40
 #define CITY_BLOCK_TOTAL_WIDTH 1000
@@ -26,6 +26,9 @@
 #define CITY_BLOCKS_COLS 75
 #define CITY_BLOCK_MAXHEIGHT 1000
 #define CITY_BLOCK_PAVEMENT_SIZE 50
+
+#define CITY_COLLAPSE_BOX_WIDTH 1000000
+#define CITY_COLLAPSE_BOX_HEIGHT 1000000
 
 
 enum CITY_MODE { enCityIdle = 0, 
@@ -133,6 +136,9 @@ private:
 	ofxTween tweenRoadOpactity;	
 	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
+
+	ofxTween tweenBoxW;
+	ofxTween tweenBoxH;
 
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;

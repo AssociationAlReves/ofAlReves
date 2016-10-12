@@ -82,7 +82,7 @@ void ofxKinectMemory::setup() {
 	appGroup.add(blackScreen.set("blackScreen", true));
 	appGroup.add(antiAlias.set("antiAlias", true));
 	appGroup.add(lineWidth.set("lineWidth", 1, 0, 10));
-	appGroup.add(lineColor.set("lineColor", ofColor(0), ofColor(0), ofColor(255)));
+	//appGroup.add(lineColor.set("lineColor", ofColor(0), ofColor(0), ofColor(255)));
 
 	gui.add(appGroup);
 
@@ -96,34 +96,36 @@ void ofxKinectMemory::setup() {
 //--------------------------------------------------------------
 void ofxKinectMemory::update() {
 
-	contourFinder.setMinAreaRadius(contourMinArea);
-	contourFinder.setMaxAreaRadius(contourMaxArea);
-	contourFinder.setThreshold(thresholdParam);
-	contourFinder.getTracker().setPersistence(persistence);
-	contourFinder.getTracker().setMaximumDistance(maximumDistance);
+	if (kinect.isConnected()) {
+		contourFinder.setMinAreaRadius(contourMinArea);
+		contourFinder.setMaxAreaRadius(contourMaxArea);
+		contourFinder.setThreshold(thresholdParam);
+		contourFinder.getTracker().setPersistence(persistence);
+		contourFinder.getTracker().setMaximumDistance(maximumDistance);
 
-	kinect.update();
+		kinect.update();
 
-	// there is a new frame and we are connected
-	if (kinect.isFrameNew()) {
-		bKinectFrameReady = true;
-		// load grayscale depth image and color image from the kinect source
-		//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-		grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
-		//grayImage.update();
+		// there is a new frame and we are connected
+		if (kinect.isFrameNew()) {
+			bKinectFrameReady = true;
+			// load grayscale depth image and color image from the kinect source
+			//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+			grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
+			//grayImage.update();
 
-		copyGray(grayImage, grayImageNear);
-		copyGray(grayImage, grayImageFar);
-		imitate(grayImageFiltered, grayImage);
+			copyGray(grayImage, grayImageNear);
+			copyGray(grayImage, grayImageFar);
+			imitate(grayImageFiltered, grayImage);
 
-		threshold(grayImageNear, (float)nearThreshold, true);
-		threshold(grayImageFar, (float)farThreshold, false);
-		bitwise_and(grayImageNear, grayImageFar, grayImageFiltered);
-		grayImageFiltered.update();
+			threshold(grayImageNear, (float)nearThreshold, true);
+			threshold(grayImageFar, (float)farThreshold, false);
+			bitwise_and(grayImageNear, grayImageFar, grayImageFiltered);
+			grayImageFiltered.update();
 
-		blur(grayImageFiltered, blurSize);
-		grayImageFiltered.update();
-		contourFinder.findContours(grayImageFiltered);
+			blur(grayImageFiltered, blurSize);
+			grayImageFiltered.update();
+			contourFinder.findContours(grayImageFiltered);
+		}
 	}
 }
 
@@ -227,14 +229,15 @@ void ofxKinectMemory::draw() {
 	} //if (bGotImage)
 	//cam.end();
 
-	if (bShowImages && !bStartMemory) {
-		grayImageFiltered.draw(10, 10);
-		grayImage.draw(800, 0);
+	if (kinect.isConnected()) {
+		if (bShowImages && !bStartMemory) {
+			grayImageFiltered.draw(10, 10);
+			grayImage.draw(800, 0);
+		}
+
+		drawMemoryTrails();
+		ofDrawAxis(50);
 	}
-
-	drawMemoryTrails();
-	ofDrawAxis(50);
-
 	ofPopMatrix();
 
 	app->cam.end();
@@ -280,11 +283,11 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofDisableAlphaBlending();
 
 			ofPushMatrix();
-				ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
-				ofScale(1, -1, 1);
-				ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
-				//ofDisableAlphaBlending();
-				fboBlack.draw(0, 0);
+			ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
+			ofScale(1, -1, 1);
+			ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
+			//ofDisableAlphaBlending();
+			fboBlack.draw(0, 0);
 			ofPopMatrix();
 
 		}
@@ -312,18 +315,19 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 
 			ofNoFill();
-			ofSetColor(lineColor);
+			//ofSetColor(lineColor);
+			ofSetColor(0);
 			for (auto & actor : actorsHullUnion) {
 				actor.second.draw();
 			}
 			ofPopMatrix();
-			fboWhite.end();		
+			fboWhite.end();
 			ofPushMatrix();
-				ofTranslate(fboWhite.getWidth()/2, fboWhite.getHeight()/2);
-				ofScale(1, -1, 1);
-				ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
-				//ofDisableAlphaBlending();
-				fboWhite.draw(0, 0);
+			ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
+			ofScale(1, -1, 1);
+			ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
+			//ofDisableAlphaBlending();
+			fboWhite.draw(0, 0);
 			ofPopMatrix();
 		}
 	}

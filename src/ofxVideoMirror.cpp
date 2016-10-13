@@ -139,7 +139,7 @@ void ofxVideoMirror::draw() {
 
 	//ofTranslate(translation);
 
-	ofDrawAxis(500);
+	//ofDrawAxis(500);
 	ofPushMatrix();
 	ofTranslate(0, ofGetScreenHeight());
 	ofScale(1, -1, 1);

@@ -2,20 +2,21 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofxCity::setup(){
+void ofxCity::setup() {
 
-	ofSeedRandom(123456);	
+	ofSeedRandom(123456);
+	bUpdateParamsFromCode = true;
 
 	// shininess is a value between 0 - 128, 128 being the most shiny //
-	material.setShininess( 120 );
+	material.setShininess(120);
 	material.setSpecularColor(ofColor(255, 255, 255, 255));
 
 	img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
-
-	app->cam.setFarClip(100000);
+	//float farClip = app->cam.getFarClip();
+	app->cam.setFarClip(1000000);
 
 	mode = enCityIdle;
 	curSpeed = 0;
@@ -23,41 +24,57 @@ void ofxCity::setup(){
 	curDistanceOffset = 0;
 	curDistance = 0;
 	rotationAngle = 0;
+	translationCollapse = 0;
 	buildings.clear();
 	tween.setParameters(easinglinear, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
-		, 0,0);
+		, 0, 0);
 
 	// GUI
 	roadParamsHash = 0;
 	if (!bGuiLoaded) {
-		gui.setup("cityPanel",CITY_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+		gui.setup("cityPanel", CITY_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
 		gui.add(bTweenSpeed.set("Tween speed", true));
-		gui.add(fov.set("FOV", 60,0,360));
+		gui.add(fov.set("FOV", 60, 0, 360));
 		gui.add(debugFbo.set("Debug FBO", false));
+		gui.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+		gui.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
 		roadParams.setName("Road");
 
-		roadParams.add(rotationAngle.set("rotationAngle", 0 ,-180 , 180));
-		roadParams.add(roadOpacity.set("Road opacity", 0 ,0 , 255));
-		roadParams.add(roadTexWidth.set("Road tex width", 100,10,1000));
-		roadParams.add(roadTexHeight.set("Road tex height", 100,10,1000));		
-		roadParams.add(roadLineWidth.set("Road line width", 1.5,1,100));
-		roadParams.add(roadLineHeight.set("Road line height", 50,1,100));
+		roadParams.add(rotationAngle.set("rotationAngle", 0, -180, 180));
+		roadParams.add(translationCollapse.set("translat", 0, 0, 100000));
+		roadParams.add(roadOpacity.set("Road opacity", 0, 0, 255));
+		roadParams.add(roadTexWidth.set("Road tex width", 100, 10, 1000));
+		roadParams.add(roadTexHeight.set("Road tex height", 100, 10, 1000));
+		roadParams.add(roadLineWidth.set("Road line width", 1.5, 1, 100));
+		roadParams.add(roadLineHeight.set("Road line height", 50, 1, 100));
 		roadParams.add(curSpeed.set("Velocity", 0, 0, 150));
 		gui.add(roadParams);
 
+		terrainParams.setName("terrain");
+		terrainParams.add(terrainWidth.set("width", 200, 10, 1000));
+		terrainParams.add(terrainHeight.set("height", 200, 10, 1000));
+		terrainParams.add(segmentLength.set("segLength", 40, 1, 1000));
+		terrainParams.add(terrainDrawX.set("draw X", true));
+		terrainParams.add(terrainDrawY.set("draw Y", true));
+		terrainParams.add(terrainZScale.set("Z scale", 0.2, 0, 50));
+		terrainParams.add(terrainNoiseScale.set("noise scale", 1, 0, 10));
+		terrainParams.add(terrainNoiseSeed.set("noise seed", 1, 0, 10));
+		terrainParams.add(terrainNoiseAmp.set("noise amp", 50, 0, 100));
+		gui.add(terrainParams);
+
 		buildingParams.setName("Buildings");
-		buildingParams.add(blockProbability.set("Proba",1,0,1));
+		buildingParams.add(blockProbability.set("Proba", 0.75, 0, 1));
 		buildingParams.add(autoGenerateBuildings.set("Auto generated", false));
 		gui.add(buildingParams);
 
 		lightParams.setName("Lights");
 		lightParams.add(dirLightOrientation.set("Orientation (x,z,y angles)", ofVec3f(180, -42.2449, 117.551), ofVec3f(-180), ofVec3f(180)));
-		lightParams.add(diffuseColor.set("diffuseColor", ofFloatColor(1, 0, 0, 1),ofFloatColor(0,0,0,0),ofColor::white));
-		lightParams.add(specularColor.set("specularColor", ofFloatColor(1, 0, 0, 1),ofFloatColor(0,0,0,0),ofColor::white));
-		lightParams.add(ambientColor.set("ambientColor", ofFloatColor(0), ofFloatColor(0,0,0,0),ofColor::white));
+		lightParams.add(diffuseColor.set("diffuseColor", ofFloatColor(1, 0, 0, 1), ofFloatColor(0, 0, 0, 0), ofColor::white));
+		lightParams.add(specularColor.set("specularColor", ofFloatColor(1, 0, 0, 1), ofFloatColor(0, 0, 0, 0), ofColor::white));
+		lightParams.add(ambientColor.set("ambientColor", ofFloatColor(0), ofFloatColor(0, 0, 0, 0), ofColor::white));
 		gui.add(lightParams);
 
 		bGuiLoaded = true;
@@ -69,17 +86,18 @@ void ofxCity::setup(){
 	setupTextures();
 
 	setupRoad();
+	setupTerrain();
 	setupBlocks();
 
-	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);	
+	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);
 	//ofSetLogLevel("ofxCity", OF_LOG_VERBOSE);
 
 }
 
 //--------------------------------------------------------------
-void ofxCity::setupTextures(){
+void ofxCity::setupTextures() {
 
-	fboRoad.allocate(roadTexWidth,roadTexHeight, GL_RGB32F_ARB);
+	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F_ARB);
 	fboRoad.begin();
 
 	ofBackground(ofColor::darkSlateGray);
@@ -96,18 +114,94 @@ void ofxCity::setupTextures(){
 }
 
 //--------------------------------------------------------------
-void ofxCity::setupRoad(){
+void ofxCity::setupRoad() {
 
 	roads.clear();
-	for (int i=0; i < CITY_NUM_ROAD_PLANES; i++) {
+	for (int i = 0; i < CITY_NUM_ROAD_PLANES; i++) {
 		ofPlanePrimitive plane = ofPlanePrimitive(roadTexWidth, roadTexHeight, 2, 2);
-		plane.resizeToTexture( texRoad );
+		plane.resizeToTexture(texRoad);
 		plane.rotate(90, 1, 0, 0);
-		plane.setPosition(0,0,-roadTexHeight * i);
+		plane.setPosition(0, 0, -roadTexHeight * i);
 		roads.push_back(plane);
+	}
+}
+
+
+//--------------------------------------------------------------
+void ofxCity::setupTerrain() {
+
+
+	terrain.clear();
+	terrain.setMode(OF_PRIMITIVE_LINES);
+	terrain.enableColors();
+	terrain.enableIndices();
+	terrain.disableNormals();
+
+	heightMap.clear();
+	bool drawYLines = false;
+
+	// setup height map
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
+
+
+			float noiseValue = genNoise2(x, y); // background noise only
+			heightMap.push_back(noiseValue);
+
+		}
 	}
 
 
+	// setup vertices
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
+			float Y = y * segmentLength;
+			float X = x * segmentLength;
+			float Z = heightMap[indexFromXY(x, y, terrainHeight)];
+			terrain.addVertex(ofVec3f(X, Y, Z * terrainZScale));
+			terrain.addColor(ofColor::black);
+		}
+	}
+
+
+	// setup indexes
+	for (int x = 0; x < terrainWidth; x++) {
+		for (int y = 0; y < terrainHeight; y++) {
+
+			// -
+			if (terrainDrawX && (x + 1 != terrainWidth)) {
+				terrain.addIndex(indexFromXY(x, y, terrainHeight));
+				terrain.addIndex(indexFromXY(x + 1, y, terrainHeight));
+			}
+
+			// |
+			if (terrainDrawY) {
+				if (terrainDrawY && (y + 1 != terrainHeight)) {
+					terrain.addIndex(indexFromXY(x, y, terrainHeight));
+					terrain.addIndex(indexFromXY(x, y + 1, terrainHeight));
+				}
+			}
+		}
+	}
+}
+//--------------------------------------------------------------
+int ofxCity::indexFromXY(const int x, const int y, const int totalHeight) {
+	return x * totalHeight + y;
+}
+//--------------------------------------------------------------
+float ofxCity::genNoise2(const int x, const int y) {
+
+	float noiseScale2 = terrainNoiseScale;
+	float noiseSeed2 = terrainNoiseSeed;
+	float noiseAmp2 = terrainNoiseAmp;
+	float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
+	if (noiseValue > 0.9) {
+		noiseValue *= noiseAmp2;
+	}
+	else {
+		noiseValue = 0;
+	}
+	return 1 - noiseAmp2 + noiseValue;
 }
 
 //--------------------------------------------------------------
@@ -116,25 +210,23 @@ void ofxCity::updateRoad(bool createNewRow) {
 	// if plane is offsight
 	// translate all planes along negative z axis
 	if (createNewRow) {
-		cout << ".";
+		cout << "r" << endl;
 
 
 		// translate all road planes
-		for(auto & plane: roads) {
+		for (auto & plane : roads) {
 
 			ofVec3f pos = plane.getPosition();
-			pos.z -= curDistanceOffset-1;
+			pos.z -= (curDistanceOffset);
 			plane.setPosition(pos);
 		}
 
 		curDistanceOffset = 0;
 	}
-
-
 }
 
 //--------------------------------------------------------------
-void ofxCity::setupBlocks(){
+void ofxCity::setupBlocks() {
 
 	blocksL.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
 	blocksR.resize(CITY_BLOCKS_ROWS * CITY_BLOCKS_COLS);
@@ -150,35 +242,51 @@ void ofxCity::setupBlocks(){
 }
 
 //--------------------------------------------------------------
-void ofxCity::updateBlocks(bool createNewRow) {
+void ofxCity::updateBlocks(int createRowsCount) {
 
-	if (createNewRow || autoGenerateBuildings) {
+	if (autoGenerateBuildings) {
 
-		long elapsed = ofGetElapsedTimeMillis();
-		int numIterations = 0;
-		// Translate all heights one row down
-		for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
-			for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
+		for (int i = 0; i < createRowsCount; i++) {
 
-				blocksL[(row - 1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
-				blocksR[(row - 1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+			translateBlocksHeights();
 
-				if (row == CITY_BLOCKS_ROWS - 1) {
-					blocksL[row * CITY_BLOCKS_COLS + col] = 0;
-					blocksR[row * CITY_BLOCKS_COLS + col] = 0;
-				}
-
+			if (i > 0) {
+				// Translate all heights one row down
+				translateBlocksHeights();
 			}
-		}
 
-		generateBlockSide(true);
-		generateBlockSide(false);	
+			generateBlockSide(true, 1);
+			generateBlockSide(false, 1);
+		}
 	}
+
+	//if (createRowsCount > 1 /* forced */) {
+	//	generateBlock_TheBigOne();
+	//}
 }
 
+//--------------------------------------------------------------
+void ofxCity::translateBlocksHeights() {
+
+	// Translate all heights one row down
+	for (int col = 0; col < CITY_BLOCKS_COLS; col++) {
+		for (int row = 1; row < CITY_BLOCKS_ROWS; row++) {
+
+			blocksL[(row - 1) * CITY_BLOCKS_COLS + col] = blocksL[row * CITY_BLOCKS_COLS + col];
+			blocksR[(row - 1) * CITY_BLOCKS_COLS + col] = blocksR[row * CITY_BLOCKS_COLS + col];
+
+			if (row == CITY_BLOCKS_ROWS - 1) {
+				blocksL[row * CITY_BLOCKS_COLS + col] = 0;
+				blocksR[row * CITY_BLOCKS_COLS + col] = 0;
+			}
+
+		}
+	}
+
+}
 
 //--------------------------------------------------------------
-void ofxCity::generateBlockSide(bool isLeftSide) {
+void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 
 	vector<int> &blocks = isLeftSide ? blocksL : blocksR;
 
@@ -194,8 +302,11 @@ void ofxCity::generateBlockSide(bool isLeftSide) {
 			// create block
 
 			// search next available place
-			for (int col = lastReservedCol+1; col < CITY_BLOCKS_COLS; col++) {
+			for (int col = lastReservedCol + 1; col < CITY_BLOCKS_COLS; col++) {
 				if (blocks[col] > 0) {
+					if (blockProbability < 1) {
+						col += ofRandom(0, CITY_BLOCKS_COLS - col - 1);
+					}
 					lastReservedCol = col;
 				}
 				else
@@ -203,20 +314,20 @@ void ofxCity::generateBlockSide(bool isLeftSide) {
 					// found empty block
 
 
-					int requestedCols = (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					int requestedRows = (int)ceilf(ofRandom(0,CITY_BLOCKS_COLS));
+					int requestedCols = (int)ceilf(ofRandom(0, CITY_BLOCKS_ROWS));
+					int requestedRows = (int)ceilf(ofRandom(0, CITY_BLOCKS_COLS));
 					// DBG
 					//int requestedCols = 1;//(int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
 					//int requestedRows = isLeftSide ? 1 : 3;// (int)ceilf(ofRandom(0,CITY_BLOCKS_ROWS));
-					ofLogVerbose("ofxCity")  << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
+					ofLogVerbose("ofxCity") << "building at col " << col << " cols=" << requestedCols << " rows=" << requestedRows;
 
 					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
 
-					float height = ofRandom(100, blockProbability * blockProbability * CITY_BLOCK_MAXHEIGHT);
+					float height = ofRandom(100, ofMap(blockProbability, 0, 1, blockProbability / 10, blockProbability  *blockProbability) * CITY_BLOCK_MAXHEIGHT);
 					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
 
 						if (true) {
-							for (int j = 0; j < min(requestedRows+1, CITY_BLOCKS_ROWS); j++) {
+							for (int j = 0; j < min(requestedRows + 1, CITY_BLOCKS_ROWS); j++) {
 
 								maxRow = j;
 								int index = j * CITY_BLOCKS_COLS + i;
@@ -226,26 +337,28 @@ void ofxCity::generateBlockSide(bool isLeftSide) {
 							}
 						}
 
-						lastReservedCol = max(lastReservedCol,i);
-						maxCol = i;						
+						lastReservedCol = max(lastReservedCol, i);
+						maxCol = i;
 					}
 
 					// Create building
 					float w = 0, h = 0, x = 0, z = 0;
-					ofLogVerbose("ofxCity")  << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
-					float margin = CITY_BLOCK_SIZE * ofRandom(0,CITY_BLOCK_MARGIN_FACTOR);
+					ofLogVerbose("ofxCity") << "got Col min/max= " << minCol << "/" << maxCol << " row min/max" << minRow << "/" << maxRow;
+					float margin = CITY_BLOCK_SIZE * ofRandom(0, CITY_BLOCK_MARGIN_FACTOR);
 					w = (maxCol - minCol + 1) * CITY_BLOCK_SIZE - 2 * margin;
 					h = (maxRow - minRow + 1) * CITY_BLOCK_SIZE - 2 * margin;
+					int roadPlaneIndex = 0; // CITY_NUM_ROAD_PLANES - 1
 					if (isLeftSide) {
-						x = - ((w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10,CITY_BLOCK_PAVEMENT_SIZE));
-					} else {
-
-						x = + ((w + roads[CITY_NUM_ROAD_PLANES-1].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10,CITY_BLOCK_PAVEMENT_SIZE));
+						x = -((w + roads[roadPlaneIndex].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
 					}
-					z = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z - h /2.;
+					else {
+
+						x = +((w + roads[roadPlaneIndex].getWidth()) / 2.0 + minCol * CITY_BLOCK_SIZE + ofRandom(10, CITY_BLOCK_PAVEMENT_SIZE));
+					}
+					z = roads[roadPlaneIndex].getPosition().z - h / 2. - CITY_BLOCK_SIZE * nowRowForced;
 					ofBuilding building = ofBuilding(ofVec3f(x, -height / 2., z), w, height, h);
 					buildings.push_back(building);
-					ofLogVerbose("ofxCity")  << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
+					ofLogVerbose("ofxCity") << "added building width=" << w << ", depth=" << h << ", height=" << height << " at (x,z) = " << x << ", " << z;
 				}
 				break; // for (int col = lastReservedCol
 			}
@@ -254,7 +367,25 @@ void ofxCity::generateBlockSide(bool isLeftSide) {
 }
 
 //--------------------------------------------------------------
-void ofxCity::update(){
+void ofxCity::generateBlock_TheBigOne() {
+
+	float size = 5000;
+
+	float lowestZ = 0;
+	for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+		ofBuilding building = *buildingIt;
+		lowestZ = min(lowestZ, building.position.z);
+	}
+
+	ofBuilding building = ofBuilding(ofVec3f(0, -CITY_BLOCK_MAXHEIGHT / 2, lowestZ - 1000), size * 2, CITY_BLOCK_MAXHEIGHT, size / 4);
+	buildings.push_back(building);
+
+}
+
+//--------------------------------------------------------------
+void ofxCity::update() {
+
+
 	float hash = roadLineWidth * 5.
 		+ roadLineHeight * 7.
 		+ roadTexWidth * 11.
@@ -267,18 +398,26 @@ void ofxCity::update(){
 	}
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.setFov(fov);
+	if (bUpdateParamsFromCode) {
+		app->cam.setFov(fov);
+		app->cam.setOrientation(camOrientation);
+		app->cam.setPosition(camPosition);
 
-	if (curDistanceOffset >= roadTexHeight) {
-		updateRoad(true);
-		updateBlocks(false);
+		bUpdateParamsFromCode = false;
 	}
 
 	if (bTweenSpeed) {
 		curSpeed = tween.update();
 	}
-	curDistance += curSpeed;
-	curDistanceOffset += curSpeed;
+
+	if (curDistanceOffset <= -roadTexHeight) {
+		updateRoad(true);
+		updateBlocks(1);
+	}
+
+
+	curDistance -= curSpeed;
+	curDistanceOffset -= curSpeed;
 
 	directionalLight.setDiffuseColor(diffuseColor);
 	directionalLight.setSpecularColor(specularColor);
@@ -287,79 +426,137 @@ void ofxCity::update(){
 	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
 
 	int i = 0;
-	float road0z = roads[0].getPosition().z;
+	float roadNearZ = roads[0].getPosition().z;
+	float roadFarZ = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 	while (i < buildings.size()) {
-		if (buildings[i].position.z >= road0z + 650) {
+		if (buildings[i].position.z < roadFarZ + 650) {
 			buildings[i] = buildings.back(); buildings.pop_back(); i--;
-		} else {
+		}
+		else {
 			i++;
 		}
 	}
+
+	if (mode == enCityCollapsing && tweenTranslate.isCompleted())
+	{
+		cout << "COLLAPSED" << endl;
+		mode = enCityCollapsed;
+	}
+}
+
+void ofxCity::accelerate(int duration) {
+	desiredSpeed += CITY_SPEED_INCR;
+	tween.setParameters(easingsine, ofxTween::easeInOut
+		, curSpeed
+		, desiredSpeed
+		, duration, 0);
+}
+void ofxCity::decelerate(int duration) {
+	desiredSpeed -= CITY_SPEED_INCR;
+	tween.setParameters(easingsine, ofxTween::easeInOut
+		, curSpeed
+		, desiredSpeed
+		, duration, 0);
 }
 
 //--------------------------------------------------------------
-void ofxCity::draw(){
+void ofxCity::draw() {
 
-
-	ofSetSmoothLighting(true);
+	ofSetSmoothLighting(false);
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 
-	ofBackground(255,255,255,255);
+	ofBackground(255, 255, 255, 255);
 
 	ofPushMatrix();
-	texRoad.bind();
+	
 
-	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 	ofTranslate(0, 20);
-
 	ofTranslate(0, 0, curDistance + 650);
 
-	if (mode != enCityIdle) {
-
+	switch (mode)
+	{
+	case enCityIdle:
+		break;
+	case enCityCollapsed:
+		ofClear(0);
+		break;
+	default:
+		texRoad.bind();
 		for (int i = 0; i < roads.size(); i++) {
 
-			float alpha = ofMap(i,CITY_NUM_ROAD_PLANES-CITY_NUM_ROAD_PLANES_FADEIN,CITY_NUM_ROAD_PLANES-1,255,0,true);
-			if (mode == enCityStart) {
-				ofSetColor(ofColor::white, tweenRoadOpactity.update() * ofMap(alpha, 0,255,0,1));
+			float alpha = ofMap(i, CITY_NUM_ROAD_PLANES - CITY_NUM_ROAD_PLANES_FADEIN, CITY_NUM_ROAD_PLANES - 1, 255, 0, true);
+			/*if (mode == enCityStart) {
+				ofSetColor(ofColor::white, tweenRoadOpactity.update() * ofMap(alpha, 0, 255, 0, 1));
 			}
 			else
 			{
 				ofSetColor(ofColor::white, alpha);
-			}
+			}*/
+			ofSetColor(ofColor::white, alpha);
 			roads[i].draw();
 		}
 
 		texRoad.unbind();
+
+		//------------------------
+		// Terrain draw
+		//
+		/*ofPushMatrix();
+		ofRotate(90, 1, 0, 0);
+		ofTranslate(0, -10000, 0);
+		terrain.draw();
+		ofPopMatrix();*/
+		//
+		//
 
 		ofEnableLighting();
 		directionalLight.enable();
 		material.begin();
 
 		ofFill();
-		ofSetColor(255);
 
-		int maxDepth = CITY_BLOCKS_ROWS * CITY_BLOCK_SIZE+100;
-		int minDepth = maxDepth+2000;
-		float roadLength =  CITY_NUM_ROAD_PLANES * texRoad.getHeight();
+		int maxDepth = CITY_BLOCKS_ROWS * CITY_BLOCK_SIZE + 100;
+		int minDepth = maxDepth + 500;//+2000;
+		float roadLength = CITY_NUM_ROAD_PLANES * texRoad.getHeight();
 
 		float road0z = roads[0].getPosition().z + 650;
-		float roadnz = roads[CITY_NUM_ROAD_PLANES-1].getPosition().z;
+		float roadnz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 
-		if (mode == enCityRotate) {
+		if (mode == enCityCollapsing) {
 			rotationAngle = tweenRotate.update();
+			translationCollapse = tweenTranslate.update();
+
+			float boxW = tweenBoxW.update();
+			float boxH = tweenBoxH.update();
+
+			ofPushMatrix();
+			ofTranslate(-boxW / 2, -boxH/2, -1000);
+
+			ofSetColor(0);
+			ofRect(0, 0, boxW, boxH);
+
+			ofPopMatrix();
+
 		}
 
-		for(std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-			ofBuilding building = *buildingIt;
-			if (building.position.z < road0z) {
-				int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
-				float alpha = ofMap(curDepth,minDepth,maxDepth,255,0,true);
-				ofSetColor(ofColor::white, alpha);
-				building.draw(rotationAngle, alpha, bWireframe);
+		ofSetColor(255);
+		/*ofPushMatrix();
+		ofTranslate(0, 0, translationCollapse);*/
+		if (mode != enCityCollapsed) {
+			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+				ofBuilding building = *buildingIt;
+				if (building.position.z < road0z) {
+					int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
+					float alpha = ofMap(curDepth, minDepth, maxDepth, 255, 0, true);
+					ofSetColor(ofColor::white, alpha);
+					building.draw(rotationAngle, translationCollapse, alpha, bWireframe);
+				}
+
 			}
-
 		}
+		//ofPopMatrix();
 
 
 		ofFill();
@@ -381,12 +578,16 @@ void ofxCity::draw(){
 
 		ofPopMatrix();
 
+
+		break;
 	}
+
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.end();
 	if (bShowGui) {
 		ofDisableDepthTest();
+
 		gui.draw();
 	}
 
@@ -398,86 +599,120 @@ void ofxCity::draw(){
 
 		for (int x = 0; x < CITY_BLOCKS_COLS; x++) {
 			for (int y = 0; y < CITY_BLOCKS_ROWS; y++) {
-				img.setColor(CITY_BLOCKS_COLS+1,y,ofColor::red);
-				img.setColor(CITY_BLOCKS_COLS+2,y,ofColor::red);
-				img.setColor(CITY_BLOCKS_COLS+3,y,ofColor::red);
-				img.setColor(CITY_BLOCKS_COLS+4,y,ofColor::red);
-				img.setColor(CITY_BLOCKS_COLS+5,y,ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS + 1, y, ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS + 2, y, ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS + 3, y, ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS + 4, y, ofColor::red);
+				img.setColor(CITY_BLOCKS_COLS + 5, y, ofColor::red);
 
 				ofColor color = ofColor::black;
 				if (blocksL[y * CITY_BLOCKS_COLS + x] > 0) {
 					color = ofColor::white;
-				}				
+				}
 				/*img.setColor((CITY_BLOCKS_COLS - x),(CITY_BLOCKS_ROWS- y),color);*/
-				img.setColor(CITY_BLOCKS_COLS - x,y,color);
+				img.setColor(CITY_BLOCKS_COLS - x, y, color);
 
 				color = ofColor::black;
 				if (blocksR[y * CITY_BLOCKS_COLS + x] > 0) {
 					color = ofColor::white;
 				}
 				/*img.setColor((CITY_BLOCKS_COLS - x) + CITY_BLOCKS_COLS + 5,(CITY_BLOCKS_ROWS- y),color);*/
-				img.setColor(x + CITY_BLOCKS_COLS + 5,y,color);
+				img.setColor(x + CITY_BLOCKS_COLS + 5, y, color);
 
 			}
 		}
 		img.update();
-		img.draw(200,200,CITY_BLOCKS_COLS*50,-CITY_BLOCKS_ROWS*50);
+		img.draw(100, 200, CITY_BLOCKS_COLS * 10, -CITY_BLOCKS_ROWS * 10);
 	}
 
-
 	app->cam.begin();
+
 
 }
 
 //--------------------------------------------------------------
-void ofxCity::keyPressed(int key){
+void ofxCity::keyPressed(int key) {
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 
 	switch (key)
 	{
 	case ' ':
 		mode = (mode + 1) % 4;
-		switch(mode) {
+		switch (mode) {
 		case enCityStart:
+			accelerate(0); // start with velocity
 			tweenRoadOpactity.setParameters(easinglinear, ofxTween::easeInOut
 				, 0
 				, 255
-				, 5000,0);
+				, 10000, 0);
 			break;
 		case enCityBuildings:
-			updateBlocks(true);
+			autoGenerateBuildings = true;
 			break;
-		case enCityRotate:
-			tweenRotate.setParameters(easinglinear, ofxTween::easeIn
+		case enCityCollapsing:
+
+			float lowestZ = 100000;
+			float highestZ = -10000;
+			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+				ofBuilding building = *buildingIt;
+				lowestZ = min(lowestZ, building.position.z);
+				highestZ = max(highestZ, building.position.z);
+			}
+			float diffZ = highestZ - lowestZ;
+
+			int collapseTimeMs = 9000;
+			tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
+
+			float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
+			float road0z = roads[0].getPosition().z;
+
+			float initialZ = lowestZ - 650;
+			float zOffsetAtEnd = ofGetFrameRate() * (curDistanceOffset)* collapseTimeMs / 1000.0;
+			tweenTranslate.setParameters(easingexpo, ofxTween::easeIn
 				, 0
-				, 90
-				, 10000,0);
+				, -zOffsetAtEnd + lowestZ - roadNz
+				, collapseTimeMs, 0);
+
+			tweenBoxW.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_WIDTH, collapseTimeMs / 20., 0);
+			tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
 			break;
 		}
+		cout << ofToString(mode) << endl;
 
 		break;
+	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
 	case 'r': setup(); break;
-	case 'l' : gui.loadFromFile(CITY_SETTINGS_FILE); break;
-	case 's' : gui.saveToFile(CITY_SETTINGS_FILE); break;
-	case 'h': 
+	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
+	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
+	case 'h':
 		bShowGui = !bShowGui;
-		if (bShowGui){
+		if (bShowGui) {
 			app->cam.disableMouseInput();
 		}
 		else {
 			app->cam.enableMouseInput();
-		}			  
+		}
 		break;
-	case 'z': desiredSpeed += CITY_SPEED_INCR;
-		tween.setParameters(easingsine, ofxTween::easeInOut
-			, curSpeed
-			, desiredSpeed
-			, 2000,0);
+	case 'z': 
+		accelerate();
 		break;
-	case 'b': 
-		updateBlocks(true); 
+	case 'Z': 
+		decelerate();
 		break;
-
+	case 'b':
+		updateBlocks(1);
+		break;
+	case 't':
+		setupTerrain();
+		break;
+	case '<':
+		blockProbability = ofClamp(blockProbability - 0.1, 0, 1);
+		break;
+	case '>':
+		blockProbability = ofClamp(blockProbability + 0.1, 0, 1);
+		break;
+	case 'w':
+		autoGenerateBuildings = !autoGenerateBuildings;
 	default:
 		break;
 	}

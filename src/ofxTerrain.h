@@ -111,6 +111,6 @@ private:
     vector<float> heightMap;
     ofVec2f meshSize;
     
-    int indexFromXY(int x, int y, int totalHeight);
+    int indexFromXY(const int x, const int y, const int totalHeight);
     
     };

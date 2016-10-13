@@ -14,23 +14,28 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 #include "ofBuilding.h"
+#include "ofxCityPingPong.h"
 
-#define CITY_SPEED_INCR 1.
+#define CITY_SPEED_INCR 1 //0.2
 #define CITY_NUM_ROAD_PLANES 100
 #define CITY_NUM_ROAD_PLANES_FADEIN 40
 #define CITY_BLOCK_TOTAL_WIDTH 1000
-#define CITY_BLOCK_SIZE 100
+#define CITY_BLOCK_SIZE 40
 #define CITY_BLOCK_MARGIN_FACTOR 0.4
 #define CITY_BLOCKS_ROWS 3
-#define CITY_BLOCKS_COLS 50
-#define CITY_BLOCK_MAXHEIGHT 4000
+#define CITY_BLOCKS_COLS 75
+#define CITY_BLOCK_MAXHEIGHT 1000
 #define CITY_BLOCK_PAVEMENT_SIZE 50
+
+#define CITY_COLLAPSE_BOX_WIDTH 1000000
+#define CITY_COLLAPSE_BOX_HEIGHT 1000000
 
 
 enum CITY_MODE { enCityIdle = 0, 
 	enCityStart,	// road appearance, opacity
 	enCityBuildings,
-	enCityRotate,
+	enCityCollapsing,
+	enCityCollapsed,
 };
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"
@@ -59,17 +64,29 @@ private:
 	float curDistanceOffset;
 	float desiredSpeed;
 
+	bool bUpdateParamsFromCode;
+
 
 	void setupTextures();
 	void setupRoad();
+	void setupTerrain();
 	void updateRoad(bool createNewRow);
 	void setupBlocks();
-	void updateBlocks(bool createNewRow);
+	void updateBlocks(int createRowsCount = 1);
+	void translateBlocksHeights();
 
-	void generateBlockSide(bool isLeftSide);
+	void generateBlockSide(bool isLeftSide, int nowRowForced = 0); // 0 means not forced
+	void generateBlock_TheBigOne(); // huge building covering EVERYTHING, including you and the audience
+
+	void accelerate(int duration = 2000);
+	void decelerate(int duration = 2000);
 
 	// road
 	vector<ofPlanePrimitive> roads;
+	ofVboMesh terrain;
+	vector<float> heightMap;
+	float genNoise2(const int x, const int y);
+	int indexFromXY(const int x, const int y, const int totalHeight);
 	ofFbo fboRoad;
 	ofTexture texRoad;
 
@@ -89,24 +106,41 @@ private:
 	ofParameter<bool> bWireframe;
 	ofParameter<float> fov;
 	ofParameter<float> rotationAngle;
+	ofParameter<float> translationCollapse;
 	ofParameter<float> roadLineWidth;
 	ofParameter<float> roadLineHeight;
 	ofParameter<int> roadTexWidth;
 	ofParameter<int> roadTexHeight;
 	ofParameter<float> curSpeed;
 	ofParameter<float> roadOpacity;
+	ofParameter<ofVec3f> camOrientation;
+	ofParameter<ofVec3f> camPosition;
 	ofParameterGroup roadParams;
+
+	ofParameter<int> terrainWidth;
+	ofParameter<int> terrainHeight;
+	ofParameter<int> segmentLength;
+	ofParameter<bool> terrainDrawX;
+	ofParameter<bool> terrainDrawY;
+	ofParameter<float> terrainZScale;
+	ofParameter<float> terrainNoiseScale;
+	ofParameter<float> terrainNoiseSeed;
+	ofParameter<float> terrainNoiseAmp;
+	ofParameterGroup terrainParams;
 
 	ofParameter<float> blockProbability;
 	ofParameterGroup buildingParams;
 	bool bShowGui;
 	bool bGuiLoaded;
-
-
+	
 	// transitions
 	ofxTween tween;
 	ofxTween tweenRoadOpactity;	
+	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
+
+	ofxTween tweenBoxW;
+	ofxTween tweenBoxH;
 
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;

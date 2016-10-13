@@ -16,10 +16,11 @@
 class ofxBgScene : public ofxFadeScene
 {
 public:
-    ofxBgScene(bool animate = true, string prefix = "scene")
+    ofxBgScene(bool animate = true, bool orange = true, string prefix = "scene")
     : bAnimate(animate), ofxFadeScene(prefix + ": " + "BgScene"){
         setSingleSetup(false); // jjjjjmjmMmjj setup each time the scene is loaded
         setFade(0,0);
+		bBlue = !orange;
     }
     
     void setup();

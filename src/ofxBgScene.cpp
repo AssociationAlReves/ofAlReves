@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofxBgScene::setup(){
-    bBlue = false;
     bBackground = false;
 }
 

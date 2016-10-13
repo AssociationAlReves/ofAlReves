@@ -11,7 +11,7 @@
 #include "ofMain.h"
 #include "ofxAppUtils.h"
 
-#define PING_PONG_NUM_STEPS 6
+#define PING_PONG_NUM_STEPS 25
 
 
 
@@ -21,11 +21,11 @@ public:
 	ofxCityPingPong(string prefix = "scene") : ofxScene(prefix + ": " + "PPCityPP")
 	{
 		bShowHelp = false;
-		setSingleSetup(true); // call setup each time the scene is loaded
+		setSingleSetup(false); // call setup each time the scene is loaded
 
 		curRectVisIndex = 0;
 
-		bSpaceMode = false;
+		bSpaceMode = true;
 	}
 
 	void setup();

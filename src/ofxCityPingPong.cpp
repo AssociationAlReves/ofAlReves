@@ -9,10 +9,11 @@
 #include "ofApp.h"
 #include "ofxCityPingPong.h"
 
-int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1, 0, 0, 0, 1 };
-int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0, 1, 0, 0, 1 };
-int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 1, 0, 1 };
-int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 0, 1, 1 };
+/////////////////////////////////////////////////////////////// 1  2  3  4  5  6  7  8/ 1  2  3  4  5  6  7  8                   
+int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
 
 //--------------------------------------------------------------
 void ofxCityPingPong::setup() {
@@ -22,7 +23,10 @@ void ofxCityPingPong::setup() {
 
 	rectSize = 400;
 	curMargin = 90;
+	curRectVisIndex = 0;
 
+	rects.clear();
+	rectsVisible.clear();
 	for (int i = 0; i < 4; i++) {
 		rects.push_back(ofRectangle(0, 0, 100, 100));
 		rectsVisible.push_back(true);
@@ -46,20 +50,37 @@ void ofxCityPingPong::updateRects() {
 		rects[i].height = rectSize;
 		rectsVisible[i] = true;
 	}
-	// 1 HG
-	rects[0].x = curMargin;
-	rects[0].y = curMargin;
+	//// 1 HG
+	//rects[0].x = curMargin;
+	//rects[0].y = curMargin;
 
-	// 2 HD
-	rects[1].x = ofGetScreenWidth() - curMargin - rectSize;
+	//// 2 HD
+	//rects[1].x = ofGetScreenWidth() - curMargin - rectSize;
+	//rects[1].y = curMargin;
+
+	//// 3 BG
+	//rects[2].x = curMargin;
+	//rects[2].y = ofGetScreenHeight() - curMargin - rectSize;
+
+	//// 4 BD
+	//rects[3].x = ofGetScreenWidth() - curMargin - rectSize;
+	//rects[3].y = ofGetScreenHeight() - curMargin - rectSize;
+
+
+	// 1 BD
+	rects[0].x = ofGetScreenWidth() - curMargin - rectSize;
+	rects[0].y = ofGetScreenHeight() - curMargin - rectSize;
+
+	// 2 HG
+	rects[1].x = curMargin;
 	rects[1].y = curMargin;
 
-	// 3 BG
-	rects[2].x = curMargin;
-	rects[2].y = ofGetScreenHeight() - curMargin - rectSize;;
+	// 3 HD
+	rects[2].x = ofGetScreenWidth() - curMargin - rectSize;
+	rects[2].y = curMargin;
 
-	// 4 BD
-	rects[3].x = ofGetScreenWidth() - curMargin - rectSize;
+	// 4 BG
+	rects[3].x = curMargin;
 	rects[3].y = ofGetScreenHeight() - curMargin - rectSize;
 
 

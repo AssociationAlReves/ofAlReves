@@ -190,9 +190,9 @@ void ofxKinectMemory::draw() {
 
 				ofPolyline polyline;
 				polyline.resize(hull.size());
-				for (int i = 0; i < (int)hull.size(); i++) {
-					polyline[i].x = hull[i].x;
-					polyline[i].y = hull[i].y;
+				for (int hullIndex = 0; hullIndex < (int)hull.size(); hullIndex++) {
+					polyline[hullIndex].x = hull[hullIndex].x;
+					polyline[hullIndex].y = hull[hullIndex].y;
 				}
 				polyline.close();
 				actorsHullUnion[label] = polyline;
@@ -206,9 +206,9 @@ void ofxKinectMemory::draw() {
 			else {
 				ofPolyline polyline;
 				polyline.resize(hullPoints.size());
-				for (int i = 0; i < (int)hullPoints.size(); i++) {
-					polyline[i].x = hullPoints[i].x;
-					polyline[i].y = hullPoints[i].y;
+				for (int hullIndex = 0; hullIndex < (int)hullPoints.size(); hullIndex++) {
+					polyline[hullIndex].x = hullPoints[hullIndex].x;
+					polyline[hullIndex].y = hullPoints[hullIndex].y;
 				}
 				polyline.close();
 				polyline.draw();
@@ -236,7 +236,7 @@ void ofxKinectMemory::draw() {
 		}
 
 		drawMemoryTrails();
-		ofDrawAxis(50);
+		//ofDrawAxis(50);
 	}
 	ofPopMatrix();
 
@@ -357,6 +357,9 @@ void ofxKinectMemory::keyPressed(int key) {
 		angle--;
 		if (angle < -30) angle = -30;
 		kinect.setCameraTiltAngle(angle);
+		break;
+	case 'b':
+		blackScreen = !blackScreen;
 		break;
 	case ' ':
 		bStartMemory = !bStartMemory;

@@ -444,6 +444,21 @@ void ofxCity::update() {
 	}
 }
 
+void ofxCity::accelerate(int duration) {
+	desiredSpeed += CITY_SPEED_INCR;
+	tween.setParameters(easingsine, ofxTween::easeInOut
+		, curSpeed
+		, desiredSpeed
+		, duration, 0);
+}
+void ofxCity::decelerate(int duration) {
+	desiredSpeed -= CITY_SPEED_INCR;
+	tween.setParameters(easingsine, ofxTween::easeInOut
+		, curSpeed
+		, desiredSpeed
+		, duration, 0);
+}
+
 //--------------------------------------------------------------
 void ofxCity::draw() {
 
@@ -472,25 +487,29 @@ void ofxCity::draw() {
 		for (int i = 0; i < roads.size(); i++) {
 
 			float alpha = ofMap(i, CITY_NUM_ROAD_PLANES - CITY_NUM_ROAD_PLANES_FADEIN, CITY_NUM_ROAD_PLANES - 1, 255, 0, true);
-			if (mode == enCityStart) {
+			/*if (mode == enCityStart) {
 				ofSetColor(ofColor::white, tweenRoadOpactity.update() * ofMap(alpha, 0, 255, 0, 1));
 			}
 			else
 			{
 				ofSetColor(ofColor::white, alpha);
-			}
+			}*/
+			ofSetColor(ofColor::white, alpha);
 			roads[i].draw();
 		}
 
 		texRoad.unbind();
 
-		//ofSetLineWidth(4);
-		ofPushMatrix();
+		//------------------------
+		// Terrain draw
+		//
+		/*ofPushMatrix();
 		ofRotate(90, 1, 0, 0);
 		ofTranslate(0, -10000, 0);
 		terrain.draw();
-		ofPopMatrix();
-		//ofSetLineWidth(1);
+		ofPopMatrix();*/
+		//
+		//
 
 		ofEnableLighting();
 		directionalLight.enable();
@@ -513,7 +532,7 @@ void ofxCity::draw() {
 			float boxH = tweenBoxH.update();
 
 			ofPushMatrix();
-			ofTranslate(-boxW / 2, -boxH, -1000);
+			ofTranslate(-boxW / 2, -boxH/2, -1000);
 
 			ofSetColor(0);
 			ofRect(0, 0, boxW, boxH);
@@ -621,6 +640,7 @@ void ofxCity::keyPressed(int key) {
 		mode = (mode + 1) % 4;
 		switch (mode) {
 		case enCityStart:
+			accelerate(0); // start with velocity
 			tweenRoadOpactity.setParameters(easinglinear, ofxTween::easeInOut
 				, 0
 				, 255
@@ -673,17 +693,11 @@ void ofxCity::keyPressed(int key) {
 			app->cam.enableMouseInput();
 		}
 		break;
-	case 'z': desiredSpeed += CITY_SPEED_INCR;
-		tween.setParameters(easingsine, ofxTween::easeInOut
-			, curSpeed
-			, desiredSpeed
-			, 2000, 0);
+	case 'z': 
+		accelerate();
 		break;
-	case 'Z': desiredSpeed -= CITY_SPEED_INCR;
-		tween.setParameters(easingsine, ofxTween::easeInOut
-			, curSpeed
-			, desiredSpeed
-			, 100, 0);
+	case 'Z': 
+		decelerate();
 		break;
 	case 'b':
 		updateBlocks(1);

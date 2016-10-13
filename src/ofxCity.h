@@ -16,7 +16,7 @@
 #include "ofBuilding.h"
 #include "ofxCityPingPong.h"
 
-#define CITY_SPEED_INCR 5 //0.2
+#define CITY_SPEED_INCR 1 //0.2
 #define CITY_NUM_ROAD_PLANES 100
 #define CITY_NUM_ROAD_PLANES_FADEIN 40
 #define CITY_BLOCK_TOTAL_WIDTH 1000
@@ -78,6 +78,8 @@ private:
 	void generateBlockSide(bool isLeftSide, int nowRowForced = 0); // 0 means not forced
 	void generateBlock_TheBigOne(); // huge building covering EVERYTHING, including you and the audience
 
+	void accelerate(int duration = 2000);
+	void decelerate(int duration = 2000);
 
 	// road
 	vector<ofPlanePrimitive> roads;

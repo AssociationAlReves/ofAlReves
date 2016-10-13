@@ -30,7 +30,7 @@ public:
 		running = false;
 		frameReady = false;
 		guiInitialized = false;
-		bShowGui = true;
+		bShowGui = false;
 	}
 	bool running;
 	bool frameReady;
@@ -38,6 +38,10 @@ public:
 	void update();
 	void draw();
 	void keyPressed(int key);
+
+private:
+
+	void setMode(int mode);
 
 	ofVideoGrabber 	vidGrabber; 
 	

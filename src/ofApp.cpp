@@ -123,11 +123,21 @@ void ofApp::setupSceneManager() {
 	int i = 0;
 	// Bellegarde (PC - top without kinect)
 
-	sceneManager.add(new ofxBgScene(false, IntToString(i++)));												postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, true, IntToString(i++)));												postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, false, IntToString(i++)));												postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("clouds.mp4", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("ginevra.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("Rigolo.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("reve.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	//sceneManager.add(new ofxVideoScene("final.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("bgloopblue.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+
+	
 	/*sceneManager.add(new ofxOcean(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i-1] = false;
 	sceneManager.add(new ofxVasaDalleQuad(false,IntToString(i++)));											postEnabledByScene[i-1] = false;
@@ -200,6 +210,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+
 	if (isDebug()) {
 		ofNoFill();
 		ofSetColor(255);
@@ -219,13 +230,11 @@ void ofApp::draw() {
 		ofEnableAntiAliasing();
 		cam.begin();
 	}
-
 	ofPushMatrix();
 
 
 	ofTranslate(-ofGetWidth() / 2, ofGetHeight() / 2);
 	ofScale(1, -1, 1);
-	// the current scene is automatically drawn before this function
 	sceneManager.draw();
 
 	ofPopMatrix();
@@ -333,23 +342,6 @@ void ofApp::keyPressed(int key) {
 	case 'o':
 		sceneManager.setOverlap(!sceneManager.getOverlap());
 		break;
-
-	case OF_KEY_LEFT:
-	{
-		ofVec3f euler = cam.getOrientationEuler();
-		euler.x -= 0.1;
-		cam.setOrientation(euler);
-
-	}
-	break;
-	case OF_KEY_RIGHT:
-	{
-		ofVec3f euler = cam.getOrientationEuler();
-		euler.x += 0.1;
-		cam.setOrientation(euler);
-
-	}
-	break;
 	}
 }
 

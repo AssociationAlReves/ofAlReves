@@ -12,6 +12,8 @@ void ofxKinectMemory::setup() {
 	ofBackground(0);
 	ofEnableArbTex();
 
+	bDrawJoinedActors = false;
+
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
 	kinect.init();
@@ -160,6 +162,11 @@ void ofxKinectMemory::draw() {
 			actors[label] = list<vector<cv::Point>>();
 		}
 
+
+		// union of all points
+		vector<cv::Point> mergedHullsTotal;
+		vector<cv::Point> HullTotal;
+
 		// for each blob
 		for (int i = 0; i < contourFinder.size(); i++) {
 
@@ -181,6 +188,7 @@ void ofxKinectMemory::draw() {
 				vector<cv::Point> mergedHulls;
 				for (auto & curHull : actor) {
 					mergedHulls.insert(mergedHulls.end(), curHull.begin(), curHull.end());
+					mergedHullsTotal.insert(mergedHullsTotal.end(), curHull.begin(), curHull.end());
 				}
 
 				// remove oldest hull for current actor
@@ -218,14 +226,25 @@ void ofxKinectMemory::draw() {
 					ofPushMatrix();
 					ofTranslate(center.x, center.y);
 					string msg = ofToString(label) + ":" + ofToString(tracker.getAge(label));
-					ofDrawBitmapString(msg, 0, 0);
+					ofDrawBitmapStringHighlight(msg, 0, 0, ofColor::white, ofColor::red);
 					ofVec2f velocity = toOf(contourFinder.getVelocity(i));
 					ofScale(5, 5);
 					ofLine(0, 0, velocity.x, velocity.y);
+
 					ofPopMatrix();
 				}
 			} //if (bStartMemory) 
 		} // for each blob
+
+		if (bStartMemory) {
+			convexHull(mergedHullsTotal, HullTotal);
+			bigHull2Actors.resize(HullTotal.size());
+			for (int hullIndex = 0; hullIndex < (int)HullTotal.size(); hullIndex++) {
+				bigHull2Actors[hullIndex].x = HullTotal[hullIndex].x;
+				bigHull2Actors[hullIndex].y = HullTotal[hullIndex].y;
+			}
+			bigHull2Actors.close();
+		}
 	} //if (bGotImage)
 	//cam.end();
 
@@ -274,9 +293,15 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 			ofNoFill();
 			ofSetColor(255);
-			for (auto & actor : actorsHullUnion) {
-				actor.second.draw();
+			if (bDrawJoinedActors) {
+				bigHull2Actors.draw();
 			}
+			else {
+				for (auto & actor : actorsHullUnion) {
+					actor.second.draw();
+				}
+			}
+
 			ofPopMatrix();
 			fboBlack.end();
 
@@ -317,9 +342,15 @@ void ofxKinectMemory::drawMemoryTrails() {
 			ofNoFill();
 			//ofSetColor(lineColor);
 			ofSetColor(0);
-			for (auto & actor : actorsHullUnion) {
-				actor.second.draw();
+			if (bDrawJoinedActors) {
+				bigHull2Actors.draw(); 
 			}
+			else {
+				for (auto & actor : actorsHullUnion) {
+					actor.second.draw();
+				}
+			}
+
 			ofPopMatrix();
 			fboWhite.end();
 			ofPushMatrix();
@@ -364,6 +395,11 @@ void ofxKinectMemory::keyPressed(int key) {
 	case ' ':
 		bStartMemory = !bStartMemory;
 		break;
+	case 'j':
+		bDrawJoinedActors = false;
+		break;
+	case 'J':
+		bDrawJoinedActors = true;
 	}
 }
 

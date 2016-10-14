@@ -77,6 +77,8 @@ private:
 
 	map<int,list<vector<cv::Point>>> actors;	
 	map<int,ofPolyline> actorsHullUnion;
+	ofPolyline bigHull2Actors;
+	bool bDrawJoinedActors;
 
 	ofFbo fboWhite;
 	ofFbo fboBlack;

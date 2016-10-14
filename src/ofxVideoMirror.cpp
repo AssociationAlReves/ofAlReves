@@ -16,7 +16,7 @@ void ofxVideoMirror::setup() {
 		vidGrabber.setVerbose(true);
 		//Select desired grabbing frame rate
 		//vidGrabber.setDesiredFrameRate(30);
-		vidGrabber.setDeviceID(0);
+		vidGrabber.setDeviceID(1);
 		vidGrabber.initGrabber(camWidth, camHeight);
 
 		running = true;
@@ -28,6 +28,7 @@ void ofxVideoMirror::setup() {
 		guiInitialized = true;
 	}
 }
+
 
 
 //--------------------------------------------------------------

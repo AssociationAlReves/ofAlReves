@@ -451,8 +451,8 @@ void ofxCity::accelerate(int duration) {
 		, desiredSpeed
 		, duration, 0);
 }
-void ofxCity::decelerate(int duration) {
-	desiredSpeed -= CITY_SPEED_INCR;
+void ofxCity::decelerate(int duration, bool stop) {
+	desiredSpeed -= stop ? curSpeed : CITY_SPEED_INCR;
 	tween.setParameters(easingsine, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
@@ -466,10 +466,18 @@ void ofxCity::draw() {
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 
-	ofBackground(255, 255, 255, 255);
+	switch (mode)
+	{
+	case enCityCollapsing:
+		ofBackground(tweenCollapseColor.update());
+		break;
+	default:
+		ofBackground(255, 255, 255, 255);
+		break;
+	}
 
 	ofPushMatrix();
-	
+
 
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 	ofTranslate(0, 20);
@@ -532,7 +540,7 @@ void ofxCity::draw() {
 			float boxH = tweenBoxH.update();
 
 			ofPushMatrix();
-			ofTranslate(-boxW / 2, -boxH/2, -1000);
+			ofTranslate(-boxW / 2, -boxH / 2, -1000);
 
 			ofSetColor(0);
 			ofRect(0, 0, boxW, boxH);
@@ -630,6 +638,8 @@ void ofxCity::draw() {
 
 }
 
+
+
 //--------------------------------------------------------------
 void ofxCity::keyPressed(int key) {
 	ofApp *app = (ofApp *)ofxGetAppPtr();
@@ -637,48 +647,8 @@ void ofxCity::keyPressed(int key) {
 	switch (key)
 	{
 	case ' ':
-		mode = (mode + 1) % 4;
-		switch (mode) {
-		case enCityStart:
-			accelerate(0); // start with velocity
-			tweenRoadOpactity.setParameters(easinglinear, ofxTween::easeInOut
-				, 0
-				, 255
-				, 10000, 0);
-			break;
-		case enCityBuildings:
-			autoGenerateBuildings = true;
-			break;
-		case enCityCollapsing:
-
-			float lowestZ = 100000;
-			float highestZ = -10000;
-			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-				ofBuilding building = *buildingIt;
-				lowestZ = min(lowestZ, building.position.z);
-				highestZ = max(highestZ, building.position.z);
-			}
-			float diffZ = highestZ - lowestZ;
-
-			int collapseTimeMs = 9000;
-			tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
-
-			float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
-			float road0z = roads[0].getPosition().z;
-
-			float initialZ = lowestZ - 650;
-			float zOffsetAtEnd = ofGetFrameRate() * (curDistanceOffset)* collapseTimeMs / 1000.0;
-			tweenTranslate.setParameters(easingexpo, ofxTween::easeIn
-				, 0
-				, -zOffsetAtEnd + lowestZ - roadNz
-				, collapseTimeMs, 0);
-
-			tweenBoxW.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_WIDTH, collapseTimeMs / 20., 0);
-			tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
-			break;
-		}
-		cout << ofToString(mode) << endl;
-
+		mode = (mode + 1) % 6;
+		setMode(mode);
 		break;
 	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
 	case 'r': setup(); break;
@@ -693,10 +663,10 @@ void ofxCity::keyPressed(int key) {
 			app->cam.enableMouseInput();
 		}
 		break;
-	case 'z': 
+	case 'z':
 		accelerate();
 		break;
-	case 'Z': 
+	case 'Z':
 		decelerate();
 		break;
 	case 'b':
@@ -716,4 +686,56 @@ void ofxCity::keyPressed(int key) {
 	default:
 		break;
 	}
+}
+
+//--------------------------------------------------------------
+void ofxCity::setMode(int mode) {
+
+	switch (mode) {
+	case enCityStart:
+		accelerate(0); // start with velocity
+		tweenRoadOpactity.setParameters(easinglinear, ofxTween::easeInOut
+			, 0
+			, 255
+			, 10000, 0);
+		break;
+	case enCityBuildings:
+		autoGenerateBuildings = true;
+		break;	
+	case enCityCollapsing:
+	{
+		float lowestZ = 100000;
+		float highestZ = -10000;
+		for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+			ofBuilding building = *buildingIt;
+			lowestZ = min(lowestZ, building.position.z);
+			highestZ = max(highestZ, building.position.z);
+		}
+		float diffZ = highestZ - lowestZ;
+
+		int collapseTimeMs = 9000;
+		tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
+
+		float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
+		float road0z = roads[0].getPosition().z;
+
+		float initialZ = lowestZ - 650;
+		float zOffsetAtEnd = ofGetFrameRate() * (curDistanceOffset)* collapseTimeMs / 1000.0;
+		tweenTranslate.setParameters(easingexpo, ofxTween::easeIn
+			, 0
+			, -zOffsetAtEnd + lowestZ - roadNz
+			, collapseTimeMs, 0);
+
+		tweenCollapseColor.setParameters(easinglinear, ofxTween::easeIn, 255, 0, collapseTimeMs / 5., 3000);
+		tweenBoxW.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_WIDTH, collapseTimeMs / 20., 0);
+		tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
+	}
+	break;
+	case enCityExplosion: {
+		decelerate(2000, true);
+		int i = 0;
+		}
+		break;
+	}
+	cout << ofToString(mode) << endl;
 }

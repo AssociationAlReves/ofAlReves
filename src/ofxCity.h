@@ -14,7 +14,6 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 #include "ofBuilding.h"
-#include "ofxCityPingPong.h"
 
 #define CITY_SPEED_INCR 1 //0.2
 #define CITY_NUM_ROAD_PLANES 100
@@ -36,6 +35,7 @@ enum CITY_MODE { enCityIdle = 0,
 	enCityBuildings,
 	enCityCollapsing,
 	enCityCollapsed,
+	enCityExplosion,
 };
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"
@@ -79,7 +79,8 @@ private:
 	void generateBlock_TheBigOne(); // huge building covering EVERYTHING, including you and the audience
 
 	void accelerate(int duration = 2000);
-	void decelerate(int duration = 2000);
+	void decelerate(int duration = 2000, bool stop = false);
+	void setMode(int mode);
 
 	// road
 	vector<ofPlanePrimitive> roads;
@@ -141,6 +142,7 @@ private:
 
 	ofxTween tweenBoxW;
 	ofxTween tweenBoxH;
+	ofxTween tweenCollapseColor;
 
 	ofxEasingBack 	easingback;
 	ofxEasingBounce 	easingbounce;

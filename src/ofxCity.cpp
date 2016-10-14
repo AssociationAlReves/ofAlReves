@@ -80,6 +80,10 @@ void ofxCity::setup() {
 		bGuiLoaded = true;
 
 
+		//Load shader
+		forceShader = false;
+		shader.load("shaderVert.c", "shaderFrag.c");
+		//shader.load("noise.vert", "noise.frag");
 	}
 	bShowGui = false;
 
@@ -96,8 +100,8 @@ void ofxCity::setup() {
 
 //--------------------------------------------------------------
 void ofxCity::setupTextures() {
-
-	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F_ARB);
+	
+	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F /*GL_RGB32F_ARB*/);
 	fboRoad.begin();
 
 	ofBackground(ofColor::darkSlateGray);
@@ -382,6 +386,7 @@ void ofxCity::generateBlock_TheBigOne() {
 
 }
 
+
 //--------------------------------------------------------------
 void ofxCity::update() {
 
@@ -437,11 +442,43 @@ void ofxCity::update() {
 		}
 	}
 
-	if (mode == enCityCollapsing && tweenTranslate.isCompleted())
-	{
-		cout << "COLLAPSED" << endl;
-		mode = enCityCollapsed;
+	switch (mode) {
+	case enCityCollapsing:
+		if (tweenTranslate.isCompleted())
+		{
+			cout << "COLLAPSED" << endl;
+			mode = enCityCollapsed;
+		}
+		break;
+	case enCityExplosion:
+		updateShader();
+		break;
 	}
+	if (forceShader) {
+		updateShader();
+	}
+
+	
+}
+
+//--------------------------------------------------------------
+float time0 = 0;
+float phase = 0;
+float distortAmount = 0;
+void ofxCity::updateShader() {
+
+	//Compute dt
+	float time = ofGetElapsedTimef();
+	float dt = ofClamp(time - time0, 0, 0.1);
+	time0 = time;
+
+	float speed = ofMap(mouseY, 0, ofGetHeight(), 0, 5);
+	phase += speed * dt;
+	distortAmount = ofMap(mouseX, 0, ofGetWidth(), 0, 1.0);
+
+
+	phase = 0;
+	distortAmount = 0;
 }
 
 void ofxCity::accelerate(int duration) {
@@ -491,22 +528,42 @@ void ofxCity::draw() {
 		ofClear(0);
 		break;
 	default:
-		texRoad.bind();
-		for (int i = 0; i < roads.size(); i++) {
 
-			float alpha = ofMap(i, CITY_NUM_ROAD_PLANES - CITY_NUM_ROAD_PLANES_FADEIN, CITY_NUM_ROAD_PLANES - 1, 255, 0, true);
-			/*if (mode == enCityStart) {
-				ofSetColor(ofColor::white, tweenRoadOpactity.update() * ofMap(alpha, 0, 255, 0, 1));
+	
+		if (mode == enCityExplosion || forceShader) {
+
+			ofSetColor(ofColor::darkSlateGray);
+			//texRoad.bind();
+			shader.begin();
+
+			//we want to pass in some varrying values to animate our type / color 
+			shader.setUniform1f("phase", mouseX - ofGetWidth() / 2);
+			shader.setUniform1f("distortAmount", ofGetHeight() / 2 - mouseY);
+
+			//we also pass in the mouse position 
+			//we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped. 
+			shader.setUniform2f("mouse", mouseX - ofGetWidth() / 2, ofGetHeight() / 2 - mouseY);
+
+			for (int i = 0; i < roads.size(); i++) {				
+				roads[i].draw();
 			}
-			else
-			{
-				ofSetColor(ofColor::white, alpha);
-			}*/
-			ofSetColor(ofColor::white, alpha);
-			roads[i].draw();
-		}
 
-		texRoad.unbind();
+			shader.end();
+		}
+		else
+		{
+			texRoad.bind();
+			for (int i = 0; i < roads.size(); i++) {
+
+				float alpha = ofMap(i, CITY_NUM_ROAD_PLANES - CITY_NUM_ROAD_PLANES_FADEIN, CITY_NUM_ROAD_PLANES - 1, 255, 0, true);
+				ofSetColor(ofColor::white, alpha);
+				roads[i].draw();
+			}
+			texRoad.unbind();
+		}
+		
+
+		
 
 		//------------------------
 		// Terrain draw
@@ -566,7 +623,6 @@ void ofxCity::draw() {
 		}
 		//ofPopMatrix();
 
-
 		ofFill();
 		ofSetColor(255);
 		ofSetLineWidth(1);
@@ -574,6 +630,7 @@ void ofxCity::draw() {
 		material.end();
 		directionalLight.disable();
 		ofDisableLighting();
+
 
 		/* Test box
 		ofSetColor(ofColor::red);
@@ -683,6 +740,8 @@ void ofxCity::keyPressed(int key) {
 		break;
 	case 'w':
 		autoGenerateBuildings = !autoGenerateBuildings;
+	case 'e':
+		forceShader = !forceShader;
 	default:
 		break;
 	}

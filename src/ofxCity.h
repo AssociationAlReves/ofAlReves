@@ -71,6 +71,7 @@ private:
 	void setupRoad();
 	void setupTerrain();
 	void updateRoad(bool createNewRow);
+	void updateShader();
 	void setupBlocks();
 	void updateBlocks(int createRowsCount = 1);
 	void translateBlocksHeights();
@@ -139,6 +140,11 @@ private:
 	ofxTween tweenRoadOpactity;	
 	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
+
+	// explosion
+	ofShader shader;	//Shader
+
+	bool forceShader;
 
 	ofxTween tweenBoxW;
 	ofxTween tweenBoxH;

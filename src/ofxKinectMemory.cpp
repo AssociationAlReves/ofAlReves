@@ -159,7 +159,7 @@ void ofxKinectMemory::draw() {
 		for (auto & label : tracker.getNewLabels())
 		{
 			//cout << "New actor: " << label << endl;
-			actors[label] = list<vector<cv::Point>>();
+			actors[label] = list<vector<cv::Point> >();
 		}
 
 
@@ -175,7 +175,7 @@ void ofxKinectMemory::draw() {
 			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
 			if (bStartMemory) {
 
-				list<vector<cv::Point>>& actor = actors[label];
+				list<vector<cv::Point> >& actor = actors[label];
 				// add polyline
 				if (actor.size() == 0) {
 					actor.assign(numFramesDelay, hullPoints);
@@ -236,7 +236,7 @@ void ofxKinectMemory::draw() {
 			} //if (bStartMemory) 
 		} // for each blob
 
-		if (bStartMemory) {
+		if (bStartMemory && mergedHullsTotal.size()>0) {
 			convexHull(mergedHullsTotal, HullTotal);
 			bigHull2Actors.resize(HullTotal.size());
 			for (int hullIndex = 0; hullIndex < (int)HullTotal.size(); hullIndex++) {

@@ -75,7 +75,7 @@ private:
 	ofParameterGroup appGroup;
 	ofParameterGroup debugGroup;
 
-	map<int,list<vector<cv::Point>>> actors;	
+	map<int,list<vector<cv::Point> > > actors;
 	map<int,ofPolyline> actorsHullUnion;
 	ofPolyline bigHull2Actors;
 	bool bDrawJoinedActors;

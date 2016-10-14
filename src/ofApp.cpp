@@ -146,7 +146,8 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxBgScene(false, false, IntToString(i++)));												postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVideoScene("clouds.mp4", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
+    sceneManager.add(new ofxVideoScene("interlude.mp4", IntToString(i++), false, false, false, false));	postEnabledByScene[i - 1] = false;
+    sceneManager.add(new ofxVideoScene("clouds.mp4", IntToString(i++), false, false, true, true));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoScene("ginevra.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
@@ -154,7 +155,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVideoScene("reve.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	//sceneManager.add(new ofxVideoScene("final.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVideoScene("bgloopblue.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	//sceneManager.add(new ofxVideoScene("bgloopblue.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 
 	
 	/*sceneManager.add(new ofxOcean(IntToString(i++)));														postEnabledByScene[i-1] = false;
@@ -354,8 +355,7 @@ void ofApp::keyPressed(int key) {
 	case OF_KEY_F9:  sceneManager.gotoScene(8); break;
 	case OF_KEY_F10: sceneManager.gotoScene(9); break;
 	case OF_KEY_F11: sceneManager.gotoScene(10); break;
-            
-        case OF_KEY_F12: sceneManager.gotoScene(11); break;
+    case OF_KEY_F12: sceneManager.gotoScene(11); break;
 	case OF_KEY_BACKSPACE:
 		sceneManager.noScene();
 		break;

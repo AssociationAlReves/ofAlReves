@@ -22,7 +22,7 @@ void ofxCityPingPong::setup() {
 	app->cam.reset();
 
 	rectSize = 400;
-	curMargin = 90;
+	curMargin = 160;
 	curRectVisIndex = 0;
 
 	rects.clear();
@@ -69,19 +69,19 @@ void ofxCityPingPong::updateRects() {
 
 	// 1 BD
 	rects[0].x = ofGetScreenWidth() - curMargin - rectSize;
-	rects[0].y = ofGetScreenHeight() - curMargin - rectSize;
+	rects[0].y = ofGetScreenHeight() - rectSize;
 
 	// 2 HG
 	rects[1].x = curMargin;
-	rects[1].y = curMargin;
+	rects[1].y = 0;
 
 	// 3 HD
 	rects[2].x = ofGetScreenWidth() - curMargin - rectSize;
-	rects[2].y = curMargin;
+	rects[2].y = 0;
 
 	// 4 BG
 	rects[3].x = curMargin;
-	rects[3].y = ofGetScreenHeight() - curMargin - rectSize;
+	rects[3].y = ofGetScreenHeight() - rectSize;
 
 
 }

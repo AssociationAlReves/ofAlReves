@@ -150,7 +150,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVideoScene("ginevra.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVideoScene("Rigolo.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVideoScene("rigolo.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoScene("reve.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	//sceneManager.add(new ofxVideoScene("final.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;

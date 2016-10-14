@@ -4,8 +4,8 @@
 void ofxVideoMirror::setup() {
 
 	// Set capture dimensions of 320x240, a common video size.
-	camWidth = 640;
-	camHeight = 480;
+	camWidth = 1280;
+	camHeight = 720;
 	frameReady = false;
 	curMode = enMirror3Sides;
 	setMode(curMode);

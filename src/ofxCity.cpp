@@ -104,7 +104,7 @@ void ofxCity::setupTextures() {
 	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F /*GL_RGB32F_ARB*/);
 	fboRoad.begin();
 
-	ofBackground(ofColor::darkSlateGray);
+	ofBackground(ofColor::gray);
 	ofSetColor(ofColor::white);
 	ofFill();
 	float lineWidth = ofMap(roadLineWidth, 0, 100, 0, roadTexWidth, true);
@@ -489,7 +489,11 @@ void ofxCity::accelerate(int duration) {
 		, duration, 0);
 }
 void ofxCity::decelerate(int duration, bool stop) {
-	desiredSpeed -= stop ? curSpeed : CITY_SPEED_INCR;
+    if (stop) {
+        desiredSpeed -= curSpeed;
+    } else {
+        desiredSpeed -= CITY_SPEED_INCR;
+    }
 	tween.setParameters(easingsine, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed

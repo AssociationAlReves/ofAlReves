@@ -509,7 +509,8 @@ void ofxCity::draw() {
 		ofBackground(tweenCollapseColor.update());
 		break;
 	default:
-		ofBackground(255, 255, 255, 255);
+		//ofBackground(255, 255, 255, 255);
+		ofBackground(0);
 		break;
 	}
 
@@ -537,8 +538,10 @@ void ofxCity::draw() {
 			shader.begin();
 
 			//we want to pass in some varrying values to animate our type / color 
-			shader.setUniform1f("phase", mouseX - ofGetWidth() / 2);
-			shader.setUniform1f("distortAmount", ofGetHeight() / 2 - mouseY);
+			shader.setUniform1f("phase", ofMap(mouseX - ofGetWidth() / 2, 0, ofGetWidth(), -3, 3));
+			shader.setUniform1f("distortAmount", ofMap( ofGetHeight() / 2 - mouseY, 0, ofGetHeight(),-1,1));
+
+
 
 			//we also pass in the mouse position 
 			//we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped. 
@@ -578,7 +581,7 @@ void ofxCity::draw() {
 
 		ofEnableLighting();
 		directionalLight.enable();
-		material.begin();
+		//material.begin();
 
 		ofFill();
 
@@ -610,6 +613,15 @@ void ofxCity::draw() {
 		/*ofPushMatrix();
 		ofTranslate(0, 0, translationCollapse);*/
 		if (mode != enCityCollapsed) {
+
+			if (mode == enCityExplosion || forceShader) {
+				shader.begin();
+
+				//we want to pass in some varrying values to animate our type / color 
+				shader.setUniform1f("phase", ofMap(mouseX - ofGetWidth() / 2, 0, ofGetWidth(), -3, 3));
+				shader.setUniform1f("distortAmount", ofMap(ofGetHeight() / 2 - mouseY, 0, ofGetHeight(), -1, 1));
+			}
+
 			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 				ofBuilding building = *buildingIt;
 				if (building.position.z < road0z) {
@@ -620,18 +632,25 @@ void ofxCity::draw() {
 				}
 
 			}
+
+			if (mode == enCityExplosion || forceShader) {
+				shader.end();
+			}
 		}
+		
 		//ofPopMatrix();
 
 		ofFill();
 		ofSetColor(255);
 		ofSetLineWidth(1);
 
-		material.end();
+		//material.end();
 		directionalLight.disable();
 		ofDisableLighting();
 
-
+		if (mode == enCityExplosion || forceShader) {
+			shader.end();
+		}
 		/* Test box
 		ofSetColor(ofColor::red);
 		ofBoxPrimitive box = ofBoxPrimitive(100,500,100);
@@ -740,8 +759,10 @@ void ofxCity::keyPressed(int key) {
 		break;
 	case 'w':
 		autoGenerateBuildings = !autoGenerateBuildings;
+		break;
 	case 'e':
 		forceShader = !forceShader;
+		break;
 	default:
 		break;
 	}

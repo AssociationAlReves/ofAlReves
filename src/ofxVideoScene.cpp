@@ -67,6 +67,7 @@ void ofxVideoScene::keyPressed(int key){
 	{
 	case ' ' : {
 				if (player.isPlaying()) {
+                    player.stop();
 					/*tweenEnabled = true;
 					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);*/
 				} else { 

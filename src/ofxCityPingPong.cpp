@@ -165,10 +165,10 @@ void ofxCityPingPong::keyPressed(int key) {
 		rectSize = ofClamp(rectSize - delta, 0, 1000);
 		updateRects();
 		break;
-	case 'm':
+	/*case 'm':
 		bSpaceMode = !bSpaceMode;
 		cout << "Spacemode: " << bSpaceMode << endl;
-		break;
+		break;*/
 	case ' ':
 		curRectVisIndex = (curRectVisIndex + 1) % PING_PONG_NUM_STEPS;
 		break;

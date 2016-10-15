@@ -364,6 +364,13 @@ void ofxCity::update() {
 
 }
 
+void ofxCity::captureCam() {
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	camOrientation = app->cam.getOrientationEuler();
+	camPosition = app->cam.getPosition();
+	//gui.saveToFile(CITY_SETTINGS_FILE);
+}
+
 
 //--------------------------------------------------------------
 int roadDivision = 4;
@@ -717,6 +724,7 @@ void ofxCity::keyPressed(int key) {
 		setMode(mode);
 		break;
 	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
+	case 'P': captureCam(); break;
 	case 'r': setup(); break;
 	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;

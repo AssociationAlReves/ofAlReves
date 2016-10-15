@@ -77,6 +77,7 @@ private:
 	void setupBlocks();
 	void updateBlocks(int createRowsCount = 1);
 	void translateBlocksHeights();
+	void captureCam();
 
 	void generateBlockSide(bool isLeftSide, int nowRowForced = 0); // 0 means not forced
 

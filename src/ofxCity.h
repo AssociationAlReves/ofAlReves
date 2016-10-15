@@ -71,7 +71,9 @@ private:
 	void setupRoad();
 	void setupTerrain();
 	void updateRoad(bool createNewRow);
-	void updateShader();
+	void setupExplosion();
+	void updateExplosion();
+	void drawExplosion();
 	void setupBlocks();
 	void updateBlocks(int createRowsCount = 1);
 	void translateBlocksHeights();
@@ -136,15 +138,11 @@ private:
 	bool bGuiLoaded;
 	
 	// transitions
+	ofxTween explosionTween;
 	ofxTween tween;
 	ofxTween tweenRoadOpactity;	
 	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
-
-	// explosion
-	ofShader shader;	//Shader
-
-	bool forceShader;
 
 	ofxTween tweenBoxW;
 	ofxTween tweenBoxH;

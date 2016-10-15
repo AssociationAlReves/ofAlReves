@@ -95,7 +95,7 @@ void ofxCity::setup() {
 
 //--------------------------------------------------------------
 void ofxCity::setupTextures() {
-
+	
 	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F /*GL_RGB32F_ARB*/);
 	fboRoad.begin();
 
@@ -726,7 +726,7 @@ void ofxCity::keyPressed(int key) {
 	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
 	case 'P': captureCam(); break;
 	case 'r': setup(); break;
-	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
+	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); setupTextures(); break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
 	case 'h':
 		bShowGui = !bShowGui;

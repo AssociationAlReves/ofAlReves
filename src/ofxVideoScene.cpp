@@ -34,6 +34,7 @@ void ofxVideoScene::draw(){
 	}
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 	ofBackground(0);
+	ofSetColor(255);
 	if (fillScreen) {
 		float pw = ofGetWidth();
 		float ph = ofGetHeight();

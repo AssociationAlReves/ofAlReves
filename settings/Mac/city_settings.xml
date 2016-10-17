@@ -1,0 +1,42 @@
+<cityPanel>
+	<Wireframe>0</Wireframe>
+	<FOV>60</FOV>
+	<Debug_FBO>0</Debug_FBO>
+	<Road>
+		<Road_tex_width>100</Road_tex_width>
+		<Road_tex_height>100</Road_tex_height>
+		<Road_line_width>21.7092</Road_line_width>
+		<Road_line_height>50</Road_line_height>
+		<Road_width>100</Road_width>
+		<Road_height>100</Road_height>
+		<Velocity>1</Velocity>
+	<rotationAngle>0</rotationAngle>
+		<Road_opacity>0</Road_opacity>
+	<translat>0</translat>
+	</Road>
+	<Buildings>
+		<Proba>0.75</Proba>
+		<Auto_generated>0</Auto_generated>
+	</Buildings>
+	<Lights>
+		<Orientation__x_z_y_angles_>180, -42.2449, 117.551</Orientation__x_z_y_angles_>
+		<diffuseColor>1, 0, 0, 1</diffuseColor>
+		<specularColor>1, 0, 0, 1</specularColor>
+		<ambientColor>0, 0, 0, 1</ambientColor>
+	</Lights>
+<cityPanel/>
+<Tween_speed>1</Tween_speed>
+<camOrientation>-49.5918, 0, 0</camOrientation>
+	<camPosition>0, 0, 0</camPosition>
+<terrain>
+		<width>200</width>
+		<height>200</height>
+		<segLength>40</segLength>
+	<draw_X>1</draw_X>
+		<draw_Y>1</draw_Y>
+		<Z_scale>0.2</Z_scale>
+		<noise_scale>1</noise_scale>
+		<noise_seed>1</noise_seed>
+		<noise_amp>50</noise_amp>
+	</terrain>
+</cityPanel>

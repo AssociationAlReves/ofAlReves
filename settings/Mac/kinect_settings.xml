@@ -1,0 +1,11 @@
+<kinect>
+	<nearThreshold>255</nearThreshold>
+	<farThreshold>215</farThreshold>
+	<threshold>13</threshold>
+	<background>0</background>
+	<center>316</center>
+	<margin>64</margin>
+<kinect/>
+	<repeatL>0.355</repeatL>
+	<repeatR>1</repeatR>
+</kinect>

@@ -71,10 +71,13 @@ private:
 
 	ofParameter<ofColor> lineColor;
 
-
 	ofParameterGroup cvGroup;
 	ofParameterGroup appGroup;
 	ofParameterGroup debugGroup;
+    
+    
+    ofParameter<ofVec3f> camOrientation;
+    ofParameter<ofVec3f> camPosition;
 
 	map<int,list<vector<cv::Point> > > actors;
 	map<int,ofPolyline> actorsHullUnion;

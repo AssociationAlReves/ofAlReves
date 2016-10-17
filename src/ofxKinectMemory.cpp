@@ -11,8 +11,10 @@ void ofxKinectMemory::setup() {
 	ofSetVerticalSync(true);
 	ofBackground(0);
 	ofEnableArbTex();
+    
+    ofApp *app = (ofApp *)ofxGetAppPtr();
 
-	forceWarpOff = true;
+	forceWarpOff = false;
 	bDrawJoinedActors = false;
 
 	// enable depth->video image calibration
@@ -85,6 +87,9 @@ void ofxKinectMemory::setup() {
 	appGroup.add(blackScreen.set("blackScreen", true));
 	appGroup.add(antiAlias.set("antiAlias", true));
 	appGroup.add(lineWidth.set("lineWidth", 1, 0, 10));
+    appGroup.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+    appGroup.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+
 	//appGroup.add(lineColor.set("lineColor", ofColor(0), ofColor(0), ofColor(255)));
 
 	gui.add(appGroup);
@@ -101,15 +106,30 @@ void ofxKinectMemory::setup() {
 		int h = ofGetHeight();
 		int x = (ofGetWidth() - w) * 0.5;       // center on screen.
 		int y = (ofGetHeight() - h) * 0.5;     // center on screen.
-		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
-		warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+    bool invertWarp = false;
+    if (invertWarp) {
+        warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+        warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+    } else {
+        warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+        warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+    }
+    
 		warper.setup();
 		warper.load(); // reload last saved changes.
+    warper.toggleShow();
 	//}
 
+    app->cam.reset();
+    gui.loadFromFile(GUI_SETTINGS);
+    app->cam.setPosition(camPosition);
+    app->cam.setOrientation(camOrientation);
 }
 
 //--------------------------------------------------------------
@@ -342,10 +362,14 @@ void ofxKinectMemory::drawMemoryTrails() {
 				ofBackground(0);
 				fboBlack.begin();
 				ofPushMatrix();
-				ofScale(2, 2);
+                ofPushMatrix();
+                float ratioW = ofGetScreenWidth() / kinect.width;
+                float ratioH = ofGetScreenHeight() / kinect.height;
+                ofScale(ratioW, ratioH);
+
 				ofSetColor(0, 0, 0, fadeAmnt);
 				ofFill();
-				ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+				ofRect(0, 0, 0, fboBlack.getWidth(), fboBlack.getHeight());
 				ofNoFill();
 				ofSetColor(255);
 				if (bDrawJoinedActors) {
@@ -457,13 +481,19 @@ void ofxKinectMemory::drawMemoryTrails() {
 
 //--------------------------------------------------------------
 void ofxKinectMemory::keyPressed(int key) {
+    ofApp *app = (ofApp *)ofxGetAppPtr();
+
 	switch (key) {
 	case 'h': bShowHelp = !bShowHelp;
 		break;
 	case'l':
+        {
 		gui.loadFromFile(GUI_SETTINGS);
-		kinect.setCameraTiltAngle(angle);
-		break;
+            app->cam.setPosition(camPosition);
+            app->cam.setOrientation(camOrientation);
+            //kinect.setCameraTiltAngle(angle);
+        }
+            break;
 	case's':
 		gui.saveToFile(GUI_SETTINGS);
 		break;
@@ -491,6 +521,14 @@ void ofxKinectMemory::keyPressed(int key) {
 		break;
 	case 'J':
 		bDrawJoinedActors = true;
+    case 'M':
+            app->cam.disableMouseInput();
+            break;
+    case 'm':
+            app->cam.enableMouseInput();
+            break;
+        case '>' : farThreshold += 0.5; break;
+        case '<': farThreshold -= 0.5; break;
 	}
 
 	if (key == 'W') {
@@ -500,7 +538,7 @@ void ofxKinectMemory::keyPressed(int key) {
 		forceWarpOff = true;
 	}
 	if (!forceWarpOff) {
-		// WARP
+		// WARPs
 		if (key == 'H') {
 			warper.toggleShow();
 		}
@@ -508,6 +546,10 @@ void ofxKinectMemory::keyPressed(int key) {
 			warper.load();
 		}
 		if (key == 'S') {
+            camOrientation = app->cam.getOrientationEuler();
+            camPosition = app -> cam.getPosition();
+            gui.saveToFile(GUI_SETTINGS);
+
 			warper.save();
 		}
 		

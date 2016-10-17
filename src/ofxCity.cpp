@@ -529,8 +529,6 @@ void ofxCity::draw() {
 	}
 
 	
-
-
 	if (mode == enCityLine) {
 
 		ofSetColor(0);
@@ -543,7 +541,9 @@ void ofxCity::draw() {
 
 		ofRect(0, 0, rW, rH);
 		ofPopMatrix();
-	}
+    } else if (mode == enCityBlank) {
+        // nothing
+    }
 	else
 	{
 		ofPushMatrix();
@@ -720,13 +720,17 @@ void ofxCity::keyPressed(int key) {
 	switch (key)
 	{
 	case ' ':
-		mode = (mode + 1) % 7;
+		mode = (mode + 1) % 9;
 		setMode(mode);
 		break;
 	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
 	case 'P': captureCam(); break;
 	case 'r': setup(); break;
-	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); setupTextures(); break;
+        case 'l': {
+            gui.loadFromFile(CITY_SETTINGS_FILE);
+            ofSeedRandom(123456);
+            setupTextures();
+        } break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
 	case 'h':
 		bShowGui = !bShowGui;
@@ -806,10 +810,20 @@ void ofxCity::setMode(int mode) {
 		tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
 	}
 	break;
+        case enCityAgain: {
+            gui.loadFromFile(CITY_SETTINGS_FILE);
+            setupTextures();
+            bUpdateParamsFromCode = true;
+            
+        } break;
 	case enCityExplosion: {
 		setupExplosion();
 	}
 						  break;
+        case enCityLine: {
+            ofApp *app = (ofApp *)ofxGetAppPtr();
+            app->cam.reset();
+        } break;
 	}
 	cout << ofToString(mode) << endl;
 }

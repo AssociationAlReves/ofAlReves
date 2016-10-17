@@ -35,8 +35,10 @@ enum CITY_MODE { enCityIdle = 0,
 	enCityBuildings = 2,
 	enCityCollapsing = 3,
 	enCityCollapsed = 4,
-	enCityExplosion = 5,
-	enCityLine = 6
+    enCityAgain = 5,
+    enCityExplosion = 6,
+    enCityBlank = 7,
+	enCityLine = 8
 };
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"

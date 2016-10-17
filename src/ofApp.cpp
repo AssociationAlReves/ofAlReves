@@ -94,25 +94,15 @@ void ofApp::setupSceneManager() {
 //	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));											postEnabledByScene[i - 1] = false;
     
     
-    // Bellegarde 2016
+    // Bellegarde 2016 (Mac, top, kinect)
     sceneManager.add(new ofxBgScene(false, true, IntToString(i++)));												postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxBgScene(false, false, IntToString(i++)));												postEnabledByScene[i - 1] = false;
     sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i - 1] = false;
     sceneManager.add(new ofxCityPingPong(IntToString(i++)));														postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("interlude.mp4", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
+    sceneManager.add(new ofxVideoScene("Around.mov", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
     sceneManager.add(new ofxVideoScene("clouds.mp4", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("ginevra.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoMirror(IntToString(i++)));														postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("Rigolo.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("reve.mp4", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
+    sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false, false));	postEnabledByScene[i - 1] = false;
     sceneManager.add(new ofxKinectMemory(IntToString(i++)));														postEnabledByScene[i - 1] = false;
-    //sceneManager.add(new ofxVideoScene("final.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("bgloopblue.mov", IntToString(i++), false, false, false));	postEnabledByScene[i - 1] = false;
-    sceneManager.add(new ofxVideoScene("clouds3.mp4", IntToString(i++), false, false, false, true));	postEnabledByScene[i - 1] = false;
     
-
-
 	/*
 	// Vasarely (mac - front with kinect)
 

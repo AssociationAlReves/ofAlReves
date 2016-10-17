@@ -27,6 +27,7 @@ void ofxVideoScene::draw(){
     
     ofEnableAlphaBlending();
 	ofPushMatrix();
+    ofSetColor(255);
 
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	if (horizontalFlip == false) {

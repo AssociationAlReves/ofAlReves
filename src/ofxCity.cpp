@@ -452,28 +452,35 @@ void ofxCity::drawExplosion() {
 
 	ofFill();	
 
+	ofDrawAxis(500);
+
+	ofPushMatrix();
+	ofRotate(0, 0, 0, 0);
+
 	ofSetColor(ofColor::gray);
 	float roadSize = roadTexWidth / roadDivision;
+	
 	for (int i = 0; i < roadPosEx.size(); i++) {
-		ofPushMatrix();
-
+		
 		float noiseAngle = 45 * ofSignedNoise(ofGetElapsedTimef() * 0.3 -4.2*i)* amount;
 		float noisex = ofSignedNoise(ofGetElapsedTimef() * 0.047 +6.3*i)* amount;
 		float noisey = ofSignedNoise(ofGetElapsedTimef() * 0.033 - i*4+123.1)* amount;
 		float noisez = ofSignedNoise(ofGetElapsedTimef() * 0.093 + 63.3 + i *12.3)* amount;
-
-		ofTranslate(roadPosEx[i]);
-		ofRotate(90, 1, 0, 0);
-		ofRotate(noiseAngle, noisex, noisey, noisez);
-
-			ofRect(0, 0, roadSize, roadSize);
+		
+		ofPushMatrix();
+			ofTranslate(roadPosEx[i]);
+			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofPushMatrix();
+			ofRotate(90, 1, 0, 0);
+				ofRect(0, 0, roadSize, roadSize);
+			ofPopMatrix();
 		ofPopMatrix();
+
 	}
+	
 
 	ofSetColor(ofColor::red);
 	for (int i = 0; i < buildingsPosEx.size(); i++) {
-		ofPushMatrix();
-		ofTranslate(buildingsPosEx[i]);
 
 		float noiseAngle = 45 * ofSignedNoise(ofGetElapsedTimef() * 0.048 + 12 + 4.2*i)* amount;
 
@@ -481,11 +488,16 @@ void ofxCity::drawExplosion() {
 		float noisey = ofSignedNoise(ofGetElapsedTimef() * 0.097 - i * 1.2 - 13.1)* amount;
 		float noisez = ofSignedNoise(ofGetElapsedTimef() * 0.077 - i * 4 + 123.1)* amount;
 
-		ofRotate(90, 1, 0, 0);
-		ofRotate(noiseAngle, noisex, noisey, noisez);
-			ofRect(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
+		ofPushMatrix();
+			ofTranslate(buildingsPosEx[i]);
+			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofPushMatrix();
+			ofRotate(90, 1, 0, 0);
+				ofRect(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
+			ofPopMatrix();
 		ofPopMatrix();
 	}
+	ofPopMatrix();
 
 }
 
@@ -563,7 +575,7 @@ void ofxCity::draw() {
 			drawExplosion();
 			break;
 		default:
-
+		{
 			texRoad.bind();
 			for (int i = 0; i < roads.size(); i++) {
 
@@ -653,12 +665,11 @@ void ofxCity::draw() {
 			ofDisableDepthTest();
 			ofDisableAlphaBlending();
 
-
-			ofPopMatrix();
-
-
-			break;
 		}
+		break;
+		}
+
+		ofPopMatrix();
 	}
 
 

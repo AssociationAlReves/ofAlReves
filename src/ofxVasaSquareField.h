@@ -20,8 +20,8 @@
 
 #include "ofMain.h"
 #include "globals.h"
+#include "ofxUI.h"
 #include "ofxAppUtils.h"
-#include "ofxGui.h"
 
 class ofxVasaSquareField : public ofxFadeScene {
     
@@ -50,7 +50,8 @@ public:
 	bool squareAutoComplete;
 
 	bool guiInitDone;
-	ofxPanel gui;
+	ofxUISuperCanvas *gui;
+    void guiEvent(ofxUIEventArgs &e);
     
 private:
     

@@ -5,6 +5,7 @@
 void ofxKinecticon::setup(){
 
 #ifdef USE_KINECT
+	bGuiInitialized = false;
 	kinectEnabled = true;
 	bKinectUseBg = true;
 	bKinectSetup = true;
@@ -66,16 +67,18 @@ void ofxKinecticon::setup(){
 	bDrawPointCloud = true;
 
 
-	bShowHelp = false;
-	gui = new ofxUISuperCanvas("Vasarely", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+	if (!bGuiInitialized) {
+		bShowHelp = false;
+		gui.setup("Vasarely", VASA_KINECT_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
 
-	gui->addLabel("kinect");
-	gui->addIntSlider("nearThresh", 0, 255, &nearThreshold);
-	gui->addIntSlider("farThresh", 0, 255, &farThreshold);
-	gui->addIntSlider("diffThresh", 0, 255, &threshold);
-	gui->addLabelToggle("Use background (b)", &bKinectUseBg);
-	gui->addLabelToggle("Alt Color (c)", &bKinectAltColor);
-	gui->setVisible(false);
+		gui.add(nearThreshold.set("nearThresh", nearThreshold, 0, 255));
+		gui.add(farThreshold.set("farThresh", farThreshold, 0, 255));
+		gui.add(threshold.set("diffThresh", threshold, 0, 255));
+		gui.add(bKinectUseBg.set("Use background (b)", bKinectUseBg));
+		gui.add(bKinectAltColor.set("Alt Color (c)", bKinectAltColor));	
+
+		bGuiInitialized = true;
+	}
 
 #endif
 
@@ -260,6 +263,7 @@ void ofxKinecticon::draw() {
 		}
 
 		if (bShowHelp) {
+			gui.draw();
 			// draw instructions
 			ofSetColor(255, 255, 255);
 			stringstream reportStream;
@@ -268,8 +272,8 @@ void ofxKinecticon::draw() {
 				reportStream << "accel is: " << ofToString(kinect.getMksAccel().x, 2) << " / "
 					<< ofToString(kinect.getMksAccel().y, 2) << " / "
 					<< ofToString(kinect.getMksAccel().z, 2) << endl;
-                reportStream << "accel is: pitch: " << ofToString(kinect.getAccelPitch(), 2) << " / roll: "
-                << ofToString(kinect.getAccelRoll(), 2) << endl;
+				reportStream << "accel is: pitch: " << ofToString(kinect.getAccelPitch(), 2) << " / roll: "
+					<< ofToString(kinect.getAccelRoll(), 2) << endl;
 			} else {
 				reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
 					<< "motor / led / accel controls are not currently supported" << endl << endl;
@@ -346,6 +350,7 @@ void ofxKinecticon::keyPressed(int key){
 			bDrawPointCloud = !bDrawPointCloud;
 			break;
 
+		case 'g':
 		case 'h': bShowHelp = !bShowHelp;
 			break;
 
@@ -353,28 +358,28 @@ void ofxKinecticon::keyPressed(int key){
 			bKinectUseBg = !bKinectUseBg;
 			break;
 
-			        case '>':
-			        case '.':
-			            farThreshold ++;
-			            if (farThreshold > 255) farThreshold = 255;
-			            break;
-			            
-			        case '<':
-			        case ',':
-			            farThreshold --;
-			            if (farThreshold < 0) farThreshold = 0;
-			            break;
-			            
-			        case '+':
-			        case '=':
-			            nearThreshold ++;
-			            if (nearThreshold > 255) nearThreshold = 255;
-			            break;
-			            
-			        case '-':
-			            nearThreshold --;
-			            if (nearThreshold < 0) nearThreshold = 0;
-			            break;
+		case '>':
+		case '.':
+			farThreshold ++;
+			if (farThreshold > 255) farThreshold = 255;
+			break;
+
+		case '<':
+		case ',':
+			farThreshold --;
+			if (farThreshold < 0) farThreshold = 0;
+			break;
+
+		case '+':
+		case '=':
+			nearThreshold ++;
+			if (nearThreshold > 255) nearThreshold = 255;
+			break;
+
+		case '-':
+			nearThreshold --;
+			if (nearThreshold < 0) nearThreshold = 0;
+			break;
 
 		case 'w':
 			kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
@@ -387,15 +392,15 @@ void ofxKinecticon::keyPressed(int key){
 		case 'c':
 			bKinectAltColor = !bKinectAltColor;
 			break;
-                
-        case 'C':
-            kinect.setCameraTiltAngle(0); // zero the tilt on exit
-            kinect.close();
-            break;
-        case 'O':
-                kinect.open();
-                kinect.setCameraTiltAngle(angle);
-                break;
+
+		case 'C':
+			kinect.setCameraTiltAngle(0); // zero the tilt on exit
+			kinect.close();
+			break;
+		case 'O':
+			kinect.open();
+			kinect.setCameraTiltAngle(angle);
+			break;
 
 		case 'd':
 			bKinectSetup = !bKinectSetup;
@@ -423,7 +428,6 @@ void ofxKinecticon::keyPressed(int key){
 		case '0':
 			kinect.setLed(ofxKinect::LED_OFF);
 			break;
-		case 'g' : gui->setVisible(!gui->isVisible());
 
 		case OF_KEY_UP:
 			angle++;

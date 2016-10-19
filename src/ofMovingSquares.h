@@ -10,7 +10,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxUI.h"
+#include "ofxGui.h"
 #include "ofxTween.h"
 
 #define MOV_SQUARES_MIN_SIZE 50.f
@@ -79,8 +79,7 @@ public:
 	void keyPressed(int key);
     
     float greenAngle;
-    ofxUISuperCanvas *gui;
-    void guiEvent(ofxUIEventArgs &e);
+    ofxPanel gui;
     
 private:
 	bool initDone;

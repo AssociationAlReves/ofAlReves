@@ -13,6 +13,8 @@
 #include "ofxGui.h"
 #include "ofxTween.h"
 
+#define MOVING_SQUARES_SETTINGS_FILE  "movingsquares_settings.xml"
+
 #define MOV_SQUARES_MIN_SIZE 50.f
 #define MOV_SQUARES_SMOOTH 0.01f
 //#define MOV_SQUARES_DEBUG
@@ -67,7 +69,7 @@ public:
 		: isMirrored(isMirrored),  ofxFadeScene(prefix + ": " + "Moving squares"){
 			setSingleSetup(true); // call setup each time the scene is loaded
 			setFade(5000,5000);
-			initDone = false;
+			bGuiInitialized = false;
 		}
 
 	void setup();
@@ -79,10 +81,28 @@ public:
 	void keyPressed(int key);
     
     float greenAngle;
-    ofxPanel gui;
-    
+        
 private:
-	bool initDone;
+	bool bGuiInitialized;
+	ofxPanel gui;
+	bool bShowGui;
+
+	ofParameterGroup greenParams;
+	ofParameter<float> greenAngleParam;
+	ofParameter<float> greenMarginParam;
+	ofParameterGroup redParams;
+	ofParameter<float> redAngleParam;
+	ofParameter<float> redMarginParam;
+	ofParameterGroup yellowParams;
+	ofParameter<float> yellowAngleParam;
+	ofParameter<float> yellowMarginParam;
+	ofParameterGroup blueParams;
+	ofParameter<float> blueAngleParam;
+	ofParameter<float> blueMarginParam;
+	ofParameterGroup fuschiaParams;
+	ofParameter<float> fuschiaAngleParam;
+	ofParameter<float> fuschiaMarginParam;
+
 
 	struct ShapeDef {
 		std::string name;

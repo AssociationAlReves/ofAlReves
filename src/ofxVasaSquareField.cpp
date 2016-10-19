@@ -39,32 +39,37 @@ void ofxVasaSquareField::setup(){
 		break;
 	}
 
-	if (guiInitDone == false) {
-		gui = new ofxUISuperCanvas("Square Field", OFX_UI_FONT_SMALL);        //Creates a canvas at (0,0) using the default width
+	if (bGuiInitialized == false) {
 
-		float dummy=0;
-		gui->addSpacer("force");
-		gui->addSlider("force distance", 0.1, 1000, &distRange);
-		gui->addToggle("noise force", &distRangeAuto);
-		gui->addRangeSlider("force range",distRangeMIN, distRangeMAX, &distRangeMIN, &distRangeMAX);
-		gui->addSlider("speed", 0.1, 10, &distRangeSpeed);
-		gui->addSpacer("scale");
-		gui->addSlider("scale factor", 1, 0, &scaleFactor);
-		gui->addToggle("noise scale", &scaleFactorAuto);
-		gui->addRangeSlider("scale range",scaleFactorMIN, scaleFactorMAX, &scaleFactorMIN, &scaleFactorMAX);
-		gui->addSlider("speed", 0.1, 10, &scaleFactorSpeed);
-		gui->addSpacer("angle");
-		gui->addSlider("dev angle", 0, 360, &devAngle);
-		gui->addToggle("noise angle", &devAngleAuto);
-		gui->addRangeSlider("angle range",devAngleMIN, devAngleMAX, &devAngleMIN, &devAngleMAX);
-		gui->addSlider("speed", 0.1, 10, &devAngleSpeed);
+		gui.setup("Square Field", VASA_SQUARE_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
 
 
-		//ofAddListener(gui->newGUIEvent, this, &ofMovingSquares::guiEvent);
-		gui->autoSizeToFitWidgets();
-		gui->setVisible(false);
+		forceParams.setName("Force");
+			forceParams.add(distRange.set("distance", 50, 0.1, 1000));
+			forceParams.add(distRangeAuto.set("noise force", true));
 
-		guiInitDone = true;
+			forceParams.add(distRangeMIN.set("range Min",20, 20, PROJECTOR_RESOLUTION_Y));
+			forceParams.add(distRangeMAX.set("range Max",PROJECTOR_RESOLUTION_Y, 20, PROJECTOR_RESOLUTION_Y));
+			forceParams.add(distRangeSpeed.set("speed", 5, 0.1, 10));
+		gui.add(forceParams);
+		
+		scaleParams.setName("Scale");
+			scaleParams.add(scaleFactor.set("factor", 1, 1, 0));
+			scaleParams.add(scaleFactorAuto.set("noise", true));
+			scaleParams.add(scaleFactorMIN.set("range Min",0, 0.1,1));
+			scaleParams.add(scaleFactorMAX.set("range Max",0, 0.1,1));
+			scaleParams.add(scaleFactorSpeed.set("speed", 0.1, 0.1, 10));
+		gui.add(scaleParams);
+
+		angleParams.setName("Angle");
+			angleParams.add(devAngle.set("deviation", 0, 0, 360));
+			angleParams.add(devAngleAuto.set("auto", true));
+			angleParams.add(devAngleMIN.set("angle Min", 0, 0, 360));
+			angleParams.add(devAngleMAX.set("angle Max", 360, 0, 360));		
+			angleParams.add(devAngleSpeed.set("speed", 0.1, 0.1, 10));
+		gui.add(angleParams);
+		
+		bGuiInitialized = true;
 	}
 }
 
@@ -243,6 +248,10 @@ void ofxVasaSquareField::draw(){
 	ofSetColor(0,0,0,alpha);
 	ofDisableAlphaBlending();
 
+	if (bShowGui) {
+		gui.draw();
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -313,7 +322,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case 'w' : smoothReset(); break;
 	case 'W' : hardReset(); break;
 	case 'r' : setup(); break;
-	case 'h': gui->toggleVisible(); break;
+	case 'h':  bShowGui = !bShowGui; break;
 	}
 }
 

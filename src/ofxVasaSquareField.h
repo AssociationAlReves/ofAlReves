@@ -16,6 +16,7 @@
 #define VASA_SQUARE_SIZE 50 // 30
 #define VASA_SQUARE_ACTOR_RADIUS 3 // 1
 
+#define VASA_SQUARE_SETTINGS_FILE  "squarefield_settings.xml"
 
 
 #include "ofMain.h"
@@ -31,7 +32,8 @@ public:
 		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(0, 0);
-			guiInitDone = false;
+			bGuiInitialized = false;
+			bShowGui = true;
 		}
 
 	void setup();
@@ -49,10 +51,20 @@ public:
 	int squareIndex;
 	bool squareAutoComplete;
 
+<<<<<<< HEAD
 	bool guiInitDone;
 	ofxUISuperCanvas *gui;
     void guiEvent(ofxUIEventArgs &e);
     
+=======
+	bool bGuiInitialized;
+	ofxPanel gui;
+	bool bShowGui;
+    ofParameterGroup forceParams;
+	ofParameterGroup scaleParams;
+	ofParameterGroup angleParams;
+
+>>>>>>> refs/remotes/origin/dev
 private:
     
     void setup(int width, int height, int squareSize);
@@ -73,9 +85,23 @@ private:
     // if false, all squares appears on startup
     bool squareSpawn;
 
-	float distRange;	bool distRangeAuto;		float distRangeSpeed;		float distRangeMIN;		float distRangeMAX;	
-	float scaleFactor;	bool scaleFactorAuto;	float scaleFactorSpeed; 	float scaleFactorMIN;	float scaleFactorMAX;	
-	float devAngle;		bool devAngleAuto;		float devAngleSpeed; 		float devAngleMIN;		float devAngleMAX;		
+	ofParameter<float> distRange;
+	ofParameter<bool> distRangeAuto;
+	ofParameter<float> distRangeSpeed;
+	ofParameter<float> distRangeMIN;
+	ofParameter<float> distRangeMAX;	
+
+	ofParameter<float> scaleFactor;
+	ofParameter<bool> scaleFactorAuto;
+	ofParameter<float> scaleFactorSpeed;
+	ofParameter<float> scaleFactorMIN;
+	ofParameter<float> scaleFactorMAX;	
+
+	ofParameter<float> devAngle;
+	ofParameter<bool> devAngleAuto;
+	ofParameter<float> devAngleSpeed;
+	ofParameter<float> devAngleMIN;
+	ofParameter<float> devAngleMAX;		
 	
     vector<float> rotMaxSpeed;
     vector<float> rotSpeed;

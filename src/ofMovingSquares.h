@@ -10,7 +10,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxUI.h"
+#include "ofxGui.h"
 #include "ofxTween.h"
 
 #define MOVING_SQUARES_SETTINGS_FILE  "movingsquares_settings.xml"
@@ -36,11 +36,11 @@
 #define MOV_state_MoveBlue			7	// start chrono for song - 0s
 #define MOV_state_StopMoveBlue		8	// start chrono for song - 0s
 #define MOV_state_MoveViolet2		9	// 140s
-#define MOV_state_MoveGreen2		10	
+#define MOV_state_MoveGreen2		10
 #define MOV_state_MoveRed2			11
-#define MOV_state_MoveYellow2		12	
-#define MOV_state_MoveBlue2			13	
-#define MOV_state_StopMoveBlue2		14	
+#define MOV_state_MoveYellow2		12
+#define MOV_state_MoveBlue2			13
+#define MOV_state_StopMoveBlue2		14
 #define MOV_state_Slow				15	// start slow motion - 195s (3:15)
 #define MOV_state_Accelerate		16	// start slow-> fast - 214s (3:34)
 #define MOV_state_Noise				17
@@ -62,107 +62,101 @@
 // This is meant to be sync with beethoven sonata
 
 class ofMovingSquares : public ofxFadeScene {
-	
+    
 public:
     
-	ofMovingSquares(string prefix = "scene", bool isMirrored = false) 
-		: isMirrored(isMirrored),  ofxFadeScene(prefix + ": " + "Moving squares"){
-			setSingleSetup(true); // call setup each time the scene is loaded
-			setFade(5000,5000);
-			bGuiInitialized = false;
-		}
-
-	void setup();
-	void update();
-	void draw();
-	
-	void updateEnter();
-
-	void keyPressed(int key);
+    ofMovingSquares(string prefix = "scene", bool isMirrored = false)
+    : isMirrored(isMirrored),  ofxFadeScene(prefix + ": " + "Moving squares"){
+        setSingleSetup(true); // call setup each time the scene is loaded
+        setFade(5000,5000);
+        bGuiInitialized = false;
+    }
+    
+    void setup();
+    void update();
+    void draw();
+    
+    void updateEnter();
+    
+    void keyPressed(int key);
     
     float greenAngle;
-<<<<<<< HEAD
-    ofxUISuperCanvas *gui;
-    void guiEvent(ofxUIEventArgs &e);
     
-=======
-        
->>>>>>> refs/remotes/origin/dev
 private:
-	bool bGuiInitialized;
-	ofxPanel gui;
-	bool bShowGui;
-
-	ofParameterGroup greenParams;
-	ofParameter<float> greenAngleParam;
-	ofParameter<float> greenMarginParam;
-	ofParameterGroup redParams;
-	ofParameter<float> redAngleParam;
-	ofParameter<float> redMarginParam;
-	ofParameterGroup yellowParams;
-	ofParameter<float> yellowAngleParam;
-	ofParameter<float> yellowMarginParam;
-	ofParameterGroup blueParams;
-	ofParameter<float> blueAngleParam;
-	ofParameter<float> blueMarginParam;
-	ofParameterGroup fuschiaParams;
-	ofParameter<float> fuschiaAngleParam;
-	ofParameter<float> fuschiaMarginParam;
-
-
-	struct ShapeDef {
-		std::string name;
-		ofPoint size;
-		float orientation;
-		float angleOffset;
-		float margin;
-		ofColor color;
-		int shapeType;
-
-		ShapeDef(){
-
-		}
-		ShapeDef(std::string name, ofPoint size, 	float orientation, float angleOffset,
-					float margin, ofColor color, int shapeType)
-		: name(name), size(size), orientation(orientation), angleOffset(angleOffset),margin(margin),color(color), shapeType(shapeType) {
-		}
-	};
+    bool bGuiInitialized;
+    ofxPanel gui;
+    bool bShowGui;
     
-	int currentMode;
-	void nextMode(std::string reason);
-
-	map<int, float> timeTriggers; // <state, time until next step>
-	vector<ShapeDef> shapes;
-
-	ofEasyCam cam;
-
-	bool isRotating;
-	bool isStopFadeOut;
-	bool isMirrored;
-
-	float currentAngle;
-
-	// modes
-
-	// transitions
-	ofxTween tweenFadein;
-	ofxTween tweenNoise;
-
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
-
-	bool beforeDraw();
-
-	void updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration = MOV_SQUARE_DURATION );
-
-
+    ofParameterGroup greenParams;
+    ofParameter<float> greenAngleParam;
+    ofParameter<float> greenMarginParam;
+    ofParameterGroup redParams;
+    ofParameter<float> redAngleParam;
+    ofParameter<float> redMarginParam;
+    ofParameterGroup yellowParams;
+    ofParameter<float> yellowAngleParam;
+    ofParameter<float> yellowMarginParam;
+    ofParameterGroup blueParams;
+    ofParameter<float> blueAngleParam;
+    ofParameter<float> blueMarginParam;
+    ofParameterGroup fuschiaParams;
+    ofParameter<float> fuschiaAngleParam;
+    ofParameter<float> fuschiaMarginParam;
+    
+    
+    struct ShapeDef {
+        std::string name;
+        ofPoint size;
+        float orientation;
+        float angleOffset;
+        float margin;
+        ofColor color;
+        int shapeType;
+        
+        ShapeDef(){
+            
+        }
+        ShapeDef(std::string name, ofPoint size, 	float orientation, float angleOffset,
+                 float margin, ofColor color, int shapeType)
+        : name(name), size(size), orientation(orientation), angleOffset(angleOffset),margin(margin),color(color), shapeType(shapeType) {
+        }
+    };
+    
+    int currentMode;
+    void nextMode(std::string reason);
+    
+    map<int, float> timeTriggers; // <state, time until next step>
+    vector<ShapeDef> shapes;
+    
+    ofEasyCam cam;
+    
+    bool isRotating;
+    bool isStopFadeOut;
+    bool isMirrored;
+    
+    float currentAngle;
+    
+    // modes
+    
+    // transitions
+    ofxTween tweenFadein;
+    ofxTween tweenNoise;
+    
+    ofxEasingBack 	easingback;
+    ofxEasingBounce 	easingbounce;
+    ofxEasingCirc 	easingcirc;
+    ofxEasingSine	easingsine;
+    ofxEasingCubic 	easingcubic;
+    ofxEasingElastic easingelastic;
+    ofxEasingExpo 	easingexpo;
+    ofxEasingLinear 	easinglinear;
+    ofxEasingQuad 	easingquad;
+    ofxEasingQuart 	easingquart;
+    ofxEasingQuint 	easingquint;
+    
+    bool beforeDraw();
+    
+    void updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration = MOV_SQUARE_DURATION );
+    
+    
 };

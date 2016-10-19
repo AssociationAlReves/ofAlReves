@@ -21,50 +21,43 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxUI.h"
 #include "ofxAppUtils.h"
+#include "ofxGui.h"
 
 class ofxVasaSquareField : public ofxFadeScene {
     
 public:
-  	
-	ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION)
-		: squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
-			setSingleSetup(false); // call setup each time the scene is loaded
-			setFade(0, 0);
-			bGuiInitialized = false;
-			bShowGui = true;
-		}
-
-	void setup();
+    
+    ofxVasaSquareField(bool squareSpawn, string prefix = "scene", int startMode = VASA_SQUARE_MODE_FULL_RND_ROTATION)
+    : squareSpawn(squareSpawn), mode(startMode), ofxFadeScene(prefix + ": " + "SquareField"){
+        setSingleSetup(false); // call setup each time the scene is loaded
+        setFade(0, 0);
+        bGuiInitialized = false;
+        bShowGui = true;
+    }
+    
+    void setup();
     void update();
     void draw();
-	void keyPressed(int key);
+    void keyPressed(int key);
     
     void clearActors();
     void addActor(int x, int y);
     
     void hardReset();
     void smoothReset();
-
-	void nextMode();
-	int squareIndex;
-	bool squareAutoComplete;
-
-<<<<<<< HEAD
-	bool guiInitDone;
-	ofxUISuperCanvas *gui;
-    void guiEvent(ofxUIEventArgs &e);
     
-=======
-	bool bGuiInitialized;
-	ofxPanel gui;
-	bool bShowGui;
+    void nextMode();
+    int squareIndex;
+    bool squareAutoComplete;
+    
+    bool bGuiInitialized;
+    ofxPanel gui;
+    bool bShowGui;
     ofParameterGroup forceParams;
-	ofParameterGroup scaleParams;
-	ofParameterGroup angleParams;
-
->>>>>>> refs/remotes/origin/dev
+    ofParameterGroup scaleParams;
+    ofParameterGroup angleParams;
+    
 private:
     
     void setup(int width, int height, int squareSize);
@@ -75,38 +68,38 @@ private:
     
     int sizeX;
     int sizeY;
-	int squareCount;
-	int mode;
-		
+    int squareCount;
+    int mode;
+    
     int lastActorX;
     int lastActoxY;
     
     // if true then squares spawns with space key
     // if false, all squares appears on startup
     bool squareSpawn;
-
-	ofParameter<float> distRange;
-	ofParameter<bool> distRangeAuto;
-	ofParameter<float> distRangeSpeed;
-	ofParameter<float> distRangeMIN;
-	ofParameter<float> distRangeMAX;	
-
-	ofParameter<float> scaleFactor;
-	ofParameter<bool> scaleFactorAuto;
-	ofParameter<float> scaleFactorSpeed;
-	ofParameter<float> scaleFactorMIN;
-	ofParameter<float> scaleFactorMAX;	
-
-	ofParameter<float> devAngle;
-	ofParameter<bool> devAngleAuto;
-	ofParameter<float> devAngleSpeed;
-	ofParameter<float> devAngleMIN;
-	ofParameter<float> devAngleMAX;		
-	
+    
+    ofParameter<float> distRange;
+    ofParameter<bool> distRangeAuto;
+    ofParameter<float> distRangeSpeed;
+    ofParameter<float> distRangeMIN;
+    ofParameter<float> distRangeMAX;
+    
+    ofParameter<float> scaleFactor;
+    ofParameter<bool> scaleFactorAuto;
+    ofParameter<float> scaleFactorSpeed;
+    ofParameter<float> scaleFactorMIN;
+    ofParameter<float> scaleFactorMAX;
+    
+    ofParameter<float> devAngle;
+    ofParameter<bool> devAngleAuto;
+    ofParameter<float> devAngleSpeed;
+    ofParameter<float> devAngleMIN;
+    ofParameter<float> devAngleMAX;
+    
     vector<float> rotMaxSpeed;
     vector<float> rotSpeed;
     vector<float> rotDecay;
     vector<ofVec2f> actors;
-	vector<ofVec2f> randIndexes;
+    vector<ofVec2f> randIndexes;
     
 };

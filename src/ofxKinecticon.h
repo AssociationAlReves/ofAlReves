@@ -10,7 +10,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxGui.h"
+#include "ofxUI.h"
 #include "ofxOpenCv.h"
 #ifdef USE_KINECT
 #include "ofxKinect.h"
@@ -20,8 +20,6 @@
 #define VASA_KINECT_POINTCLOUD_STEP 2
 #define VASA_KINECT_FRAMECOUNT 100
 #define VASA_KINECT_FRAMEDELAY 20
-
-#define VASA_KINECT_SETTINGS_FILE  "kinecticon_settings.xml"
 
 class ofxKinecticon : public ofxScene
 {
@@ -44,8 +42,7 @@ public:
     bool bKinectSetup;
 	bool bShowHelp;
 
-	ofxPanel gui;
-	bool bGuiInitialized;
+	ofxUISuperCanvas *gui;
     
 	#ifdef USE_KINECT
     ofxKinect kinect;
@@ -68,12 +65,12 @@ public:
     bool bLearnBackground;
     int numFramesBg;
     bool bDrawPointCloud;
-    ofParameter<bool> bKinectUseBg;
-    ofParameter<bool> bKinectAltColor;
+    bool bKinectUseBg;
+    bool bKinectAltColor;
     
-    ofParameter<int> nearThreshold;
-    ofParameter<int> farThreshold;
-    ofParameter<int> threshold;
+    int nearThreshold;
+    int farThreshold;
+    int threshold;
     
     int angle;
     #endif

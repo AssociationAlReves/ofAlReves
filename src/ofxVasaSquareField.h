@@ -21,8 +21,8 @@
 
 #include "ofMain.h"
 #include "globals.h"
+#include "ofxUI.h"
 #include "ofxAppUtils.h"
-#include "ofxGui.h"
 
 class ofxVasaSquareField : public ofxFadeScene {
     
@@ -51,6 +51,12 @@ public:
 	int squareIndex;
 	bool squareAutoComplete;
 
+<<<<<<< HEAD
+	bool guiInitDone;
+	ofxUISuperCanvas *gui;
+    void guiEvent(ofxUIEventArgs &e);
+    
+=======
 	bool bGuiInitialized;
 	ofxPanel gui;
 	bool bShowGui;
@@ -58,6 +64,7 @@ public:
 	ofParameterGroup scaleParams;
 	ofParameterGroup angleParams;
 
+>>>>>>> refs/remotes/origin/dev
 private:
     
     void setup(int width, int height, int squareSize);

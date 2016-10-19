@@ -10,7 +10,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxGui.h"
+#include "ofxUI.h"
 #include "ofxTween.h"
 
 #define MOVING_SQUARES_SETTINGS_FILE  "movingsquares_settings.xml"
@@ -81,7 +81,13 @@ public:
 	void keyPressed(int key);
     
     float greenAngle;
+<<<<<<< HEAD
+    ofxUISuperCanvas *gui;
+    void guiEvent(ofxUIEventArgs &e);
+    
+=======
         
+>>>>>>> refs/remotes/origin/dev
 private:
 	bool bGuiInitialized;
 	ofxPanel gui;

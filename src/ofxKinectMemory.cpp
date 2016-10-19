@@ -11,7 +11,10 @@ void ofxKinectMemory::setup() {
 	ofSetVerticalSync(true);
 	ofBackground(0);
 	ofEnableArbTex();
+    
+    ofApp *app = (ofApp *)ofxGetAppPtr();
 
+	forceWarpOff = false;
 	bDrawJoinedActors = false;
 
 	// enable depth->video image calibration
@@ -84,6 +87,9 @@ void ofxKinectMemory::setup() {
 	appGroup.add(blackScreen.set("blackScreen", true));
 	appGroup.add(antiAlias.set("antiAlias", true));
 	appGroup.add(lineWidth.set("lineWidth", 1, 0, 10));
+    appGroup.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+    appGroup.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+
 	//appGroup.add(lineColor.set("lineColor", ofColor(0), ofColor(0), ofColor(255)));
 
 	gui.add(appGroup);
@@ -93,6 +99,37 @@ void ofxKinectMemory::setup() {
 	debugGroup.add(bShowImages.set("ShowImages", true));
 	gui.add(debugGroup);
 
+
+	//if (!forceWarpOff) {
+		// WARP
+		int w = ofGetWidth();
+		int h = ofGetHeight();
+		int x = (ofGetWidth() - w) * 0.5;       // center on screen.
+		int y = (ofGetHeight() - h) * 0.5;     // center on screen.
+    bool invertWarp = false;
+    if (invertWarp) {
+        warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+        warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+    } else {
+        warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+        warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+        warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+        warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+    }
+    
+		warper.setup();
+		warper.load(); // reload last saved changes.
+    warper.toggleShow();
+	//}
+
+    app->cam.reset();
+    gui.loadFromFile(GUI_SETTINGS);
+    app->cam.setPosition(camPosition);
+    app->cam.setOrientation(camOrientation);
 }
 
 //--------------------------------------------------------------
@@ -133,7 +170,21 @@ void ofxKinectMemory::update() {
 
 //--------------------------------------------------------------
 void ofxKinectMemory::draw() {
+
 	ofApp *app = (ofApp *)ofxGetAppPtr();
+
+	if (!forceWarpOff) {
+		//=======================================
+		// WARP		
+		app->cam.end();
+		//======================== get our quad warp matrix.
+		ofMatrix4x4 mat = warper.getMatrix();
+		//======================== use the matrix to transform our fbo.
+		app->cam.begin();
+		glPushMatrix();
+		glMultMatrixf(mat.getPtr());
+		// ====================================
+	}
 
 	ofPushMatrix();
 
@@ -159,7 +210,7 @@ void ofxKinectMemory::draw() {
 		for (auto & label : tracker.getNewLabels())
 		{
 			//cout << "New actor: " << label << endl;
-			actors[label] = list<vector<cv::Point>>();
+			actors[label] = list<vector<cv::Point> >();
 		}
 
 
@@ -175,7 +226,7 @@ void ofxKinectMemory::draw() {
 			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
 			if (bStartMemory) {
 
-				list<vector<cv::Point>>& actor = actors[label];
+				list<vector<cv::Point> >& actor = actors[label];
 				// add polyline
 				if (actor.size() == 0) {
 					actor.assign(numFramesDelay, hullPoints);
@@ -236,7 +287,7 @@ void ofxKinectMemory::draw() {
 			} //if (bStartMemory) 
 		} // for each blob
 
-		if (bStartMemory) {
+		if (bStartMemory && mergedHullsTotal.size() > 0) {
 			convexHull(mergedHullsTotal, HullTotal);
 			bigHull2Actors.resize(HullTotal.size());
 			for (int hullIndex = 0; hullIndex < (int)HullTotal.size(); hullIndex++) {
@@ -245,7 +296,9 @@ void ofxKinectMemory::draw() {
 			}
 			bigHull2Actors.close();
 		}
-	} //if (bGotImage)
+	} // END if KINECT		
+
+	//if (bGotImage)
 	//cam.end();
 
 	if (kinect.isConnected()) {
@@ -253,13 +306,33 @@ void ofxKinectMemory::draw() {
 			grayImageFiltered.draw(10, 10);
 			grayImage.draw(800, 0);
 		}
-
-		drawMemoryTrails();
 		//ofDrawAxis(50);
 	}
+
+	drawMemoryTrails();
+
 	ofPopMatrix();
 
-	app->cam.end();
+	if (!forceWarpOff) {
+		//================
+		// WARP DRAW
+		glPopMatrix();
+		app->cam.end();
+		//======================== draw quad warp ui.
+		ofSetColor(ofColor::magenta);
+		warper.drawQuadOutline();
+		ofSetColor(ofColor::yellow);
+		warper.drawCorners();
+		ofSetColor(ofColor::magenta);
+		warper.drawHighlightedCorner();
+		ofSetColor(ofColor::red);
+		warper.drawSelectedCorner();
+		//======================== info.
+	}
+	else {
+		app->cam.end();
+	}
+
 	if (bShowHelp) {
 
 		gui.draw();
@@ -271,108 +344,156 @@ void ofxKinectMemory::draw() {
 //--------------------------------------------------------------
 void ofxKinectMemory::drawMemoryTrails() {
 
-	if (bStartMemory) {
+	if (kinect.isConnected()) {
 
+		if (bStartMemory) {
+
+			ofEnableAlphaBlending();
+			if (antiAlias) {
+				ofEnableAntiAliasing();
+			}
+			else {
+				ofDisableAntiAliasing();
+			}
+			ofSetLineWidth(lineWidth);
+			if (blackScreen) {
+				// BLACK
+				//--------------------------------------------------------------
+				ofBackground(0);
+				fboBlack.begin();
+				ofPushMatrix();
+                ofPushMatrix();
+                float ratioW = ofGetScreenWidth() / kinect.width;
+                float ratioH = ofGetScreenHeight() / kinect.height;
+                ofScale(ratioW, ratioH);
+
+				ofSetColor(0, 0, 0, fadeAmnt);
+				ofFill();
+				ofRect(0, 0, 0, fboBlack.getWidth(), fboBlack.getHeight());
+				ofNoFill();
+				ofSetColor(255);
+				if (bDrawJoinedActors) {
+					bigHull2Actors.draw();
+				}
+				else {
+					for (auto & actor : actorsHullUnion) {
+						actor.second.draw();
+					}
+				}
+
+				ofPopMatrix();
+				fboBlack.end();
+
+				ofDisableAlphaBlending();
+
+				ofPushMatrix();
+				ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
+				ofScale(1, -1, 1);
+				ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
+				//ofDisableAlphaBlending();
+				fboBlack.draw(0, 0);
+				ofPopMatrix();
+
+			}
+			else {
+				// WHITE
+				//ofBackground(255);
+
+				ofBackground(255, 255, 255, 0);
+
+				if (ofGetKeyPressed('c')) {
+					ofClear(255, 255, 255, 0);
+				}
+
+				fboWhite.begin();
+				if (ofGetKeyPressed('c')) {
+					ofClear(255, 255, 255, 0);
+				}
+				ofPushMatrix();
+				float ratioW = ofGetScreenWidth() / kinect.width;
+				float ratioH = ofGetScreenHeight() / kinect.height;
+				ofScale(ratioW, ratioH);
+
+				ofSetColor(255, 255, 255, fadeAmnt);
+				ofFill();
+				ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+
+				ofNoFill();
+				//ofSetColor(lineColor);
+				ofSetColor(0);
+				if (bDrawJoinedActors) {
+					bigHull2Actors.draw();
+				}
+				else {
+					for (auto & actor : actorsHullUnion) {
+						actor.second.draw();
+					}
+				}
+
+				ofPopMatrix();
+				fboWhite.end();
+				ofPushMatrix();
+				ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
+				ofScale(1, -1, 1);
+				ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
+				//ofDisableAlphaBlending();
+				fboWhite.draw(0, 0);
+				ofPopMatrix();
+			}
+		}
+	}
+	else
+	{
 		ofEnableAlphaBlending();
-		if (antiAlias) {
-			ofEnableAntiAliasing();
-		}
-		else {
-			ofDisableAntiAliasing();
-		}
-		ofSetLineWidth(lineWidth);
-		if (blackScreen) {
-			// BLACK
-			//--------------------------------------------------------------
-			ofBackground(0);
-			fboBlack.begin();
-			ofPushMatrix();
-			ofScale(2, 2);
-			ofSetColor(0, 0, 0, fadeAmnt);
-			ofFill();
-			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
-			ofNoFill();
-			ofSetColor(255);
-			if (bDrawJoinedActors) {
-				bigHull2Actors.draw();
-			}
-			else {
-				for (auto & actor : actorsHullUnion) {
-					actor.second.draw();
-				}
-			}
+		// NO KINECT
+		ofBackground(255, 255, 255, 0);
 
-			ofPopMatrix();
-			fboBlack.end();
+		fboWhite.begin();
+		ofPushMatrix();
+		float ratioW = ofGetScreenWidth() / kinect.width;
+		float ratioH = ofGetScreenHeight() / kinect.height;
+		ofScale(ratioW, ratioH);
+		ofSetColor(255, 255, 255, fadeAmnt);
+		ofFill();
+		ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 
-			ofDisableAlphaBlending();
+		ofNoFill();
+		//ofSetColor(lineColor);
+		ofSetColor(0);
+		ofRect(0, 0, 640, 480);
+		ofCircle(0, 0, 0, 50);
+		ofCircle(640, 0, 0, 50);
+		ofCircle(640, 480, 0, 50);
+		ofCircle(0, 480, 0, 50);
 
-			ofPushMatrix();
-			ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
-			ofScale(1, -1, 1);
-			ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
-			//ofDisableAlphaBlending();
-			fboBlack.draw(0, 0);
-			ofPopMatrix();
-
-		}
-		else {
-			// WHITE
-			//ofBackground(255);
-
-			ofBackground(255, 255, 255, 0);
-
-			if (ofGetKeyPressed('c')) {
-				ofClear(255, 255, 255, 0);
-			}
-
-			fboWhite.begin();
-			if (ofGetKeyPressed('c')) {
-				ofClear(255, 255, 255, 0);
-			}
-			ofPushMatrix();
-			float ratioW = ofGetScreenWidth() / kinect.width;
-			float ratioH = ofGetScreenHeight() / kinect.height;
-			ofScale(ratioW, ratioH);
-
-			ofSetColor(255, 255, 255, fadeAmnt);
-			ofFill();
-			ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
-
-			ofNoFill();
-			//ofSetColor(lineColor);
-			ofSetColor(0);
-			if (bDrawJoinedActors) {
-				bigHull2Actors.draw(); 
-			}
-			else {
-				for (auto & actor : actorsHullUnion) {
-					actor.second.draw();
-				}
-			}
-
-			ofPopMatrix();
-			fboWhite.end();
-			ofPushMatrix();
-			ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
-			ofScale(1, -1, 1);
-			ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
-			//ofDisableAlphaBlending();
-			fboWhite.draw(0, 0);
-			ofPopMatrix();
-		}
+		ofPopMatrix();
+		fboWhite.end();
+		ofPushMatrix();
+		ofTranslate(fboWhite.getWidth() / 2, fboWhite.getHeight() / 2);
+		ofScale(1, -1, 1);
+		ofTranslate(-fboWhite.getWidth() / 2, -fboWhite.getHeight() / 2);
+		//ofDisableAlphaBlending();
+		fboWhite.draw(0, 0);
+		ofPopMatrix();
+		ofDisableAlphaBlending();
 	}
 }
 
 //--------------------------------------------------------------
 void ofxKinectMemory::keyPressed(int key) {
+    ofApp *app = (ofApp *)ofxGetAppPtr();
+
 	switch (key) {
 	case 'h': bShowHelp = !bShowHelp;
 		break;
 	case'l':
+        {
 		gui.loadFromFile(GUI_SETTINGS);
-		kinect.setCameraTiltAngle(angle);
-		break;
+            app->cam.setPosition(camPosition);
+            app->cam.setOrientation(camOrientation);
+            //kinect.setCameraTiltAngle(angle);
+        }
+            break;
 	case's':
 		gui.saveToFile(GUI_SETTINGS);
 		break;
@@ -400,6 +521,38 @@ void ofxKinectMemory::keyPressed(int key) {
 		break;
 	case 'J':
 		bDrawJoinedActors = true;
+    case 'M':
+            app->cam.disableMouseInput();
+            break;
+    case 'm':
+            app->cam.enableMouseInput();
+            break;
+        case '>' : farThreshold += 0.5; break;
+        case '<': farThreshold -= 0.5; break;
+	}
+
+	if (key == 'W') {
+		forceWarpOff = false;
+	} 
+	if (key == 'w') {
+		forceWarpOff = true;
+	}
+	if (!forceWarpOff) {
+		// WARPs
+		if (key == 'H') {
+			warper.toggleShow();
+		}
+		if (key == 'L') {
+			warper.load();
+		}
+		if (key == 'S') {
+            camOrientation = app->cam.getOrientationEuler();
+            camPosition = app -> cam.getPosition();
+            gui.saveToFile(GUI_SETTINGS);
+
+			warper.save();
+		}
+		
 	}
 }
 

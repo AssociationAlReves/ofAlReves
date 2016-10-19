@@ -4,7 +4,6 @@
 
 //--------------------------------------------------------------
 void ofxVideoScene::setup(){
-	tweenEnabled = false;
 	player.loadMovie(fileName);
 	player.play();
 	player.setVolume(0);
@@ -28,31 +27,35 @@ void ofxVideoScene::draw(){
     
     ofEnableAlphaBlending();
 	ofPushMatrix();
+    ofSetColor(255);
 
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	if (horizontalFlip == false) {
 		ofScale (1,-1,1);
 	}
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-	//ofBackground(255,255,255, alpha);
-	if (tweenEnabled) {
-		ofSetColor(255, 255, 255, tween.update());
-	} else {
-		ofSetColor(255, 255, 255, alpha*255);
+	ofBackground(0);
+	ofSetColor(255);
+	if (fillScreen) {
+		float pw = ofGetWidth();
+		float ph = ofGetHeight();
+		float xCenterOrigin = -(pw - ofGetWidth()) / 2;
+		ofTranslate(xCenterOrigin, 0);
+		player.draw(0, 0, pw, ph);
+		//player.draw(0, 0, pw, ph);
 	}
-	float pw = ofGetHeight() * aspectRatio;
-	float ph = ofGetHeight();
-	float xCenterOrigin = -(pw-ofGetWidth())/2;
-	ofTranslate(xCenterOrigin, 0);
-	player.draw(0, 0, pw, ph);
-	if (boxed) {
-		ofSetColor(0,0,0,255);
-		ofSetLineWidth(5);
-		ofLine(0,0,pw,0);
-		ofLine(pw,0,pw,ph);
-		ofLine(pw,ph,0,ph);
-		ofLine(0,ph,0,0);
+	else {
+		float pw = ofGetWidth();
+		float ph = player.getHeight() * ofGetWidth() / player.getWidth();
+		float xCenterOrigin = -(pw - ofGetWidth()) / 2;
+		float yCenterOrigin = -(ph - ofGetHeight()) / 2;
+		ofTranslate(xCenterOrigin, yCenterOrigin);
+		player.draw(0, 0, pw, ph);
+		//player.draw(0, 0, pw, ph);
 	}
+
+	
+	
 
 	 
 	ofPopMatrix();
@@ -67,18 +70,12 @@ void ofxVideoScene::keyPressed(int key){
 	{
 	case ' ' : {
 				if (player.isPlaying()) {
-					/*tweenEnabled = true;
-					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 500, 0);*/
+                    player.stop();
 				} else { 
 					player.play(); 
 				}
-			   }break;
-	case OF_KEY_RETURN: {
-				if (player.isPlaying()) {
-					tweenEnabled = true;
-					tween.setParameters(easinglinear, ofxTween::easeInOut, 255, 0, 10000, 0);
-				} 
-			   }break;
+			   }
+			   break;
 	case 'r': setup(); break;
 	default:
 		break;

@@ -472,6 +472,9 @@
     <ClCompile Include="src\ofxCityPingPong.cpp">
       <Filter>src\city</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxQuadWarp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -1474,6 +1477,9 @@
     </ClInclude>
     <ClInclude Include="src\ofxCityPingPong.h">
       <Filter>src\city</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxQuadWarp.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

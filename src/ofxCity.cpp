@@ -80,17 +80,12 @@ void ofxCity::setup() {
 		bGuiLoaded = true;
 
 
-		//Load shader
-		forceShader = false;
-		shader.load("shaderVert.c", "shaderFrag.c");
-		//shader.load("noise.vert", "noise.frag");
 	}
 	bShowGui = false;
 
 	setupTextures();
 
 	setupRoad();
-	setupTerrain();
 	setupBlocks();
 
 	ofSetLogLevel("ofxCity", OF_LOG_NOTICE);
@@ -104,7 +99,7 @@ void ofxCity::setupTextures() {
 	fboRoad.allocate(roadTexWidth, roadTexHeight, GL_RGB32F /*GL_RGB32F_ARB*/);
 	fboRoad.begin();
 
-	ofBackground(ofColor::darkSlateGray);
+	ofBackground(ofColor::gray);
 	ofSetColor(ofColor::white);
 	ofFill();
 	float lineWidth = ofMap(roadLineWidth, 0, 100, 0, roadTexWidth, true);
@@ -130,87 +125,10 @@ void ofxCity::setupRoad() {
 	}
 }
 
-
-//--------------------------------------------------------------
-void ofxCity::setupTerrain() {
-
-
-	terrain.clear();
-	terrain.setMode(OF_PRIMITIVE_LINES);
-	terrain.enableColors();
-	terrain.enableIndices();
-	terrain.disableNormals();
-
-	heightMap.clear();
-	bool drawYLines = false;
-
-	// setup height map
-	for (int x = 0; x < terrainWidth; x++) {
-		for (int y = 0; y < terrainHeight; y++) {
-
-
-			float noiseValue = genNoise2(x, y); // background noise only
-			heightMap.push_back(noiseValue);
-
-		}
-	}
-
-
-	// setup vertices
-	for (int x = 0; x < terrainWidth; x++) {
-		for (int y = 0; y < terrainHeight; y++) {
-			float Y = y * segmentLength;
-			float X = x * segmentLength;
-			float Z = heightMap[indexFromXY(x, y, terrainHeight)];
-			terrain.addVertex(ofVec3f(X, Y, Z * terrainZScale));
-			terrain.addColor(ofColor::black);
-		}
-	}
-
-
-	// setup indexes
-	for (int x = 0; x < terrainWidth; x++) {
-		for (int y = 0; y < terrainHeight; y++) {
-
-			// -
-			if (terrainDrawX && (x + 1 != terrainWidth)) {
-				terrain.addIndex(indexFromXY(x, y, terrainHeight));
-				terrain.addIndex(indexFromXY(x + 1, y, terrainHeight));
-			}
-
-			// |
-			if (terrainDrawY) {
-				if (terrainDrawY && (y + 1 != terrainHeight)) {
-					terrain.addIndex(indexFromXY(x, y, terrainHeight));
-					terrain.addIndex(indexFromXY(x, y + 1, terrainHeight));
-				}
-			}
-		}
-	}
-}
-//--------------------------------------------------------------
-int ofxCity::indexFromXY(const int x, const int y, const int totalHeight) {
-	return x * totalHeight + y;
-}
-//--------------------------------------------------------------
-float ofxCity::genNoise2(const int x, const int y) {
-
-	float noiseScale2 = terrainNoiseScale;
-	float noiseSeed2 = terrainNoiseSeed;
-	float noiseAmp2 = terrainNoiseAmp;
-	float noiseValue = ofNoise(x * noiseScale2, y * noiseScale2, noiseSeed2);
-	if (noiseValue > 0.9) {
-		noiseValue *= noiseAmp2;
-	}
-	else {
-		noiseValue = 0;
-	}
-	return 1 - noiseAmp2 + noiseValue;
-}
-
 //--------------------------------------------------------------
 void ofxCity::updateRoad(bool createNewRow) {
 
+	
 	// if plane is offsight
 	// translate all planes along negative z axis
 	if (createNewRow) {
@@ -371,23 +289,6 @@ void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 }
 
 //--------------------------------------------------------------
-void ofxCity::generateBlock_TheBigOne() {
-
-	float size = 5000;
-
-	float lowestZ = 0;
-	for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-		ofBuilding building = *buildingIt;
-		lowestZ = min(lowestZ, building.position.z);
-	}
-
-	ofBuilding building = ofBuilding(ofVec3f(0, -CITY_BLOCK_MAXHEIGHT / 2, lowestZ - 1000), size * 2, CITY_BLOCK_MAXHEIGHT, size / 4);
-	buildings.push_back(building);
-
-}
-
-
-//--------------------------------------------------------------
 void ofxCity::update() {
 
 
@@ -415,31 +316,35 @@ void ofxCity::update() {
 		curSpeed = tween.update();
 	}
 
-	if (curDistanceOffset <= -roadTexHeight) {
-		updateRoad(true);
-		updateBlocks(1);
-	}
+	if (mode != enCityExplosion) {
 
-
-	curDistance -= curSpeed;
-	curDistanceOffset -= curSpeed;
-
-	directionalLight.setDiffuseColor(diffuseColor);
-	directionalLight.setSpecularColor(specularColor);
-	directionalLight.setAmbientColor(ambientColor);
-	directionalLight.setDirectional();
-	directionalLight.setOrientation((ofVec3f)dirLightOrientation);
-
-	int i = 0;
-	float roadNearZ = roads[0].getPosition().z;
-	float roadFarZ = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
-	while (i < buildings.size()) {
-		if (buildings[i].position.z < roadFarZ + 650) {
-			buildings[i] = buildings.back(); buildings.pop_back(); i--;
+		if (curDistanceOffset <= -roadTexHeight) {
+			updateRoad(true);
+			updateBlocks(1);
 		}
-		else {
-			i++;
+
+
+		curDistance -= curSpeed;
+		curDistanceOffset -= curSpeed;
+
+		directionalLight.setDiffuseColor(diffuseColor);
+		directionalLight.setSpecularColor(specularColor);
+		directionalLight.setAmbientColor(ambientColor);
+		directionalLight.setDirectional();
+		directionalLight.setOrientation((ofVec3f)dirLightOrientation);
+
+		int i = 0;
+		float roadNearZ = roads[0].getPosition().z;
+		float roadFarZ = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
+		while (i < buildings.size()) {
+			if (buildings[i].position.z < roadFarZ + 650) {
+				buildings[i] = buildings.back(); buildings.pop_back(); i--;
+			}
+			else {
+				i++;
+			}
 		}
+
 	}
 
 	switch (mode) {
@@ -451,34 +356,149 @@ void ofxCity::update() {
 		}
 		break;
 	case enCityExplosion:
-		updateShader();
+		updateExplosion();
 		break;
 	}
-	if (forceShader) {
-		updateShader();
-	}
 
-	
+
+
 }
 
+void ofxCity::captureCam() {
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	camOrientation = app->cam.getOrientationEuler();
+	camPosition = app->cam.getPosition();
+	//gui.saveToFile(CITY_SETTINGS_FILE);
+}
+
+
 //--------------------------------------------------------------
-float time0 = 0;
-float phase = 0;
-float distortAmount = 0;
-void ofxCity::updateShader() {
+int roadDivision = 4;
+int numBuildingsExMin = 4;
+int numBuildingsExMax = 1000;
+vector<ofVec3f> roadPosEx;
+vector<ofVec3f> buildingsPosEx;
+vector<ofVec2f> buildingsSizesEx;
+float BUILDING_MAX_SIZE_EX = 150;
+void ofxCity::setupExplosion() {
 
-	//Compute dt
-	float time = ofGetElapsedTimef();
-	float dt = ofClamp(time - time0, 0, 0.1);
-	time0 = time;
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	app->cam.setPosition(app->cam.getPosition() + ofVec3f(0, 800, 0));
+	decelerate(2000, true);
+	roadPosEx.clear();
+	buildingsPosEx.clear();
+	buildingsSizesEx.clear();
+	explosionTween.setParameters(easingexpo, ofxTween::easeInOut, 0, 1, 10000,0);
 
-	float speed = ofMap(mouseY, 0, ofGetHeight(), 0, 5);
-	phase += speed * dt;
-	distortAmount = ofMap(mouseX, 0, ofGetWidth(), 0, 1.0);
+	float roadSize = roadTexWidth / roadDivision;
 
+	for (int i = 0; i < roads.size(); i++) {
+		ofVec3f pos = roads[i].getPosition();
 
-	phase = 0;
-	distortAmount = 0;
+		// road squares
+ 		for (int x = 0; x < roadDivision; x++) {
+			for (int y = 0; y < roadDivision; y++) {
+				roadPosEx.push_back(pos + ofVec3f(x * (roadTexWidth / roadDivision), 0, y * (roadTexWidth / roadDivision)));
+				//roadPosEx.push_back(pos + ofVec3f(x * (roadTexWidth / roadDivision), 0, y * (roadTexWidth / roadDivision)));
+			}
+		}
+
+		// random buildings
+		for (int j = 0; j < (int)ofMap(ofRandom(1), 0, 1, numBuildingsExMin, numBuildingsExMax); j++) {
+			if (ofRandomf() > 0.5) {
+				buildingsPosEx.push_back(ofVec3f(pos.x  - ofRandom(10, 100) * j - roadSize,
+					0,
+					pos.z - ofRandom(-100, 100)));
+				buildingsSizesEx.push_back(ofVec2f(ofRandom(10, BUILDING_MAX_SIZE_EX), ofRandom(10, roadSize * 2)));
+			}
+		}
+		for (int j = 0; j < (int)ofMap(ofRandom(1), 0, 1, numBuildingsExMin, numBuildingsExMax); j++) {
+			if (ofRandomf() > 0.5) {
+				buildingsPosEx.push_back(ofVec3f(pos.x + ofRandom(10, 100) * j + roadSize,
+					0,
+					pos.z - ofRandom(-100, 100)));
+				buildingsSizesEx.push_back(ofVec2f(ofRandom(10, BUILDING_MAX_SIZE_EX), ofRandom(10, BUILDING_MAX_SIZE_EX)));
+			}
+		}
+	}
+	//roads.clear();
+}
+//--------------------------------------------------------------
+float amount;
+void ofxCity::updateExplosion() {
+
+	amount = explosionTween.update();
+	//amount = 0;
+
+	for (int i = 0; i < roadPosEx.size(); i++) {
+		roadPosEx[i].y = -(ofNoise(ofGetElapsedTimef() * 0.02 + 1.23 + i) * CITY_BLOCK_MAXHEIGHT * amount );
+		roadPosEx[i].x += ofSignedNoise(ofGetElapsedTimef() * 0.013 - 1.23 - i)* amount;
+		roadPosEx[i].z += ofSignedNoise(ofGetElapsedTimef() * 0.0024 + 0.0893 + i)* amount;
+							//+ amount * CITY_BLOCK_MAXHEIGHT * ofSignedNoise(ofGetElapsedTimef() * 0.12 + 4.7+i));
+	}
+
+	ofSetColor(ofColor::red);
+	for (int i = 0; i < buildingsPosEx.size(); i++) {
+
+		buildingsPosEx[i].y = -(ofNoise(ofGetElapsedTimef() * 0.012 - 0.23 + i) * CITY_BLOCK_MAXHEIGHT  *amount);
+
+		buildingsPosEx[i].x += ofSignedNoise(ofGetElapsedTimef() * 0.098 - 0.883 - 5.3*i)* amount;
+		buildingsPosEx[i].z += ofSignedNoise(ofGetElapsedTimef() * 0.0036 + 126.5* i)* amount;
+			//+ amount*  CITY_BLOCK_MAXHEIGHT * ofSignedNoise(ofGetElapsedTimef() * 0.17  + 7.48-i));
+	}
+}
+//--------------------------------------------------------------
+void ofxCity::drawExplosion() {
+
+	ofFill();	
+
+	ofDrawAxis(500);
+
+	ofPushMatrix();
+	ofRotate(0, 0, 0, 0);
+
+	ofSetColor(ofColor::gray);
+	float roadSize = roadTexWidth / roadDivision;
+	
+	for (int i = 0; i < roadPosEx.size(); i++) {
+		
+		float noiseAngle = 45 * ofSignedNoise(ofGetElapsedTimef() * 0.3 -4.2*i)* amount;
+		float noisex = ofSignedNoise(ofGetElapsedTimef() * 0.047 +6.3*i)* amount;
+		float noisey = ofSignedNoise(ofGetElapsedTimef() * 0.033 - i*4+123.1)* amount;
+		float noisez = ofSignedNoise(ofGetElapsedTimef() * 0.093 + 63.3 + i *12.3)* amount;
+		
+		ofPushMatrix();
+			ofTranslate(roadPosEx[i]);
+			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofPushMatrix();
+			ofRotate(90, 1, 0, 0);
+				ofRect(0, 0, roadSize, roadSize);
+			ofPopMatrix();
+		ofPopMatrix();
+
+	}
+	
+
+	ofSetColor(ofColor::red);
+	for (int i = 0; i < buildingsPosEx.size(); i++) {
+
+		float noiseAngle = 45 * ofSignedNoise(ofGetElapsedTimef() * 0.048 + 12 + 4.2*i)* amount;
+
+		float noisex = ofSignedNoise(ofGetElapsedTimef() * 0.048 + 0.69*i)* amount;
+		float noisey = ofSignedNoise(ofGetElapsedTimef() * 0.097 - i * 1.2 - 13.1)* amount;
+		float noisez = ofSignedNoise(ofGetElapsedTimef() * 0.077 - i * 4 + 123.1)* amount;
+
+		ofPushMatrix();
+			ofTranslate(buildingsPosEx[i]);
+			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofPushMatrix();
+			ofRotate(90, 1, 0, 0);
+				ofRect(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
+			ofPopMatrix();
+		ofPopMatrix();
+	}
+	ofPopMatrix();
+
 }
 
 void ofxCity::accelerate(int duration) {
@@ -489,7 +509,12 @@ void ofxCity::accelerate(int duration) {
 		, duration, 0);
 }
 void ofxCity::decelerate(int duration, bool stop) {
-	desiredSpeed -= stop ? curSpeed : CITY_SPEED_INCR;
+	if (stop) {
+		desiredSpeed -= curSpeed;
+	}
+	else {
+		desiredSpeed -= CITY_SPEED_INCR;
+	}
 	tween.setParameters(easingsine, ofxTween::easeInOut
 		, curSpeed
 		, desiredSpeed
@@ -503,6 +528,7 @@ void ofxCity::draw() {
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 
+
 	switch (mode)
 	{
 	case enCityCollapsing:
@@ -510,50 +536,45 @@ void ofxCity::draw() {
 		break;
 	default:
 		//ofBackground(255, 255, 255, 255);
-		ofBackground(0);
+		ofBackground(255);
 		break;
 	}
 
-	ofPushMatrix();
-
-
-	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-	ofTranslate(0, 20);
-	ofTranslate(0, 0, curDistance + 650);
-
-	switch (mode)
-	{
-	case enCityIdle:
-		break;
-	case enCityCollapsed:
-		ofClear(0);
-		break;
-	default:
-
 	
-		if (mode == enCityExplosion || forceShader) {
+	if (mode == enCityLine) {
 
-			ofSetColor(ofColor::darkSlateGray);
-			//texRoad.bind();
-			shader.begin();
+		ofSetColor(0);
+		ofFill();
+		ofPushMatrix();
 
-			//we want to pass in some varrying values to animate our type / color 
-			shader.setUniform1f("phase", ofMap(mouseX - ofGetWidth() / 2, 0, ofGetWidth(), -3, 3));
-			shader.setUniform1f("distortAmount", ofMap( ofGetHeight() / 2 - mouseY, 0, ofGetHeight(),-1,1));
+		int rW = 900;
+		int rH = 75;
+		ofTranslate(ofGetWidth() / 2 - rW /2, ofGetHeight() / 2 - rH / 2);
 
+		ofRect(0, 0, rW, rH);
+		ofPopMatrix();
+    } else if (mode == enCityBlank) {
+        // nothing
+    }
+	else
+	{
+		ofPushMatrix();
 
+		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+		ofTranslate(0, 20);
+		ofTranslate(0, 0, curDistance + 650);
 
-			//we also pass in the mouse position 
-			//we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped. 
-			shader.setUniform2f("mouse", mouseX - ofGetWidth() / 2, ofGetHeight() / 2 - mouseY);
-
-			for (int i = 0; i < roads.size(); i++) {				
-				roads[i].draw();
-			}
-
-			shader.end();
-		}
-		else
+		switch (mode)
+		{
+		case enCityIdle:
+			break;
+		case enCityCollapsed:
+			ofClear(0);
+			break;
+		case enCityExplosion:
+			drawExplosion();
+			break;
+		default:
 		{
 			texRoad.bind();
 			for (int i = 0; i < roads.size(); i++) {
@@ -563,107 +584,92 @@ void ofxCity::draw() {
 				roads[i].draw();
 			}
 			texRoad.unbind();
-		}
-		
 
-		
 
-		//------------------------
-		// Terrain draw
-		//
-		/*ofPushMatrix();
-		ofRotate(90, 1, 0, 0);
-		ofTranslate(0, -10000, 0);
-		terrain.draw();
-		ofPopMatrix();*/
-		//
-		//
 
-		ofEnableLighting();
-		directionalLight.enable();
-		//material.begin();
 
-		ofFill();
 
-		int maxDepth = CITY_BLOCKS_ROWS * CITY_BLOCK_SIZE + 100;
-		int minDepth = maxDepth + 500;//+2000;
-		float roadLength = CITY_NUM_ROAD_PLANES * texRoad.getHeight();
+			//------------------------
+			// Terrain draw
+			//
+			/*ofPushMatrix();
+			ofRotate(90, 1, 0, 0);
+			ofTranslate(0, -10000, 0);
+			terrain.draw();
+			ofPopMatrix();*/
+			//
+			//
 
-		float road0z = roads[0].getPosition().z + 650;
-		float roadnz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
+			ofEnableLighting();
+			directionalLight.enable();
+			material.begin();
 
-		if (mode == enCityCollapsing) {
-			rotationAngle = tweenRotate.update();
-			translationCollapse = tweenTranslate.update();
+			ofFill();
 
-			float boxW = tweenBoxW.update();
-			float boxH = tweenBoxH.update();
+			int maxDepth = CITY_BLOCKS_ROWS * CITY_BLOCK_SIZE + 100;
+			int minDepth = maxDepth + 500;//+2000;
+			float roadLength = CITY_NUM_ROAD_PLANES * texRoad.getHeight();
 
-			ofPushMatrix();
-			ofTranslate(-boxW / 2, -boxH / 2, -1000);
+			float road0z = roads[0].getPosition().z + 650;
+			float roadnz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 
-			ofSetColor(0);
-			ofRect(0, 0, boxW, boxH);
+			if (mode == enCityCollapsing) {
+				rotationAngle = tweenRotate.update();
+				translationCollapse = tweenTranslate.update();
 
-			ofPopMatrix();
+				float boxW = tweenBoxW.update();
+				float boxH = tweenBoxH.update();
 
-		}
+				ofPushMatrix();
+				ofTranslate(-boxW / 2, -boxH / 2, -1000);
 
-		ofSetColor(255);
-		/*ofPushMatrix();
-		ofTranslate(0, 0, translationCollapse);*/
-		if (mode != enCityCollapsed) {
+				ofSetColor(0);
+				ofRect(0, 0, boxW, boxH);
 
-			if (mode == enCityExplosion || forceShader) {
-				shader.begin();
+				ofPopMatrix();
 
-				//we want to pass in some varrying values to animate our type / color 
-				shader.setUniform1f("phase", ofMap(mouseX - ofGetWidth() / 2, 0, ofGetWidth(), -3, 3));
-				shader.setUniform1f("distortAmount", ofMap(ofGetHeight() / 2 - mouseY, 0, ofGetHeight(), -1, 1));
 			}
 
-			for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
-				ofBuilding building = *buildingIt;
-				if (building.position.z < road0z) {
-					int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
-					float alpha = ofMap(curDepth, minDepth, maxDepth, 255, 0, true);
-					ofSetColor(ofColor::white, alpha);
-					building.draw(rotationAngle, translationCollapse, alpha, bWireframe);
+			/*ofPushMatrix();
+			ofTranslate(0, 0, translationCollapse);*/
+			if (mode != enCityCollapsed) {
+
+				for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
+					ofBuilding building = *buildingIt;
+					if (building.position.z < road0z) {
+						int curDepth = building.position.z + roadLength + curDistance - CITY_BLOCK_SIZE;
+						float alpha = ofMap(curDepth, minDepth, maxDepth, 255, 0, true);
+						ofSetColor(ofColor::white, alpha);
+						building.draw(rotationAngle, translationCollapse, alpha, bWireframe);
+					}
+
 				}
-
 			}
 
-			if (mode == enCityExplosion || forceShader) {
-				shader.end();
-			}
+			//ofPopMatrix();
+
+			ofFill();
+			ofSetColor(255);
+			ofSetLineWidth(1);
+
+			material.end();
+			directionalLight.disable();
+			ofDisableLighting();
+
+
+			/* Test box
+			ofSetColor(ofColor::red);
+			ofBoxPrimitive box = ofBoxPrimitive(100,500,100);
+			box.setPosition(0,0,0);
+			box.drawWireframe();*/
+			ofDisableDepthTest();
+			ofDisableAlphaBlending();
+
 		}
-		
-		//ofPopMatrix();
-
-		ofFill();
-		ofSetColor(255);
-		ofSetLineWidth(1);
-
-		//material.end();
-		directionalLight.disable();
-		ofDisableLighting();
-
-		if (mode == enCityExplosion || forceShader) {
-			shader.end();
+		break;
 		}
-		/* Test box
-		ofSetColor(ofColor::red);
-		ofBoxPrimitive box = ofBoxPrimitive(100,500,100);
-		box.setPosition(0,0,0);
-		box.drawWireframe();*/
-		ofDisableDepthTest();
-		ofDisableAlphaBlending();
-
 
 		ofPopMatrix();
-
-
-		break;
 	}
 
 
@@ -675,11 +681,13 @@ void ofxCity::draw() {
 		gui.draw();
 	}
 
-	stringstream ss;
-	ss << "FPS : " + ofToString(ofGetFrameRate());
-	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+	
 
 	if (debugFbo) {
+
+		stringstream ss;
+		ss << "FPS : " + ofToString(ofGetFrameRate());
+		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 
 		for (int x = 0; x < CITY_BLOCKS_COLS; x++) {
 			for (int y = 0; y < CITY_BLOCKS_ROWS; y++) {
@@ -723,12 +731,17 @@ void ofxCity::keyPressed(int key) {
 	switch (key)
 	{
 	case ' ':
-		mode = (mode + 1) % 6;
+		mode = (mode + 1) % 9;
 		setMode(mode);
 		break;
 	case 'p': bUpdateParamsFromCode = !bUpdateParamsFromCode; break;
+	case 'P': captureCam(); break;
 	case 'r': setup(); break;
-	case 'l': gui.loadFromFile(CITY_SETTINGS_FILE); break;
+        case 'l': {
+            gui.loadFromFile(CITY_SETTINGS_FILE);
+            ofSeedRandom(123456);
+            setupTextures();
+        } break;
 	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
 	case 'h':
 		bShowGui = !bShowGui;
@@ -748,9 +761,6 @@ void ofxCity::keyPressed(int key) {
 	case 'b':
 		updateBlocks(1);
 		break;
-	case 't':
-		setupTerrain();
-		break;
 	case '<':
 		blockProbability = ofClamp(blockProbability - 0.1, 0, 1);
 		break;
@@ -761,7 +771,7 @@ void ofxCity::keyPressed(int key) {
 		autoGenerateBuildings = !autoGenerateBuildings;
 		break;
 	case 'e':
-		forceShader = !forceShader;
+		//forceShader = !forceShader;
 		break;
 	default:
 		break;
@@ -781,7 +791,7 @@ void ofxCity::setMode(int mode) {
 		break;
 	case enCityBuildings:
 		autoGenerateBuildings = true;
-		break;	
+		break;
 	case enCityCollapsing:
 	{
 		float lowestZ = 100000;
@@ -793,7 +803,7 @@ void ofxCity::setMode(int mode) {
 		}
 		float diffZ = highestZ - lowestZ;
 
-		int collapseTimeMs = 9000;
+		int collapseTimeMs = 15000;
 		tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
 
 		float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
@@ -811,11 +821,20 @@ void ofxCity::setMode(int mode) {
 		tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
 	}
 	break;
+        case enCityAgain: {
+            gui.loadFromFile(CITY_SETTINGS_FILE);
+            setupTextures();
+            bUpdateParamsFromCode = true;
+            
+        } break;
 	case enCityExplosion: {
-		decelerate(2000, true);
-		int i = 0;
-		}
-		break;
+		setupExplosion();
+	}
+						  break;
+        case enCityLine: {
+            ofApp *app = (ofApp *)ofxGetAppPtr();
+            app->cam.reset();
+        } break;
 	}
 	cout << ofToString(mode) << endl;
 }

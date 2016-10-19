@@ -31,11 +31,14 @@
 
 
 enum CITY_MODE { enCityIdle = 0, 
-	enCityStart,	// road appearance, opacity
-	enCityBuildings,
-	enCityCollapsing,
-	enCityCollapsed,
-	enCityExplosion,
+	enCityStart = 1,	// road appearance, opacity
+	enCityBuildings = 2,
+	enCityCollapsing = 3,
+	enCityCollapsed = 4,
+    enCityAgain = 5,
+    enCityExplosion = 6,
+    enCityBlank = 7,
+	enCityLine = 8
 };
 
 #define CITY_SETTINGS_FILE  "city_settings.xml"
@@ -69,15 +72,16 @@ private:
 
 	void setupTextures();
 	void setupRoad();
-	void setupTerrain();
 	void updateRoad(bool createNewRow);
-	void updateShader();
+	void setupExplosion();
+	void updateExplosion();
+	void drawExplosion();
 	void setupBlocks();
 	void updateBlocks(int createRowsCount = 1);
 	void translateBlocksHeights();
+	void captureCam();
 
 	void generateBlockSide(bool isLeftSide, int nowRowForced = 0); // 0 means not forced
-	void generateBlock_TheBigOne(); // huge building covering EVERYTHING, including you and the audience
 
 	void accelerate(int duration = 2000);
 	void decelerate(int duration = 2000, bool stop = false);
@@ -85,10 +89,6 @@ private:
 
 	// road
 	vector<ofPlanePrimitive> roads;
-	ofVboMesh terrain;
-	vector<float> heightMap;
-	float genNoise2(const int x, const int y);
-	int indexFromXY(const int x, const int y, const int totalHeight);
 	ofFbo fboRoad;
 	ofTexture texRoad;
 
@@ -136,15 +136,11 @@ private:
 	bool bGuiLoaded;
 	
 	// transitions
+	ofxTween explosionTween;
 	ofxTween tween;
 	ofxTween tweenRoadOpactity;	
 	ofxTween tweenTranslate;
 	ofxTween tweenRotate;
-
-	// explosion
-	ofShader shader;	//Shader
-
-	bool forceShader;
 
 	ofxTween tweenBoxW;
 	ofxTween tweenBoxH;

@@ -15,9 +15,9 @@
 class ofxVideoScene : public ofxFadeScene
 {
 public:
-	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool boxed = false, bool hFlip = false, bool loop = true) :
+	ofxVideoScene(string fileName, string prefix = "scene", bool autoPlay = false, bool fillScreen = true, bool hFlip = false, bool loop = true) :
 		ofxFadeScene(prefix + ": " + "VideoScene " + fileName )
-		, fileName(fileName), autoPlay(autoPlay), boxed(boxed), horizontalFlip(hFlip), autoLoop(loop) {
+		, fileName(fileName), autoPlay(autoPlay), fillScreen(fillScreen), horizontalFlip(hFlip), autoLoop(loop) {
 			setSingleSetup(false); // call setup each time the scene is loaded
 			setFade(0,0);
 		}
@@ -32,26 +32,11 @@ public:
 	string fileName;
 	bool autoPlay;
     bool autoLoop;
-	bool boxed;
+	bool fillScreen;
 	float aspectRatio;
 
 	bool horizontalFlip;
 
-	bool tweenEnabled;
-	// transitions
-	ofxTween tween;
-    
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
 
 };
 

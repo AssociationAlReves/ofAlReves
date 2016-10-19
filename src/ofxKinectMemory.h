@@ -13,6 +13,7 @@
 #include "ofxGui.h"
 #include "ofxCv.h"
 #include "ofxKinect.h"
+#include "ofxQuadWarp.h"
 
 
 class ofxKinectMemory : public ofxScene
@@ -70,18 +71,25 @@ private:
 
 	ofParameter<ofColor> lineColor;
 
-
 	ofParameterGroup cvGroup;
 	ofParameterGroup appGroup;
 	ofParameterGroup debugGroup;
+    
+    
+    ofParameter<ofVec3f> camOrientation;
+    ofParameter<ofVec3f> camPosition;
 
-	map<int,list<vector<cv::Point>>> actors;	
+	map<int,list<vector<cv::Point> > > actors;
 	map<int,ofPolyline> actorsHullUnion;
 	ofPolyline bigHull2Actors;
 	bool bDrawJoinedActors;
 
 	ofFbo fboWhite;
 	ofFbo fboBlack;
+
+	// warp
+	ofxQuadWarp warper;
+	bool forceWarpOff;
 
 };
 

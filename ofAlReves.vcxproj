@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ofxCityPingPong.cpp" />
+    <ClCompile Include="src\ofxQuadWarp.cpp" />
     <ClCompile Include="src\ofxVideoMirror.cpp" />
     <ClCompile Include="src\ofBuilding.cpp" />
     <ClCompile Include="src\ofxBgScene.cpp" />
@@ -247,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofxCityPingPong.h" />
+    <ClInclude Include="src\ofxQuadWarp.h" />
     <ClInclude Include="src\ofxVideoMirror.h" />
     <ClInclude Include="src\ofBuilding.h" />
     <ClInclude Include="src\ofxBgScene.h" />

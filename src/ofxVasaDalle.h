@@ -41,7 +41,7 @@ public:
 	}
 
 	void setup(int dalleSize);
-	void update();
+	void update(bool skipLifeTimeCheck);
 	void draw();
 
 	int x,y;

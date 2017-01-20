@@ -135,6 +135,9 @@ private:
 	bool bShowGui;
 	bool bGuiLoaded;
 	
+	ofVec3f prevCamTranslate, curCamTranslate;
+	ofVec3f prevCamRot, curCamRot;
+	
 	// transitions
 	ofxTween explosionTween;
 	ofxTween tween;

@@ -54,20 +54,20 @@ void ofApp::setupSceneManager() {
 
 	// load scenes
 
-	
+
 	int i = 0;
 #if __APPLE__
 
 	// Bellegarde (spectacle + ateliers Vasarely)
-	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCity(IntToString(i++)));																									postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																					postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																					postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinecticon(IntToString(i++)));																						postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxTerrain(IntToString(i++)));																								postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));																	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));																postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxCity(IntToString(i++)));																		postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxTerrain(IntToString(i++)));																		postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
 
 #else
 
@@ -260,7 +260,7 @@ void ofApp::keyPressed(int key) {
 	case OF_KEY_F9:  sceneManager.gotoScene(8); break;
 	case OF_KEY_F10: sceneManager.gotoScene(9); break;
 	case OF_KEY_F11: sceneManager.gotoScene(10); break;
-    case OF_KEY_F12: sceneManager.gotoScene(11); break;
+	case OF_KEY_F12: sceneManager.gotoScene(11); break;
 	case OF_KEY_BACKSPACE:
 		sceneManager.noScene();
 		break;

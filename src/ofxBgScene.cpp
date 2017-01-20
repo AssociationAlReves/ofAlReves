@@ -16,7 +16,7 @@ void ofxBgScene::draw() {
 	ofColor endColor;
 
 	if (bBlack) {
-		ofClear(ofColor::white);
+		ofClear(ofColor::black);
 	}
 	else
 	{

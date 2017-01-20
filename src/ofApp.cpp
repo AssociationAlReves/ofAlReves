@@ -133,6 +133,7 @@ void ofApp::setupSceneManager() {
 	// Bellegarde (PC - top without kinect)
 
 	sceneManager.add(new ofxBgScene(false, true, IntToString(i++)));												postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxTerrain(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCity(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));														postEnabledByScene[i - 1] = false;
 	sceneManager.add(new ofxVideoScene("interlude.mov", IntToString(i++), false, false, false, false));	postEnabledByScene[i - 1] = false;

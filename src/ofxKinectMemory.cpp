@@ -527,8 +527,16 @@ void ofxKinectMemory::keyPressed(int key) {
     case 'm':
             app->cam.enableMouseInput();
             break;
-        case '>' : farThreshold += 0.5; break;
-        case '<': farThreshold -= 0.5; break;
+	case 'C':
+		kinect.setCameraTiltAngle(0); // zero the tilt on exit
+		kinect.close();
+		break;
+	case 'O':
+		kinect.open();
+		kinect.setCameraTiltAngle(angle);
+		break;
+	case '>' : farThreshold += 0.5; break;
+	case '<': farThreshold -= 0.5; break;
 	}
 
 	if (key == 'W') {

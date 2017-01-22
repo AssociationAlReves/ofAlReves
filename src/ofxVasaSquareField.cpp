@@ -162,7 +162,7 @@ void ofxVasaSquareField::update(){
 void ofxVasaSquareField::draw(){
 	
 	ofDisableAlphaBlending();
-
+	ofClear(0);
 	ofSetColor(0,alpha);ofFill();
 	ofRect(0,0,0,ofGetWidth(),ofGetHeight());
 	ofSetColor(255,alpha);

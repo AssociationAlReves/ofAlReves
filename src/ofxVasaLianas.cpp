@@ -1,15 +1,27 @@
 #include "ofxVasaLianas.h"
 #include "ofApp.h"
 
+
 using namespace ofxCv;
 using namespace cv;
 
 
 //--------------------------------------------------------------
 void ofxVasaLianas::setup() {
-	
+
+	initGui();
+	initLianas();
+	initKinect();
+
+}
+
+//--------------------------------------------------------------
+void ofxVasaLianas::initGui() {
+
 	gui.setup("panel", LIANAS_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
 
+	//---------------------------------------------------
+	/// Lianas
 	zebraParams.setName("Main");
 	zebraParams.add(randomNodes.set("randomNodes", true));
 	zebraParams.add(lockX.set("lockX", false));
@@ -20,7 +32,6 @@ void ofxVasaLianas::setup() {
 	zebraParams.add(gravity.set("gravity", 0, -1, 1));
 	zebraParams.add(springLineWidth.set("lineWidth", 2, 0, 20));
 	gui.add(zebraParams);
-
 
 	nodeParams.setName("Nodes");
 	nodeParams.add(nodeRadius.set("nodeRadius", 100, 1, 200));
@@ -43,6 +54,23 @@ void ofxVasaLianas::setup() {
 	repulsionParams.add(repulsionStrength.set("rep.Strength", 5, -1500, 1500));
 	gui.add(repulsionParams);
 
+	//---------------------------------------------------
+	/// Kinect-related
+	cvGroup.setName("OpenCV");
+	cvGroup.add(nearThreshold.set("nearThreshold", 255, 0, 255));
+	cvGroup.add(farThreshold.set("farThreshold", 213, 0, 255));
+	cvGroup.add(thresholdParam.set("threshold", 13, 0, 255));
+	cvGroup.add(contourMinArea.set("contourMinArea", 1, 0, 640));
+	cvGroup.add(contourMaxArea.set("contourMaxArea", 800, 0, 640));
+	cvGroup.add(blurSize.set("blurSize", 10, 0, 50));
+	cvGroup.add(maximumDistance.set("maximumDistance", 32, 0, 300));
+	cvGroup.add(persistence.set("persistence", 15, 0, 100));
+	gui.add(cvGroup);
+
+	debugGroup.setName("debug");
+	debugGroup.add(bShowLabels.set("ShowLabels", true));
+	debugGroup.add(bShowImages.set("ShowImages", true));
+	gui.add(debugGroup);
 	bShowGui = false;
 
 	initLianas();
@@ -90,6 +118,23 @@ void ofxVasaLianas::initLianas() {
 	}
 
 
+}
+
+//--------------------------------------------------------------
+void ofxVasaLianas::initKinect() {
+
+	// enable depth->video image calibration
+	kinect.setRegistration(true);
+	kinect.init();
+	kinect.open();		// opens first available kinect
+						// print the intrinsic IR sensor values
+	if (kinect.isConnected()) {
+		ofLogNotice() << "sensor-emitter dist: " << kinect.getSensorEmitterDistance() << "cm";
+		ofLogNotice() << "sensor-camera dist:  " << kinect.getSensorCameraDistance() << "cm";
+		ofLogNotice() << "zero plane pixel size: " << kinect.getZeroPlanePixelSize() << "mm";
+		ofLogNotice() << "zero plane dist: " << kinect.getZeroPlaneDistance() << "mm";
+	}
+	bKinectFrameReady = false;
 }
 
 //--------------------------------------------------------------
@@ -142,12 +187,17 @@ void ofxVasaLianas::draw() {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::updateExit() {
+	closeKinect();
+	finishedExiting();
 }
 //--------------------------------------------------------------
 void ofxVasaLianas::exit() {
+	closeKinect();
 }
 //--------------------------------------------------------------
 void ofxVasaLianas::closeKinect() {
+	kinect.setCameraTiltAngle(0); // zero the tilt on exit
+	kinect.close();
 }
 
 
@@ -158,6 +208,24 @@ void ofxVasaLianas::keyPressed(int key) {
 	case 'h': bShowGui = !bShowGui; break;
 	case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE); break;
 	case 's': gui.saveToFile(LIANAS_SETTINGS_FILE); break;
+	case OF_KEY_UP:
+		angle++;
+		if (angle > 30) angle = 30;
+		kinect.setCameraTiltAngle(angle);
+		break;
+	case OF_KEY_DOWN:
+		angle--;
+		if (angle < -30) angle = -30;
+		kinect.setCameraTiltAngle(angle);
+		break;
+	case 'C':
+		kinect.setCameraTiltAngle(0); // zero the tilt on exit
+		kinect.close();
+		break;
+	case 'O':
+		kinect.open();
+		kinect.setCameraTiltAngle(angle);
+		break;
 	//case 'C': cam.enableMouseInput(); break;
 	//case 'c': cam.disableMouseInput(); break;
 	}

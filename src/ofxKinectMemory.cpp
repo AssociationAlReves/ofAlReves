@@ -38,7 +38,6 @@ void ofxKinectMemory::setup() {
 
 	//-----------------------------------------
 	// FBOs
-
 	fboWhite.allocate(ofGetScreenWidth(), ofGetScreenHeight(), GL_RGBA32F_ARB);
 	fboBlack.allocate(ofGetScreenWidth(), ofGetScreenHeight(), GL_RGBA32F_ARB);
 	/*

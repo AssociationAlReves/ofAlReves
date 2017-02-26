@@ -44,6 +44,9 @@ public:
 
 private:
 
+	void initGui();
+	void initKinect();
+
 	/*-------------------------------------------------------*/
 	/* LIANAS */
 	void initLianas();
@@ -105,23 +108,12 @@ private:
 
 	ofParameter<bool> bShowLabels;
 	ofParameter<bool> bShowImages;
-	ofParameter<bool> bStartMemory;
 	ofParameter<float> maximumDistance;
 	ofParameter<float> persistence;
-	ofParameter<float> fadeAmnt;
 
-	ofParameter<bool> blackScreen;
-	ofParameter<bool> antiAlias;
-	ofParameter<float> lineWidth;
-
-	ofParameter<ofColor> lineColor;
 
 	ofParameterGroup cvGroup;
-	ofParameterGroup appGroup;
 	ofParameterGroup debugGroup;
-
-	ofParameter<ofVec3f> camOrientation;
-	ofParameter<ofVec3f> camPosition;
 
 	map<int, list<vector<cv::Point> > > actors;
 	map<int, ofPolyline> actorsHullUnion;

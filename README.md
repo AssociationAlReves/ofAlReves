@@ -40,7 +40,6 @@ Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to 
  - ofxAppUtils
  - ofxCv
  - ofxTween
- - ofxUI
  - ofxKinect
 
 # Prerequisites for Windows

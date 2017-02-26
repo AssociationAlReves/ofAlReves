@@ -565,7 +565,16 @@ void ofxKinectMemory::keyPressed(int key) {
 }
 
 //--------------------------------------------------------------
+void ofxKinectMemory::updateExit() {
+	closeKinect();
+	finishedExiting();
+}
+//--------------------------------------------------------------
 void ofxKinectMemory::exit() {
+	closeKinect();
+}
+//--------------------------------------------------------------
+void ofxKinectMemory::closeKinect() {
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 }

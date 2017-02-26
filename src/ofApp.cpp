@@ -23,12 +23,6 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
-
-	post.init(ofGetWidth(), ofGetHeight());
-	post.createPass<FxaaPass>();
-	post.createPass<FxaaPass>();
-	post.createPass<BloomPass>();
-
 }
 
 //--------------------------------------------------------------
@@ -59,28 +53,21 @@ void ofApp::setupSceneManager() {
 #if __APPLE__
 
 	// Bellegarde (spectacle + ateliers Vasarely)
-	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCity(IntToString(i++)));																		postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxTerrain(IntToString(i++)));																		postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
+	sceneManager.add(new ofxCity(IntToString(i++)));																		
+	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																
+	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													
+	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																
+	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	
+	sceneManager.add(new ofxTerrain(IntToString(i++)));																		
+	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														
+	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														
 
 #else
 
 	// Bellegarde (spectacle + ateliers Vasarely)
-	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCity(IntToString(i++)));																									postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																					postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVideoScene("deboval.mp4", IntToString(i++), false, false, false, false));	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));														postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxKinecticon(IntToString(i++)));																						postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxTerrain(IntToString(i++)));																								postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));																	postEnabledByScene[i - 1] = false;
-	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));																postEnabledByScene[i - 1] = false;
+	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
 
 #endif
 	//sceneManager.add(new ofxTerrain());
@@ -148,13 +135,10 @@ void ofApp::draw() {
 	ofClear(255);
 	ofEnableAntiAliasing();
 
-	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
-		post.begin(cam);
-	}
-	else {
+	
 		ofEnableAntiAliasing();
 		cam.begin();
-	}
+
 	ofPushMatrix();
 
 
@@ -163,12 +147,10 @@ void ofApp::draw() {
 	sceneManager.draw();
 
 	ofPopMatrix();
-	if (postEnabledByScene[sceneManager.getCurrentSceneIndex()]) {
-		post.end();
-	}
-	else {
+	
+	
 		cam.end();
-	}
+
 
 	// drop out of the auto transform space back to OF screen space
 	transformer.pop();

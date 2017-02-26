@@ -14,6 +14,7 @@
 #include "ofxCity.h"
 #include "ofxVideoMirror.h"
 #include "ofxCityPingPong.h"
+#include "ofxVasaLianas.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 //#include "ofxKinectListener.h"

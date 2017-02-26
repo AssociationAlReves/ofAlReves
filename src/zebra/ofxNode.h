@@ -44,15 +44,15 @@ public:
 	float maxZ;
 
 	bool locked; // if true, node can't move (liana top node)
-	/**
-	* Velocity vector (speed)
-	*/
+				 /**
+				 * Velocity vector (speed)
+				 */
 	ofVec3f *velocity;
 	ofVec3f previousVelocity;
 	ofVec3f repulsionForce; // test: no subject to X/Y/Z locks
-	/**
-	* Maximum length of the velocity vector (default = 10)
-	*/
+							/**
+							* Maximum length of the velocity vector (default = 10)
+							*/
 	float maxVelocity;
 	/**
 	* Damping of the velocity: 0=no damping, 1=full damping (default = 0.5)

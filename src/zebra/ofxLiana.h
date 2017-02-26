@@ -38,7 +38,7 @@ public:
 
 	float xPosition;
 	bool lianaMode; // if true, nodes are placed at random
-						// if false, nodes X are all at xPosition
+					// if false, nodes X are all at xPosition
 	bool lockLastNode;
 
 	// ------ constructors ------
@@ -145,10 +145,10 @@ inline void ofxLiana::initNodesAndSprings_Liana() {
 	float spacing = height / (numNodes - 1);
 	float rad = nodeDiameter / 2.f;
 	for (int i = 0; i < numNodes; i++) {
-		bool isLocked = (i == 0) || (lockLastNode && (i == (numNodes-1)));
+		bool isLocked = (i == 0) || (lockLastNode && (i == (numNodes - 1)));
 		float xPos = xPosition
-				+ (isLocked ? 0
-					: ofRandom(-50, 50));
+			+ (isLocked ? 0
+				: ofRandom(-50, 50));
 		ofxNode *node = new ofxNode(xPos, spacing * i, isLocked);
 		// use this for 3D
 		//node->setBoundary(rad, rad, rad, width - rad, height - rad, width - rad);
@@ -185,7 +185,7 @@ inline void ofxLiana::setup() {
 	}
 }
 inline void ofxLiana::update(bool theLockX, bool theLockY, bool theLockZ) {
-	
+
 	// let all nodes repel each other
 	for (int i = 0; i < nodes.size(); i++) {
 		if (bRepulse) {

@@ -131,7 +131,9 @@ void ofxVasaLianas::draw() {
 		lianas[i]->draw();
 	}
 	//cam.end();
-
+	stringstream ss;
+	ss << "FPS : " + ofToString(ofGetFrameRate());
+	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 	if (bShowGui)
 	{
 		gui.draw();

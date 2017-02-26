@@ -9,6 +9,31 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofxVasaLianas::setup() {
 
+	forceWarpOff = false;
+
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+	int x = (ofGetWidth() - w) * 0.5;       // center on screen.
+	int y = (ofGetHeight() - h) * 0.5;     // center on screen.
+	bool invertWarp = false;
+	if (invertWarp) {
+		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+		warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+		warper.setBottomRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+		warper.setTopLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+		warper.setTopRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+	} else {
+		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+		warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
+		warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
+		warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
+		warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+	}
+	
+	warper.setup();
+	warper.load(); // reload last saved changes.
+	warper.toggleShow();
+
 	initGui();
 	initLianas();
 	initKinect();
@@ -64,12 +89,13 @@ void ofxVasaLianas::initGui() {
 	cvGroup.add(contourMaxArea.set("contourMaxArea", 800, 0, 640));
 	cvGroup.add(blurSize.set("blurSize", 10, 0, 50));
 	cvGroup.add(maximumDistance.set("maximumDistance", 32, 0, 300));
-	cvGroup.add(persistence.set("persistence", 15, 0, 100));
+	cvGroup.add(persistence.set("persistence", 60, 0, 100));
 	gui.add(cvGroup);
 
 	debugGroup.setName("debug");
 	debugGroup.add(bShowLabels.set("ShowLabels", true));
 	debugGroup.add(bShowImages.set("ShowImages", true));
+	debugGroup.add(angle.set("kinect angle", 0, -30, 30));
 	gui.add(debugGroup);
 	bShowGui = false;
 
@@ -135,6 +161,21 @@ void ofxVasaLianas::initKinect() {
 		ofLogNotice() << "zero plane dist: " << kinect.getZeroPlaneDistance() << "mm";
 	}
 	bKinectFrameReady = false;
+	
+	
+	//-----------------------------------
+	// contour finder
+	contourFinder.setMinAreaRadius(1);
+	contourFinder.setMaxAreaRadius(800);
+	contourFinder.setThreshold(15);
+	// wait for half a frame before forgetting something
+	contourFinder.getTracker().setPersistence(15);
+	// an object can move up to 32 pixels per frame
+	contourFinder.getTracker().setMaximumDistance(50); //32
+
+	grayImage.allocate(kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE);
+	grayImage.clear();
+
 }
 
 //--------------------------------------------------------------
@@ -164,17 +205,106 @@ void ofxVasaLianas::update() {
 		// update
 		lianas[i]->update(lockX, lockY, lockZ);
 	}
+	
+	updateKinect();
+}
+
+//--------------------------------------------------------------
+void ofxVasaLianas::updateKinect() {
+	
+	if (kinect.isConnected()) {
+		contourFinder.setMinAreaRadius(contourMinArea);
+		contourFinder.setMaxAreaRadius(contourMaxArea);
+		contourFinder.setThreshold(thresholdParam);
+		contourFinder.getTracker().setPersistence(persistence);
+		contourFinder.getTracker().setMaximumDistance(maximumDistance);
+		
+		kinect.update();
+		
+		// there is a new frame and we are connected
+		if (kinect.isFrameNew()) {
+			bKinectFrameReady = true;
+				// load grayscale depth image and color image from the kinect source
+			//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+			grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
+			//grayImage.update();
+			
+			copyGray(grayImage, grayImageNear);
+			copyGray(grayImage, grayImageFar);
+			imitate(grayImageFiltered, grayImage);
+			
+			threshold(grayImageNear, (float)nearThreshold, true);
+			threshold(grayImageFar, (float)farThreshold, false);
+			bitwise_and(grayImageNear, grayImageFar, grayImageFiltered);
+			grayImageFiltered.update();
+			
+			blur(grayImageFiltered, blurSize);
+			grayImageFiltered.update();
+			contourFinder.findContours(grayImageFiltered);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::draw() {
 
 	ofClear(0);
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	
+	
+	if (!forceWarpOff) {
+		//=======================================
+		// WARP
+		app->cam.end();
+		//======================== get our quad warp matrix.
+		ofMatrix4x4 mat = warper.getMatrix();
+		//======================== use the matrix to transform our fbo.
+		app->cam.begin();
+		glPushMatrix();
+		glMultMatrixf(mat.getPtr());
+		// ====================================
+	}
+	ofPushMatrix();
+	
+	ofScale(1, -1, 1);
+	ofTranslate(0, -ofGetScreenHeight());
+	//cam.begin();
+	//ofClear(0);
+	ofSetColor(255);
+
+
 
 	//cam.begin();
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->draw();
 	}
+	
+	drawKinect();
+	ofPopMatrix();
+	
+
+	
+	if (!forceWarpOff) {
+		//================
+		// WARP DRAW
+		glPopMatrix();
+		app->cam.end();
+		//======================== draw quad warp ui.
+		ofSetColor(ofColor::magenta);
+		warper.drawQuadOutline();
+		ofSetColor(ofColor::yellow);
+		warper.drawCorners();
+		ofSetColor(ofColor::magenta);
+		warper.drawHighlightedCorner();
+		ofSetColor(ofColor::red);
+		warper.drawSelectedCorner();
+		//======================== info.
+	}
+	else {
+		app->cam.end();
+	}
+
+	
 	//cam.end();
 	stringstream ss;
 	ss << "FPS : " + ofToString(ofGetFrameRate());
@@ -183,6 +313,72 @@ void ofxVasaLianas::draw() {
 	{
 		gui.draw();
 	}
+	app->cam.begin();
+}
+
+//--------------------------------------------------------------
+void ofxVasaLianas::drawKinect() {
+	
+	if (bKinectFrameReady) {
+		
+		RectTracker& tracker = contourFinder.getTracker();
+		
+		// delete dead actors
+		for (auto & label : tracker.getDeadLabels())
+		{
+			//cout << "Dead actor: " << label << endl;
+			actors.erase(label);
+			actorsHullUnion.erase(label);
+		}
+		// delete new actors
+		for (auto & label : tracker.getNewLabels())
+		{
+			//cout << "New actor: " << label << endl;
+			actors[label] = list<vector<cv::Point> >();
+		}
+		
+		
+		// union of all points
+		vector<cv::Point> mergedHullsTotal;
+		vector<cv::Point> HullTotal;
+		
+		// for each blob
+		for (int i = 0; i < contourFinder.size(); i++) {
+			
+			int label = contourFinder.getLabel(i);
+			
+			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
+		
+				ofPolyline polyline;
+				polyline.resize(hullPoints.size());
+				for (int hullIndex = 0; hullIndex < (int)hullPoints.size(); hullIndex++) {
+					polyline[hullIndex].x = hullPoints[hullIndex].x;
+					polyline[hullIndex].y = hullPoints[hullIndex].y;
+				}
+				polyline.close();
+				polyline.draw();
+				
+				if (bShowLabels) {
+					ofPoint center = toOf(contourFinder.getCenter(i));
+					ofPushMatrix();
+					ofTranslate(center.x, center.y);
+					string msg = ofToString(label) + ":" + ofToString(tracker.getAge(label));
+					ofDrawBitmapStringHighlight(msg, 0, 0, ofColor::white, ofColor::red);
+					ofVec2f velocity = toOf(contourFinder.getVelocity(i));
+					ofScale(5, 5);
+					ofLine(0, 0, velocity.x, velocity.y);
+					
+					ofPopMatrix();
+				}
+		} // for each blob
+		
+		
+		if (bShowImages) {
+			grayImageFiltered.draw(10, 10);
+			grayImage.draw(800, 0);
+		}
+	} // END if KINECT
+	
 }
 
 //--------------------------------------------------------------
@@ -206,7 +402,9 @@ void ofxVasaLianas::keyPressed(int key) {
 	switch (key) {
 	case 'r': initLianas(); break;
 	case 'h': bShowGui = !bShowGui; break;
-	case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE); break;
+	case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE);
+			kinect.setCameraTiltAngle(angle);
+			break;
 	case 's': gui.saveToFile(LIANAS_SETTINGS_FILE); break;
 	case OF_KEY_UP:
 		angle++;
@@ -226,9 +424,34 @@ void ofxVasaLianas::keyPressed(int key) {
 		kinect.open();
 		kinect.setCameraTiltAngle(angle);
 		break;
-	//case 'C': cam.enableMouseInput(); break;
+				//case 'C': cam.enableMouseInput(); break;
 	//case 'c': cam.disableMouseInput(); break;
 	}
+	if (key == 'W') {
+		forceWarpOff = false;
+	}
+	if (key == 'w') {
+		forceWarpOff = true;
+	}
+	if (!forceWarpOff) {
+		// WARPs
+		if (key == 'H') {
+			warper.toggleShow();
+		}
+		if (key == 'L') {
+			warper.load();
+		}
+		if (key == 'S') {
+			//					camOrientation = app->cam.getOrientationEuler();
+			//					camPosition = app -> cam.getPosition();
+			gui.saveToFile(LIANAS_SETTINGS_FILE);
+			
+			warper.save();
+		}
+		
+	}
+	
+
 
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->keyPressed(key);

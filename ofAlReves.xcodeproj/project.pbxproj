@@ -31,6 +31,7 @@
 		256EA3081DB14B590037FAC0 /* ofxCityPingPong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA3051DB14B590037FAC0 /* ofxCityPingPong.cpp */; settings = {ASSET_TAGS = (); }; };
 		256EA30B1DB14B640037FAC0 /* ofxVideoMirror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA3091DB14B640037FAC0 /* ofxVideoMirror.cpp */; settings = {ASSET_TAGS = (); }; };
 		256EA30E1DB14BD70037FAC0 /* ofxKinectMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA30C1DB14BD70037FAC0 /* ofxKinectMemory.cpp */; settings = {ASSET_TAGS = (); }; };
+		256F14461E637F25002630B7 /* ofxVasaLianas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256F14441E637F25002630B7 /* ofxVasaLianas.cpp */; settings = {ASSET_TAGS = (); }; };
 		25878B601CBEF2430068D9B0 /* ofxOcean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */; settings = {ASSET_TAGS = (); }; };
 		25B93C8B1DB1C6D2008B6B31 /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25B93C891DB1C6D2008B6B31 /* ofxQuadWarp.cpp */; settings = {ASSET_TAGS = (); }; };
 		25BE30A41B57E3A100A59A5E /* ofxVasaCubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25BE30A21B57E3A100A59A5E /* ofxVasaCubeMesh.cpp */; };
@@ -219,6 +220,11 @@
 		256EA30A1DB14B640037FAC0 /* ofxVideoMirror.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoMirror.h; sourceTree = "<group>"; };
 		256EA30C1DB14BD70037FAC0 /* ofxKinectMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinectMemory.cpp; sourceTree = "<group>"; };
 		256EA30D1DB14BD70037FAC0 /* ofxKinectMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinectMemory.h; sourceTree = "<group>"; };
+		256F14411E637F17002630B7 /* ofxLiana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxLiana.h; path = zebra/ofxLiana.h; sourceTree = "<group>"; };
+		256F14421E637F17002630B7 /* ofxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxNode.h; path = zebra/ofxNode.h; sourceTree = "<group>"; };
+		256F14431E637F17002630B7 /* ofxSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxSpring.h; path = zebra/ofxSpring.h; sourceTree = "<group>"; };
+		256F14441E637F25002630B7 /* ofxVasaLianas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVasaLianas.cpp; sourceTree = "<group>"; };
+		256F14451E637F25002630B7 /* ofxVasaLianas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVasaLianas.h; sourceTree = "<group>"; };
 		25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOcean.cpp; sourceTree = "<group>"; };
 		25878B5F1CBEF2430068D9B0 /* ofxOcean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOcean.h; sourceTree = "<group>"; };
 		25B93C891DB1C6D2008B6B31 /* ofxQuadWarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQuadWarp.cpp; sourceTree = "<group>"; };
@@ -707,6 +713,9 @@
 		2521C7C41B3CA6E100DD4394 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				256F14441E637F25002630B7 /* ofxVasaLianas.cpp */,
+				256F14451E637F25002630B7 /* ofxVasaLianas.h */,
+				256F14401E637F05002630B7 /* zebra */,
 				256EA30C1DB14BD70037FAC0 /* ofxKinectMemory.cpp */,
 				256EA30D1DB14BD70037FAC0 /* ofxKinectMemory.h */,
 				256EA3091DB14B640037FAC0 /* ofxVideoMirror.cpp */,
@@ -763,6 +772,16 @@
 				256EA3061DB14B590037FAC0 /* ofxCityPingPong.h */,
 			);
 			name = city;
+			sourceTree = "<group>";
+		};
+		256F14401E637F05002630B7 /* zebra */ = {
+			isa = PBXGroup;
+			children = (
+				256F14411E637F17002630B7 /* ofxLiana.h */,
+				256F14421E637F17002630B7 /* ofxNode.h */,
+				256F14431E637F17002630B7 /* ofxSpring.h */,
+			);
+			name = zebra;
 			sourceTree = "<group>";
 		};
 		2C171637C399A50881F147E9 /* libusb-1.0 */ = {
@@ -1539,6 +1558,7 @@
 				9266028E1AECBB027ABF64D8 /* ofxEasing.cpp in Sources */,
 				5E0DBDE5736DEB3A5886B3F1 /* ofxEasingBack.cpp in Sources */,
 				EAD3CE0789481F975F351F39 /* ofxEasingBounce.cpp in Sources */,
+				256F14461E637F25002630B7 /* ofxVasaLianas.cpp in Sources */,
 				27765D1BFF26BD9A6186915F /* ofxEasingCirc.cpp in Sources */,
 				25F1B5E51B388B74009F2794 /* ofxVasaDalle.cpp in Sources */,
 				E816D7D242D315FB53E23F54 /* ofxEasingCubic.cpp in Sources */,
@@ -1695,7 +1715,7 @@
 					../../../addons/ofxPostProcessing/libs,
 					../../../addons/ofxPostProcessing/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",
@@ -1792,7 +1812,7 @@
 					../../../addons/ofxPostProcessing/libs,
 					../../../addons/ofxPostProcessing/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",

@@ -15,9 +15,9 @@
 #include "ofxKinect.h"
 #include "ofxQuadWarp.h"
 
-#include "zebra\ofxLiana.h"
-#include "zebra\ofxNode.h"
-#include "zebra\ofxSpring.h"
+#include "ofxLiana.h"
+#include "ofxNode.h"
+#include "ofxSpring.h"
 
 const string LIANAS_SETTINGS_FILE = "lianas.xml";
 
@@ -30,7 +30,9 @@ public:
 
 	void setup();
 	void update();
+	void updateKinect();
 	void draw();
+	void drawKinect();
 	void exit();
 	void updateExit();
 	void closeKinect();

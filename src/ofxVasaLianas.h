@@ -48,6 +48,9 @@ private:
 
 	void initGui();
 	void initKinect();
+	
+	void setupKinectWarp(bool shift, bool alt, int x, int y);
+	
 
 	/*-------------------------------------------------------*/
 	/* LIANAS */
@@ -55,7 +58,8 @@ private:
 
 	vector<ofxLiana*> lianas; 
 	ofParameterGroup zebraParams;
-	ofParameter<bool> randomNodes, lockX, lockY, lockZ;
+	ofParameter<bool> randomNodes, lockX, lockY, lockZ, kinectWarp, easyCamMouse;
+	ofParameter<float> kwScaleX, kwScaleY, kwX, kwY;
 
 	ofParameter<bool> lockLastNode;
 	ofParameter<int> numLianas;
@@ -109,7 +113,7 @@ private:
 	ofParameter<int> angle;
 
 	ofParameter<bool> bShowLabels;
-	ofParameter<bool> bShowImages;
+	ofParameter<bool> bShowDepth, bShowFilteredDepth;
 	ofParameter<float> maximumDistance;
 	ofParameter<float> persistence;
 
@@ -118,13 +122,7 @@ private:
 	ofParameterGroup debugGroup;
 
 	map<int, list<vector<cv::Point> > > actors;
-	map<int, ofPolyline> actorsHullUnion;
-	ofPolyline bigHull2Actors;
-	bool bDrawJoinedActors;
-
-	ofFbo fboWhite;
-	ofFbo fboBlack;
-
+	map<int, ofPolyline> actorsHulls;
 	// warp
 	ofxQuadWarp warper;
 	bool forceWarpOff;

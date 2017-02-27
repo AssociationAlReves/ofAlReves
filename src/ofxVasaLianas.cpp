@@ -9,13 +9,13 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofxVasaLianas::setup() {
 
-	forceWarpOff = false;
+	forceWarpOff = true;
 
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 	int x = (ofGetWidth() - w) * 0.5;       // center on screen.
 	int y = (ofGetHeight() - h) * 0.5;     // center on screen.
-	bool invertWarp = false;
+	bool invertWarp = true;
 	if (invertWarp) {
 		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
 		warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
@@ -94,8 +94,16 @@ void ofxVasaLianas::initGui() {
 
 	debugGroup.setName("debug");
 	debugGroup.add(bShowLabels.set("ShowLabels", true));
-	debugGroup.add(bShowImages.set("ShowImages", true));
+	debugGroup.add(bShowDepth.set("bShowDepth", false));
+	debugGroup.add(bShowFilteredDepth.set("bShowFilteredDepth", false));
 	debugGroup.add(angle.set("kinect angle", 0, -30, 30));
+	debugGroup.add(kwScaleX.set("kinect warp sX", 1,1,3));
+	debugGroup.add(kwScaleY.set("kinect warp sY", 1,1,3));
+	debugGroup.add(kwX.set("kinect X", 0,-50,50));
+	debugGroup.add(kwY.set("kinect Y", 0,-50,50));
+	debugGroup.add(kinectWarp.set("kinect warp", false));
+	debugGroup.add(easyCamMouse.set("easyCamMouse", true));
+	
 	gui.add(debugGroup);
 	bShowGui = false;
 
@@ -250,60 +258,48 @@ void ofxVasaLianas::draw() {
 
 	ofClear(0);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	
-	
-	if (!forceWarpOff) {
-		//=======================================
-		// WARP
-		app->cam.end();
-		//======================== get our quad warp matrix.
-		ofMatrix4x4 mat = warper.getMatrix();
-		//======================== use the matrix to transform our fbo.
-		app->cam.begin();
-		glPushMatrix();
-		glMultMatrixf(mat.getPtr());
-		// ====================================
+	if (easyCamMouse) {
+		app->cam.enableMouseInput();
+	} else {
+		app->cam.disableMouseInput();
 	}
-	ofPushMatrix();
 	
-	ofScale(1, -1, 1);
-	ofTranslate(0, -ofGetScreenHeight());
+	//ofScale(1, -1, 1);
+	//ofTranslate(0, ofGetScreenHeight());
 	//cam.begin();
 	//ofClear(0);
 	ofSetColor(255);
-
-
-
+	
+	
+	
 	//cam.begin();
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->draw();
 	}
 	
+	ofPushMatrix();
+	
+	ofScale(kwScaleX, kwScaleY);
+	ofTranslate(kwX, kwY);
+	
 	drawKinect();
+	
+	if (kinectWarp) {
+		ofSetColor(255);
+		ofSetLineWidth(5);
+		ofLine(0,0,kinect.width,0);
+		ofLine(kinect.width, 0, kinect.width, kinect.height);
+		ofLine(kinect.width, kinect.height,0, kinect.height);
+		ofLine(0, kinect.height, 0, 0);
+		ofSetLineWidth(1);
+	}
+	
 	ofPopMatrix();
 	
-
 	
-	if (!forceWarpOff) {
-		//================
-		// WARP DRAW
-		glPopMatrix();
-		app->cam.end();
-		//======================== draw quad warp ui.
-		ofSetColor(ofColor::magenta);
-		warper.drawQuadOutline();
-		ofSetColor(ofColor::yellow);
-		warper.drawCorners();
-		ofSetColor(ofColor::magenta);
-		warper.drawHighlightedCorner();
-		ofSetColor(ofColor::red);
-		warper.drawSelectedCorner();
-		//======================== info.
-	}
-	else {
-		app->cam.end();
-	}
-
+	
+	app->cam.end();
+	
 	
 	//cam.end();
 	stringstream ss;
@@ -328,7 +324,7 @@ void ofxVasaLianas::drawKinect() {
 		{
 			//cout << "Dead actor: " << label << endl;
 			actors.erase(label);
-			actorsHullUnion.erase(label);
+			actorsHulls.erase(label);
 		}
 		// delete new actors
 		for (auto & label : tracker.getNewLabels())
@@ -337,19 +333,20 @@ void ofxVasaLianas::drawKinect() {
 			actors[label] = list<vector<cv::Point> >();
 		}
 		
-		
-		// union of all points
-		vector<cv::Point> mergedHullsTotal;
-		vector<cv::Point> HullTotal;
-		
 		// for each blob
 		for (int i = 0; i < contourFinder.size(); i++) {
 			
 			int label = contourFinder.getLabel(i);
-			
+			contourFinder.getCentroid(i);
 			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
 		
-				ofPolyline polyline;
+			cv::Point2f centroid = contourFinder.getCentroid(i);
+				for (int i = 0; i < lianas.size(); i++) {
+					lianas[i]->mouseMoved(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
+				}
+			
+			
+			ofPolyline polyline;
 				polyline.resize(hullPoints.size());
 				for (int hullIndex = 0; hullIndex < (int)hullPoints.size(); hullIndex++) {
 					polyline[hullIndex].x = hullPoints[hullIndex].x;
@@ -357,7 +354,7 @@ void ofxVasaLianas::drawKinect() {
 				}
 				polyline.close();
 				polyline.draw();
-				
+			
 				if (bShowLabels) {
 					ofPoint center = toOf(contourFinder.getCenter(i));
 					ofPushMatrix();
@@ -373,9 +370,18 @@ void ofxVasaLianas::drawKinect() {
 		} // for each blob
 		
 		
-		if (bShowImages) {
-			grayImageFiltered.draw(10, 10);
-			grayImage.draw(800, 0);
+		if (bShowDepth) {
+			ofPushMatrix();
+			ofScale(1,-1);
+			ofTranslate(0, -kinect.height);
+			grayImage.draw(0, 0);
+			ofPopMatrix();
+		} else if (bShowFilteredDepth) {
+			ofPushMatrix();
+			ofScale(1,-1);
+			ofTranslate(0, -kinect.height);
+			grayImageFiltered.draw(0,0);
+			ofPopMatrix();
 		}
 	} // END if KINECT
 	
@@ -395,37 +401,40 @@ void ofxVasaLianas::closeKinect() {
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 }
-
+//--------------------------------------------------------------
+void ofxVasaLianas::setupKinectWarp(bool shift, bool alt, int x, int y) {
+	
+}
 
 //--------------------------------------------------------------
 void ofxVasaLianas::keyPressed(int key) {
+	
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	
 	switch (key) {
-	case 'r': initLianas(); break;
-	case 'h': bShowGui = !bShowGui; break;
-	case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE);
+		case 'r': initLianas(); break;
+		case 'h': bShowGui = !bShowGui;
+			if (bShowGui) {
+				app->cam.disableMouseInput();
+			} else {
+				app->cam.enableMouseInput();
+			}
+			break;
+		case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE);
 			kinect.setCameraTiltAngle(angle);
 			break;
-	case 's': gui.saveToFile(LIANAS_SETTINGS_FILE); break;
-	case OF_KEY_UP:
-		angle++;
-		if (angle > 30) angle = 30;
-		kinect.setCameraTiltAngle(angle);
-		break;
-	case OF_KEY_DOWN:
-		angle--;
-		if (angle < -30) angle = -30;
-		kinect.setCameraTiltAngle(angle);
-		break;
-	case 'C':
-		kinect.setCameraTiltAngle(0); // zero the tilt on exit
-		kinect.close();
-		break;
-	case 'O':
-		kinect.open();
-		kinect.setCameraTiltAngle(angle);
-		break;
-				//case 'C': cam.enableMouseInput(); break;
-	//case 'c': cam.disableMouseInput(); break;
+		case 's': gui.saveToFile(LIANAS_SETTINGS_FILE);
+			break;
+		case 'C':
+			kinect.setCameraTiltAngle(0); // zero the tilt on exit
+			kinect.close();
+			break;
+		case 'O':
+			kinect.open();
+			kinect.setCameraTiltAngle(angle);
+			break;
+			//case 'C': cam.enableMouseInput(); break;
+			//case 'c': cam.disableMouseInput(); break;
 	}
 	if (key == 'W') {
 		forceWarpOff = false;
@@ -436,7 +445,14 @@ void ofxVasaLianas::keyPressed(int key) {
 	if (!forceWarpOff) {
 		// WARPs
 		if (key == 'H') {
+			if (warper.isShowing()) {
+				app->cam.enableMouseInput();
+			} else {
+				app->cam.disableMouseInput();
+				
+			}
 			warper.toggleShow();
+			
 		}
 		if (key == 'L') {
 			warper.load();
@@ -451,8 +467,8 @@ void ofxVasaLianas::keyPressed(int key) {
 		
 	}
 	
-
-
+	
+	
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->keyPressed(key);
 	}
@@ -460,7 +476,7 @@ void ofxVasaLianas::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::keyReleased(int key) {
-
+	
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->keyReleased(key);
 	}
@@ -468,9 +484,9 @@ void ofxVasaLianas::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->mouseMoved(x, y);
-	}
+//	for (int i = 0; i < lianas.size(); i++) {
+//		lianas[i]->mouseMoved(x, y);
+//	}
 }
 
 //--------------------------------------------------------------

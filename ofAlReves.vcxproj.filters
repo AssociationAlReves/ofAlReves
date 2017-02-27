@@ -1034,17 +1034,17 @@
     <ClInclude Include="src\ofxQuadWarp.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\zebra\ofxLiana.h">
-      <Filter>src\zebra</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zebra\ofxNode.h">
-      <Filter>src\zebra</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zebra\ofxSpring.h">
-      <Filter>src\zebra</Filter>
-    </ClInclude>
     <ClInclude Include="src\ofxVasaLianas.h">
       <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxLiana.h">
+      <Filter>src\zebra</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxNode.h">
+      <Filter>src\zebra</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxSpring.h">
+      <Filter>src\zebra</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

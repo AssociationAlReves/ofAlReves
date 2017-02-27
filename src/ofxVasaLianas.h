@@ -123,8 +123,5 @@ private:
 
 	map<int, list<vector<cv::Point> > > actors;
 	map<int, ofPolyline> actorsHulls;
-	// warp
-	ofxQuadWarp warper;
-	bool forceWarpOff;
 };
 

@@ -11,6 +11,7 @@
 //--------------------------------------------------------------
 void ofxVasaSquareField::setup(){
 
+	bShowGui = false;
 	distRange = 300;
 	scaleFactor = 0.6;
 	devAngle = 90;

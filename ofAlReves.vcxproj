@@ -370,9 +370,9 @@
     <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h" />
     <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingSine.h" />
     <ClInclude Include="..\..\..\addons\ofxTween\src\ofxTween.h" />
-    <ClInclude Include="src\zebra\ofxLiana.h" />
-    <ClInclude Include="src\zebra\ofxNode.h" />
-    <ClInclude Include="src\zebra\ofxSpring.h" />
+    <ClInclude Include="src\ofxLiana.h" />
+    <ClInclude Include="src\ofxNode.h" />
+    <ClInclude Include="src\ofxSpring.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

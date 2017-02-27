@@ -9,31 +9,6 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofxVasaLianas::setup() {
 
-	forceWarpOff = true;
-
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-	int x = (ofGetWidth() - w) * 0.5;       // center on screen.
-	int y = (ofGetHeight() - h) * 0.5;     // center on screen.
-	bool invertWarp = true;
-	if (invertWarp) {
-		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
-		warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
-	} else {
-		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
-		warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
-	}
-	
-	warper.setup();
-	warper.load(); // reload last saved changes.
-	warper.toggleShow();
-
 	initGui();
 	initLianas();
 	initKinect();
@@ -333,6 +308,10 @@ void ofxVasaLianas::drawKinect() {
 			actors[label] = list<vector<cv::Point> >();
 		}
 		
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->clearRepulsors();
+		}
+
 		// for each blob
 		for (int i = 0; i < contourFinder.size(); i++) {
 			
@@ -342,7 +321,7 @@ void ofxVasaLianas::drawKinect() {
 		
 			cv::Point2f centroid = contourFinder.getCentroid(i);
 				for (int i = 0; i < lianas.size(); i++) {
-					lianas[i]->mouseMoved(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
+					lianas[i]->addRepulsor(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
 				}
 			
 			
@@ -436,38 +415,6 @@ void ofxVasaLianas::keyPressed(int key) {
 			//case 'C': cam.enableMouseInput(); break;
 			//case 'c': cam.disableMouseInput(); break;
 	}
-	if (key == 'W') {
-		forceWarpOff = false;
-	}
-	if (key == 'w') {
-		forceWarpOff = true;
-	}
-	if (!forceWarpOff) {
-		// WARPs
-		if (key == 'H') {
-			if (warper.isShowing()) {
-				app->cam.enableMouseInput();
-			} else {
-				app->cam.disableMouseInput();
-				
-			}
-			warper.toggleShow();
-			
-		}
-		if (key == 'L') {
-			warper.load();
-		}
-		if (key == 'S') {
-			//					camOrientation = app->cam.getOrientationEuler();
-			//					camPosition = app -> cam.getPosition();
-			gui.saveToFile(LIANAS_SETTINGS_FILE);
-			
-			warper.save();
-		}
-		
-	}
-	
-	
 	
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->keyPressed(key);
@@ -484,9 +431,14 @@ void ofxVasaLianas::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
-//	for (int i = 0; i < lianas.size(); i++) {
-//		lianas[i]->mouseMoved(x, y);
-//	}
+	
+	for (int i = 0; i < lianas.size(); i++) {
+		lianas[i]->clearRepulsors();
+		lianas[i]->addRepulsor(x, y); 
+		/*lianas[i]->addRepulsor(x-200*ofSignedNoise(ofGetElapsedTimeMillis()*0.12), y + ofSignedNoise((ofGetElapsedTimeMillis()+12.3)*0.05));
+
+		lianas[i]->addRepulsor(x, y -300);*/
+	}
 }
 
 //--------------------------------------------------------------

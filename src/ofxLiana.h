@@ -32,7 +32,7 @@ public:
 	float repulsionRadius;
 	float repulsionStrength;
 	bool bRepulse;
-	ofVec3f repulsionCenter;
+	vector<ofVec3f> repulsionCenters;
 	int dragNodeIndex;
 
 
@@ -57,6 +57,9 @@ public:
 
 	void keyPressed(int key);
 	void keyReleased(int key);
+
+	void clearRepulsors();
+	void addRepulsor(int x, int y);
 
 	void mouseMoved(int x, int y);
 	void mousePressed(int x, int y, int button);
@@ -175,7 +178,7 @@ inline void ofxLiana::initNodesAndSprings_Liana() {
 }
 inline void ofxLiana::setup() {
 	bRepulse = false;
-	repulsionCenter = ofVec3f();
+	repulsionCenters.clear();
 
 	if (!lianaMode) {
 		initNodesAndSprings();
@@ -189,7 +192,10 @@ inline void ofxLiana::update(bool theLockX, bool theLockY, bool theLockZ) {
 	// let all nodes repel each other
 	for (int i = 0; i < nodes.size(); i++) {
 		if (bRepulse) {
-			nodes[i]->attract(nodes, repulsionCenter, repulsionStrength, repulsionRadius);
+			for (auto & rep : repulsionCenters)
+			{
+				nodes[i]->attract(nodes, rep, repulsionStrength, repulsionRadius);
+			}
 		}
 		else {
 			nodes[i]->attract(nodes);
@@ -231,7 +237,7 @@ inline void ofxLiana::keyPressed(int key) {
 	switch (key) {
 	case ' ': {
 		bRepulse = true;
-		repulsionCenter = ofVec3f(ofGetMouseX(), ofGetMouseY());
+		
 	}break;
 	}
 }
@@ -253,11 +259,25 @@ inline void ofxLiana::mousePressed(int x, int y, int button) {
 			maxDist = d;
 		}
 	}
+
+	/*if (bRepulse) {
+		repulsionCenter = ofVec3f(ofGetMouseX(), ofGetMouseY());
+	}*/
 }
 //--------------------------------------------------------------
 inline void ofxLiana::mouseMoved(int x, int y) {
-	if (bRepulse) {
+	/*if (bRepulse) {
 		repulsionCenter = ofVec3f(x, y);
+	}*/
+}
+//--------------------------------------------------------------
+inline void ofxLiana::clearRepulsors() {
+	repulsionCenters.clear();	
+}
+//--------------------------------------------------------------
+inline void ofxLiana::addRepulsor(int x, int y) {
+	if (bRepulse) {
+		repulsionCenters.push_back(ofVec3f(x, y));
 	}
 }
 

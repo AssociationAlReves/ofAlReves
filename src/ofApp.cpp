@@ -51,25 +51,31 @@ void ofApp::setupSceneManager() {
 
 	int i = 0;
 #if __APPLE__
-	
+
 	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+	sceneManager.add(new ofxTerrain(IntToString(i++)));
+	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
 
-//	// Bellegarde (spectacle + ateliers Vasarely)
-//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
-//	sceneManager.add(new ofxCity(IntToString(i++)));																		
-//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																
-//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													
-//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																
-//	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	
-//	sceneManager.add(new ofxTerrain(IntToString(i++)));																		
-//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														
-//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														
+	//	// Bellegarde (spectacle + ateliers Vasarely)
+	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
+	//	sceneManager.add(new ofxCity(IntToString(i++)));																		
+	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																
+	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													
+	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																
+	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	
+	//	sceneManager.add(new ofxTerrain(IntToString(i++)));																		
+	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														
+	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														
 
 #else
 
 	// Bellegarde (spectacle + ateliers Vasarely)
 	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+	sceneManager.add(new ofxTerrain(IntToString(i++)));
+	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
 
 #endif
@@ -138,9 +144,9 @@ void ofApp::draw() {
 	ofClear(255);
 	ofEnableAntiAliasing();
 
-	
-		ofEnableAntiAliasing();
-		cam.begin();
+
+	ofEnableAntiAliasing();
+	cam.begin();
 
 	ofPushMatrix();
 
@@ -150,9 +156,9 @@ void ofApp::draw() {
 	sceneManager.draw();
 
 	ofPopMatrix();
-	
-	
-		cam.end();
+
+
+	cam.end();
 
 
 	// drop out of the auto transform space back to OF screen space

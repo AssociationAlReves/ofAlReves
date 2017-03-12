@@ -9,35 +9,12 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofxVasaLianas::setup() {
 
-	forceWarpOff = true;
-
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-	int x = (ofGetWidth() - w) * 0.5;       // center on screen.
-	int y = (ofGetHeight() - h) * 0.5;     // center on screen.
-	bool invertWarp = true;
-	if (invertWarp) {
-		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
-		warper.setBottomLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
-	} else {
-		warper.setSourceRect(ofRectangle(0, 0, w, h));              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
-		warper.setTopLeftCornerPosition(ofPoint(x, y));             // this is position of the quad warp corners, centering the image on the screen.
-		warper.setTopRightCornerPosition(ofPoint(x + w, y));        // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomLeftCornerPosition(ofPoint(x, y + h));      // this is position of the quad warp corners, centering the image on the screen.
-		warper.setBottomRightCornerPosition(ofPoint(x + w, y + h)); // this is position of the quad warp corners, centering the image on the screen.
+	if (!guiInitialized) {
+		initGui();
+		initKinect();
 	}
-	
-	warper.setup();
-	warper.load(); // reload last saved changes.
-	warper.toggleShow();
-
-	initGui();
 	initLianas();
-	initKinect();
-
+	
 }
 
 //--------------------------------------------------------------
@@ -86,7 +63,7 @@ void ofxVasaLianas::initGui() {
 	cvGroup.add(farThreshold.set("farThreshold", 213, 0, 255));
 	cvGroup.add(thresholdParam.set("threshold", 13, 0, 255));
 	cvGroup.add(contourMinArea.set("contourMinArea", 1, 0, 640));
-	cvGroup.add(contourMaxArea.set("contourMaxArea", 800, 0, 640));
+	cvGroup.add(contourMaxArea.set("contourMaxArea", 1000000, 0, 1000000));
 	cvGroup.add(blurSize.set("blurSize", 10, 0, 50));
 	cvGroup.add(maximumDistance.set("maximumDistance", 32, 0, 300));
 	cvGroup.add(persistence.set("persistence", 60, 0, 100));
@@ -97,23 +74,25 @@ void ofxVasaLianas::initGui() {
 	debugGroup.add(bShowDepth.set("bShowDepth", false));
 	debugGroup.add(bShowFilteredDepth.set("bShowFilteredDepth", false));
 	debugGroup.add(angle.set("kinect angle", 0, -30, 30));
-	debugGroup.add(kwScaleX.set("kinect warp sX", 1,1,3));
-	debugGroup.add(kwScaleY.set("kinect warp sY", 1,1,3));
-	debugGroup.add(kwX.set("kinect X", 0,-50,50));
-	debugGroup.add(kwY.set("kinect Y", 0,-50,50));
+	debugGroup.add(kwScaleX.set("kinect warp sX", 1,0,3));
+	debugGroup.add(kwScaleY.set("kinect warp sY", 1,0,3));
+	debugGroup.add(kwX.set("kinect X", 0,-100,100));
+	debugGroup.add(kwY.set("kinect Y", 0,-100,500));
 	debugGroup.add(kinectWarp.set("kinect warp", false));
 	debugGroup.add(easyCamMouse.set("easyCamMouse", true));
 	
 	gui.add(debugGroup);
 	bShowGui = false;
-
-	initLianas();
+	guiInitialized = true;
 
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::initLianas() {
 
+	bUseMouseRepulsor = false;
+	bUseKinectRepulsor = false;
+	
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->cleanUp();
 		delete lianas[i];
@@ -157,12 +136,14 @@ void ofxVasaLianas::initLianas() {
 //--------------------------------------------------------------
 void ofxVasaLianas::initKinect() {
 
+	if (!kinect.isConnected()) {
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
 	kinect.init();
 	kinect.open();		// opens first available kinect
 						// print the intrinsic IR sensor values
-	if (kinect.isConnected()) {
+	}
+		if (kinect.isConnected()) {
 		ofLogNotice() << "sensor-emitter dist: " << kinect.getSensorEmitterDistance() << "cm";
 		ofLogNotice() << "sensor-camera dist:  " << kinect.getSensorCameraDistance() << "cm";
 		ofLogNotice() << "zero plane pixel size: " << kinect.getZeroPlanePixelSize() << "mm";
@@ -212,6 +193,10 @@ void ofxVasaLianas::update() {
 		//
 		// update
 		lianas[i]->update(lockX, lockY, lockZ);
+		
+		if (bUseKinectRepulsor) {
+			lianas[i]->keyPressed(' ');
+		}
 	}
 	
 	updateKinect();
@@ -333,6 +318,10 @@ void ofxVasaLianas::drawKinect() {
 			actors[label] = list<vector<cv::Point> >();
 		}
 		
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->clearRepulsors();
+		}
+
 		// for each blob
 		for (int i = 0; i < contourFinder.size(); i++) {
 			
@@ -341,21 +330,27 @@ void ofxVasaLianas::drawKinect() {
 			vector<cv::Point> hullPoints = contourFinder.getConvexHull(i);
 		
 			cv::Point2f centroid = contourFinder.getCentroid(i);
+			//cout<< "c" << centroid.y << endl;
+			//cout<< "c1" << centroid.y*kwScaleY-kwY << endl;
 				for (int i = 0; i < lianas.size(); i++) {
-					lianas[i]->mouseMoved(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
+					for (auto & cPoint : hullPoints)
+					{
+					lianas[i]->addRepulsor(cPoint.x*kwScaleX+kwX, cPoint.y*kwScaleY+kwY);
+					}
 				}
 			
 			
-			ofPolyline polyline;
-				polyline.resize(hullPoints.size());
-				for (int hullIndex = 0; hullIndex < (int)hullPoints.size(); hullIndex++) {
-					polyline[hullIndex].x = hullPoints[hullIndex].x;
-					polyline[hullIndex].y = hullPoints[hullIndex].y;
-				}
-				polyline.close();
-				polyline.draw();
+			
 			
 				if (bShowLabels) {
+					ofPolyline polyline;
+					polyline.resize(hullPoints.size());
+					for (int hullIndex = 0; hullIndex < (int)hullPoints.size(); hullIndex++) {
+						polyline[hullIndex].x = hullPoints[hullIndex].x;
+						polyline[hullIndex].y = hullPoints[hullIndex].y;
+					}
+					polyline.close();
+					polyline.draw();
 					ofPoint center = toOf(contourFinder.getCenter(i));
 					ofPushMatrix();
 					ofTranslate(center.x, center.y);
@@ -423,6 +418,10 @@ void ofxVasaLianas::keyPressed(int key) {
 		case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE);
 			kinect.setCameraTiltAngle(angle);
 			break;
+		case 'j': bUseMouseRepulsor = false; break;
+		case 'J' : bUseMouseRepulsor = true; break;
+		case 'k': bUseKinectRepulsor = false; break;
+		case 'K' : bUseKinectRepulsor = true; break;
 		case 's': gui.saveToFile(LIANAS_SETTINGS_FILE);
 			break;
 		case 'C':
@@ -433,41 +432,19 @@ void ofxVasaLianas::keyPressed(int key) {
 			kinect.open();
 			kinect.setCameraTiltAngle(angle);
 			break;
+		case OF_KEY_UP:
+			angle++;
+			if (angle > 30) angle = 30;
+			kinect.setCameraTiltAngle(angle);
+			break;
+		case OF_KEY_DOWN:
+			angle--;
+			if (angle < -30) angle = -30;
+			kinect.setCameraTiltAngle(angle);
+			break;
 			//case 'C': cam.enableMouseInput(); break;
 			//case 'c': cam.disableMouseInput(); break;
 	}
-	if (key == 'W') {
-		forceWarpOff = false;
-	}
-	if (key == 'w') {
-		forceWarpOff = true;
-	}
-	if (!forceWarpOff) {
-		// WARPs
-		if (key == 'H') {
-			if (warper.isShowing()) {
-				app->cam.enableMouseInput();
-			} else {
-				app->cam.disableMouseInput();
-				
-			}
-			warper.toggleShow();
-			
-		}
-		if (key == 'L') {
-			warper.load();
-		}
-		if (key == 'S') {
-			//					camOrientation = app->cam.getOrientationEuler();
-			//					camPosition = app -> cam.getPosition();
-			gui.saveToFile(LIANAS_SETTINGS_FILE);
-			
-			warper.save();
-		}
-		
-	}
-	
-	
 	
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->keyPressed(key);
@@ -484,8 +461,18 @@ void ofxVasaLianas::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
-//	for (int i = 0; i < lianas.size(); i++) {
-//		lianas[i]->mouseMoved(x, y);
+
+	for (int i = 0; i < lianas.size(); i++) {
+		lianas[i]->clearRepulsors();
+		lianas[i]->addRepulsor(x, y); 
+		/*lianas[i]->addRepulsor(x-200*ofSignedNoise(ofGetElapsedTimeMillis()*0.12), y + ofSignedNoise((ofGetElapsedTimeMillis()+12.3)*0.05));
+
+		lianas[i]->addRepulsor(x, y -300);*/
+	}
+//	if (bUseMouseRepulsor) {
+//		for (int i = 0; i < lianas.size(); i++) {
+//			lianas[i]->addRepulsor(x, y );
+//		}
 //	}
 }
 

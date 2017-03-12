@@ -26,6 +26,7 @@ class ofxVasaLianas : public ofxScene
 public:
 	ofxVasaLianas(string prefix = "scene") : ofxScene(prefix + ": " + "VasaLianas") {
 		setSingleSetup(false); // call setup each time the scene is loaded
+		guiInitialized = false;
 	}
 
 	void setup();
@@ -47,7 +48,11 @@ public:
 private:
 
 	void initGui();
+	bool guiInitialized;
 	void initKinect();
+	
+	bool bUseMouseRepulsor;
+	bool bUseKinectRepulsor;
 	
 	void setupKinectWarp(bool shift, bool alt, int x, int y);
 	
@@ -123,8 +128,5 @@ private:
 
 	map<int, list<vector<cv::Point> > > actors;
 	map<int, ofPolyline> actorsHulls;
-	// warp
-	ofxQuadWarp warper;
-	bool forceWarpOff;
 };
 

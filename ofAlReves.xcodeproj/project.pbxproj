@@ -220,9 +220,6 @@
 		256EA30A1DB14B640037FAC0 /* ofxVideoMirror.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoMirror.h; sourceTree = "<group>"; };
 		256EA30C1DB14BD70037FAC0 /* ofxKinectMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinectMemory.cpp; sourceTree = "<group>"; };
 		256EA30D1DB14BD70037FAC0 /* ofxKinectMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinectMemory.h; sourceTree = "<group>"; };
-		256F14411E637F17002630B7 /* ofxLiana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxLiana.h; path = zebra/ofxLiana.h; sourceTree = "<group>"; };
-		256F14421E637F17002630B7 /* ofxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxNode.h; path = zebra/ofxNode.h; sourceTree = "<group>"; };
-		256F14431E637F17002630B7 /* ofxSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxSpring.h; path = zebra/ofxSpring.h; sourceTree = "<group>"; };
 		256F14441E637F25002630B7 /* ofxVasaLianas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVasaLianas.cpp; sourceTree = "<group>"; };
 		256F14451E637F25002630B7 /* ofxVasaLianas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVasaLianas.h; sourceTree = "<group>"; };
 		25878B5E1CBEF2430068D9B0 /* ofxOcean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOcean.cpp; sourceTree = "<group>"; };
@@ -233,6 +230,9 @@
 		25BE30A31B57E3A100A59A5E /* ofxVasaCubeMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVasaCubeMesh.h; sourceTree = "<group>"; };
 		25CED43B1B46CD8E0038EB95 /* ofxBgScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBgScene.cpp; sourceTree = "<group>"; };
 		25CED43C1B46CD8E0038EB95 /* ofxBgScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBgScene.h; sourceTree = "<group>"; };
+		25EE31BA1E75E859004A5586 /* ofxLiana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLiana.h; sourceTree = "<group>"; };
+		25EE31BB1E75E859004A5586 /* ofxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNode.h; sourceTree = "<group>"; };
+		25EE31BC1E75E859004A5586 /* ofxSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSpring.h; sourceTree = "<group>"; };
 		25F1B5CE1B388B74009F2794 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		25F1B5CF1B388B74009F2794 /* ofMovingSquares.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofMovingSquares.cpp; sourceTree = "<group>"; };
 		25F1B5D01B388B74009F2794 /* ofMovingSquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofMovingSquares.h; sourceTree = "<group>"; };
@@ -777,9 +777,9 @@
 		256F14401E637F05002630B7 /* zebra */ = {
 			isa = PBXGroup;
 			children = (
-				256F14411E637F17002630B7 /* ofxLiana.h */,
-				256F14421E637F17002630B7 /* ofxNode.h */,
-				256F14431E637F17002630B7 /* ofxSpring.h */,
+				25EE31BA1E75E859004A5586 /* ofxLiana.h */,
+				25EE31BB1E75E859004A5586 /* ofxNode.h */,
+				25EE31BC1E75E859004A5586 /* ofxSpring.h */,
 			);
 			name = zebra;
 			sourceTree = "<group>";

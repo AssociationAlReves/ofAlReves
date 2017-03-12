@@ -14,7 +14,7 @@ void ofxBgScene::update() {
 void ofxBgScene::draw() {
 	ofColor startColor;
 	ofColor endColor;
-
+	
 	if (bBlack) {
 		ofClear(ofColor::black);
 	}
@@ -22,13 +22,17 @@ void ofxBgScene::draw() {
 	{
 		if (bBlue) {
 			if (bBackground) {
-				ofClear(ofColor::red);
+				ofClear(ofColor::white);
+				startColor = ofColor(0);
+				endColor = ofColor(0);
+				
 			}
 			else {
-				ofClear(255);
+				ofClear(0);
+				startColor = ofColor(255);
+				endColor = ofColor(255);
+				
 			}
-			startColor = ofColor(0, 200, 255);
-			endColor = ofColor(0, 51, 255);
 		}
 		else {
 			if (bBackground) {
@@ -40,16 +44,17 @@ void ofxBgScene::draw() {
 			startColor = ofColor::orangeRed;
 			endColor = ofColor::orangeRed; //ofColor::orangeRed;
 		}
-
-
+		
+		
+		//glClearColor(0,0,0,1);
 		if (bAnimate) {
 			ofColor cs; cs.setHsb(startColor.getHue() + (ofSignedNoise(ofGetElapsedTimef()*0.29 - 0.896)) * 22
-				, startColor.getSaturation()
-				, startColor.getBrightness());
+								  , startColor.getSaturation()
+								  , startColor.getBrightness());
 			ofColor ce; ce.setHsb(endColor.getHue() + (ofSignedNoise(ofGetElapsedTimef()*0.19 + 7.12)) * 22
-				, endColor.getSaturation()
-				, endColor.getBrightness());
-
+								  , endColor.getSaturation()
+								  , endColor.getBrightness());
+			
 			ofBackgroundGradient(cs, ce);
 		}
 		else {

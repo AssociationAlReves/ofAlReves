@@ -197,6 +197,9 @@ void ofxVasaLianas::update() {
 		if (bUseKinectRepulsor) {
 			lianas[i]->keyPressed(' ');
 		}
+		
+			lianas[i]->clearRepulsors();
+		
 	}
 	
 	updateKinect();
@@ -243,11 +246,11 @@ void ofxVasaLianas::draw() {
 
 	ofClear(0);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	if (easyCamMouse) {
-		app->cam.enableMouseInput();
-	} else {
-		app->cam.disableMouseInput();
-	}
+//	if (easyCamMouse) {
+//		app->cam.enableMouseInput();
+//	} else {
+//		app->cam.disableMouseInput();
+//	}
 	
 	//ofScale(1, -1, 1);
 	//ofTranslate(0, ofGetScreenHeight());
@@ -300,6 +303,7 @@ void ofxVasaLianas::draw() {
 //--------------------------------------------------------------
 void ofxVasaLianas::drawKinect() {
 	
+	
 	if (bKinectFrameReady) {
 		
 		RectTracker& tracker = contourFinder.getTracker();
@@ -318,9 +322,7 @@ void ofxVasaLianas::drawKinect() {
 			actors[label] = list<vector<cv::Point> >();
 		}
 		
-		for (int i = 0; i < lianas.size(); i++) {
-			lianas[i]->clearRepulsors();
-		}
+		
 
 		// for each blob
 		for (int i = 0; i < contourFinder.size(); i++) {
@@ -461,18 +463,12 @@ void ofxVasaLianas::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->clearRepulsors();
-		lianas[i]->addRepulsor(x, y); 
-		/*lianas[i]->addRepulsor(x-200*ofSignedNoise(ofGetElapsedTimeMillis()*0.12), y + ofSignedNoise((ofGetElapsedTimeMillis()+12.3)*0.05));
 
-		lianas[i]->addRepulsor(x, y -300);*/
+	if (bUseMouseRepulsor) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->addRepulsor(x, y );
+		}
 	}
-//	if (bUseMouseRepulsor) {
-//		for (int i = 0; i < lianas.size(); i++) {
-//			lianas[i]->addRepulsor(x, y );
-//		}
-//	}
 }
 
 //--------------------------------------------------------------

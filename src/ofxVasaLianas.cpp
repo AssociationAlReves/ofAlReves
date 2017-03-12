@@ -33,6 +33,7 @@ void ofxVasaLianas::initGui() {
 	zebraParams.add(numLianas.set("numLianas", 1, 1, 100));
 	zebraParams.add(gravity.set("gravity", 0, -1, 1));
 	zebraParams.add(springLineWidth.set("lineWidth", 2, 0, 20));
+	
 	gui.add(zebraParams);
 
 	nodeParams.setName("Nodes");
@@ -41,13 +42,13 @@ void ofxVasaLianas::initGui() {
 	nodeParams.add(nodeDiameter.set("nodeDiameter", 16, 1, 200));
 	nodeParams.add(nodeDamping.set("nodeDamping", 0.1f, -1, 1));
 	nodeParams.add(nodeRamp.set("nodeRamp", 1.f, -50, 50));
-	nodeParams.add(nodeVelocity.set("nodeVelocity", 0.99f, -1, 10));
+	nodeParams.add(nodeVelocity.set("nodeVelocity", 0.99f, -1, 50));
 	gui.add(nodeParams);
 
 	springParams.setName("Springs");
 	springParams.add(numNodes.set("numNodes", 20, 2, 100));
 	springParams.add(springLength.set("springLength", 20, 0, 500));
-	springParams.add(springStiffness.set("springStiffness", 3, 0, 10));
+	springParams.add(springStiffness.set("springStiffness", 3, 0, 50));
 	springParams.add(stringDamping.set("stringDamping", 0.9, 0, 1));
 	gui.add(springParams);
 
@@ -76,10 +77,13 @@ void ofxVasaLianas::initGui() {
 	debugGroup.add(angle.set("kinect angle", 0, -30, 30));
 	debugGroup.add(kwScaleX.set("kinect warp sX", 1,0,3));
 	debugGroup.add(kwScaleY.set("kinect warp sY", 1,0,3));
-	debugGroup.add(kwX.set("kinect X", 0,-100,100));
-	debugGroup.add(kwY.set("kinect Y", 0,-100,500));
+	debugGroup.add(kwX.set("kinect X", 0,-100,1000));
+	debugGroup.add(kwY.set("kinect Y", 0,-100,800));
 	debugGroup.add(kinectWarp.set("kinect warp", false));
 	debugGroup.add(easyCamMouse.set("easyCamMouse", true));
+	debugGroup.add(screenBounds.set("bounds", ofVec2f(ofGetWidth(),ofGetHeight()),ofVec2f(0),ofVec2f(ofGetWidth(),ofGetHeight())));
+	debugGroup.add(screenTopLeftPos.set("topleftPos", ofVec2f(0),ofVec2f(0),ofVec2f(ofGetWidth(),ofGetHeight())));
+	
 	
 	gui.add(debugGroup);
 	bShowGui = false;
@@ -261,9 +265,17 @@ void ofxVasaLianas::draw() {
 	
 	
 	//cam.begin();
+	ofPushMatrix();
+	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+	
+	ofScale(screenBounds->x/ofGetWidth(), screenBounds->y/ofGetHeight());
+	ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
+	
+	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->draw();
 	}
+	ofPopMatrix();
 	
 	ofPushMatrix();
 	
@@ -335,6 +347,7 @@ void ofxVasaLianas::drawKinect() {
 			//cout<< "c" << centroid.y << endl;
 			//cout<< "c1" << centroid.y*kwScaleY-kwY << endl;
 				for (int i = 0; i < lianas.size(); i++) {
+					//lianas[i]->addRepulsor(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
 					for (auto & cPoint : hullPoints)
 					{
 					lianas[i]->addRepulsor(cPoint.x*kwScaleX+kwX, cPoint.y*kwScaleY+kwY);

@@ -223,7 +223,6 @@ inline void ofxLiana::draw() {
 	// draw nodes
 	//noStroke();
 	for (int i = 0; i < nodes.size(); i++) {
-		ofSetColor(255);
 		ofFill();
 		ofEllipse(nodes[i]->x, nodes[i]->y, nodes[i]->z, nodeDiameter, nodeDiameter);
 		/*ofSetColor(0);

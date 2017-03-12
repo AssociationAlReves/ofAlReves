@@ -65,6 +65,8 @@ private:
 	ofParameterGroup zebraParams;
 	ofParameter<bool> randomNodes, lockX, lockY, lockZ, kinectWarp, easyCamMouse;
 	ofParameter<float> kwScaleX, kwScaleY, kwX, kwY;
+	ofParameter<ofVec2f> screenBounds;
+	ofParameter<ofVec2f> screenTopLeftPos;
 
 	ofParameter<bool> lockLastNode;
 	ofParameter<int> numLianas;
@@ -121,6 +123,7 @@ private:
 	ofParameter<bool> bShowDepth, bShowFilteredDepth;
 	ofParameter<float> maximumDistance;
 	ofParameter<float> persistence;
+	
 
 
 	ofParameterGroup cvGroup;

@@ -461,7 +461,6 @@ void ofxVasaLianas::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
-
 	for (int i = 0; i < lianas.size(); i++) {
 		lianas[i]->clearRepulsors();
 		lianas[i]->addRepulsor(x, y); 

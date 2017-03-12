@@ -60,7 +60,6 @@ public:
 	
 	void clearRepulsors();
 	void addRepulsor(int x, int y);
-	
 	void mouseMoved(int x, int y);
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
@@ -179,7 +178,6 @@ inline void ofxLiana::initNodesAndSprings_Liana() {
 inline void ofxLiana::setup() {
 	bRepulse = false;
 	repulsionCenters.clear();
-	
 	if (!lianaMode) {
 		initNodesAndSprings();
 	}

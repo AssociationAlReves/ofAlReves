@@ -26,6 +26,9 @@
 		2521C7C21B3C788600DD4394 /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7BE1B3C788600DD4394 /* ofxCrossedLines.cpp */; };
 		2521C7C31B3C788600DD4394 /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */; };
 		255A7B680DC81E543C875794 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 28F9707464BA3FF98E05096C /* usb_libusb10.c */; };
+		2564F3711E772BF4000CD2AE /* ofxLiana.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2564F36F1E772BF4000CD2AE /* ofxLiana.cpp */; settings = {ASSET_TAGS = (); }; };
+		2564F3731E772D16000CD2AE /* ofxNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2564F3721E772D16000CD2AE /* ofxNode.cpp */; settings = {ASSET_TAGS = (); }; };
+		2564F3751E772D53000CD2AE /* ofxSpring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2564F3741E772D53000CD2AE /* ofxSpring.cpp */; settings = {ASSET_TAGS = (); }; };
 		256EA3011DB14B3B0037FAC0 /* ofxCity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA2FF1DB14B3B0037FAC0 /* ofxCity.cpp */; settings = {ASSET_TAGS = (); }; };
 		256EA3071DB14B590037FAC0 /* ofBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA3031DB14B590037FAC0 /* ofBuilding.cpp */; settings = {ASSET_TAGS = (); }; };
 		256EA3081DB14B590037FAC0 /* ofxCityPingPong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 256EA3051DB14B590037FAC0 /* ofxCityPingPong.cpp */; settings = {ASSET_TAGS = (); }; };
@@ -210,6 +213,9 @@
 		2521C7BF1B3C788600DD4394 /* ofxCrossedLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCrossedLines.h; sourceTree = "<group>"; };
 		2521C7C01B3C788600DD4394 /* ofxVideoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoScene.cpp; sourceTree = "<group>"; };
 		2521C7C11B3C788600DD4394 /* ofxVideoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoScene.h; sourceTree = "<group>"; };
+		2564F36F1E772BF4000CD2AE /* ofxLiana.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLiana.cpp; sourceTree = "<group>"; };
+		2564F3721E772D16000CD2AE /* ofxNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxNode.cpp; sourceTree = "<group>"; };
+		2564F3741E772D53000CD2AE /* ofxSpring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSpring.cpp; sourceTree = "<group>"; };
 		256EA2FF1DB14B3B0037FAC0 /* ofxCity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCity.cpp; sourceTree = "<group>"; };
 		256EA3001DB14B3B0037FAC0 /* ofxCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCity.h; sourceTree = "<group>"; };
 		256EA3031DB14B590037FAC0 /* ofBuilding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofBuilding.cpp; sourceTree = "<group>"; };
@@ -777,8 +783,11 @@
 		256F14401E637F05002630B7 /* zebra */ = {
 			isa = PBXGroup;
 			children = (
+				2564F36F1E772BF4000CD2AE /* ofxLiana.cpp */,
 				25EE31BA1E75E859004A5586 /* ofxLiana.h */,
+				2564F3721E772D16000CD2AE /* ofxNode.cpp */,
 				25EE31BB1E75E859004A5586 /* ofxNode.h */,
+				2564F3741E772D53000CD2AE /* ofxSpring.cpp */,
 				25EE31BC1E75E859004A5586 /* ofxSpring.h */,
 			);
 			name = zebra;
@@ -1519,6 +1528,7 @@
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				25F1B5E41B388B74009F2794 /* ofxTerrain.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
+				2564F3751E772D53000CD2AE /* ofxSpring.cpp in Sources */,
 				250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */,
 				1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */,
 				256EA3011DB14B3B0037FAC0 /* ofxCity.cpp in Sources */,
@@ -1615,7 +1625,9 @@
 				BE5ED1FDB18D5092CF3AACA0 /* PostProcessing.cpp in Sources */,
 				1E615236D6D182DED6C8A8B2 /* RenderPass.cpp in Sources */,
 				E4797F1786BE22985F7EE55F /* RGBShiftPass.cpp in Sources */,
+				2564F3731E772D16000CD2AE /* ofxNode.cpp in Sources */,
 				4A2B684DF41F7779B2947319 /* RimHighlightingPass.cpp in Sources */,
+				2564F3711E772BF4000CD2AE /* ofxLiana.cpp in Sources */,
 				4355FD81C3F9DDE40B10CE94 /* SSAOPass.cpp in Sources */,
 				813E52BD790CE4AAF527DCD4 /* ToonPass.cpp in Sources */,
 				898CB0955CB42FEB5D750A5C /* VerticalTiltShifPass.cpp in Sources */,

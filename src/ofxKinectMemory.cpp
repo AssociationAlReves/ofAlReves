@@ -38,7 +38,6 @@ void ofxKinectMemory::setup() {
 
 	//-----------------------------------------
 	// FBOs
-
 	fboWhite.allocate(ofGetScreenWidth(), ofGetScreenHeight(), GL_RGBA32F_ARB);
 	fboBlack.allocate(ofGetScreenWidth(), ofGetScreenHeight(), GL_RGBA32F_ARB);
 	/*
@@ -527,8 +526,16 @@ void ofxKinectMemory::keyPressed(int key) {
     case 'm':
             app->cam.enableMouseInput();
             break;
-        case '>' : farThreshold += 0.5; break;
-        case '<': farThreshold -= 0.5; break;
+	case 'C':
+		kinect.setCameraTiltAngle(0); // zero the tilt on exit
+		kinect.close();
+		break;
+	case 'O':
+		kinect.open();
+		kinect.setCameraTiltAngle(angle);
+		break;
+	case '>' : farThreshold += 0.5; break;
+	case '<': farThreshold -= 0.5; break;
 	}
 
 	if (key == 'W') {
@@ -557,7 +564,16 @@ void ofxKinectMemory::keyPressed(int key) {
 }
 
 //--------------------------------------------------------------
+void ofxKinectMemory::updateExit() {
+	closeKinect();
+	finishedExiting();
+}
+//--------------------------------------------------------------
 void ofxKinectMemory::exit() {
+	closeKinect();
+}
+//--------------------------------------------------------------
+void ofxKinectMemory::closeKinect() {
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 }

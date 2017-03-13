@@ -27,6 +27,8 @@ public:
 	void update();
 	void draw();
 	void exit();
+	void updateExit();
+	void closeKinect();
 
 	void keyPressed(int key);
 

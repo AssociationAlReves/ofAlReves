@@ -170,23 +170,7 @@ void ofMovingSquares::updateEnter(){
 	finishedEntering();
 }
 
-//void ofMovingSquares::guiEvent(ofxUIEventArgs &e)
-//{
-//	ofxUISlider *slider = e.getSlider();
-//	float value = slider->getValue();
-//
-//	if(e.getName() == "red angle") shapes[0].angleOffset = slider->getValue()*PI;
-//	if(e.getName() == "yellow angle") shapes[1].angleOffset = slider->getValue()*PI;
-//	if(e.getName() == "blue angle") shapes[2].angleOffset = slider->getValue()*PI;
-//	if(e.getName() == "green angle") shapes[3].angleOffset = slider->getValue()*PI;
-//	if(e.getName() == "fuchsia angle") shapes[4].angleOffset = slider->getValue()*PI;
-//
-//	if(e.getName() == "red margin") shapes[0].margin = slider->getValue();
-//	if(e.getName() == "yellow margin") shapes[1].margin = slider->getValue();
-//	if(e.getName() == "blue margin") shapes[2].margin = slider->getValue();
-//	if(e.getName() == "green margin") shapes[3].margin = slider->getValue();
-//	if(e.getName() == "fuchsia margin") shapes[4].margin = slider->getValue();
-//}
+
 
 
 //--------------------------------------------------------------

@@ -208,7 +208,7 @@ void ofxVideoMirror::keyPressed(int key) {
 	case 'd':
 		curMirrorFactor = ofClamp(curMirrorFactor + 0.01, 0, 1);
 		break;
-	case 'h': bShowGui != bShowGui;
+	case 'h': bShowGui = !bShowGui;
 		break;
 	}
 }

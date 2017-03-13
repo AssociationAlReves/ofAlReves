@@ -449,7 +449,7 @@ void ofxTerrain::draw(){
 	ofEnableDepthTest();
     ofEnableAlphaBlending();
 
-	ofClear(ofColor::fromHex(0x005900));
+	ofClear(ofColor::fromHex(0x00008C));
 
 	ofPushMatrix();
 	ofTranslate(-deltaX + 2.5*speedRate, 0);
@@ -489,7 +489,8 @@ void ofxTerrain::keyPressed(int key) {
 	case 'c': bSmallCursor = !bSmallCursor; break;
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;
-	case 'd': {
+	case 'd':
+	case 'l':{
 		//
 		ofApp *app = (ofApp *)ofxGetAppPtr();
 		app->cam.setOrientation(ofVec3f(43.1984, 0, 0));

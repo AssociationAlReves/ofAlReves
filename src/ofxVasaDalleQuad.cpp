@@ -22,6 +22,7 @@ void ofxVasaDalleQuad::setup(int screenWidth, int screenHeight, int sizeOfTiles,
     tileSize = sizeOfTiles;
     maxDepth = maxDepthLevel;
     bing.setup(screenWidth, screenHeight, sizeOfTiles);
+	infiniteLifeTime = false;
 
 	// Directional Lights emit light based on their orientation, regardless of their position //
 	light.setDiffuseColor(ofColor(255.f, 255.f, 255.f));
@@ -64,7 +65,7 @@ void ofxVasaDalleQuad::update(){
     vector<string> dalles2Remove;
     std::map<string,ofxVasaDalle>::iterator it;
     for (it=dalles.begin(); it!=dalles.end(); ++it){
-        it->second.update();
+        it->second.update(infiniteLifeTime);
         if (it->second.alpha <=0)
             dalles2Remove.push_back(it->first);
     }
@@ -202,6 +203,7 @@ void ofxVasaDalleQuad::keyPressed(int key){
 	case '4': createDalle(ofRandomWidth(),ofRandomHeight(),(int)ofRandom(5)); break; // taken
 	case 'm' : ofHideCursor(); break;
 	case 'M' : ofShowCursor(); break;
+		case ' ': infiniteLifeTime = !infiniteLifeTime; break;
 
 	}
 }

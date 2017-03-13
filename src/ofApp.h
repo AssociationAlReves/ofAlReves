@@ -4,7 +4,6 @@
 
 #include "ofxAppUtils.h"
 #include "globals.h"
-#include "ofxPostProcessing.h"
 #include "ofxOcean.h"
 
 // optional ofxGUI control panel for transformer,
@@ -45,9 +44,6 @@ public:
     ofxOcean *oceanScene;
     
 	ofEasyCam cam;
-    
-    ofxPostProcessing post;
-	map<int, bool> postEnabledByScene;
 
 	string IntToString(int i);
 

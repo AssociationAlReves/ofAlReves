@@ -40,6 +40,8 @@ public:
     bool dynamicPathEnabled;
 	bool bLights;
     bool autoDalle3;
+	bool infiniteLifeTime;
+	
 private:
     
 	bool blackAndWhite;

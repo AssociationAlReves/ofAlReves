@@ -16,11 +16,12 @@
 class ofxBgScene : public ofxFadeScene
 {
 public:
-    ofxBgScene(bool animate = true, bool orange = true, string prefix = "scene")
-    : bAnimate(animate), ofxFadeScene(prefix + ": " + "BgScene"){
-        setSingleSetup(false); // jjjjjmjmMmjj setup each time the scene is loaded
+    ofxBgScene(bool animate = true, bool orange = true, bool black = false, string prefix = "scene")
+    : bAnimate(animate),bBlack(black), ofxFadeScene(prefix + ": " + "BgScene"){
+        setSingleSetup(false); // setup each time the scene is loaded
         setFade(0,0);
 		bBlue = !orange;
+		
     }
     
     void setup();
@@ -35,6 +36,7 @@ public:
 private:
     
     bool bAnimate;
+		bool bBlack;
     //this holds all of our points
     vector<ofVec3f> points;
     //this keeps track of the center of all the points

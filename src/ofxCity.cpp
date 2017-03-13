@@ -426,7 +426,24 @@ void ofxCity::setupExplosion() {
 //--------------------------------------------------------------
 float amount;
 void ofxCity::updateExplosion() {
+	prevCamTranslate = curCamTranslate;
+	prevCamRot = curCamRot;
+	
+	// generate a noisy 3d position over time
+	float t = (2 + ofGetElapsedTimef()) * .01;
+	curCamTranslate.x = ofSignedNoise(t-6.12, 0, 0);
+	curCamTranslate.y = ofSignedNoise(0, t+0.78, 0);
+	curCamTranslate.z = ofSignedNoise(0, 0, t-9.76);
+	curCamTranslate *= 100 ; // scale from -1,+1 range to -400,+400
+	
+	// generate a noisy 3d rotation over time
+	t = (5.6 + ofGetElapsedTimef()) * .01;
+	curCamRot.x = ofSignedNoise(t, 0, 0);
+	curCamRot.y = ofSignedNoise(0, t+1.23, 0);
+	curCamRot.z = ofSignedNoise(0, 0, t-4.5);
+	curCamRot *= 15 ; // scale from -1,+1 range to -400,+400
 
+	
 	amount = explosionTween.update();
 	//amount = 0;
 
@@ -452,10 +469,14 @@ void ofxCity::drawExplosion() {
 
 	ofFill();	
 
-	ofDrawAxis(500);
+	//ofDrawAxis(500);
 
 	ofPushMatrix();
 	ofRotate(0, 0, 0, 0);
+	ofTranslate(curCamTranslate.x, curCamTranslate.y, curCamTranslate.z);
+	ofRotateX(curCamRot.x);
+	ofRotateY(curCamRot.y);
+	ofRotateZ(curCamRot.z);
 
 	ofSetColor(ofColor::gray);
 	float roadSize = roadTexWidth / roadDivision;
@@ -614,7 +635,7 @@ void ofxCity::draw() {
 			float roadnz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 
 			if (mode == enCityCollapsing) {
-				rotationAngle = tweenRotate.update();
+				//rotationAngle = tweenRotate.update();
 				translationCollapse = tweenTranslate.update();
 
 				float boxW = tweenBoxW.update();
@@ -804,7 +825,7 @@ void ofxCity::setMode(int mode) {
 		float diffZ = highestZ - lowestZ;
 
 		int collapseTimeMs = 15000;
-		tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
+		//tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
 
 		float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 		float road0z = roads[0].getPosition().z;

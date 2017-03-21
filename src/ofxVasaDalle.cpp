@@ -48,8 +48,9 @@ void ofxVasaDalle::setup(int dalleSize){
 
 void ofxVasaDalle::update(bool skipLifeTimeCheck){
 
-	boxHeight = ofNoise(ofGetElapsedTimef()+seed)*15*alpha;
-	shapeHeight = ofNoise(ofGetElapsedTimef()*1.-5.+seed)*(VASA_DALLE_SHAPE_HEIGHT_RATIO * size * alpha);
+	float speedFactor = 0.2;
+	boxHeight = ofNoise(ofGetElapsedTimef()*speedFactor + x*0.1 + 2.56 * seed-11.4,ofGetElapsedTimef()*speedFactor+ y*0.2 + 1.23*seed + 14.6)*15*alpha;
+	shapeHeight = ofNoise(ofGetElapsedTimef()*speedFactor + x*0.2 - 3.56 * seed-1.4,ofGetElapsedTimef()*speedFactor+ y*0.1 - 3.23*seed - 4.6)*(VASA_DALLE_SHAPE_HEIGHT_RATIO * size * alpha);
 
 	if (!skipLifeTimeCheck && ofGetElapsedTimef()-createdTime>lifeTime){
 		alpha = ofClamp(alpha-fadeoutRate, 0, 1);

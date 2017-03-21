@@ -78,9 +78,9 @@ void ofxVasaDalleQuad::update(){
 
 	light.setPosition(mouseX, mouseY, 400);
     
-    if (autoDalle3) {
-    createDalle(ofRandomWidth(),ofRandomHeight(),0);
-    }
+	if (autoDalle3) {
+		createDalle(ofRandomWidth(),ofRandomHeight(),0);
+	}
 }
 
 void ofxVasaDalleQuad::createDalle(int x, int y, int depth, int shapeType){

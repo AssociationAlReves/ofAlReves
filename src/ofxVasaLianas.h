@@ -18,6 +18,7 @@
 #include "ofxLiana.h"
 #include "ofxNode.h"
 #include "ofxSpring.h"
+#include "ofxLianaMesh.h"
 
 const string LIANAS_SETTINGS_FILE = "lianas.xml";
 
@@ -27,6 +28,7 @@ public:
 	ofxVasaLianas(string prefix = "scene") : ofxScene(prefix + ": " + "VasaLianas") {
 		setSingleSetup(false); // call setup each time the scene is loaded
 		guiInitialized = false;
+		bLianas = true;
 	}
 
 	void setup();
@@ -62,6 +64,7 @@ private:
 	void initLianas();
 
 	vector<ofxLiana*> lianas; 
+	ofxLianaMesh lianaMesh;
 	ofParameterGroup zebraParams;
 	ofParameter<bool> randomNodes, lockX, lockY, lockZ, kinectWarp, easyCamMouse;
 	ofParameter<float> kwScaleX, kwScaleY, kwX, kwY;
@@ -92,6 +95,7 @@ private:
 	ofParameter<float> repulsionStrength;
 	bool bRepulse;
 	bool bShowGui;
+	bool bLianas;
 
 
 	/*-------------------------------------------------------*/

@@ -1,31 +1,26 @@
 //
-//  ofxLiana.cpp
+//  ofxLianaMesh.cpp
 //  ofAlReves
 //
 //  Created by Xavier Fischer on 13/03/2017.
 //
 //
 
-#include "ofxLiana.h"
+#include "ofxLianaMesh.h"
+
 
 
 // implementation
 // ------ constructors ------
 
-ofxLiana::ofxLiana(float theX) :
-	xPosition(theX)
-	,lianaMode(true)
-	, lockLastNode(false)
+ofxLianaMesh::ofxLianaMesh() : lockLastNode(false)
 {
 }
 
-ofxLiana::ofxLiana() : lianaMode(false)
-{
-}
-ofxLiana::~ofxLiana() {
+ofxLianaMesh::~ofxLianaMesh() {
 	cleanUp();
 }
-void ofxLiana::cleanUp() {
+void ofxLianaMesh::cleanUp() {
 	for (int i = 0; i < springs.size(); i++) {
 		delete springs[i];
 	}
@@ -35,8 +30,9 @@ void ofxLiana::cleanUp() {
 	}
 	nodes.clear();
 }
+
 //--------------------------------------------------------------
-void ofxLiana::initNodesAndSprings() {
+void ofxLianaMesh::initNodesAndSprings_Mesh() {
 	
 	bRepulse = false;
 	dragNodeIndex = -1;
@@ -45,90 +41,80 @@ void ofxLiana::initNodesAndSprings() {
 	// init nodes
 	int width = ofGetWidth();
 	int height = ofGetHeight();
+	float xSpacing = width / (numNodes - 1);
+	float ySpacing = height / (numNodes - 1);
 	float rad = nodeDiameter / 2.f;
+	int idNode = 0;
 	for (int i = 0; i < numNodes; i++) {
-		ofxNode *node = new ofxNode(width / 2 + ofRandom(-200, 200), height / 2 + ofRandom(-200, 200), false);
-		// use this for 3D
-		//node->setBoundary(rad, rad, rad, width - rad, height - rad, width - rad);
-		node->setBoundary(rad, rad, width - rad, height - rad);
-		node->radius = nodeRadius;
-		node->strength = nodeStrength;
-		node->damping = nodeDamping;
-		node->ramp = nodeRamp;
-		node->maxVelocity = nodeVelocity;
-		node->id = i;
-		nodes.push_back(node);
-	}
-	
-	// set springs randomly
-	
-	for (int j = 0; j < nodes.size() - 1; j++) {
-		int rCount = floor(ofRandom(1, 2));
-		for (int i = 0; i < rCount; i++) {
-			int r = floor(ofRandom(j + 1, nodes.size()));
-			ofxSpring *newSpring = new ofxSpring(*nodes[j], *nodes[r]);
-			newSpring->length = springLength;
-			newSpring->stiffness = springStiffness;
-			newSpring->damping = stringDamping;
-			newSpring->id = j;
-			springs.push_back(newSpring);
+		
+		float xPos = i * xSpacing;
+		
+		for (int j = 0; j < numNodes; j++) {
+			
+			bool isLocked = (i == 0)
+							|| (j == 0)
+							|| (lockLastNode && (i == (numNodes - 1)))
+							|| (lockLastNode && (j == (numNodes - 1)));
+			
+			
+			float yPos = j * ySpacing;
+//			float xPos = xPosition
+//			+ (isLocked ? 0
+//			   : ofRandom(-50, 50));
+			ofxNode *node = new ofxNode(xPos, yPos, isLocked);
+			// use this for 3D
+			//node->setBoundary(rad, rad, rad, width - rad, height - rad, width - rad);
+			node->setBoundary(rad, rad, width - rad, height - rad);
+			node->radius = nodeRadius;
+			node->strength = nodeStrength;
+			node->damping = nodeDamping;
+			node->ramp = nodeRamp;
+			node->maxVelocity = nodeVelocity;
+			node->id = idNode++;
+			nodes.push_back(node);
+			
 		}
 	}
-}
-//--------------------------------------------------------------
-void ofxLiana::initNodesAndSprings_Liana() {
 	
-	bRepulse = false;
-	dragNodeIndex = -1;
-	cleanUp();
-	
-	// init nodes
-	int width = ofGetWidth();
-	int height = ofGetHeight();
-	float spacing = height / (numNodes - 1);
-	float rad = nodeDiameter / 2.f;
+	int id = 0;
 	for (int i = 0; i < numNodes; i++) {
-		bool isLocked = (i == 0) || (lockLastNode && (i == (numNodes - 1)));
-		float xPos = xPosition
-		+ (isLocked ? 0
-		   : ofRandom(-50, 50));
-		ofxNode *node = new ofxNode(xPos, spacing * i, isLocked);
-		// use this for 3D
-		//node->setBoundary(rad, rad, rad, width - rad, height - rad, width - rad);
-		node->setBoundary(rad, rad, width - rad, height - rad);
-		node->radius = nodeRadius;
-		node->strength = nodeStrength;
-		node->damping = nodeDamping;
-		node->ramp = nodeRamp;
-		node->maxVelocity = nodeVelocity;
-		node->id = i;
-		nodes.push_back(node);
+		for (int j = 0; j < numNodes; j++) {
+			
+			if (j != 0) {
+				// Vertical
+				ofxSpring *newSpring = new ofxSpring(*nodes[i*numNodes+j], *nodes[i * numNodes + (j - 1)]);
+				newSpring->length = springLength;
+				newSpring->stiffness = springStiffness;
+				newSpring->damping = stringDamping;
+				newSpring->id = id++;
+				springs.push_back(newSpring);
+			}
+			
+			if (i != (numNodes-1)) {
+				// Horizontal
+				ofxSpring *newSpring = new ofxSpring(*nodes[i*numNodes+j], *nodes[(i+1) * numNodes + j]);
+				newSpring->length = springLength;
+				newSpring->stiffness = springStiffness;
+				newSpring->damping = stringDamping;
+				newSpring->id = id++;
+				springs.push_back(newSpring);
+			}
+			
+		}
 	}
 	
-	// set springs
-	for (int i = 0; i < numNodes - 1; i++) {
-		ofxSpring *newSpring = new ofxSpring(*nodes[i], *nodes[i + 1]);
-		newSpring->length = springLength;
-		newSpring->stiffness = springStiffness;
-		newSpring->damping = stringDamping;
-		newSpring->id = i;
-		springs.push_back(newSpring);
-	}
+	
 	
 }
-void ofxLiana::setup() {
+void ofxLianaMesh::setup() {
 	bRepulse = false;
 	repulsionCenters.clear();
-	if (!lianaMode) {
-		initNodesAndSprings();
-	}
-	else {
-		initNodesAndSprings_Liana();
-	}
+	
+	initNodesAndSprings_Mesh();
+	
 }
-void ofxLiana::update(bool theLockX, bool theLockY, bool theLockZ) {
-	
-	
+void ofxLianaMesh::update(bool theLockX, bool theLockY, bool theLockZ) {
+	//clearRepulsors();
 	// let all nodes repel each other
 	for (int i = 0; i < nodes.size(); i++) {
 		if (bRepulse) {
@@ -154,7 +140,7 @@ void ofxLiana::update(bool theLockX, bool theLockY, bool theLockZ) {
 		nodes[dragNodeIndex]->setPosition(ofGetMouseX(), ofGetMouseY());
 	}
 }
-void ofxLiana::draw() {
+void ofxLianaMesh::draw() {
 	
 	ofSetColor(ofColor::white);
 	//ofSetColor(0, 130, 164);
@@ -172,7 +158,7 @@ void ofxLiana::draw() {
 	}
 }
 //--------------------------------------------------------------
-void ofxLiana::keyPressed(int key) {
+void ofxLianaMesh::keyPressed(int key) {
 	switch (key) {
 		case ' ': {
 			bRepulse = true;
@@ -181,13 +167,13 @@ void ofxLiana::keyPressed(int key) {
 	}
 }
 //--------------------------------------------------------------
-void ofxLiana::keyReleased(int key) {
+void ofxLianaMesh::keyReleased(int key) {
 	switch (key) {
 		case ' ': bRepulse = false; break;
 	}
 }
 //--------------------------------------------------------------
-void ofxLiana::mousePressed(int x, int y, int button) {
+void ofxLianaMesh::mousePressed(int x, int y, int button) {
 	// Ignore anything greater than this distance
 	float maxDist = 20;
 	for (int i = 0; i < nodes.size(); i++) {
@@ -204,24 +190,25 @@ void ofxLiana::mousePressed(int x, int y, int button) {
 	 }*/
 }
 //--------------------------------------------------------------
-void ofxLiana::mouseMoved(int x, int y) {
+void ofxLianaMesh::mouseMoved(int x, int y) {
 	/*if (bRepulse) {
 		repulsionCenter = ofVec3f(x, y);
 	 }*/
 }
 //--------------------------------------------------------------
-void ofxLiana::clearRepulsors() {
+void ofxLianaMesh::clearRepulsors() {
 	repulsionCenters.clear();
 }
 //--------------------------------------------------------------
-void ofxLiana::addRepulsor(int x, int y) {
+void ofxLianaMesh::addRepulsor(int x, int y) {
 	if (bRepulse) {
 		repulsionCenters.push_back(ofVec3f(x, y));
+		cout << repulsionCenters.size() << endl;
 	}
 }
 
 //--------------------------------------------------------------
-void ofxLiana::mouseReleased(int x, int y, int button) {
+void ofxLianaMesh::mouseReleased(int x, int y, int button) {
 	if (dragNodeIndex > -1) {
 		dragNodeIndex = -1;
 	}

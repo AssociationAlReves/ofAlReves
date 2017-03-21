@@ -17,6 +17,9 @@ void ofxTerrain::setup() {
 //--------------------------------------------------------------
 void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 
+	ofSetFrameRate(60);
+	initGui();
+
 	defaultColor = ofFloatColor(1, 1, 1, 0);//ofFloatColor(0,0,1,0); 
     ofApp *app = (ofApp *)ofxGetAppPtr();
     app->cam.setOrientation(ofVec3f(43.1984, 0, 0));
@@ -53,7 +56,20 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 	lastCursor = ofVec2f(0);
 
 }
+//--------------------------------------------------------------
+void ofxTerrain::initGui() {
+	bShowGui = false;
+	if (!bGuiInitialized) {
 
+		gui.setup("panel", TERRAIN_SETTINGS_FILE);
+							
+		mainGroup.setName("Main");
+		mainGroup.add(speedParam.set("speed", 60, 0.001, 500));
+		gui.add(mainGroup);
+
+		bGuiInitialized = true;
+	}
+}
 //--------------------------------------------------------------
 ofFloatColor ofxTerrain::getColor(float a){
 	a = a * 4 - 1;
@@ -419,7 +435,7 @@ void ofxTerrain::update(){
 	case VASA_TERRAIN_TOPLANE:
 	case VASA_TERRAIN_PLANEMOVING:
 	{
-		speedRate += 1 / 60.;
+		speedRate += 1 / speedParam;
 		double curDelta = speedRate*(planeVelocity);
 
 		if (sumDeltaX > planeResolution){
@@ -470,6 +486,10 @@ void ofxTerrain::draw(){
 
 	ofSetLineWidth(1);
 	ofDisableDepthTest();
+
+	if (bShowGui) {
+		gui.draw();
+	}
 }
 
 //--------------------------------------------------------------
@@ -481,6 +501,7 @@ void ofxTerrain::keyPressed(int key) {
 	case ' ': { mode = (mode + 1) % 4;
 	} break;
 
+	case 'g': bShowGui = !bShowGui; break;
 	case 'h': addHole(800, 400); break;
 	case 'H': addHill(800, 400, 15); break;
 	case 'j': addHole(ofGetMouseX(), ofGetMouseY()); break;

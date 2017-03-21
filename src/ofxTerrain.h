@@ -25,6 +25,10 @@
 #include "globals.h"
 #include "ofxAppUtils.h"
 #include "ofxTween.h"
+#include "ofxGui.h"
+
+
+const string TERRAIN_SETTINGS_FILE = "terrain_settings.xml";
 
 class ofxTerrain : public ofxScene {
     
@@ -32,6 +36,7 @@ public:
     
     ofxTerrain(string prefix = "scene") : ofxScene(prefix + ": " + "Terrain"){
 			setSingleSetup(true); // call setup each time the scene is loaded
+			bGuiInitialized = false;
 		}
     
 	void setup();
@@ -70,7 +75,6 @@ private:
 	bool bSmallCursor;
     
     bool drawYLines;
-    
     void addHill_internal(float x, float y, float radius);
 
 
@@ -113,4 +117,11 @@ private:
     
     int indexFromXY(const int x, const int y, const int totalHeight);
     
+	// GUI
+	bool bGuiInitialized;
+	void initGui();
+	ofParameterGroup mainGroup;
+	ofParameter<float> speedParam;
+	ofxPanel gui;
+	bool bShowGui;
     };

@@ -79,6 +79,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
+	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
 
 #endif
 	//sceneManager.add(new ofxTerrain());

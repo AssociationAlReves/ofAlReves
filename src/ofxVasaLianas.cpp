@@ -49,7 +49,7 @@ void ofxVasaLianas::initGui() {
 	springParams.add(numNodes.set("numNodes", 20, 2, 100));
 	springParams.add(springLength.set("springLength", 20, 0, 500));
 	springParams.add(springStiffness.set("springStiffness", 3, 0, 50));
-	springParams.add(stringDamping.set("stringDamping", 0.9, 0, 1));
+	springParams.add(stringDamping.set("stringDamping", 0.9, 0.9, 1));
 	gui.add(springParams);
 
 	repulsionParams.setName("Repulsion");
@@ -81,8 +81,8 @@ void ofxVasaLianas::initGui() {
 	debugGroup.add(kwY.set("kinect Y", 0,-100,800));
 	debugGroup.add(kinectWarp.set("kinect warp", false));
 	debugGroup.add(easyCamMouse.set("easyCamMouse", true));
-	debugGroup.add(screenBounds.set("bounds", ofVec2f(ofGetWidth(),ofGetHeight()),ofVec2f(0),ofVec2f(ofGetWidth(),ofGetHeight())));
-	debugGroup.add(screenTopLeftPos.set("topleftPos", ofVec2f(0),ofVec2f(0),ofVec2f(ofGetWidth(),ofGetHeight())));
+	debugGroup.add(screenBounds.set("bounds", ofVec2f(ofGetWidth(),ofGetHeight()),ofVec2f(-ofGetWidth(),-ofGetHeight()),ofVec2f(ofGetWidth(),ofGetHeight())));
+	debugGroup.add(screenTopLeftPos.set("topleftPos", ofVec2f(0),ofVec2f(-ofGetWidth(),-ofGetHeight()),ofVec2f(ofGetWidth(),ofGetHeight())));
 	
 	
 	gui.add(debugGroup);
@@ -93,48 +93,71 @@ void ofxVasaLianas::initGui() {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::initLianas() {
-
+	
 	bUseMouseRepulsor = false;
 	bUseKinectRepulsor = false;
 	
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->cleanUp();
-		delete lianas[i];
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->cleanUp();
+			delete lianas[i];
+		}
+		lianas.clear();
+		
+		// Create lianas centered
+		float spacing = ofGetWidth() / (numLianas + 1);
+		for (int i = 0; i < numLianas; i++) {
+			
+			// use ofxLiana() to use original random node placement
+			// use ofxLiana(x) to have all nodes on same X
+			ofxLiana* liana = randomNodes ? new ofxLiana() : new ofxLiana(spacing * (i + 1));
+			liana->numNodes = numNodes;
+			liana->nodeRadius = nodeRadius;
+			liana->nodeStrength = nodeStrength;
+			liana->nodeDiameter = nodeDiameter;
+			liana->nodeDamping = nodeDamping;
+			liana->nodeRamp = nodeRamp;
+			liana->nodeVelocity = nodeVelocity;
+			
+			liana->springLength = springLength;
+			liana->springStiffness = springStiffness;
+			liana->stringDamping = stringDamping;
+			
+			liana->gravity = gravity;
+			liana->lineWidth = springLineWidth;
+			liana->lockLastNode = lockLastNode;
+			
+			//
+			// setup liana with X position
+			liana->setup();
+			
+			lianas.push_back(liana);
+			
+		}
+		
+	} else {
+		lianaMesh.cleanUp();
+		
+		
+		// Create lianas centered
+		lianaMesh.numNodes = numNodes;
+		lianaMesh.nodeRadius = nodeRadius;
+		lianaMesh.nodeStrength = nodeStrength;
+		lianaMesh.nodeDiameter = nodeDiameter;
+		lianaMesh.nodeDamping = nodeDamping;
+		lianaMesh.nodeRamp = nodeRamp;
+		lianaMesh.nodeVelocity = nodeVelocity;
+		
+		lianaMesh.springLength = springLength;
+		lianaMesh.springStiffness = springStiffness;
+		lianaMesh.stringDamping = stringDamping;
+		
+		lianaMesh.gravity = gravity;
+		lianaMesh.lineWidth = springLineWidth;
+		lianaMesh.lockLastNode = lockLastNode;
+		
+		lianaMesh.setup();
 	}
-	lianas.clear();
-
-	// Create lianas centered
-	float spacing = ofGetWidth() / (numLianas + 1);
-	for (int i = 0; i < numLianas; i++) {
-
-		// use ofxLiana() to use original random node placement
-		// use ofxLiana(x) to have all nodes on same X
-		ofxLiana* liana = randomNodes ? new ofxLiana() : new ofxLiana(spacing * (i + 1));
-		liana->numNodes = numNodes;
-		liana->nodeRadius = nodeRadius;
-		liana->nodeStrength = nodeStrength;
-		liana->nodeDiameter = nodeDiameter;
-		liana->nodeDamping = nodeDamping;
-		liana->nodeRamp = nodeRamp;
-		liana->nodeVelocity = nodeVelocity;
-
-		liana->springLength = springLength;
-		liana->springStiffness = springStiffness;
-		liana->stringDamping = stringDamping;
-
-		liana->gravity = gravity;
-		liana->lineWidth = springLineWidth;
-		liana->lockLastNode = lockLastNode;
-
-		//
-		// setup liana with X position
-		liana->setup();
-
-		lianas.push_back(liana);
-
-	}
-
-
 }
 
 //--------------------------------------------------------------
@@ -173,38 +196,68 @@ void ofxVasaLianas::initKinect() {
 
 //--------------------------------------------------------------
 void ofxVasaLianas::update() {
-	for (int i = 0; i < lianas.size(); i++) {
-
+	
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			
+			
+			//
+			// set updated params
+			lianas[i]->numNodes = numNodes;
+			lianas[i]->nodeRadius = nodeRadius;
+			lianas[i]->nodeStrength = nodeStrength;
+			lianas[i]->nodeDiameter = nodeDiameter;
+			lianas[i]->nodeDamping = nodeDamping;
+			lianas[i]->nodeRamp = nodeRamp;
+			lianas[i]->nodeVelocity = nodeVelocity;
+			
+			lianas[i]->springLength = springLength;
+			lianas[i]->springStiffness = springStiffness;
+			lianas[i]->stringDamping = stringDamping;
+			
+			lianas[i]->gravity = gravity;
+			lianas[i]->lineWidth = springLineWidth;
+			lianas[i]->repulsionStrength = repulsionStrength;
+			lianas[i]->repulsionRadius = repulsionRadius;//
+			// update
+			lianas[i]->update(lockX, lockY, lockZ);
+			if (bUseKinectRepulsor) {
+				lianas[i]->keyPressed(' ');
+			}
+			
+			lianas[i]->clearRepulsors();
+		}
+	} else {
 		//
 		// set updated params
-		lianas[i]->numNodes = numNodes;
-		lianas[i]->nodeRadius = nodeRadius;
-		lianas[i]->nodeStrength = nodeStrength;
-		lianas[i]->nodeDiameter = nodeDiameter;
-		lianas[i]->nodeDamping = nodeDamping;
-		lianas[i]->nodeRamp = nodeRamp;
-		lianas[i]->nodeVelocity = nodeVelocity;
-
-		lianas[i]->springLength = springLength;
-		lianas[i]->springStiffness = springStiffness;
-		lianas[i]->stringDamping = stringDamping;
-
-		lianas[i]->gravity = gravity;
-		lianas[i]->lineWidth = springLineWidth;
-		lianas[i]->repulsionStrength = repulsionStrength;
-		lianas[i]->repulsionRadius = repulsionRadius;
-
+		lianaMesh.numNodes = numNodes;
+		lianaMesh.nodeRadius = nodeRadius;
+		lianaMesh.nodeStrength = nodeStrength;
+		lianaMesh.nodeDiameter = nodeDiameter;
+		lianaMesh.nodeDamping = nodeDamping;
+		lianaMesh.nodeRamp = nodeRamp;
+		lianaMesh.nodeVelocity = nodeVelocity;
+		
+		lianaMesh.springLength = springLength;
+		lianaMesh.springStiffness = springStiffness;
+		lianaMesh.stringDamping = stringDamping;
+		
+		lianaMesh.gravity = gravity;
+		lianaMesh.lineWidth = springLineWidth;
+		lianaMesh.repulsionStrength = repulsionStrength;
+		lianaMesh.repulsionRadius = repulsionRadius;
+		
 		//
 		// update
-		lianas[i]->update(lockX, lockY, lockZ);
+		lianaMesh.update(lockX, lockY, lockZ);
 		
 		if (bUseKinectRepulsor) {
-			lianas[i]->keyPressed(' ');
+			lianaMesh.keyPressed(' ');
 		}
 		
-			lianas[i]->clearRepulsors();
-		
+		lianaMesh.clearRepulsors();
 	}
+	
 	
 	updateKinect();
 }
@@ -268,12 +321,17 @@ void ofxVasaLianas::draw() {
 	ofPushMatrix();
 	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
 	
-	ofScale(screenBounds->x/ofGetWidth(), screenBounds->y/ofGetHeight());
+	ofScale(abs(screenBounds->x)/ofGetWidth(), screenBounds->y/ofGetHeight());
 	ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
 	
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->draw();
+	if (bLianas)
+	{
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->draw();
+		}
+	} else {
+		lianaMesh.draw();
 	}
 	ofPopMatrix();
 	
@@ -346,13 +404,19 @@ void ofxVasaLianas::drawKinect() {
 			cv::Point2f centroid = contourFinder.getCentroid(i);
 			//cout<< "c" << centroid.y << endl;
 			//cout<< "c1" << centroid.y*kwScaleY-kwY << endl;
-				for (int i = 0; i < lianas.size(); i++) {
+			
 					//lianas[i]->addRepulsor(centroid.x*kwScaleX+kwX, centroid.y*kwScaleY+kwY);
-					for (auto & cPoint : hullPoints)
-					{
-					lianas[i]->addRepulsor(cPoint.x*kwScaleX+kwX, cPoint.y*kwScaleY+kwY);
+			for (auto & cPoint : hullPoints)
+			{
+				if (bLianas) {
+					for (int i = 0; i < lianas.size(); i++) {
+						lianas[i]->addRepulsor(cPoint.x*kwScaleX+kwX, cPoint.y*kwScaleY+kwY);
 					}
+				} else {
+					lianaMesh.addRepulsor(cPoint.x*kwScaleX+kwX, cPoint.y*kwScaleY+kwY);
 				}
+			}
+			
 			
 			
 			
@@ -413,7 +477,6 @@ void ofxVasaLianas::closeKinect() {
 }
 //--------------------------------------------------------------
 void ofxVasaLianas::setupKinectWarp(bool shift, bool alt, int x, int y) {
-	
 }
 
 //--------------------------------------------------------------
@@ -430,14 +493,23 @@ void ofxVasaLianas::keyPressed(int key) {
 				app->cam.enableMouseInput();
 			}
 			break;
-		case 'l': gui.loadFromFile(LIANAS_SETTINGS_FILE);
-			kinect.setCameraTiltAngle(angle);
+		case 'l':  { if (bLianas)
+			gui.loadFromFile("lianas.xml");
+		else
+			gui.loadFromFile("lianamesh.xml");
+	}
+	break;			kinect.setCameraTiltAngle(angle);
 			break;
 		case 'j': bUseMouseRepulsor = false; break;
 		case 'J' : bUseMouseRepulsor = true; break;
 		case 'k': bUseKinectRepulsor = false; break;
 		case 'K' : bUseKinectRepulsor = true; break;
-		case 's': gui.saveToFile(LIANAS_SETTINGS_FILE);
+		case 'y' : {bLianas = !bLianas; initLianas();} break;
+		case 's': { if (bLianas)
+			gui.saveToFile("lianas.xml");
+		else
+			gui.saveToFile("lianamesh.xml");
+		}
 			break;
 		case 'C':
 			kinect.setCameraTiltAngle(0); // zero the tilt on exit
@@ -461,39 +533,59 @@ void ofxVasaLianas::keyPressed(int key) {
 			//case 'c': cam.disableMouseInput(); break;
 	}
 	
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->keyPressed(key);
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->keyPressed(key);
+		}
+	} else {
+	lianaMesh.keyPressed(key);
 	}
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::keyReleased(int key) {
-	
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->keyReleased(key);
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->keyReleased(key);
+		}
+	} else {
+		lianaMesh.keyReleased(key);
 	}
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseMoved(int x, int y) {
 
+	
 	if (bUseMouseRepulsor) {
-		for (int i = 0; i < lianas.size(); i++) {
-			lianas[i]->addRepulsor(x, y );
+		if (bLianas) {
+			for (int i = 0; i < lianas.size(); i++) {
+				lianas[i]->addRepulsor(x, y );
+			}
+		} else {
+			lianaMesh.addRepulsor(x, y );
 		}
 	}
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mousePressed(int x, int y, int button) {
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->mousePressed(x, y, button);
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->mousePressed(x, y, button );
+		}
+	} else {
+		lianaMesh.mousePressed(x, y, button );
 	}
 }
 
 //--------------------------------------------------------------
 void ofxVasaLianas::mouseReleased(int x, int y, int button) {
-	for (int i = 0; i < lianas.size(); i++) {
-		lianas[i]->mouseReleased(x, y, button);
+	if (bLianas) {
+		for (int i = 0; i < lianas.size(); i++) {
+			lianas[i]->mouseReleased(x, y, button );
+		}
+	} else {
+		lianaMesh.mouseReleased(x, y, button );
 	}
 }

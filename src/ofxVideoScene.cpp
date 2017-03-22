@@ -4,7 +4,7 @@
 
 //--------------------------------------------------------------
 void ofxVideoScene::setup(){
-	player.loadMovie(fileName);
+	player.load(fileName);
 	player.play();
 	player.setVolume(0);
     if (!autoLoop) {

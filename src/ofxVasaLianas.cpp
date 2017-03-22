@@ -279,7 +279,7 @@ void ofxVasaLianas::updateKinect() {
 			bKinectFrameReady = true;
 				// load grayscale depth image and color image from the kinect source
 			//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-			grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
+			grayImage.setFromPixels(kinect.getDepthPixels());
 			//grayImage.update();
 			
 			copyGray(grayImage, grayImageNear);
@@ -345,10 +345,10 @@ void ofxVasaLianas::draw() {
 	if (kinectWarp) {
 		ofSetColor(255);
 		ofSetLineWidth(5);
-		ofLine(0,0,kinect.width,0);
-		ofLine(kinect.width, 0, kinect.width, kinect.height);
-		ofLine(kinect.width, kinect.height,0, kinect.height);
-		ofLine(0, kinect.height, 0, 0);
+		ofDrawLine(0,0,kinect.width,0);
+		ofDrawLine(kinect.width, 0, kinect.width, kinect.height);
+		ofDrawLine(kinect.width, kinect.height,0, kinect.height);
+		ofDrawLine(0, kinect.height, 0, 0);
 		ofSetLineWidth(1);
 	}
 	
@@ -437,7 +437,7 @@ void ofxVasaLianas::drawKinect() {
 					ofDrawBitmapStringHighlight(msg, 0, 0, ofColor::white, ofColor::red);
 					ofVec2f velocity = toOf(contourFinder.getVelocity(i));
 					ofScale(5, 5);
-					ofLine(0, 0, velocity.x, velocity.y);
+					ofDrawLine(0, 0, velocity.x, velocity.y);
 					
 					ofPopMatrix();
 				}

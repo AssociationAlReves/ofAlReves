@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 
 class ofxRibbon : public ofxScene
@@ -43,20 +43,7 @@ private:
 	
 	float sWidth;
 	float sHeight;
-
-	// transitions
-	ofxTween tween;
-    
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
+	
+	float tweenInFrom, tweenInTo;
 };
 

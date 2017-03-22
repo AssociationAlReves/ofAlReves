@@ -24,7 +24,7 @@
 #include "ofMain.h"
 #include "globals.h"
 #include "ofxAppUtils.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxGui.h"
 
 
@@ -91,7 +91,6 @@ private:
 	float noiseAmp2;
 
     ofFloatColor getColor(float a);
-    ofxEasingCubic tweenEasing;
     
     void updateHoles();
     vector<ofVec2f> holes;

@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 #include "ofBuilding.h"
@@ -138,29 +138,6 @@ private:
 	ofVec3f prevCamTranslate, curCamTranslate;
 	ofVec3f prevCamRot, curCamRot;
 	
-	// transitions
-	ofxTween explosionTween;
-	ofxTween tween;
-	ofxTween tweenRoadOpactity;	
-	ofxTween tweenTranslate;
-	ofxTween tweenRotate;
-
-	ofxTween tweenBoxW;
-	ofxTween tweenBoxH;
-	ofxTween tweenCollapseColor;
-
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
-
 	// lights
 	ofLight directionalLight;	
 	ofMaterial material;
@@ -170,5 +147,18 @@ private:
 	ofParameter<ofFloatColor> specularColor;
 	ofParameter<ofFloatColor> ambientColor;
 	ofParameterGroup lightParams;
+	
+	// Transitions
+	float speedFrom, speedTo;
+	float speedStartTime, speedEndTime;
+	float transFrom, transTo;
+	float transInitTime, transEndTime;
+	float explosionFrom, explosionTo;
+	float explosionInitTime, explosionEndTime;
+	float collapseFrom, collapseTo;
+	float collapseInitTime, collapseEndTime;
+	float boxWInitTime, boxWEndTime, boxWFrom, boxWTo;
+	float boxHInitTime, boxHEndTime, boxHFrom, boxHTo;
+	
 };
 

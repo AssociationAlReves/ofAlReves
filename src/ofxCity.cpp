@@ -26,10 +26,11 @@ void ofxCity::setup() {
 	rotationAngle = 0;
 	translationCollapse = 0;
 	buildings.clear();
-	tween.setParameters(easinglinear, ofxTween::easeInOut
-		, curSpeed
-		, desiredSpeed
-		, 0, 0);
+	
+	speedStartTime = 0;
+	speedEndTime = 0;
+	speedFrom = curSpeed;
+	speedTo = desiredSpeed;
 
 	// GUI
 	roadParamsHash = 0;
@@ -104,12 +105,12 @@ void ofxCity::setupTextures() {
 	ofFill();
 	float lineWidth = ofMap(roadLineWidth, 0, 100, 0, roadTexWidth, true);
 	float lineHeight = ofMap(roadLineHeight, 0, 100, 0, roadTexHeight, true);
-	ofRect((roadTexWidth - lineWidth) / 2.0, (roadTexHeight - lineHeight) / 2.0, 0
+	ofDrawRectangle((roadTexWidth - lineWidth) / 2.0, (roadTexHeight - lineHeight) / 2.0, 0
 		, lineWidth, lineHeight);
 
 	fboRoad.end();
 
-	texRoad = fboRoad.getTextureReference();
+	texRoad = fboRoad.getTexture();
 }
 
 //--------------------------------------------------------------
@@ -291,6 +292,7 @@ void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 //--------------------------------------------------------------
 void ofxCity::update() {
 
+	float now = ofGetElapsedTimef();
 
 	float hash = roadLineWidth * 5.
 		+ roadLineHeight * 7.
@@ -313,7 +315,7 @@ void ofxCity::update() {
 	}
 
 	if (bTweenSpeed) {
-		curSpeed = tween.update();
+		curSpeed = ofxeasing::map(now, speedStartTime, speedEndTime, speedFrom, speedTo, &ofxeasing::sine::easeInOut);
 	}
 
 	if (mode != enCityExplosion) {
@@ -349,7 +351,7 @@ void ofxCity::update() {
 
 	switch (mode) {
 	case enCityCollapsing:
-		if (tweenTranslate.isCompleted())
+		if (now > transEndTime)
 		{
 			cout << "COLLAPSED" << endl;
 			mode = enCityCollapsed;
@@ -382,13 +384,20 @@ vector<ofVec2f> buildingsSizesEx;
 float BUILDING_MAX_SIZE_EX = 150;
 void ofxCity::setupExplosion() {
 
+	float now = ofGetElapsedTimef();
+	
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.setPosition(app->cam.getPosition() + ofVec3f(0, 800, 0));
 	decelerate(2000, true);
 	roadPosEx.clear();
 	buildingsPosEx.clear();
 	buildingsSizesEx.clear();
-	explosionTween.setParameters(easingexpo, ofxTween::easeInOut, 0, 1, 10000,0);
+	
+	explosionFrom = 0;
+	explosionTo = 1;
+	explosionInitTime = now;
+	explosionEndTime = now + 10000;
+	//explosionTween.setParameters(easingexpo, ofxTween::easeInOut, 0, 1, 10000,0);
 
 	float roadSize = roadTexWidth / roadDivision;
 
@@ -426,6 +435,9 @@ void ofxCity::setupExplosion() {
 //--------------------------------------------------------------
 float amount;
 void ofxCity::updateExplosion() {
+	
+	float now = ofGetElapsedTimef();
+	
 	prevCamTranslate = curCamTranslate;
 	prevCamRot = curCamRot;
 	
@@ -444,8 +456,7 @@ void ofxCity::updateExplosion() {
 	curCamRot *= 15 ; // scale from -1,+1 range to -400,+400
 
 	
-	amount = explosionTween.update();
-	//amount = 0;
+	amount = ofxeasing::map(now, explosionInitTime, explosionEndTime, explosionFrom, explosionTo, &ofxeasing::exp::easeInOut);	//amount = 0;
 
 	for (int i = 0; i < roadPosEx.size(); i++) {
 		roadPosEx[i].y = -(ofNoise(ofGetElapsedTimef() * 0.02 + 1.23 + i) * CITY_BLOCK_MAXHEIGHT * amount );
@@ -493,7 +504,7 @@ void ofxCity::drawExplosion() {
 			ofRotate(noiseAngle, noisex, noisey, noisez);
 			ofPushMatrix();
 			ofRotate(90, 1, 0, 0);
-				ofRect(0, 0, roadSize, roadSize);
+				ofDrawRectangle(0, 0, roadSize, roadSize);
 			ofPopMatrix();
 		ofPopMatrix();
 
@@ -514,7 +525,7 @@ void ofxCity::drawExplosion() {
 			ofRotate(noiseAngle, noisex, noisey, noisez);
 			ofPushMatrix();
 			ofRotate(90, 1, 0, 0);
-				ofRect(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
+				ofDrawRectangle(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
 			ofPopMatrix();
 		ofPopMatrix();
 	}
@@ -524,10 +535,10 @@ void ofxCity::drawExplosion() {
 
 void ofxCity::accelerate(int duration) {
 	desiredSpeed += CITY_SPEED_INCR;
-	tween.setParameters(easingsine, ofxTween::easeInOut
-		, curSpeed
-		, desiredSpeed
-		, duration, 0);
+	speedStartTime = ofGetElapsedTimef();
+	speedEndTime = speedEndTime + duration;
+	speedFrom = curSpeed;
+	speedTo = desiredSpeed;
 }
 void ofxCity::decelerate(int duration, bool stop) {
 	if (stop) {
@@ -536,10 +547,10 @@ void ofxCity::decelerate(int duration, bool stop) {
 	else {
 		desiredSpeed -= CITY_SPEED_INCR;
 	}
-	tween.setParameters(easingsine, ofxTween::easeInOut
-		, curSpeed
-		, desiredSpeed
-		, duration, 0);
+	speedStartTime = ofGetElapsedTimef();
+	speedEndTime = speedEndTime + duration;
+	speedFrom = curSpeed;
+	speedTo = desiredSpeed;
 }
 
 //--------------------------------------------------------------
@@ -549,12 +560,16 @@ void ofxCity::draw() {
 	ofEnableAlphaBlending();
 	ofEnableDepthTest();
 
+	float now = ofGetElapsedTimef();
 
 	switch (mode)
 	{
 	case enCityCollapsing:
-		ofBackground(tweenCollapseColor.update());
-		break;
+		{
+			float col = ofxeasing::map(now, collapseInitTime, collapseEndTime, collapseFrom, collapseTo, ofxeasing::linear::easeIn);
+		ofBackground(col);
+		}
+			break;
 	default:
 		//ofBackground(255, 255, 255, 255);
 		ofBackground(255);
@@ -572,7 +587,7 @@ void ofxCity::draw() {
 		int rH = 75;
 		ofTranslate(ofGetWidth() / 2 - rW /2, ofGetHeight() / 2 - rH / 2);
 
-		ofRect(0, 0, rW, rH);
+		ofDrawRectangle(0, 0, rW, rH);
 		ofPopMatrix();
     } else if (mode == enCityBlank) {
         // nothing
@@ -636,16 +651,16 @@ void ofxCity::draw() {
 
 			if (mode == enCityCollapsing) {
 				//rotationAngle = tweenRotate.update();
-				translationCollapse = tweenTranslate.update();
+				translationCollapse = ofxeasing::map(now, transInitTime, transEndTime, transFrom, transTo, ofxeasing::exp::easeIn);
 
-				float boxW = tweenBoxW.update();
-				float boxH = tweenBoxH.update();
 
+				float boxW = ofxeasing::map(now, boxWInitTime, boxWEndTime, boxWFrom, boxWTo, ofxeasing::exp::easeIn);
+				float boxH = ofxeasing::map(now, boxHInitTime, boxHEndTime, boxHFrom, boxHTo, ofxeasing::exp::easeIn);
 				ofPushMatrix();
 				ofTranslate(-boxW / 2, -boxH / 2, -1000);
 
 				ofSetColor(0);
-				ofRect(0, 0, boxW, boxH);
+				ofDrawRectangle(0, 0, boxW, boxH);
 
 				ofPopMatrix();
 
@@ -802,13 +817,11 @@ void ofxCity::keyPressed(int key) {
 //--------------------------------------------------------------
 void ofxCity::setMode(int mode) {
 
+	float now = ofGetElapsedTimef();
+	
 	switch (mode) {
 	case enCityStart:
 		accelerate(0); // start with velocity
-		tweenRoadOpactity.setParameters(easinglinear, ofxTween::easeInOut
-			, 0
-			, 255
-			, 10000, 0);
 		break;
 	case enCityBuildings:
 		autoGenerateBuildings = true;
@@ -824,22 +837,32 @@ void ofxCity::setMode(int mode) {
 		}
 		float diffZ = highestZ - lowestZ;
 
-		int collapseTimeMs = 15000;
+		int collapseTime = 15;
 		//tweenRotate.setParameters(easingexpo, ofxTween::easeIn, 0, 0, collapseTimeMs, 0);
 
 		float roadNz = roads[CITY_NUM_ROAD_PLANES - 1].getPosition().z;
 		float road0z = roads[0].getPosition().z;
 
 		float initialZ = lowestZ - 650;
-		float zOffsetAtEnd = ofGetFrameRate() * (curDistanceOffset)* collapseTimeMs / 1000.0;
-		tweenTranslate.setParameters(easingexpo, ofxTween::easeIn
-			, 0
-			, -zOffsetAtEnd + lowestZ - roadNz
-			, collapseTimeMs, 0);
-
-		tweenCollapseColor.setParameters(easinglinear, ofxTween::easeIn, 255, 0, collapseTimeMs / 5., 3000);
-		tweenBoxW.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_WIDTH, collapseTimeMs / 20., 0);
-		tweenBoxH.setParameters(easingexpo, ofxTween::easeIn, 0, CITY_COLLAPSE_BOX_HEIGHT, collapseTimeMs, 0);
+		float zOffsetAtEnd = ofGetFrameRate() * (curDistanceOffset)* collapseTime;
+		transInitTime = now;
+		transEndTime = now + collapseTime;
+		transFrom = 0;
+		transTo =-zOffsetAtEnd + lowestZ - roadNz;
+		
+		collapseFrom = 255;
+		collapseTo = 0;
+		collapseInitTime = now + 3;
+		collapseEndTime = collapseInitTime + collapseTime / 5.;
+		
+		boxWInitTime = now;
+		boxWEndTime = now + collapseTime / 20.;
+		boxWFrom = 0;
+		boxWTo = CITY_COLLAPSE_BOX_WIDTH;
+		boxHInitTime = now;
+		boxHEndTime = collapseTime;
+		boxHFrom = 0;
+		boxHTo = CITY_COLLAPSE_BOX_HEIGHT;
 	}
 	break;
         case enCityAgain: {

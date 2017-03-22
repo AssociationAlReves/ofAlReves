@@ -249,7 +249,7 @@ void ofxTerrain::updateHoles(){
 
 		ofVec2f pos = holes[i];
 		float amp = holesAmp[i];
-		float ampTween = ofxTween::map(amp, 0, VASA_HOLE_MAX_AMP, 0, VASA_HOLE_MAX_AMP, false, tweenEasing, ofxTween::easeInOut);
+		float ampTween = ofxeasing::map(amp, 0, VASA_HOLE_MAX_AMP, 0, VASA_HOLE_MAX_AMP, &ofxeasing::cubic::easeInOut);
 
 		if (amp > VASA_HOLE_MAX_AMP)
 		{
@@ -319,7 +319,9 @@ void ofxTerrain::updateHills(){
 
 		ofVec2f pos = hills[i];
 		float amp = hillsAmp[i];
-		float ampTween = ofxTween::map(amp, 0, VASA_HILL_MAX_AMP, 0, VASA_HILL_MAX_AMP, true, tweenEasing, ofxTween::easeInOut);
+		float ampTween = ofxeasing::map_clamp(amp, 0, VASA_HILL_MAX_AMP, 0, VASA_HILL_MAX_AMP, &ofxeasing::cubic::easeInOut);
+		
+
         float hillRadius = hillsRadius[i];
 
 		if (amp > hillRadius * VASA_HILL_MAX_AMP / VASA_HILL_RADIUS) // Hil
@@ -480,8 +482,8 @@ void ofxTerrain::draw(){
 		ofSetColor(ofColor::red);
 		ofSetLineWidth(10);
 		int lw = 2;
-		ofLine(mouseX - lw, mouseY, mouseX + lw, mouseY);
-		ofLine(mouseX, mouseY - lw, mouseX, mouseY + lw);
+		ofDrawLine(mouseX - lw, mouseY, mouseX + lw, mouseY);
+		ofDrawLine(mouseX, mouseY - lw, mouseX, mouseY + lw);
 	}
 
 	ofSetLineWidth(1);

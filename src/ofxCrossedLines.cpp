@@ -10,7 +10,9 @@ float direction = 1;
 void ofxCrossedLines::setup(){
 	numLine = -1;
 	direction = 1;
-	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,durationStart,0);
+	start = 0;
+	end = 1;
+//	tween.setParameters(easingsine, ofxTween::easeInOut, 0,1,durationStart,0);
 	
 }
 
@@ -18,7 +20,7 @@ void ofxCrossedLines::setup(){
 void ofxCrossedLines::update(){
 	if (numLine == -1) return;
 
-	if (tween.isCompleted() && numLine != 4)
+	if (ofGetElapsedTimef()>=endTime && numLine != 4)
 	{
 		nextMode();
 	}
@@ -40,17 +42,20 @@ void ofxCrossedLines::nextMode() {
 	}
 	if (numLine == -1) direction = 1;
 
-	float start = direction > 0 ? 0 : 1;
-	float end = direction > 0 ? 1 : 0;
-	unsigned duration = direction > 0 ? durationStart : durationEnd;
-	tween.setParameters(easingsine, ofxTween::easeInOut, start, end, duration, 0);
+	initTime = ofGetElapsedTimef();
+	float duration = direction > 0 ? durationStart : durationEnd;
+	endTime = initTime + duration;
+	start = direction > 0 ? 0 : 1;
+	end = direction > 0 ? 1 : 0;
+	
 
-	cout << "NumLine : " << ofToString(numLine) << ", duration: " << ofToString(duration) << endl;
+//	cout << "NumLine : " << ofToString(numLine) << ", duration: " << ofToString(duration) << endl;
 }
 
 //--------------------------------------------------------------
 void ofxCrossedLines::draw(){
-    
+	auto now = ofGetElapsedTimef();
+	
     ofEnableAlphaBlending();
     ofBackground(255,255,255,255);
 
@@ -60,7 +65,8 @@ void ofxCrossedLines::draw(){
 	for (int i = 0; i<=numLine; i++)
 	{
 		if (i == numLine) {
-			drawLine(i, tween.update());
+			float y = ofxeasing::map(now, initTime, endTime, start, end, &ofxeasing::sine::easeInOut);
+			drawLine(i, y);
 		} else {
 			drawLine(i);
 		}

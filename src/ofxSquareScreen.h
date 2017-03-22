@@ -9,7 +9,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 
 #define SC_MODE_INIT 0
@@ -43,20 +43,9 @@ private:
 
 	float sWidth;
 	float sHeight;
-
-	// transitions
-	ofxTween tween;
-    
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
+	
+	float easingInFrom, easingInTo, easingOutFrom, easingOutTo;
+	int easingType;
+	float getEasingValue();
 };
 

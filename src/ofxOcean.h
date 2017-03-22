@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
@@ -58,8 +58,6 @@ private:
     
     //Universal function which sets normals for the triangle mesh
     void setNormals( ofMesh &mesh );
-     // transitions
-     ofxTween tween;
      
      ofxPanel gui;
      ofParameter<bool> useLights;

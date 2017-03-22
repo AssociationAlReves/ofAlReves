@@ -41,9 +41,9 @@ void ofxVideoMirror::update() {
 		if (vidGrabber.isFrameNew()) {
 
 			//Initialize output pixels
-			ofPixels pixels = vidGrabber.getPixelsRef();
+			ofPixels pixels = vidGrabber.getPixels();
 			//Get pixel arrays for grabber
-			ofPixels &pixelsGrab = vidGrabber.getPixelsRef();
+			ofPixels &pixelsGrab = vidGrabber.getPixels();
 
 			switch (curMode) {
 			case enMirrorNormal:

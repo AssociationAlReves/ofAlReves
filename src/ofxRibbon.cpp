@@ -20,8 +20,9 @@ void ofxRibbon::setup(){
 void ofxRibbon::update(){
 
 	float tweenFactor = 1;
+	bool isTweenCompleted = ofGetElapsedTimef() > tweenInTo;
 	if (endLine) {
-		if ( tween.isCompleted()) {
+		if ( isTweenCompleted) {
 			points.clear();
 			maxZ = 0;
 		} 
@@ -47,7 +48,8 @@ void ofxRibbon::update(){
 void ofxRibbon::clear(){
 
 	endLine = true;
-	tween.setParameters(easingquad, ofxTween::easeInOut, 1, 0, 4000, 0);
+	tweenInFrom = ofGetElapsedTimef();
+	tweenInTo = tweenInFrom + 4;
 	ofVec3f dest  = ofVec3f(0,0,maxZ + 200);
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 
@@ -59,11 +61,11 @@ void ofxRibbon::clear(){
 //--------------------------------------------------------------
 void ofxRibbon::draw(){
 
-
+	float now = ofGetElapsedTimef();
 	float tweenFactor = 1;
 	if (endLine)
 	{
-		tweenFactor = tween.update();
+		tweenFactor = ofxeasing::map(now, tweenInFrom, tweenInTo, 1, 0, &ofxeasing::quad::easeInOut);
 	}
 
 	int w = ofGetWidth();
@@ -91,7 +93,7 @@ void ofxRibbon::draw(){
 
 		//get the normalized direction. normalized vectors always have a length of one
 		//and are really useful for representing directions as opposed to something with length
-		ofVec3f unitDirection = direction.normalized();
+		ofVec3f unitDirection = direction.normalize();
 
 		//find both directions to the left and to the right
 		ofVec3f toTheLeft = unitDirection.getRotated(-90, ofVec3f(0,0,1));

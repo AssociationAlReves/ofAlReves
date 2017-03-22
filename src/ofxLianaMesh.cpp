@@ -146,13 +146,13 @@ void ofxLianaMesh::draw() {
 	//ofSetColor(0, 130, 164);
 	ofSetLineWidth(lineWidth);
 	for (int i = 0; i < springs.size(); i++) {
-		ofLine(springs[i]->fromNode->x, springs[i]->fromNode->y, springs[i]->fromNode->z, springs[i]->toNode->x, springs[i]->toNode->y, springs[i]->toNode->z);
+		ofDrawLine(springs[i]->fromNode->x, springs[i]->fromNode->y, springs[i]->fromNode->z, springs[i]->toNode->x, springs[i]->toNode->y, springs[i]->toNode->z);
 	}
 	// draw nodes
 	//noStroke();
 	for (int i = 0; i < nodes.size(); i++) {
 		ofFill();
-		ofEllipse(nodes[i]->x, nodes[i]->y, nodes[i]->z, nodeDiameter, nodeDiameter);
+		ofDrawEllipse(nodes[i]->x, nodes[i]->y, nodes[i]->z, nodeDiameter, nodeDiameter);
 		/*ofSetColor(0);
 		 ofEllipse(nodes[i]->x, nodes[i]->y, nodeDiameter - 4, nodeDiameter - 4);*/
 	}

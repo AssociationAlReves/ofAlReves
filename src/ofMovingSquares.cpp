@@ -14,7 +14,7 @@ void ofMovingSquares::setup(){
 	timeTriggers.clear();
 
 	ofResetElapsedTimeCounter();
-	updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
+	//updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
 
 #ifdef MOV_SQUARES_DEBUG
 	int curTime = 0;
@@ -201,12 +201,14 @@ void ofMovingSquares::nextMode(std::string reason){
 		<< ", reason: " << reason 
 		<< endl;
 
+	float now = ofGetElapsedTimef();
+	
 	switch(currentMode) {
 	case MOV_state_BlackToBlank:
-		updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
+			updateFadeInTween(EASING_SINE, 0, 255);
 		break;
 	case MOV_state_StartFadeIn:
-		updateTween(tweenFadein, easingsine,ofxTween::easeInOut,0,255);
+		updateFadeInTween(EASING_SINE, 0, 255);
 		break;
 	case MOV_state_MoveViolet:
 	case MOV_state_MoveGreen:
@@ -218,44 +220,45 @@ void ofMovingSquares::nextMode(std::string reason){
 	case MOV_state_MoveRed2:
 	case MOV_state_MoveYellow2:
 	case MOV_state_MoveBlue2:{
-		float tweenDuration = 0;
-		if (currentMode == MOV_state_MoveViolet || currentMode == MOV_state_MoveViolet2 ) {
-			tweenDuration = 6.5*1000;
-		} else {
-			tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
-		}
-		updateTween(tweenFadein, easingexpo,ofxTween::easeOut,0,PI*0.9,tweenDuration);
-							 } break;
+			float tweenDuration = 0;
+			if (currentMode == MOV_state_MoveViolet || currentMode == MOV_state_MoveViolet2 ) {
+				tweenDuration = 6.5*1000;
+			} else {
+				tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
+			}
+			updateFadeInTween(EASING_EXPO_EASEOUT, 0,PI*0.9,tweenDuration);
+		} break;
 	case MOV_state_Slow:
 		{
 			isRotating = true;
-			updateTween(tweenFadein, easingsine,ofxTween::easeOut,0,2,1000);
+			updateFadeInTween(EASING_SINE_EASEOUT, 0, 2,1000);
 		}
 		break;
 	case MOV_state_Accelerate:
 		{
 			isRotating = true;
-			updateTween(tweenFadein, easinglinear,ofxTween::easeInOut,2,20,5000);
+			
+			updateFadeInTween(EASING_LINEAR, 2,20,5000);
 		}
 		break;
 	case MOV_state_Noise:
 		{
 			isRotating = true;
-			updateTween(tweenNoise, easingcubic,ofxTween::easeInOut,0,1,5000);
+			updateNoiseTween(EASING_CUBIC, 0,1,5000);
 		}
 		break;
 	case MOV_state_FullStop:
 		{
 			isRotating = true;
-			updateTween(tweenFadein, easingsine,ofxTween::easeInOut,20,0,3000);
-			updateTween(tweenNoise, easingsine,ofxTween::easeInOut,1,0,3000); // 6000
+			updateFadeInTween(EASING_SINE,20,0,3000);
+			updateNoiseTween(EASING_SINE, 1,0,3000); // 6000
 		}
 		break;
 	case MOV_state_Reset:
 		{
 			isRotating = true;
 			isStopFadeOut = true;
-			updateTween(tweenNoise, easinglinear,ofxTween::easeInOut,255,0,200);
+			updateNoiseTween(EASING_LINEAR, 255,0,200);
 		}
 		break;
 	case MOV_state_NoGreen:
@@ -318,7 +321,8 @@ bool ofMovingSquares::beforeDraw(){
 	switch(currentMode) {
 	case MOV_state_BlackToBlank: 
 		{
-			ofBackground(tweenFadein.update());
+			float bg = getFadeTweenValue();
+			ofBackground(bg);
 			bDrawShapes = false;
 		}
 		break;
@@ -340,6 +344,7 @@ void ofMovingSquares::draw(){
 	float adjustedTime = 0;
 	float amout = 0;
 	float noiseAmount = 0;
+	float now = ofGetElapsedTimef();
 
 	if (beforeDraw()){
 
@@ -359,7 +364,8 @@ void ofMovingSquares::draw(){
 		if (isRotating) {
 
 			adjustedTime = ofGetElapsedTimef()-timeTriggers[MOV_state_StartTimer];
-			amout = tweenFadein.isCompleted() ? tweenFadein.getTarget(0) : tweenFadein.update();
+			
+			amout = now >= fadeInEndTime ? fadeInTo : getFadeTweenValue();
 			currentAngle += 0.003 * amout;
 
 			posAngle = currentAngle * -0.1;
@@ -367,7 +373,7 @@ void ofMovingSquares::draw(){
 		}
 		else
 		{
-			amout = tweenFadein.getTarget(0);
+			amout = fadeInFrom;
 		}
 		//rects.push_back(ofRectangle(-w/2,-h/2,w,h));
 		int i = 0;
@@ -380,15 +386,15 @@ void ofMovingSquares::draw(){
 			// shape color alpha
 			if (currentMode == MOV_state_StartFadeIn) {
 				ofColor color = shape.color;
-				color.a  = tweenFadein.update();
+				color.a = getFadeTweenValue();
 				ofSetColor(color);
 			} else if (currentMode == MOV_state_Reset) {
 				ofColor color = shape.color;
-				color.a  = tweenNoise.update();
-				if (tweenNoise.isCompleted() && tweenNoise.getTarget(0) == 0) {
+				color.a  = getNoiseTweenValue();
+				if (now >= noiseEndTime && noiseFrom == 0) {
 					isStopFadeOut = false;
 					isRotating = false;
-					updateTween(tweenNoise, easinglinear,ofxTween::easeInOut,0,255,200);
+					updateNoiseTween(EASING_LINEAR, 0,255,200);
 				}
 				ofSetColor(color);
 			} else {
@@ -407,7 +413,7 @@ void ofMovingSquares::draw(){
 					float nw = ofGetWidth() / 2;
 					float nh = ofGetHeight() / 2;
 					float speed = 0.08;
-					noiseAmount = tweenNoise.update();
+					noiseAmount = getNoiseTweenValue();
 					// standard elliptic rotation
 					ofTranslate((1. - noiseAmount*0.8) * cos( shape.angleOffset + posAngle ) * ( ofGetWidth() / 2 - curMargin)
 						, (1. - noiseAmount*0.8) * sin( shape.angleOffset + posAngle ) * ( ofGetHeight() / 2 - curMargin));
@@ -427,7 +433,7 @@ void ofMovingSquares::draw(){
 					float nw = ofGetWidth() / 2;
 					float nh = ofGetHeight() / 2;
 					float speed = 0.08;
-					noiseAmount = tweenNoise.update();
+					noiseAmount = getNoiseTweenValue();
 					// standard elliptic rotation
 					ofTranslate((1. - 1*0.8) * cos( shape.angleOffset + posAngle) * ( ofGetWidth() / 2 - curMargin)
 						, (1. - 1*0.8) * sin( shape.angleOffset + posAngle) * ( ofGetHeight() / 2 - curMargin));
@@ -502,7 +508,9 @@ void ofMovingSquares::draw(){
 						|| (currentMode ==  MOV_state_MoveYellow2 && shape.name == "yellow")
 						|| (currentMode ==  MOV_state_MoveBlue2	 && shape.name == "blue")
 						) {
-							float localNoise = sin(tweenFadein.update()); // gives 0 -> 1 -> 0 transition
+						float rawFadeIn = getFadeTweenValue();
+
+							float localNoise = sin(rawFadeIn); // gives 0 -> 1 -> 0 transition
 							ofTranslate(localNoise * ofSignedNoise(ofGetElapsedTimef()*5.3) *35,localNoise * ofSignedNoise(ofGetElapsedTimef()*4.3f + 12.34) *35);
 					} 
 				}
@@ -520,10 +528,10 @@ void ofMovingSquares::draw(){
 			switch (shape.shapeType)
 			{
 			case MOV_rectangle:
-				ofRect(-w/2,-h/2,w,h);
+				ofDrawRectangle(-w/2,-h/2,w,h);
 				break;
 			case MOV_circle:
-				ofCircle(0,0, w/2);
+				ofDrawCircle(0,0, w/2);
 				break;
 
 			case MOV_parallelogram:
@@ -537,7 +545,7 @@ void ofMovingSquares::draw(){
 
 			case MOV_triangle:
 				// rect triangle
-				ofTriangle(-w/2,-h/2,
+				ofDrawTriangle(-w/2,-h/2,
 					w/2,-h/2,
 					w/2,h/2);
 				// isocele
@@ -645,8 +653,87 @@ void ofMovingSquares::keyPressed(int key){
 }
 
 
-void ofMovingSquares::updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration) {
+void ofMovingSquares::updateNoiseTween(int easing, float _from, float _to, float _duration ){
 	cout << "changed tween" << endl;
-	_tween.setParameters(1,_easing,_type, _from,_to,_duration, delay);
-	_tween.start();
+	noiseEasing = easing;
+	noiseFrom = _from;
+	noiseTo = _to;
+	noiseInitTime = ofGetElapsedTimef();
+	noiseEndTime = noiseInitTime + _duration;
+}
+float ofMovingSquares::getNoiseTweenValue() {
+	float val = 0;
+	float now = ofGetElapsedTimef();
+	switch (noiseEasing) {
+		case EASING_CUBIC:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::cubic::easeInOut);
+			break;
+		case EASING_CUBIC_EASEOUT:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::cubic::easeOut);
+			break;
+		case EASING_SINE:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::sine::easeInOut);
+			break;
+		case EASING_SINE_EASEOUT:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::sine::easeOut);
+			break;
+		case EASING_LINEAR:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::linear::easeInOut);
+			break;
+		case EASING_LINEAR_EASEOUT:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::linear::easeOut);
+			break;
+		case EASING_EXPO:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::exp::easeInOut);
+			break;
+		case EASING_EXPO_EASEOUT:
+			val = ofxeasing::map(now, noiseInitTime, noiseEndTime, noiseFrom, noiseTo, &ofxeasing::exp::easeOut);
+			break;
+
+			
+  	}
+	
+	return val;
+}
+float ofMovingSquares::getFadeTweenValue() {
+	float val = 0;
+	float now = ofGetElapsedTimef();
+	switch (fadeEasing) {
+		case EASING_CUBIC:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::cubic::easeInOut);
+			break;
+		case EASING_CUBIC_EASEOUT:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::cubic::easeOut);
+			break;
+		case EASING_SINE:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::sine::easeInOut);
+			break;
+		case EASING_SINE_EASEOUT:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::sine::easeOut);
+			break;
+		case EASING_LINEAR:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::linear::easeInOut);
+			break;
+		case EASING_LINEAR_EASEOUT:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::linear::easeOut);
+			break;
+		case EASING_EXPO:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::exp::easeInOut);
+			break;
+		case EASING_EXPO_EASEOUT:
+			val = ofxeasing::map(now, fadeinInitTime, fadeInEndTime, fadeInFrom, fadeInTo, &ofxeasing::exp::easeOut);
+			break;
+			
+			
+	}
+	
+	return val;
+}
+void ofMovingSquares::updateFadeInTween(int easing, float _from, float _to, float _duration ){
+	cout << "changed tween" << endl;
+	fadeEasing = easing;
+	fadeInFrom = _from;
+	fadeInTo = _to;
+	fadeinInitTime = ofGetElapsedTimef();
+	fadeInEndTime = fadeinInitTime + _duration;
 }

@@ -148,8 +148,7 @@ void ofxKinectMemory::update() {
 			bKinectFrameReady = true;
 			// load grayscale depth image and color image from the kinect source
 			//grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-			grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height, ofImageType::OF_IMAGE_GRAYSCALE, false);
-			//grayImage.update();
+			grayImage.setFromPixels(kinect.getDepthPixels());			//grayImage.update();
 
 			copyGray(grayImage, grayImageNear);
 			copyGray(grayImage, grayImageFar);
@@ -279,7 +278,7 @@ void ofxKinectMemory::draw() {
 					ofDrawBitmapStringHighlight(msg, 0, 0, ofColor::white, ofColor::red);
 					ofVec2f velocity = toOf(contourFinder.getVelocity(i));
 					ofScale(5, 5);
-					ofLine(0, 0, velocity.x, velocity.y);
+					ofDrawLine(0, 0, velocity.x, velocity.y);
 
 					ofPopMatrix();
 				}
@@ -368,7 +367,7 @@ void ofxKinectMemory::drawMemoryTrails() {
 
 				ofSetColor(0, 0, 0, fadeAmnt);
 				ofFill();
-				ofRect(0, 0, 0, fboBlack.getWidth(), fboBlack.getHeight());
+				ofDrawRectangle(0, 0, 0, fboBlack.getWidth(), fboBlack.getHeight());
 				ofNoFill();
 				ofSetColor(255);
 				if (bDrawJoinedActors) {
@@ -415,7 +414,7 @@ void ofxKinectMemory::drawMemoryTrails() {
 
 				ofSetColor(255, 255, 255, fadeAmnt);
 				ofFill();
-				ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+				ofDrawRectangle(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 
 				ofNoFill();
 				//ofSetColor(lineColor);
@@ -454,16 +453,16 @@ void ofxKinectMemory::drawMemoryTrails() {
 		ofScale(ratioW, ratioH);
 		ofSetColor(255, 255, 255, fadeAmnt);
 		ofFill();
-		ofRect(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
+		ofDrawRectangle(0, 0, 0, fboWhite.getWidth(), fboWhite.getHeight());
 
 		ofNoFill();
 		//ofSetColor(lineColor);
 		ofSetColor(0);
-		ofRect(0, 0, 640, 480);
-		ofCircle(0, 0, 0, 50);
-		ofCircle(640, 0, 0, 50);
-		ofCircle(640, 480, 0, 50);
-		ofCircle(0, 480, 0, 50);
+		ofDrawRectangle(0, 0, 640, 480);
+		ofDrawCircle(0, 0, 0, 50);
+		ofDrawCircle(640, 0, 0, 50);
+		ofDrawCircle(640, 480, 0, 50);
+		ofDrawCircle(0, 480, 0, 50);
 
 		ofPopMatrix();
 		fboWhite.end();

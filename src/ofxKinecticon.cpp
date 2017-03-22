@@ -95,10 +95,9 @@ void ofxKinecticon::update(){
     if(kinect.isFrameNew()) {
         
         // load grayscale depth image and color image from the kinect source
-        liveImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        colorImg.setFromPixels(kinect.getPixels(),kinect.width,kinect.height);
-        
-        
+		liveImage.setFromPixels(kinect.getDepthPixels());
+		colorImg.setFromPixels(kinect.getPixels());
+		
         bool bThreshWithOpenCV = false;
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
@@ -112,7 +111,8 @@ void ofxKinecticon::update(){
         } else {
             
             // or we do it ourselves - show people how they can work with the pixels
-            unsigned char * pix = liveImage.getPixels();
+			
+            ofPixels pix = liveImage.getPixels();
             
             int numPixels = liveImage.getWidth() * liveImage.getHeight();
             for(int i = 0; i < numPixels; i++) {
@@ -154,9 +154,9 @@ void ofxKinecticon::update(){
                 grayDiff.threshold(threshold);
             } else {
                 // or we do it ourselves - show people how they can work with the pixels
-                unsigned char * pix = liveImage.getPixels();
-                unsigned char * bgpix = grayBgImage.getPixels();
-                unsigned char * outpix = grayDiff.getPixels();
+                ofPixels pix = liveImage.getPixels();
+                ofPixels bgpix = grayBgImage.getPixels();
+                ofPixels outpix = grayDiff.getPixels();
                 
                 int numPixels = liveImage.getWidth() * liveImage.getHeight();
                 for(int i = 0; i < numPixels; i++) {
@@ -193,7 +193,7 @@ void ofxKinecticon::update(){
             int h = kinect.height;
             ofMesh mesh;
             mesh.setMode(OF_PRIMITIVE_POINTS);
-            unsigned char * mask = grayDiff.getPixels();
+            ofPixels mask = grayDiff.getPixels();
             
             // retrieve only pixels from blobs
             // TODO take pixels only in found blobs rects

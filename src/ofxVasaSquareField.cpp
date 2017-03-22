@@ -165,7 +165,7 @@ void ofxVasaSquareField::draw(){
 	ofDisableAlphaBlending();
 	ofClear(0);
 	ofSetColor(0,alpha);ofFill();
-	ofRect(0,0,0,ofGetWidth(),ofGetHeight());
+	ofDrawRectangle(0,0,0,ofGetWidth(),ofGetHeight());
 	ofSetColor(255,alpha);
 
 
@@ -197,7 +197,7 @@ void ofxVasaSquareField::draw(){
 
                 //ofSetColor(255);
                 
-                ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+                ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);
                 
                 /* squares outline
                  
@@ -218,7 +218,7 @@ void ofxVasaSquareField::draw(){
 					ofPushMatrix();
 					ofTranslate(i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR), j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR));
 					ofRotateZ(rotSpeed[i*sizeY+j] * ofGetElapsedTimef());
-					ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+					ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);
 					ofPopMatrix();
 
 				}
@@ -238,7 +238,7 @@ void ofxVasaSquareField::draw(){
 				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
 				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
 				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
-				ofRect(-squareSize/2,-squareSize/2, squareSize,squareSize);
+				ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);
 				ofPopMatrix();
 
 			}

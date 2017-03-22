@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 
 #define MOVING_SQUARES_SETTINGS_FILE  "movingsquares_settings.xml"
 
@@ -57,6 +57,7 @@
 #define MOV_circle			 2
 #define MOV_triangle		 3
 #define MOV_parallelogram	 4
+
 
 
 // This is meant to be sync with beethoven sonata
@@ -135,28 +136,23 @@ private:
     bool isMirrored;
     
     float currentAngle;
-    
+	
     // modes
-    
     // transitions
-    ofxTween tweenFadein;
-    ofxTween tweenNoise;
-    
-    ofxEasingBack 	easingback;
-    ofxEasingBounce 	easingbounce;
-    ofxEasingCirc 	easingcirc;
-    ofxEasingSine	easingsine;
-    ofxEasingCubic 	easingcubic;
-    ofxEasingElastic easingelastic;
-    ofxEasingExpo 	easingexpo;
-    ofxEasingLinear 	easinglinear;
-    ofxEasingQuad 	easingquad;
-    ofxEasingQuart 	easingquart;
-    ofxEasingQuint 	easingquint;
-    
+	float noiseFrom, noiseTo;
+	float noiseInitTime, noiseEndTime;
+	float fadeInFrom, fadeInTo;
+	float fadeinInitTime, fadeInEndTime;
+	int noiseEasing;
+	int fadeEasing;
+	
+	
     bool beforeDraw();
-    
-    void updateTween(ofxTween & _tween, ofxEasing & _easing, ofxTween::ofxEasingType _type,  float _from, float _to, float _duration = MOV_SQUARE_DURATION );
-    
+	
+	void updateNoiseTween(int easing, float _from, float _to, float _duration = MOV_SQUARE_DURATION );
+	float getNoiseTweenValue();
+	float getFadeTweenValue();
+	void updateFadeInTween(int easing, float _from, float _to, float _duration = MOV_SQUARE_DURATION );
+	
     
 };

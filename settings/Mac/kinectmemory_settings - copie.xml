@@ -1,0 +1,35 @@
+<kinect>
+	<nearThreshold>255</nearThreshold>
+	<farThreshold>246</farThreshold>
+	<threshold>13</threshold>
+	<background>0</background>
+<kinect/>
+<Memory>
+		<OpenCV>
+			<nearThreshold>255</nearThreshold>
+			<farThreshold>39.2245</farThreshold>
+			<threshold>11.7092</threshold>
+			<contourMinArea>19.5918</contourMinArea>
+			<contourMaxArea>800</contourMaxArea>
+			<blurSize>10</blurSize>
+		<maximumDistance>32</maximumDistance>
+			<persistence>15</persistence>
+		</OpenCV>
+		<App>
+			<numFramesDelay>71</numFramesDelay>
+			<angle>18</angle>
+		<StartMemory>1</StartMemory>
+		<kinect_angle>13</kinect_angle>
+			<fade_amount>9.18367</fade_amount>
+		<blackScreen>1</blackScreen>
+			<antiAlias>1</antiAlias>
+			<lineWidth>6.17347</lineWidth>
+		<camOrientation>179.699, 3.50452, 0.19427</camOrientation>
+			<camPosition>502.749, 342.498, -453.225</camPosition>
+		</App>
+		<debug>
+			<ShowLabels>1</ShowLabels>
+			<ShowImages>1</ShowImages>
+		</debug>
+	</Memory>
+</kinect>

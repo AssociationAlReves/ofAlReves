@@ -98,19 +98,19 @@ void ofxCityPingPong::draw() {
 
 	if (bSpaceMode) {
 		if (rect1Vis[curRectVisIndex] == 1)
-			ofRect(rects[0]);
+			ofDrawRectangle(rects[0]);
 		if (rect2Vis[curRectVisIndex] == 1)
-			ofRect(rects[1]);
+			ofDrawRectangle(rects[1]);
 		if (rect3Vis[curRectVisIndex] == 1)
-			ofRect(rects[2]);
+			ofDrawRectangle(rects[2]);
 		if (rect4Vis[curRectVisIndex] == 1)
-			ofRect(rects[3]);
+			ofDrawRectangle(rects[3]);
 
 	}
 	else {
 		for (int i = 0; i < 4; i++) {
 			if (rectsVisible[i]) {
-				ofRect(rects[i]);
+				ofDrawRectangle(rects[i]);
 			}
 		}
 	}

@@ -1,7 +1,8 @@
-ofxGui
-ofxOpenCv
-ofxXmlSettings
 ofxAppUtils
 ofxCv
-ofxTween
+ofxEasing
+ofxGui
 ofxKinect
+ofxOpenCv
+ofxOsc
+ofxXmlSettings

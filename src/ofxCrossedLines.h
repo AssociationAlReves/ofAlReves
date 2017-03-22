@@ -9,7 +9,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 
 
@@ -35,20 +35,10 @@ private:
 	bool starMode;
 
 	void nextMode();
-    
-	// transitions
-	ofxTween tween;
-    
-	ofxEasingBack 	easingback;
-	ofxEasingBounce 	easingbounce;
-	ofxEasingCirc 	easingcirc;
-	ofxEasingSine	easingsine;
-	ofxEasingCubic 	easingcubic;
-	ofxEasingElastic easingelastic;
-	ofxEasingExpo 	easingexpo;
-	ofxEasingLinear 	easinglinear;
-	ofxEasingQuad 	easingquad;
-	ofxEasingQuart 	easingquart;
-	ofxEasingQuint 	easingquint;
+	
+	float start;
+	float end;
+	float initTime;
+	float endTime;
 };
 

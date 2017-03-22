@@ -9,7 +9,7 @@
 
 #include "ofMain.h"
 #include "globals.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxAppUtils.h"
 
 class ofxVideoScene : public ofxFadeScene

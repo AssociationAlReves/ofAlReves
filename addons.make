@@ -4,5 +4,4 @@ ofxEasing
 ofxGui
 ofxKinect
 ofxOpenCv
-ofxOsc
 ofxXmlSettings

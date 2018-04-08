@@ -64,6 +64,14 @@ private:
     
     /*-------------------------------------------------------*/
     /* TUNNEL STUFF */
+    ofParameter<int> tunnelSteps;
+    ofParameter<float> tunnelSpeed; // 100
+    ofParameter<float> tunnelHueSpeed; // 0.01
+    ofParameter<float> tunnelSaturationSpeed; // 0.0034
+    ofParameter<float> tunnelBrightnessSpeed; // 0.001
+    //ofParameter<int> tunnelSteps;
+    
+    ofParameterGroup tunnelGroup;
     
     /*-------------------------------------------------------*/
     /* KINECT STUFF */

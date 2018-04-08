@@ -27,6 +27,15 @@ void ofxTunnel::initGui() {
     
     gui.setup("panel", TUNNEL_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
     
+    //---------------------------------------------------
+    /// Tunnel-related
+    tunnelGroup.setName("Tunnel");
+    tunnelGroup.add(tunnelSteps.set("steps", 20, 4, 100));
+    tunnelGroup.add(tunnelSpeed.set("velocity", 100, 0, 500));
+    tunnelGroup.add(tunnelHueSpeed.set("HSV (H)", 0.01, 0, 0.5));
+    tunnelGroup.add(tunnelSaturationSpeed.set("HSV (S)", 0.0034, 0, 0.005));
+    tunnelGroup.add(tunnelBrightnessSpeed.set("HSV (V)", 0.001, 0, 0.001));
+    gui.add(tunnelGroup);
 
     //---------------------------------------------------
     /// Kinect-related
@@ -171,10 +180,9 @@ void ofxTunnel::draw() {
     // we use one hue (value from 0..255) for the whole grid. it changes over time. we use fmodf to
     // keep the hue value between 0 and 255, it works just like integer modulo (the % operator) but
     // for floats.
-    float hue = 128;//sin(ofGetElapsedTimef()*0.01)*255;
     
     ofPoint center = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
-    int step = 20;
+    int step = tunnelSteps;
     int iter = 0;
     float sinDelta;
     // step through horizontally
@@ -184,9 +192,15 @@ void ofxTunnel::draw() {
         ofColor c;
         // the range of each of the arguments here is 0..255 so we map i and j to that range.
         
-        float saturation = sin(ofGetElapsedTimef()*(0.0034*i))*255;
-        float brightness = cos(ofGetElapsedTimef()*(0.001*i))*255;
-        c.setHsb( hue, 255, 255);
+        
+        float rectWidth = ofGetWidth() - i;
+        sinDelta = fmodf(ofGetElapsedTimef()*tunnelSpeed, step*2);
+        ofPoint newCenter = ofPoint(center.x-rectWidth/2-sinDelta/2,center.y-rectWidth/2-sinDelta/2);
+        
+        float hue = sin(ofGetElapsedTimef()*tunnelHueSpeed)*255;
+        float saturation = sin(ofGetElapsedTimef()*(tunnelSaturationSpeed * newCenter.x))*255;
+        float brightness = 128+cos(ofGetElapsedTimef()*(tunnelBrightnessSpeed * newCenter.x))*128;
+        c.setHsb( hue, saturation, brightness);
         
         // assign the color and draw a rectangle
         if (iter % 2 == 0)
@@ -197,12 +211,22 @@ void ofxTunnel::draw() {
         {
             ofSetColor( c );
         }
-        float rectWidth = ofGetWidth() - i;
-        sinDelta = fmodf(ofGetElapsedTimef()*100, step*2);
-        ofPushMatrix();
-            ofTranslate(-rectWidth/2-sinDelta/2, -rectWidth/2-sinDelta/2);
-            ofDrawRectangle(center.x, center.y, rectWidth+sinDelta, rectWidth+sinDelta);
-        ofPopMatrix();
+        
+        // Curve effect
+        // The more distant the more offset
+        // => the closer is i to 0
+        ofPoint mouseCentered = ofPoint(ofGetMouseX()-ofGetWidth()/2,ofGetMouseY()-ofGetHeight());
+        ofPoint curveDisplacement = ofPoint(ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.x, 0), ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.y, 0));
+        
+        newCenter.x += curveDisplacement.x;
+        newCenter.y += curveDisplacement.y;
+        
+        ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
+
+//        ofPushMatrix();
+//            ofTranslate(-rectWidth/2-sinDelta/2, -rectWidth/2-sinDelta/2);
+//            ofDrawRectangle(center.x, center.y, rectWidth+sinDelta, rectWidth+sinDelta);
+//        ofPopMatrix();
     }
     ofPopMatrix();
     

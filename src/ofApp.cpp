@@ -58,6 +58,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
+    sceneManager.add(new ofxTunnel(IntToString(i++)));
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
@@ -78,7 +79,8 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxTerrain(IntToString(i++)));
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
+	sceneManager.add(new ofxVasaLianas(IntToString(i++)));    
+    sceneManager.add(new ofxTunnel(IntToString(i++)));
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
 
 #endif

@@ -18,33 +18,34 @@
 		21A059755481CC0BF969FD2D /* keep_alive.c in Sources */ = {isa = PBXBuildFile; fileRef = A3528DDFF05B00283552455D /* keep_alive.c */; };
 		235F650AC06759134BAA7849 /* ofxTransformPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAC2843824B062FDEF5E0C62 /* ofxTransformPanel.cpp */; };
 		250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9C7160245B19131DAE6128 /* ofxCvColorImage.cpp */; };
-		2530709A1E81D130002932FC /* ofBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070671E81D130002932FC /* ofBuilding.cpp */; settings = {ASSET_TAGS = (); }; };
-		2530709B1E81D130002932FC /* ofMovingSquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070691E81D130002932FC /* ofMovingSquares.cpp */; settings = {ASSET_TAGS = (); }; };
-		2530709C1E81D130002932FC /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706B1E81D130002932FC /* ofxBgScene.cpp */; settings = {ASSET_TAGS = (); }; };
-		2530709D1E81D130002932FC /* ofxBingQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706D1E81D130002932FC /* ofxBingQuad.cpp */; settings = {ASSET_TAGS = (); }; };
-		2530709E1E81D130002932FC /* ofxCity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706F1E81D130002932FC /* ofxCity.cpp */; settings = {ASSET_TAGS = (); }; };
-		2530709F1E81D130002932FC /* ofxCityPingPong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070711E81D130002932FC /* ofxCityPingPong.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A01E81D130002932FC /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070731E81D130002932FC /* ofxCrossedLines.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A11E81D130002932FC /* ofxKinecticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070751E81D130002932FC /* ofxKinecticon.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A21E81D130002932FC /* ofxKinectMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070771E81D130002932FC /* ofxKinectMemory.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A31E81D130002932FC /* ofxLiana.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070791E81D130002932FC /* ofxLiana.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A41E81D130002932FC /* ofxLianaMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707B1E81D130002932FC /* ofxLianaMesh.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A51E81D130002932FC /* ofxNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707D1E81D130002932FC /* ofxNode.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A61E81D130002932FC /* ofxOcean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707F1E81D130002932FC /* ofxOcean.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A71E81D130002932FC /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070811E81D130002932FC /* ofxQuadWarp.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A81E81D130002932FC /* ofxRibbon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070831E81D130002932FC /* ofxRibbon.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070A91E81D130002932FC /* ofxSpring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070851E81D130002932FC /* ofxSpring.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AA1E81D130002932FC /* ofxSquareScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070871E81D130002932FC /* ofxSquareScreen.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AB1E81D130002932FC /* ofxTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070891E81D130002932FC /* ofxTerrain.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AC1E81D130002932FC /* ofxVasaCubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708B1E81D130002932FC /* ofxVasaCubeMesh.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AD1E81D130002932FC /* ofxVasaDalle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708D1E81D130002932FC /* ofxVasaDalle.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AE1E81D130002932FC /* ofxVasaDalleQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708F1E81D130002932FC /* ofxVasaDalleQuad.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070AF1E81D130002932FC /* ofxVasaLianas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070911E81D130002932FC /* ofxVasaLianas.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070B01E81D130002932FC /* ofxVasaSquareField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070931E81D130002932FC /* ofxVasaSquareField.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070B11E81D130002932FC /* ofxVideoMirror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070951E81D130002932FC /* ofxVideoMirror.cpp */; settings = {ASSET_TAGS = (); }; };
-		253070B21E81D130002932FC /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070971E81D130002932FC /* ofxVideoScene.cpp */; settings = {ASSET_TAGS = (); }; };
+		2530709A1E81D130002932FC /* ofBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070671E81D130002932FC /* ofBuilding.cpp */; };
+		2530709B1E81D130002932FC /* ofMovingSquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070691E81D130002932FC /* ofMovingSquares.cpp */; };
+		2530709C1E81D130002932FC /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706B1E81D130002932FC /* ofxBgScene.cpp */; };
+		2530709D1E81D130002932FC /* ofxBingQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706D1E81D130002932FC /* ofxBingQuad.cpp */; };
+		2530709E1E81D130002932FC /* ofxCity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530706F1E81D130002932FC /* ofxCity.cpp */; };
+		2530709F1E81D130002932FC /* ofxCityPingPong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070711E81D130002932FC /* ofxCityPingPong.cpp */; };
+		253070A01E81D130002932FC /* ofxCrossedLines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070731E81D130002932FC /* ofxCrossedLines.cpp */; };
+		253070A11E81D130002932FC /* ofxKinecticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070751E81D130002932FC /* ofxKinecticon.cpp */; };
+		253070A21E81D130002932FC /* ofxKinectMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070771E81D130002932FC /* ofxKinectMemory.cpp */; };
+		253070A31E81D130002932FC /* ofxLiana.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070791E81D130002932FC /* ofxLiana.cpp */; };
+		253070A41E81D130002932FC /* ofxLianaMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707B1E81D130002932FC /* ofxLianaMesh.cpp */; };
+		253070A51E81D130002932FC /* ofxNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707D1E81D130002932FC /* ofxNode.cpp */; };
+		253070A61E81D130002932FC /* ofxOcean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530707F1E81D130002932FC /* ofxOcean.cpp */; };
+		253070A71E81D130002932FC /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070811E81D130002932FC /* ofxQuadWarp.cpp */; };
+		253070A81E81D130002932FC /* ofxRibbon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070831E81D130002932FC /* ofxRibbon.cpp */; };
+		253070A91E81D130002932FC /* ofxSpring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070851E81D130002932FC /* ofxSpring.cpp */; };
+		253070AA1E81D130002932FC /* ofxSquareScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070871E81D130002932FC /* ofxSquareScreen.cpp */; };
+		253070AB1E81D130002932FC /* ofxTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070891E81D130002932FC /* ofxTerrain.cpp */; };
+		253070AC1E81D130002932FC /* ofxVasaCubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708B1E81D130002932FC /* ofxVasaCubeMesh.cpp */; };
+		253070AD1E81D130002932FC /* ofxVasaDalle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708D1E81D130002932FC /* ofxVasaDalle.cpp */; };
+		253070AE1E81D130002932FC /* ofxVasaDalleQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2530708F1E81D130002932FC /* ofxVasaDalleQuad.cpp */; };
+		253070AF1E81D130002932FC /* ofxVasaLianas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070911E81D130002932FC /* ofxVasaLianas.cpp */; };
+		253070B01E81D130002932FC /* ofxVasaSquareField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070931E81D130002932FC /* ofxVasaSquareField.cpp */; };
+		253070B11E81D130002932FC /* ofxVideoMirror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070951E81D130002932FC /* ofxVideoMirror.cpp */; };
+		253070B21E81D130002932FC /* ofxVideoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 253070971E81D130002932FC /* ofxVideoScene.cpp */; };
 		255A7B680DC81E543C875794 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 28F9707464BA3FF98E05096C /* usb_libusb10.c */; };
 		311DF864378748129984EA1D /* Kalman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A1A692522820F935B58762 /* Kalman.cpp */; };
+		39470BEB2073E95400D5D344 /* ofxTunnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39470BE92073E95400D5D344 /* ofxTunnel.cpp */; };
 		45CC483A999BF1065A6B926C /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD717072C35D324E101669 /* Distance.cpp */; };
 		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
 		49BEEB2DFA5319D55AA6899F /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = BF2F2AA872288D30F53983EF /* tilt.c */; };
@@ -243,6 +244,8 @@
 		35EEEA3F57EFB3D7DE4C0DED /* saturate_cast.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = saturate_cast.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/saturate_cast.hpp; sourceTree = SOURCE_ROOT; };
 		36F0FF7F8D7342D220CC6319 /* dummy.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = dummy.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dummy.h; sourceTree = SOURCE_ROOT; };
 		37D155721DCC51F3D1DC2E02 /* color_detail.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = color_detail.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/detail/color_detail.hpp; sourceTree = SOURCE_ROOT; };
+		39470BE92073E95400D5D344 /* ofxTunnel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTunnel.cpp; sourceTree = "<group>"; };
+		39470BEA2073E95400D5D344 /* ofxTunnel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTunnel.h; sourceTree = "<group>"; };
 		3ADB4E06C4EDB97E020A778D /* functional.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = functional.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/functional.hpp; sourceTree = SOURCE_ROOT; };
 		3B361208CD4107E479F04E7B /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp; sourceTree = SOURCE_ROOT; };
 		3CABCA8EA52D11C95F7A1309 /* registration.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = registration.h; path = ../../../addons/ofxKinect/libs/libfreenect/src/registration.h; sourceTree = SOURCE_ROOT; };
@@ -676,6 +679,7 @@
 		25F103461E8325A300C5E07B /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				39470BE82073E91800D5D344 /* tunnel */,
 				25F103491E83260E00C5E07B /* lianas */,
 				25F103481E8325F100C5E07B /* quad */,
 				25F103471E8325CA00C5E07B /* city */,
@@ -841,6 +845,15 @@
 				9A807ED85FFB53D3638FCBE0 /* videostab.hpp */,
 			);
 			name = videostab;
+			sourceTree = "<group>";
+		};
+		39470BE82073E91800D5D344 /* tunnel */ = {
+			isa = PBXGroup;
+			children = (
+				39470BE92073E95400D5D344 /* ofxTunnel.cpp */,
+				39470BEA2073E95400D5D344 /* ofxTunnel.h */,
+			);
+			path = tunnel;
 			sourceTree = "<group>";
 		};
 		3B8F70BFDA30BBA2A5A060FC /* photo */ = {
@@ -1637,6 +1650,7 @@
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
+				39470BEB2073E95400D5D344 /* ofxTunnel.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				253070B21E81D130002932FC /* ofxVideoScene.cpp in Sources */,

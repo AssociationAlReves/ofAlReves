@@ -14,6 +14,7 @@
 
 #include "ofMain.h"
 
+
 class ofxVasaDalle {
 
 public:
@@ -35,7 +36,6 @@ public:
 			palette.push_back(ofColor::fromHex(0x587390)); // vert fonce / bleu
 			palette.push_back(ofColor::fromHex(0x4043C4)); // bleu profond
 			palette.push_back(ofColor::fromHex(0x8188E3)); // bleu profond
-			palette.push_back(ofColor::yellow); // bleu profond
 			//    palette.push_back(ofColor::red); // bleu profond
 		}
 	}

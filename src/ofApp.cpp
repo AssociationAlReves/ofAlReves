@@ -23,6 +23,18 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
+    
+    if (IS_HOST==1)
+    {
+        // open an outgoing connection to HOST:PORT
+        cout << "sending osc messages on " << HOST << ":" << PORT << "\n";
+        sender.setup(HOST, PORT);
+    } else
+    {
+        cout << "listening for osc messages on port " << PORT << "\n";
+        receiver.setup(PORT);
+
+    }
 }
 
 //--------------------------------------------------------------
@@ -132,6 +144,21 @@ void ofApp::update() {
 	if (isDebug()) {
 		panel.update();
 	}
+    
+    // check for waiting messages
+    while(receiver.hasWaitingMessages()){
+        // get the next message
+        ofxOscMessage m;
+        receiver.getNextMessage(m);
+        
+        // check for mouse moved message
+        if(m.getAddress() == "/mouse/position"){
+            // both the arguments are int32's
+            Globals::oscMouseX = m.getArgAsInt32(0);
+            Globals::oscMouseY = m.getArgAsInt32(1);
+            cout << "received mouse " << Globals::oscMouseX << endl;
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -273,6 +300,14 @@ void ofApp::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
+  
+    if (IS_HOST == 1) {
+    ofxOscMessage m;
+    m.setAddress("/mouse/position");
+    m.addIntArg(x);
+    m.addIntArg(y);
+    sender.sendMessage(m, false);
+    }
 }
 
 //--------------------------------------------------------------

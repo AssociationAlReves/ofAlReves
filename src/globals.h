@@ -7,7 +7,7 @@
 #define PROJECTOR_RESOLUTION_X 1280 //1024 //1280
 #define PROJECTOR_RESOLUTION_Y 800 //768 //800
 #define USE_KINECT
-
+ 
 #else
 
 //#define PROJECTOR_RESOLUTION_X 1024//1280 //512 //1024 //1280
@@ -18,7 +18,14 @@
 
 #endif
 
-
+// -----------------------
+// OSC related
+// For sender
+#define HOST "mbp13.local"
+// For sender AND receiver
+#define PORT 12345
+// Set to 1 if hosting, 0 if receiving
+#define IS_HOST 0
 
 
 #define EASING_LINEAR 0
@@ -33,3 +40,9 @@
 #define EASING_CUBIC_EASEOUT 9
 #define EASING_BACK_EASEOUT 10
 #define EASING_QUAD_EASEOUT 11
+
+class Globals {
+public:
+    static int oscMouseX;
+    static int oscMouseY;
+};

@@ -38,8 +38,7 @@ public:
     void keyReleased(int key);
     void mouseMoved(int x, int y);
     void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    
+    void mouseReleased(int x, int y, int button);    
     
 private:
     
@@ -51,7 +50,6 @@ private:
     bool bUseKinectRepulsor;
     
     void setupKinectWarp(bool shift, bool alt, int x, int y);
-    
     
     /*-------------------------------------------------------*/
    
@@ -69,6 +67,7 @@ private:
     ofParameter<float> tunnelHueSpeed; // 0.01
     ofParameter<float> tunnelSaturationSpeed; // 0.0034
     ofParameter<float> tunnelBrightnessSpeed; // 0.001
+    ofParameter<float> tunnelRotation;
     //ofParameter<int> tunnelSteps;
     
     ofParameterGroup tunnelGroup;

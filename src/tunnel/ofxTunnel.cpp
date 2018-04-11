@@ -8,7 +8,6 @@
 #include "ofxTunnel.h"
 #include "ofApp.h"
 
-
 using namespace ofxCv;
 using namespace cv;
 
@@ -19,6 +18,8 @@ void ofxTunnel::setup() {
     if (!guiInitialized) {
         initGui();
         initKinect();
+        
+       
     }
 }
 
@@ -35,6 +36,7 @@ void ofxTunnel::initGui() {
     tunnelGroup.add(tunnelHueSpeed.set("HSV (H)", 0.01, 0, 0.5));
     tunnelGroup.add(tunnelSaturationSpeed.set("HSV (S)", 0.0034, 0, 0.005));
     tunnelGroup.add(tunnelBrightnessSpeed.set("HSV (V)", 0.001, 0, 0.001));
+    tunnelGroup.add(tunnelRotation.set("Rotation", 0.1, 0, 1));
     gui.add(tunnelGroup);
 
     //---------------------------------------------------
@@ -174,7 +176,9 @@ void ofxTunnel::draw() {
     ofScale(abs(screenBounds->x)/ofGetWidth(), screenBounds->y/ofGetHeight());
     ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
     
+    //ofRotate(sin(ofGetElapsedTimef()*0.1)*180.0, 0, 0, 1);
     ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+    
     
     // draw
     // we use one hue (value from 0..255) for the whole grid. it changes over time. we use fmodf to
@@ -205,7 +209,7 @@ void ofxTunnel::draw() {
         // assign the color and draw a rectangle
         if (iter % 2 == 0)
         {
-            ofSetColor( 0 );
+            ofSetColor( 255 );
         }
         else
         {
@@ -215,18 +219,26 @@ void ofxTunnel::draw() {
         // Curve effect
         // The more distant the more offset
         // => the closer is i to 0
-        ofPoint mouseCentered = ofPoint(ofGetMouseX()-ofGetWidth()/2,ofGetMouseY()-ofGetHeight());
+        ofPoint mouseCentered;
+        if (Globals::oscMouseX >=0) {
+             mouseCentered = ofPoint(Globals::oscMouseX-ofGetWidth()/2,Globals::oscMouseY-ofGetHeight());
+        } else {
+            mouseCentered = ofPoint(ofGetMouseX()-ofGetWidth()/2,ofGetMouseY()-ofGetHeight());
+        }
         ofPoint curveDisplacement = ofPoint(ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.x, 0), ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.y, 0));
         
         newCenter.x += curveDisplacement.x;
         newCenter.y += curveDisplacement.y;
         
-        ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
+       
 
-//        ofPushMatrix();
-//            ofTranslate(-rectWidth/2-sinDelta/2, -rectWidth/2-sinDelta/2);
-//            ofDrawRectangle(center.x, center.y, rectWidth+sinDelta, rectWidth+sinDelta);
-//        ofPopMatrix();
+        ofPushMatrix();
+        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+        ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,ofGetWidth(),45.0,0), 0, 0, 1);
+        ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+        
+            ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
+        ofPopMatrix();
     }
     ofPopMatrix();
     
@@ -429,8 +441,7 @@ void ofxTunnel::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofxTunnel::mouseMoved(int x, int y) {
-    
-   
+
 }
 
 //--------------------------------------------------------------

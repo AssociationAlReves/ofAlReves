@@ -5,10 +5,13 @@
 #include "ofxAppUtils.h"
 #include "globals.h"
 #include "ofxOcean.h"
+#include "ofxOsc.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project
 #define HAVE_OFX_GUI
+
+
 
 #ifdef HAVE_OFX_GUI
 #include "ofxGui.h"
@@ -34,6 +37,7 @@ public:
 	void mouseReleased(int x, int y, int button);
 
 	void windowResized(int w, int h);
+    
 
 	// rendering transformer
 	ofxTransformer transformer;
@@ -46,6 +50,10 @@ public:
 	ofEasyCam cam;
 
 	string IntToString(int i);
+    
+    // OSC
+    ofxOscSender sender;
+    ofxOscReceiver receiver;
 
 #ifdef HAVE_OFX_GUI
 	ofxTransformPanel panel;

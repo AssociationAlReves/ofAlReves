@@ -10,10 +10,10 @@
 #include "ofxCityPingPong.h"
 
 /////////////////////////////////////////////////////////////// 1  2  3  4  5  6  7  8/ 1  2  3  4  5  6  7  8                   
-int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1,0 };
-int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
-int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
-int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0,1 };
+int rect1Vis[PING_PONG_NUM_STEPS] = { 1,0 };
+int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0 };
+int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0 };
+int rect4Vis[PING_PONG_NUM_STEPS] = { 0,1 };
 
 //--------------------------------------------------------------
 void ofxCityPingPong::setup() {
@@ -56,18 +56,18 @@ void ofxCityPingPong::update() {
 	rectsVisible[3] = ofGetKeyPressed('3');
 }
 void ofxCityPingPong::altRects(){
-    rect1Vis[1] = 1;
-    rect1Vis[2] = 0;
+    rect1Vis[0] = 1;
+    rect1Vis[1] = 0;
     
-    rect4Vis[1] = 0;
-    rect4Vis[2] = 1;
+    rect4Vis[0] = 0;
+    rect4Vis[1] = 1;
 }
 void ofxCityPingPong::normalRects(){
-    rect1Vis[1] = 0;
-    rect1Vis[2] = 1;
+    rect1Vis[0] = 0;
+    rect1Vis[1] = 1;
     
-    rect4Vis[1] = 1;
-    rect4Vis[2] = 0;
+    rect4Vis[0] = 1;
+    rect4Vis[1] = 0;
 }
 
 //--------------------------------------------------------------

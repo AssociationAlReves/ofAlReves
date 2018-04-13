@@ -46,6 +46,7 @@ public:
 
 	int x,y;
 
+	long createdIndex;
 	int size;
 	float seed;
 

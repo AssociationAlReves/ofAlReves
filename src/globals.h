@@ -25,7 +25,7 @@
 // For sender AND receiver
 #define PORT 12345
 // Set to 1 if hosting, 0 if receiving
-#define IS_HOST 0
+#define IS_HOST 1
 
 
 #define EASING_LINEAR 0

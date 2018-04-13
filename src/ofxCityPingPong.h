@@ -10,9 +10,11 @@
 
 #include "ofMain.h"
 #include "ofxAppUtils.h"
+#include "ofxGui.h"
 
-#define PING_PONG_NUM_STEPS 25
+#define PING_PONG_NUM_STEPS 3
 
+const string PING_PONG_SETTINGS_FILE = "pingpong_settings.xml";
 
 
 class ofxCityPingPong : public ofxScene {
@@ -22,7 +24,7 @@ public:
 	{
 		bShowHelp = false;
 		setSingleSetup(false); // call setup each time the scene is loaded
-
+        guiInitialized = false;
 		curRectVisIndex = 0;
 
 		bSpaceMode = true;
@@ -42,14 +44,22 @@ public:
 
 private:
 
+    /*------------------------*/
+    // GUI
+    bool bShowGui;
+    bool guiInitialized;
+    ofxPanel gui;
+    ofParameter<int> ppSize;
+    ofParameter<int> ppMargin;
+    
+    void initGui();
+    void altRects();
+    void normalRects();
 	vector<ofRectangle> rects;
 	vector<bool> rectsVisible;
 	void updateRects();
-	int rectSize;
-	int curMargin;
 
 	int curRectVisIndex;
 
 
-	bool guiInitialized;
 };

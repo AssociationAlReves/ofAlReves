@@ -149,10 +149,14 @@ void ofxTunnel::updateKinect() {
         }
     }
 }
-
+float time1 = 0;
+float time2 = 0;
 //--------------------------------------------------------------
 void ofxTunnel::draw() {
     
+    float refTime = ofGetElapsedTimef();
+//    ofDisableAntiAliasing();
+//    ofDisableAlphaBlending();
     ofClear(0);
     ofApp *app = (ofApp *)ofxGetAppPtr();
     //    if (easyCamMouse) {
@@ -171,13 +175,13 @@ void ofxTunnel::draw() {
     
     //cam.begin();
     ofPushMatrix();
-    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    
-    ofScale(abs(screenBounds->x)/ofGetWidth(), screenBounds->y/ofGetHeight());
-    ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
-    
-    //ofRotate(sin(ofGetElapsedTimef()*0.1)*180.0, 0, 0, 1);
-    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+//
+//    ofScale(abs(screenBounds->x)/ofGetWidth(), screenBounds->y/ofGetHeight());
+//    ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
+//
+//    //ofRotate(sin(ofGetElapsedTimef()*0.1)*180.0, 0, 0, 1);
+//    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
     
     
     // draw
@@ -185,27 +189,30 @@ void ofxTunnel::draw() {
     // keep the hue value between 0 and 255, it works just like integer modulo (the % operator) but
     // for floats.
     
+    
+    
     ofPoint center = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
     int step = tunnelSteps;
     int iter = 0;
     float sinDelta;
+    
     // step through horizontally
     for ( int i=0; i<ofGetWidth(); i+=step )
     {
         iter++;
         ofColor c;
         // the range of each of the arguments here is 0..255 so we map i and j to that range.
-        
-        
+
+
         float rectWidth = ofGetWidth() - i;
         sinDelta = fmodf(ofGetElapsedTimef()*tunnelSpeed, step*2);
         ofPoint newCenter = ofPoint(center.x-rectWidth/2-sinDelta/2,center.y-rectWidth/2-sinDelta/2);
-        
+
         float hue = sin(ofGetElapsedTimef()*tunnelHueSpeed)*255;
         float saturation = sin(ofGetElapsedTimef()*(tunnelSaturationSpeed * newCenter.x))*255;
         float brightness = 128+cos(ofGetElapsedTimef()*(tunnelBrightnessSpeed * newCenter.x))*128;
         c.setHsb( hue, saturation, brightness);
-        
+
         // assign the color and draw a rectangle
         if (iter % 2 == 0)
         {
@@ -215,7 +222,7 @@ void ofxTunnel::draw() {
         {
             ofSetColor( c );
         }
-        
+
         // Curve effect
         // The more distant the more offset
         // => the closer is i to 0
@@ -226,40 +233,40 @@ void ofxTunnel::draw() {
             mouseCentered = ofPoint(ofGetMouseX()-ofGetWidth()/2,ofGetMouseY()-ofGetHeight());
         }
         ofPoint curveDisplacement = ofPoint(ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.x, 0), ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.y, 0));
-        
+
         newCenter.x += curveDisplacement.x;
         newCenter.y += curveDisplacement.y;
-        
-       
 
-        ofPushMatrix();
-        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-        ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,ofGetWidth(),45.0,0), 0, 0, 1);
-        ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+        
+//        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+//        ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,ofGetWidth(),45.0,0), 0, 0, 1);
+//        ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
         
             ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
-        ofPopMatrix();
+       
     }
+    time2 += ofGetElapsedTimef() - refTime;
+    refTime = ofGetElapsedTimef();
     ofPopMatrix();
     
-    ofPushMatrix();
-    
-    ofScale(kwScaleX, kwScaleY);
-    ofTranslate(kwX, kwY);
-    
-    drawKinect();
-    
-    if (kinectWarp) {
-        ofSetColor(255);
-        ofSetLineWidth(5);
-        ofDrawLine(0,0,kinect.width,0);
-        ofDrawLine(kinect.width, 0, kinect.width, kinect.height);
-        ofDrawLine(kinect.width, kinect.height,0, kinect.height);
-        ofDrawLine(0, kinect.height, 0, 0);
-        ofSetLineWidth(1);
-    }
-    
-    ofPopMatrix();
+//    ofPushMatrix();
+//
+//    ofScale(kwScaleX, kwScaleY);
+//    ofTranslate(kwX, kwY);
+//
+//    drawKinect();
+//
+//    if (kinectWarp) {
+//        ofSetColor(255);
+//        ofSetLineWidth(5);
+//        ofDrawLine(0,0,kinect.width,0);
+//        ofDrawLine(kinect.width, 0, kinect.width, kinect.height);
+//        ofDrawLine(kinect.width, kinect.height,0, kinect.height);
+//        ofDrawLine(0, kinect.height, 0, 0);
+//        ofSetLineWidth(1);
+//    }
+//
+//    ofPopMatrix();
     
     
     
@@ -267,12 +274,14 @@ void ofxTunnel::draw() {
     
     
     //cam.end();
-    stringstream ss;
-    ss << "FPS : " + ofToString(ofGetFrameRate()) << endl
-    << "Delta : " + ofToString(sinDelta);
-    ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+    
     if (bShowGui)
-    {
+    {stringstream ss;
+        ss << ofToString(iter) << endl;
+        ss << "FPS : " + ofToString(ofGetFrameRate()) << endl
+        << "time1: " << ofToString(time1) << endl
+        << "time2: " << ofToString(time2) << endl;
+        ofDrawBitmapStringHighlight(ss.str(), 10, 10);
         gui.draw();
     }
 //    app->cam.begin();

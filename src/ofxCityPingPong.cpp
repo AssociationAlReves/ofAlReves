@@ -10,19 +10,21 @@
 #include "ofxCityPingPong.h"
 
 /////////////////////////////////////////////////////////////// 1  2  3  4  5  6  7  8/ 1  2  3  4  5  6  7  8                   
-int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
-int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+int rect1Vis[PING_PONG_NUM_STEPS] = { 0,1,0 };
+int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
+int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
+int rect4Vis[PING_PONG_NUM_STEPS] = { 0,0,1 };
 
 //--------------------------------------------------------------
 void ofxCityPingPong::setup() {
 
+    if (!guiInitialized) {
+        initGui();
+    }
+    
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	app->cam.reset();
 
-	rectSize = 400;
-	curMargin = 160;
 	curRectVisIndex = 0;
 
 	rects.clear();
@@ -33,6 +35,18 @@ void ofxCityPingPong::setup() {
 	}
 	updateRects();
 }
+//--------------------------------------------------------------
+void ofxCityPingPong::initGui() {
+    
+    gui.setup("panel", PING_PONG_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+    
+    gui.add(ppSize.set("Size z/s",400,0,1000));
+    gui.add(ppMargin.set("Margin q/d",160,0,800));
+
+    bShowGui = false;
+    guiInitialized = true;
+    
+}
 
 //--------------------------------------------------------------
 void ofxCityPingPong::update() {
@@ -41,47 +55,45 @@ void ofxCityPingPong::update() {
 	rectsVisible[2] = ofGetKeyPressed('1');
 	rectsVisible[3] = ofGetKeyPressed('3');
 }
+void ofxCityPingPong::altRects(){
+    rect1Vis[1] = 1;
+    rect1Vis[2] = 0;
+    
+    rect4Vis[1] = 0;
+    rect4Vis[2] = 1;
+}
+void ofxCityPingPong::normalRects(){
+    rect1Vis[1] = 0;
+    rect1Vis[2] = 1;
+    
+    rect4Vis[1] = 1;
+    rect4Vis[2] = 0;
+}
 
 //--------------------------------------------------------------
 void ofxCityPingPong::updateRects() {
 
 	for (int i = 0; i < 4; i++) {
-		rects[i].width = rectSize;
-		rects[i].height = rectSize;
+		rects[i].width = ppSize;
+		rects[i].height = ppSize;
 		rectsVisible[i] = true;
 	}
-	//// 1 HG
-	//rects[0].x = curMargin;
-	//rects[0].y = curMargin;
 
-	//// 2 HD
-	//rects[1].x = ofGetScreenWidth() - curMargin - rectSize;
-	//rects[1].y = curMargin;
-
-	//// 3 BG
-	//rects[2].x = curMargin;
-	//rects[2].y = ofGetScreenHeight() - curMargin - rectSize;
-
-	//// 4 BD
-	//rects[3].x = ofGetScreenWidth() - curMargin - rectSize;
-	//rects[3].y = ofGetScreenHeight() - curMargin - rectSize;
-
-
-	// 1 BD
-	rects[0].x = ofGetScreenWidth() - curMargin - rectSize;
-	rects[0].y = ofGetScreenHeight() - rectSize;
+    // 1 BD
+	rects[0].x = ofGetScreenWidth() - ppMargin - ppSize;
+	rects[0].y = ofGetScreenHeight() - ppSize;
 
 	// 2 HG
-	rects[1].x = curMargin;
+	rects[1].x = ppMargin;
 	rects[1].y = 0;
 
 	// 3 HD
-	rects[2].x = ofGetScreenWidth() - curMargin - rectSize;
+	rects[2].x = ofGetScreenWidth() - ppMargin - ppSize;
 	rects[2].y = 0;
 
 	// 4 BG
-	rects[3].x = curMargin;
-	rects[3].y = ofGetScreenHeight() - rectSize;
+	rects[3].x = ppMargin;
+	rects[3].y = ofGetScreenHeight() - ppSize;
 
 
 }
@@ -116,18 +128,19 @@ void ofxCityPingPong::draw() {
 	}
 
 
-	if (bShowHelp) {
+	if (bShowHelp || bShowGui) {
 
 		ofDisableDepthTest();
 		ofApp *app = (ofApp *)ofxGetAppPtr();
 		app->cam.end();
 
 		stringstream ss;
-		ss << "z/s : block sizes (curSize: " << rectSize << ")" << endl;
-		ss << "q/d : margin (curMargin: " << curMargin << ")" << endl;
+		ss << "z/s : block sizes (curSize: " << ppSize << ")" << endl;
+		ss << "q/d : margin (curMargin: " << ppMargin << ")" << endl;
 		ss << "command by space: " << bSpaceMode << " (step=" << curRectVisIndex << ")" << endl;
 		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 
+            gui.draw();
 
 		app->cam.begin();
 
@@ -146,25 +159,33 @@ void ofxCityPingPong::keyPressed(int key) {
 	case 'r':
 		setup();
 		break;
+        case 'i':
+            altRects();
+            break;
+        case 'I':
+            normalRects();
+            break;
 	case 'h':
 		bShowHelp = !bShowHelp;
 		break;
 	case 'q':
-		curMargin = ofClamp(curMargin - delta, 0, 1000);
+		ppMargin = ofClamp(ppMargin - delta, 0, 1000);
 		updateRects();
 		break;
 	case 'd':
-		curMargin = ofClamp(curMargin + delta, 0, 1000);
+		ppMargin = ofClamp(ppMargin + delta, 0, 1000);
 		updateRects();
 		break;
 	case 'z':
-		rectSize = ofClamp(rectSize + delta, 0, 1000);
+		ppSize = ofClamp(ppSize + delta, 0, 1000);
 		updateRects();
 		break;
 	case 's':
-		rectSize = ofClamp(rectSize - delta, 0, 1000);
+		ppSize = ofClamp(ppSize - delta, 0, 1000);
 		updateRects();
 		break;
+    case 'S': gui.saveToFile(PING_PONG_SETTINGS_FILE);
+        break;
 	case 'm':
 		bSpaceMode = !bSpaceMode;
 		cout << "Spacemode: " << bSpaceMode << endl;
@@ -172,29 +193,9 @@ void ofxCityPingPong::keyPressed(int key) {
 	case ' ':
 		curRectVisIndex = (curRectVisIndex + 1) % PING_PONG_NUM_STEPS;
 		break;
-	case 'l':
-		ofDisableLighting();
-		break;
-	case 'L':
-		ofEnableLighting();
-		break;
-	case 'p':
-		ofSetSmoothLighting(false);
-		break;
-	case 'P':
-		ofSetSmoothLighting(true);
-		break;
-	case 'e':
-		ofDisableDepthTest();
-		break;
-	case 'E':
-		ofEnableDepthTest();
-		break;
-	case 'a':
-		ofDisableAlphaBlending();
-		break;
-	case 'A':
-		ofEnableAlphaBlending();
-		break;
+        case 'L':
+            gui.loadFromFile(PING_PONG_SETTINGS_FILE);
+            break;
+	
 	}
 }

@@ -38,11 +38,12 @@ public:
     void keyReleased(int key);
     void mouseMoved(int x, int y);
     void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);    
+    void mouseReleased(int x, int y, int button);
+    void windowResized(int w, int h);
     
 private:
     
-    void initGui();
+    float screenWidth, screenHeight;
     bool guiInitialized;
     void initKinect();
     
@@ -59,7 +60,8 @@ private:
     ofParameter<ofVec2f> screenTopLeftPos;
     
     bool bShowGui;
-    
+    void initGui();
+    ofxPanel gui;
     /*-------------------------------------------------------*/
     /* TUNNEL STUFF */
     ofParameter<int> tunnelSteps;
@@ -71,6 +73,8 @@ private:
     //ofParameter<int> tunnelSteps;
     
     ofParameterGroup tunnelGroup;
+    
+    void drawTunnelPart(float x, float y, float w, float h, float bandWidth, ofColor const & color);
     
     /*-------------------------------------------------------*/
     /* KINECT STUFF */
@@ -86,7 +90,9 @@ private:
     //ofEasyCam cam;
     
     bool bKinectFrameReady;
-    ofxPanel gui;
+  
+    /*-------------------------------------------------------*/
+    /* GUI STUFF */
     ofParameter<float> nearThreshold;
     ofParameter<float> farThreshold;
     ofParameter<float> thresholdParam;

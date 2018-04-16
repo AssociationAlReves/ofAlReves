@@ -18,9 +18,9 @@ void ofxTunnel::setup() {
     if (!guiInitialized) {
         initGui();
         initKinect();
-        
-       
     }
+    screenWidth = ofGetWidth();
+    screenHeight = ofGetHeight();
 }
 
 //--------------------------------------------------------------
@@ -63,8 +63,8 @@ void ofxTunnel::initGui() {
     debugGroup.add(kwY.set("kinect Y", 0,-100,800));
     debugGroup.add(kinectWarp.set("kinect warp", false));
     debugGroup.add(easyCamMouse.set("easyCamMouse", true));
-    debugGroup.add(screenBounds.set("bounds", ofVec2f(ofGetWidth(),ofGetHeight()),ofVec2f(-ofGetWidth(),-ofGetHeight()),ofVec2f(ofGetWidth(),ofGetHeight())));
-    debugGroup.add(screenTopLeftPos.set("topleftPos", ofVec2f(0),ofVec2f(-ofGetWidth(),-ofGetHeight()),ofVec2f(ofGetWidth(),ofGetHeight())));
+    debugGroup.add(screenBounds.set("bounds", ofVec2f(screenWidth,screenHeight),ofVec2f(-screenWidth,-screenHeight),ofVec2f(screenWidth,screenHeight)));
+    debugGroup.add(screenTopLeftPos.set("topleftPos", ofVec2f(0),ofVec2f(-screenWidth,-screenHeight),ofVec2f(screenWidth,screenHeight)));
     
     gui.add(debugGroup);
     bShowGui = false;
@@ -175,13 +175,13 @@ void ofxTunnel::draw() {
     
     //cam.begin();
     ofPushMatrix();
-//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+//    ofTranslate(screenWidth/2, screenHeight/2);
 //
-//    ofScale(abs(screenBounds->x)/ofGetWidth(), screenBounds->y/ofGetHeight());
+//    ofScale(abs(screenBounds->x)/screenWidth, screenBounds->y/screenHeight);
 //    ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
 //
 //    //ofRotate(sin(ofGetElapsedTimef()*0.1)*180.0, 0, 0, 1);
-//    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+//    ofTranslate(-screenWidth/2, -screenHeight/2);
     
     
     // draw
@@ -191,20 +191,20 @@ void ofxTunnel::draw() {
     
     
     
-    ofPoint center = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
+    ofPoint center = ofPoint(screenWidth/2, screenHeight/2);
     int step = tunnelSteps;
     int iter = 0;
     float sinDelta;
     
     // step through horizontally
-    for ( int i=0; i<ofGetWidth(); i+=step )
+    for ( int i=0; i<screenWidth; i+=step )
     {
         iter++;
         ofColor c;
         // the range of each of the arguments here is 0..255 so we map i and j to that range.
 
 
-        float rectWidth = ofGetWidth() - i;
+        float rectWidth = screenWidth - i;
         sinDelta = fmodf(ofGetElapsedTimef()*tunnelSpeed, step*2);
         ofPoint newCenter = ofPoint(center.x-rectWidth/2-sinDelta/2,center.y-rectWidth/2-sinDelta/2);
 
@@ -216,31 +216,34 @@ void ofxTunnel::draw() {
         // assign the color and draw a rectangle
         if (iter % 2 == 0)
         {
+            continue;
             ofSetColor( 255 );
         }
         else
         {
             ofSetColor( c );
         }
-
+        
         // Curve effect
         // The more distant the more offset
         // => the closer is i to 0
         ofPoint mouseCentered;
         if (Globals::oscMouseX >=0) {
-             mouseCentered = ofPoint(Globals::oscMouseX-ofGetWidth()/2,Globals::oscMouseY-ofGetHeight());
+            mouseCentered = ofPoint(ofGetMouseX()-screenWidth/2,ofGetMouseY()-screenHeight);
+//             mouseCentered = ofPoint(Globals::oscMouseX-screenWidth/2,Globals::oscMouseY-screenHeight);
         } else {
-            mouseCentered = ofPoint(ofGetMouseX()-ofGetWidth()/2,ofGetMouseY()-ofGetHeight());
+            mouseCentered = ofPoint(ofGetMouseX()-screenWidth/2,ofGetMouseY()-screenHeight);
         }
-        ofPoint curveDisplacement = ofPoint(ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.x, 0), ofMap(rectWidth, 0, ofGetWidth(), mouseCentered.y, 0));
+        ofPoint curveDisplacement = ofPoint(ofMap(rectWidth, 0, screenWidth, mouseCentered.x, 0), ofMap(rectWidth, 0, screenWidth, mouseCentered.y, 0));
 
         newCenter.x += curveDisplacement.x;
         newCenter.y += curveDisplacement.y;
 
-        
-//        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-//        ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,ofGetWidth(),45.0,0), 0, 0, 1);
-//        ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+        //drawTunnelPart(center.x, center.y, rectWidth, rectWidth, screenWidth/step, c);
+
+        ofTranslate(screenWidth/2, screenHeight/2);
+        ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,screenWidth,45.0,0), 0, 0, 1);
+        ofTranslate(-screenWidth/2, -screenHeight/2);
         
             ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
        
@@ -379,6 +382,30 @@ void ofxTunnel::drawKinect() {
 }
 
 //--------------------------------------------------------------
+void ofxTunnel::drawTunnelPart(float x, float y, float w, float h, float bandWidth, ofColor const & color) {
+   
+    //ofDrawRectangle(x, y, w, h);
+    //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
+    ofBeginShape();
+
+    ofVertex(x-w,y-w);
+    ofVertex(x-w,y);
+    ofVertex(x,y);
+    ofVertex(x,y-w);
+
+//    ofNextContour(true);
+//
+//    ofVertex(x-w,y-w);
+//    ofVertex(x-w,y);
+//    ofVertex(x,y);
+//
+//    ofNextContour(true);
+
+    ofEndShape(true);
+    
+}
+
+//--------------------------------------------------------------
 void ofxTunnel::updateExit() {
     closeKinect();
     finishedExiting();
@@ -441,6 +468,12 @@ void ofxTunnel::keyPressed(int key) {
             //case 'c': cam.disableMouseInput(); break;
     }
     
+}
+
+//--------------------------------------------------------------
+void ofxTunnel::windowResized(int w, int h){
+    screenWidth = w;
+    screenHeight = h;
 }
 
 //--------------------------------------------------------------

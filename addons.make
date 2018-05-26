@@ -5,4 +5,5 @@ ofxGui
 ofxKinect
 ofxOpenCv
 ofxOsc
+ofxPostGlitch
 ofxXmlSettings

@@ -57,10 +57,19 @@ public:
     ofParameter<float> returnForceParam; // 0.2
     ofParameter<float> distParam; // 150
     ofParameter<float> resetDistThresholdParam; // 10
+    ofParameter<float> scaleParam;
     
     ofParameter<bool> autoGenerateBuildings;
     ofParameter<bool> debugFbo;
     ofParameter<bool> bTweenSpeed;
+    
+    ofParameterGroup colorGroup;
+    ofParameter<ofColor> baseColorParam;
+    ofParameter<ofColor> baseDestColorParam;
+    ofParameter<ofColor> altColorParam;
+    ofParameter<ofColor> altDestColorParam;
+    ofParameter<float> colorVelocityParam;
+    ofParameter<bool> useAltColor;
     bool bShowGui;
     bool bGuiLoaded;
     

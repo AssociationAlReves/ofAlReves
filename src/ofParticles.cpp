@@ -29,7 +29,16 @@ void ofParticles::setup(){
         gui.add(returnForceParam.set("returnForceParam", 0.2, 0, 1));
         gui.add(distParam.set("distParam", 150, 50, 800));
         gui.add(resetDistThresholdParam.set("resetDistThresholdParam", 10, 0,20));
+        gui.add(scaleParam.set("scale", 1, 0.1, 5));
         
+        colorGroup.setName("Colors");
+        colorGroup.add(baseColorParam.set("baseColor",ofColor(255,0,0)));
+        colorGroup.add(baseDestColorParam.set("baseDestColor",ofColor(255,255,0)));
+        colorGroup.add(altColorParam.set("altColor",ofColor(0,0,255)));
+        colorGroup.add(altDestColorParam.set("altDestColorParam",ofColor(0,255,255)));
+        colorGroup.add(colorVelocityParam.set("color velocity", 5,0,50));
+        colorGroup.add(useAltColor.set("use alt color", false));
+        gui.add(colorGroup);
         bGuiLoaded = true;
     
     }
@@ -55,6 +64,7 @@ void ofParticles::resetParticles(){
                 p[i].setMode(currentMode);
                 p[i].setAttractPoints(&attractPointsWithMovement);;
                 p[i].reset();
+                p[i].color = useAltColor ? altColorParam : baseColorParam;
                 
                 
                 p[i].pos.x = x * gridSize;
@@ -66,6 +76,8 @@ void ofParticles::resetParticles(){
         for(unsigned int i = 0; i < p.size(); i++){
             p[i].setMode(currentMode);
             p[i].setAttractPoints(&attractPointsWithMovement);;
+            p[i].color = useAltColor ? altColorParam : baseColorParam;
+            
             p[i].reset();
         }
     }
@@ -85,6 +97,10 @@ void ofParticles::update(){
         p[i].force = forceParam;
         p[i].returnForce = returnForceParam;
         p[i].resetDistThreshold = resetDistThresholdParam;
+        p[i].color = useAltColor ? altColorParam : baseColorParam;
+        p[i].destColor = useAltColor ? altDestColorParam : baseDestColorParam;
+        p[i].scale = scaleParam;
+        p[i].colorVelocity = colorVelocityParam;
         
         if (isExplosing) {
             p[i].dist = ofxeasing::map_clamp(now, initTime, endTime, distParam, screenHeight, &ofxeasing::exp::easeOut);

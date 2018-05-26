@@ -48,8 +48,6 @@ void demoParticle::reset(){
     frc   = ofPoint(0,0,0);
     frc2Init = ofPoint(0,0,0);
     
-    scale = 1; //ofRandom(0.5, 1.0);
-    
     if( mode == PARTICLE_MODE_NOISE ){
         drag  = ofRandom(0.97, 0.99);
         vel.y = fabs(vel.y) * 3.0; //make the particles all be going down
@@ -204,9 +202,10 @@ void demoParticle::draw(){
     if( mode == PARTICLE_MODE_ATTRACT
         || mode == PARTICLE_MODE_REPEL ){
         //ofSetColor(255, 0 , 0);
-        ofSetColor(ofMap(vel.length(), 0, 5, 255, 128, true),
-                   0, //ofMap(vel.length(), 0, 5, 0, 255, true),
-                   0);
+        
+        ofSetColor(ofMap(vel.length(), 0, colorVelocity, color.r, destColor.r, true),
+                  ofMap(vel.length(), 0, colorVelocity, color.g, destColor.g, true),
+                   ofMap(vel.length(), 0, colorVelocity, color.b, destColor.b, true));
     }
     else if( mode == PARTICLE_MODE_NOISE ){
         ofSetColor(99, 63, 255);

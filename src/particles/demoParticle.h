@@ -27,6 +27,10 @@ public:
     ofPoint frc;
     ofPoint frc2Init;
     
+    ofColor color;
+    ofColor destColor;
+    float colorVelocity;
+    
     float dragForce; //  0.9, 0.99
     float force; // 0.6
     float returnForce; // 0.2

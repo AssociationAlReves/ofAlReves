@@ -74,7 +74,7 @@ private:
     
     ofParameterGroup tunnelGroup;
     
-    void drawTunnelPart(float x, float y, float w, float h, float bandWidth, ofColor const & color);
+    void drawTunnelPart(float x, float y, float z, float w, float h, float bandWidth, ofColor const & color);
     
     /*-------------------------------------------------------*/
     /* KINECT STUFF */

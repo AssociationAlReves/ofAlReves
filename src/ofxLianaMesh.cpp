@@ -191,9 +191,9 @@ void ofxLianaMesh::mousePressed(int x, int y, int button) {
 }
 //--------------------------------------------------------------
 void ofxLianaMesh::mouseMoved(int x, int y) {
-	/*if (bRepulse) {
-		repulsionCenter = ofVec3f(x, y);
-	 }*/
+	if (bRepulse) {
+		//repulsionCenter = ofVec3f(x, y);
+	 }
 }
 //--------------------------------------------------------------
 void ofxLianaMesh::clearRepulsors() {

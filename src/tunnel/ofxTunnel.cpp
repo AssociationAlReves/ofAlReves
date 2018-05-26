@@ -155,34 +155,13 @@ float time2 = 0;
 void ofxTunnel::draw() {
     
     float refTime = ofGetElapsedTimef();
-//    ofDisableAntiAliasing();
-//    ofDisableAlphaBlending();
-    ofClear(0);
-    ofApp *app = (ofApp *)ofxGetAppPtr();
-    //    if (easyCamMouse) {
-    //        app->cam.enableMouseInput();
-    //    } else {
-    //        app->cam.disableMouseInput();
-    //    }
+    ofClear(128, 0, 0);
     
-    //ofScale(1, -1, 1);
-    //ofTranslate(0, ofGetScreenHeight());
-    //cam.begin();
-    //ofClear(0);
     ofSetColor(255);
     
     
     
-    //cam.begin();
     ofPushMatrix();
-//    ofTranslate(screenWidth/2, screenHeight/2);
-//
-//    ofScale(abs(screenBounds->x)/screenWidth, screenBounds->y/screenHeight);
-//    ofTranslate(screenTopLeftPos->x, screenTopLeftPos->y);
-//
-//    //ofRotate(sin(ofGetElapsedTimef()*0.1)*180.0, 0, 0, 1);
-//    ofTranslate(-screenWidth/2, -screenHeight/2);
-    
     
     // draw
     // we use one hue (value from 0..255) for the whole grid. it changes over time. we use fmodf to
@@ -239,44 +218,20 @@ void ofxTunnel::draw() {
         newCenter.x += curveDisplacement.x;
         newCenter.y += curveDisplacement.y;
 
-        //drawTunnelPart(center.x, center.y, rectWidth, rectWidth, screenWidth/step, c);
-
+       
         ofTranslate(screenWidth/2, screenHeight/2);
         ofRotate(sin(ofGetElapsedTimef()*tunnelRotation) * ofMap(rectWidth,0,screenWidth,45.0,0), 0, 0, 1);
         ofTranslate(-screenWidth/2, -screenHeight/2);
         
-            ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
+        drawTunnelPart(center.x, center.y, 0, rectWidth, rectWidth, screenWidth/step, c);
+
+        //ofDrawRectangle(newCenter.x, newCenter.y, rectWidth+sinDelta, rectWidth+sinDelta);
        
     }
     time2 += ofGetElapsedTimef() - refTime;
     refTime = ofGetElapsedTimef();
     ofPopMatrix();
     
-//    ofPushMatrix();
-//
-//    ofScale(kwScaleX, kwScaleY);
-//    ofTranslate(kwX, kwY);
-//
-//    drawKinect();
-//
-//    if (kinectWarp) {
-//        ofSetColor(255);
-//        ofSetLineWidth(5);
-//        ofDrawLine(0,0,kinect.width,0);
-//        ofDrawLine(kinect.width, 0, kinect.width, kinect.height);
-//        ofDrawLine(kinect.width, kinect.height,0, kinect.height);
-//        ofDrawLine(0, kinect.height, 0, 0);
-//        ofSetLineWidth(1);
-//    }
-//
-//    ofPopMatrix();
-    
-    
-    
-//    app->cam.end();
-    
-    
-    //cam.end();
     
     if (bShowGui)
     {stringstream ss;
@@ -287,7 +242,6 @@ void ofxTunnel::draw() {
         ofDrawBitmapStringHighlight(ss.str(), 10, 10);
         gui.draw();
     }
-//    app->cam.begin();
 }
 
 //--------------------------------------------------------------
@@ -382,26 +336,32 @@ void ofxTunnel::drawKinect() {
 }
 
 //--------------------------------------------------------------
-void ofxTunnel::drawTunnelPart(float x, float y, float w, float h, float bandWidth, ofColor const & color) {
+void ofxTunnel::drawTunnelPart(float x, float y, float z, float w, float h, float bandWidth, ofColor const & color) {
    
+    
     //ofDrawRectangle(x, y, w, h);
     //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
-    ofBeginShape();
-
-    ofVertex(x-w,y-w);
-    ofVertex(x-w,y);
-    ofVertex(x,y);
-    ofVertex(x,y-w);
-
+    ofSetLineWidth(bandWidth);
+    ofPolyline polyline;
+    polyline.resize(4);
+   polyline.addVertex(x-w,y-w);
+    polyline.addVertex(x-w,y+w);
+    polyline.addVertex(x+w,y+w);
+    polyline.addVertex(x+w,y-w);
+    polyline.close(); 
+    polyline.draw();
+    
 //    ofNextContour(true);
 //
-//    ofVertex(x-w,y-w);
-//    ofVertex(x-w,y);
-//    ofVertex(x,y);
+//    ofVertex(x-w+bandWidth,y-w+bandWidth,z);
+//    ofVertex(x-w+bandWidth,y+w-bandWidth,z);
+//    ofVertex(x+w-bandWidth,y+w-bandWidth,z);
+//    ofVertex(x+w-bandWidth,y-w+bandWidth,z);
 //
 //    ofNextContour(true);
-
-    ofEndShape(true);
+    
+    //ofEndShape(true);
+    ofSetLineWidth(1);
     
 }
 

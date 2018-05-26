@@ -64,14 +64,14 @@ void ofApp::setupSceneManager() {
 	int i = 0;
 #if __APPLE__
 
-	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
-	sceneManager.add(new ofxTerrain(IntToString(i++)));
-	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
-	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
-    sceneManager.add(new ofxTunnel(IntToString(i++)));
-	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
+    sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+    sceneManager.add(new ofxTerrain(IntToString(i++)));
+    sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+    sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
+    sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
+    sceneManager.add(new ofxVasaLianas(IntToString(i++)));
+    sceneManager.add(new ofParticles(IntToString(i++)));
+    sceneManager.add(new ofxCityPingPong(IntToString(i++)));
     sceneManager.add(new ofxKinecticon(IntToString(i++)));
     sceneManager.add(new ofxVideoMirror(IntToString(i++)));
 

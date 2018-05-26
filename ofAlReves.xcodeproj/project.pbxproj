@@ -30,6 +30,8 @@
 		2DCAE0BE16F67158C4D57E7B /* ofxLiana.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5F68D89F1E3C805F31E9A07 /* ofxLiana.cpp */; };
 		311DF864378748129984EA1D /* Kalman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A1A692522820F935B58762 /* Kalman.cpp */; };
 		3992C343207EA84000B84131 /* globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3992C342207EA84000B84131 /* globals.cpp */; };
+		39EF1E9D20B983CB002A4669 /* demoParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39EF1E9920B983CB002A4669 /* demoParticle.cpp */; };
+		39EF1E9E20B983CB002A4669 /* ofParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39EF1E9C20B983CB002A4669 /* ofParticles.cpp */; };
 		445D7450E36B76B67952E484 /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F544820BD56626DA89C766C /* ofxBgScene.cpp */; };
 		45CC483A999BF1065A6B926C /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD717072C35D324E101669 /* Distance.cpp */; };
 		47F94ED29481CC4D6E0ED59A /* ofxLianaMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C858D2D3187983E21675BF5C /* ofxLianaMesh.cpp */; };
@@ -206,6 +208,10 @@
 		37D155721DCC51F3D1DC2E02 /* color_detail.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = color_detail.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/detail/color_detail.hpp; sourceTree = SOURCE_ROOT; };
 		38854FC8260188EE54E31C90 /* ofxVasaDalleQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxVasaDalleQuad.h; path = src/ofxVasaDalleQuad.h; sourceTree = SOURCE_ROOT; };
 		3992C342207EA84000B84131 /* globals.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = globals.cpp; sourceTree = "<group>"; };
+		39EF1E9920B983CB002A4669 /* demoParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = demoParticle.cpp; sourceTree = "<group>"; };
+		39EF1E9A20B983CB002A4669 /* demoParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demoParticle.h; sourceTree = "<group>"; };
+		39EF1E9B20B983CB002A4669 /* ofParticles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofParticles.h; sourceTree = "<group>"; };
+		39EF1E9C20B983CB002A4669 /* ofParticles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofParticles.cpp; sourceTree = "<group>"; };
 		3ADB4E06C4EDB97E020A778D /* functional.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = functional.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/functional.hpp; sourceTree = SOURCE_ROOT; };
 		3B361208CD4107E479F04E7B /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp; sourceTree = SOURCE_ROOT; };
 		3CABCA8EA52D11C95F7A1309 /* registration.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = registration.h; path = ../../../addons/ofxKinect/libs/libfreenect/src/registration.h; sourceTree = SOURCE_ROOT; };
@@ -767,6 +773,15 @@
 			name = videostab;
 			sourceTree = "<group>";
 		};
+		39EF1E9820B983CB002A4669 /* particles */ = {
+			isa = PBXGroup;
+			children = (
+				39EF1E9920B983CB002A4669 /* demoParticle.cpp */,
+				39EF1E9A20B983CB002A4669 /* demoParticle.h */,
+			);
+			path = particles;
+			sourceTree = "<group>";
+		};
 		3B8F70BFDA30BBA2A5A060FC /* photo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1294,6 +1309,9 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				39EF1E9C20B983CB002A4669 /* ofParticles.cpp */,
+				39EF1E9B20B983CB002A4669 /* ofParticles.h */,
+				39EF1E9820B983CB002A4669 /* particles */,
 				3992C342207EA84000B84131 /* globals.cpp */,
 				83524310F713FE5B83E9DA99 /* globals.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1593,8 +1611,10 @@
 				2023EF517ED2D8B397511D4B /* Helpers.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,
 				7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */,
+				39EF1E9E20B983CB002A4669 /* ofParticles.cpp in Sources */,
 				10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */,
 				EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */,
+				39EF1E9D20B983CB002A4669 /* demoParticle.cpp in Sources */,
 				5CC34D433F5806179935B89D /* Flow.cpp in Sources */,
 				6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */,
 				C602002DE761F9B52DB4400A /* ObjectFinder.cpp in Sources */,

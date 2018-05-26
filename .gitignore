@@ -19,7 +19,7 @@ x64/
 x86/
 bld/
 [Bb]in/*
-!bin/data/*.xml
+![Bb]in/data
 [Oo]bj/
 [Ll]og/
 

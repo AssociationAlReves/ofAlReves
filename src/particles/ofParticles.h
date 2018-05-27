@@ -42,8 +42,6 @@ public:
     vector <ofPoint> attractPoints;
     vector <ofPoint> attractPointsWithMovement;
     
-    int screenHeight;
-    int screenWidth;
     int numX;
     int numY;
     int gridSize;

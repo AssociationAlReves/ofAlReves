@@ -24,6 +24,9 @@ void ofApp::setup() {
 
 	setupSceneManager();
     
+    Globals::screenWidth = ofGetWidth();
+    Globals::screenHeight = ofGetHeight();
+    
     if (IS_HOST==1)
     {
         // open an outgoing connection to HOST:PORT
@@ -33,7 +36,6 @@ void ofApp::setup() {
     {
         cout << "listening for osc messages on port " << PORT << "\n";
         receiver.setup(PORT);
-
     }
 }
 
@@ -328,6 +330,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h) {
 
+    Globals::screenWidth = w;
+    Globals::screenHeight = h;
 	// transformer.setNewScreenSize() is automatically called if the transformer is set
 
 }

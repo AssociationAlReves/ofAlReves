@@ -1,33 +1,24 @@
 #include "ofParticles.h"
 #include "ofxEasing.h"
-
+#include "globals.h"
 
 //--------------------------------------------------------------
 void ofParticles::setup(){
     ofSetVerticalSync(true);
     
-    gridSize = 10;
-    numX = ofGetWidth()/gridSize;
-    numY = ofGetHeight()/gridSize;
-    int num  = numX * numY;
-    isExplosing = false;
     
-    p.assign(num, demoParticle());
     currentMode = PARTICLE_MODE_REPEL;
     
     currentModeStr = "1 - PARTICLE_MODE_ATTRACT: attracts to mouse";
     
     resetParticles();
     
-    screenHeight = ofGetHeight();
-    screenWidth = ofGetWidth();
-    
     if (!bGuiLoaded) {
         gui.setup("cityPanel", POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
         gui.add(dragForceParam.set("dragForceParam", 0.99, 0.8, 0.99));
         gui.add(forceParam.set("forceParam", 0.6, 0.5, 1));
         gui.add(returnForceParam.set("returnForceParam", 0.2, 0, 1));
-        gui.add(distParam.set("distParam", 150, 50, 800));
+        gui.add(distParam.set("distParam (< >)", 150, 50, 800));
         gui.add(resetDistThresholdParam.set("resetDistThresholdParam", 10, 0,20));
         gui.add(scaleParam.set("scale", 1, 0.1, 5));
         
@@ -37,7 +28,7 @@ void ofParticles::setup(){
         colorGroup.add(altColorParam.set("altColor",ofColor(0,0,255)));
         colorGroup.add(altDestColorParam.set("altDestColorParam",ofColor(0,255,255)));
         colorGroup.add(colorVelocityParam.set("color velocity", 5,0,50));
-        colorGroup.add(useAltColor.set("use alt color", false));
+        colorGroup.add(useAltColor.set("use alt color (b)", false));
         gui.add(colorGroup);
         bGuiLoaded = true;
     
@@ -48,10 +39,18 @@ void ofParticles::setup(){
 //--------------------------------------------------------------
 void ofParticles::resetParticles(){
     
+    gridSize = 10;
+    numX = Globals::screenWidth / gridSize;
+    numY = Globals::screenHeight / gridSize;
+    int num  = numX * numY;
+    
+    
+    p.assign(num, demoParticle());
+    
     //these are the attraction points used in the forth demo
     attractPoints.clear();
     for(int i = 0; i < 4; i++){
-        attractPoints.push_back( ofPoint( ofMap(i, 0, 4, 100, screenWidth-100) , ofRandom(100, screenHeight-100) ) );
+        attractPoints.push_back( ofPoint( ofMap(i, 0, 4, 100, Globals::screenWidth-100) , ofRandom(100, Globals::screenHeight-100) ) );
     }
     
     attractPointsWithMovement = attractPoints;
@@ -91,8 +90,8 @@ void ofParticles::update(){
     }
     for(unsigned int i = 0; i < p.size(); i++){
         p[i].setMode(currentMode);
-        p[i].screenWidth = screenWidth;
-        p[i].screenHeight = screenHeight;
+        p[i].screenWidth = Globals::screenWidth;
+        p[i].screenHeight = Globals::screenHeight;
         p[i].dragForce = dragForceParam;
         p[i].force = forceParam;
         p[i].returnForce = returnForceParam;
@@ -103,7 +102,7 @@ void ofParticles::update(){
         p[i].colorVelocity = colorVelocityParam;
         
         if (isExplosing) {
-            p[i].dist = ofxeasing::map_clamp(now, initTime, endTime, distParam, screenHeight, &ofxeasing::exp::easeOut);
+            p[i].dist = ofxeasing::map_clamp(now, initTime, endTime, distParam, Globals::screenHeight, &ofxeasing::exp::easeOut);
         } else {
             p[i].dist = distParam;
         }
@@ -185,10 +184,14 @@ void ofParticles::keyPressed(int key){
         bShowGui = !bShowGui;
     }
     
-    if(key == 'f'){
-        ofToggleFullscreen();
-        screenHeight = ofGetHeight();
-        screenWidth = ofGetWidth();
+    if(key == 'b'){
+        useAltColor = !useAltColor;
+    }
+    if(key == '>'){
+        distParam += 5;
+    }
+    if(key == '<'){
+        distParam -= 5;
     }
     
     if (key == 'S') {

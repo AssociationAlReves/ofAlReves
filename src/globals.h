@@ -45,4 +45,7 @@ class Globals {
 public:
     static int oscMouseX;
     static int oscMouseY;
+    
+    static int screenWidth;
+    static int screenHeight;
 };

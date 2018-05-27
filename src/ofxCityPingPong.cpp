@@ -10,10 +10,10 @@
 #include "ofxCityPingPong.h"
 
 /////////////////////////////////////////////////////////////// 1  2  3  4  5  6  7  8/ 1  2  3  4  5  6  7  8                   
-int rect1Vis[PING_PONG_NUM_STEPS] = { 1,0 };
-int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0 };
-int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0 };
-int rect4Vis[PING_PONG_NUM_STEPS] = { 0,1 };
+int rect1Vis[PING_PONG_NUM_STEPS] = { 1,0,0 };
+int rect2Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
+int rect3Vis[PING_PONG_NUM_STEPS] = { 0,0,0 };
+int rect4Vis[PING_PONG_NUM_STEPS] = { 0,1,0 };
 
 //--------------------------------------------------------------
 void ofxCityPingPong::setup() {
@@ -138,7 +138,8 @@ void ofxCityPingPong::draw() {
 		ss << "z/s : block sizes (curSize: " << ppSize << ")" << endl;
 		ss << "q/d : margin (curMargin: " << ppMargin << ")" << endl;
 		ss << "command by space: " << bSpaceMode << " (step=" << curRectVisIndex << ")" << endl;
-		ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+        ss << "i/I : top/bottom screen" << endl;
+        ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 
             gui.draw();
 

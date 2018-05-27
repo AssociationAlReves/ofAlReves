@@ -6,6 +6,7 @@
 //
 
 #include "ofMarilyn.h"
+#include "globals.h"
 
 bool bIsTopScreen = true;
 float destinationMilieu = 0.7;
@@ -23,12 +24,9 @@ void ofMarilyn::setup(){
     //------------------
     bIsTopScreen = false;
     
-    screenHeight = ofGetHeight();
-    screenWidth = ofGetWidth();
-    
     //----------
     // Glitch
-    glitchFbo.allocate(screenWidth, screenHeight);
+    glitchFbo.allocate(Globals::screenWidth, Globals::screenHeight);
     myGlitch.setup(&glitchFbo);
     
     if (!bGuiLoaded) {
@@ -98,8 +96,8 @@ void ofMarilyn::update(){
     switch (currentMode){
         case MOV_state_Blank:{
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].screenWidth = screenWidth;
-                p[i].screenHeight = screenHeight;
+                p[i].screenWidth = Globals::screenWidth;
+                p[i].screenHeight = Globals::screenHeight;
                 
                 p[i].update();
             }}
@@ -163,7 +161,7 @@ void ofMarilyn::update(){
         case MOV_state_Violet:
         { // A
             p[0].size.y = 0;
-            p[1].size.y = screenHeight*destinationMilieu;
+            p[1].size.y = Globals::screenHeight*destinationMilieu;
             p[2].size.y = valA;
             p[3].size.y = valB;
             p[4].size.y = 0;
@@ -172,18 +170,18 @@ void ofMarilyn::update(){
         case MOV_state_Orange:
         { // B
             p[0].size.y = valB;
-            p[1].size.y = screenHeight*destinationMilieu;
+            p[1].size.y = Globals::screenHeight*destinationMilieu;
             p[2].size.y = valA;
-            p[3].size.y = screenHeight*destinationMilieu;
+            p[3].size.y = Globals::screenHeight*destinationMilieu;
             p[4].size.y = 0;
         }
             break;
         case MOV_state_Vert:
         { // A
             p[0].size.y = valB;
-            p[1].size.y = screenHeight*destinationMilieu;
-            p[2].size.y = screenHeight*destinationMilieu;
-            p[3].size.y = screenHeight*destinationMilieu;
+            p[1].size.y = Globals::screenHeight*destinationMilieu;
+            p[2].size.y = Globals::screenHeight*destinationMilieu;
+            p[3].size.y = Globals::screenHeight*destinationMilieu;
             p[4].size.y = valA;
         }
             break;
@@ -220,7 +218,7 @@ void ofMarilyn::update(){
         case MOV_state_ivdmilieu:
         { // A
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = screenWidth/2;
+                p[i].size.y = Globals::screenWidth/2;
                 p[i].pos.x = p[i].initialPos.x + valA;
                 
                 p[i].update();
@@ -245,14 +243,14 @@ void ofMarilyn::update(){
         case MOV_state_allCol:{
             // col2 grows in size until full screen
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = (screenWidth/2)*(1+(1-valB));
+                p[i].size.y = (Globals::screenWidth/2)*(1+(1-valB));
                 p[i].update();
                 
                 p[i].color.a = ofMap(valA,0,1,0,255);
             }
             p[1].color.a = 255;
             p[1].pos.x = ofMap(valB,0,1,0,p[2].initialPos.x);
-            p[1].sizeFactor = ofPoint(1+(valB*screenWidth),1+(valB*screenWidth));
+            p[1].sizeFactor = ofPoint(1+(valB* Globals::screenWidth),1+(valB*Globals::screenWidth));
         } break;
         default:
             break;
@@ -274,14 +272,14 @@ void ofMarilyn::custom_bandeFullScreen(const int bandeIndex){
     resetBandes();
     // col2 grows in size until full screen
     for(unsigned int i = 0; i < p.size(); i++){
-        p[i].size.y = (screenWidth/2)*(1+valB);
+        p[i].size.y = (Globals::screenWidth/2)*(1+valB);
         p[i].update();
         
         p[i].color.a = ofMap(valA,0,1,255,0);
     }
     p[bandeIndex].color.a = 255;
     p[bandeIndex].pos.x = ofMap(valB,0,1,p[2].initialPos.x,0);
-    p[bandeIndex].sizeFactor = ofPoint(1+(valB*screenWidth),1+(valB*screenWidth));
+    p[bandeIndex].sizeFactor = ofPoint(1+(valB*Globals::screenWidth),1+(valB*Globals::screenWidth));
 }
 
 //--------------------------------------------------------------
@@ -318,71 +316,71 @@ void ofMarilyn::nextMode(std::string reason){
                 p[i].sizeFactor = ofPoint(1, 1);
                 p[i].update();
             }
-            updateTweenA(EASING_CUBIC, 0,screenHeight,5);
-            updateTweenB(EASING_CUBIC, 0,screenHeight,11);
+            updateTweenA(EASING_CUBIC, 0,Globals::screenHeight,5);
+            updateTweenB(EASING_CUBIC, 0,Globals::screenHeight,11);
         }
             break;
         case MOV_state_ToutRecule:
         {
-            updateTweenA(EASING_EXPO_EASEOUT, screenHeight, 0, 0.5);
+            updateTweenA(EASING_EXPO_EASEOUT, Globals::screenHeight, 0, 0.5);
         }
             break;
         case MOV_state_ToutAvanceMid:
-            updateTweenA(EASING_SINE, 0, screenHeight/2, 16);
+            updateTweenA(EASING_SINE, 0, Globals::screenHeight/2, 16);
             break;
         case MOV_state_DepartJardin:
             // offset x position (ie: pos -= tween value;
-            updateTweenB(EASING_SINE, 0, screenWidth, 13);
+            updateTweenB(EASING_SINE, 0, Globals::screenWidth, 13);
             break;
         case MOV_state_Bleu:{
-            float bandWidth = screenWidth / p.size();
+            float bandWidth = Globals::screenWidth / p.size();
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = screenHeight/2;
+                p[i].size.y = Globals::screenHeight/2;
                 p[i].pos = ofPoint(bandWidth * i , 0);
                 p[i].update();
             }
-            updateTweenA(EASING_SINE_EASEOUT, 0, screenHeight*destinationMilieu, 7);
+            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenHeight*destinationMilieu, 7);
             //updateTweenB(EASING_SINE, 0, screenWidth, 0.5);
         }
             break;
         case MOV_state_Rose:
-            updateTweenB(EASING_SINE_EASEOUT, 0, screenHeight*destinationMilieu, 7);
+            updateTweenB(EASING_SINE_EASEOUT, 0, Globals::screenHeight*destinationMilieu, 7);
             break;
         case MOV_state_Violet:
-            updateTweenA(EASING_SINE_EASEOUT, 0, screenHeight*destinationMilieu, 7);
+            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenHeight*destinationMilieu, 7);
             break;
         case MOV_state_Orange:
-            updateTweenB(EASING_SINE_EASEOUT, 0, screenHeight*destinationMilieu, 7);
+            updateTweenB(EASING_SINE_EASEOUT, 0, Globals::screenHeight*destinationMilieu, 7);
             break;
         case MOV_state_Vert:
-            updateTweenA(EASING_SINE_EASEOUT, 0, screenHeight*destinationMilieu, 7);
+            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenHeight*destinationMilieu, 7);
             break;
         case MOV_state_i:
-            updateTweenB(EASING_SINE_EASEOUT, getTweenBValue(), screenHeight, 6);
+            updateTweenB(EASING_SINE_EASEOUT, getTweenBValue(), Globals::screenHeight, 6);
             break;
         case MOV_state_ii:{
-            updateTweenA(EASING_SINE_EASEOUT, screenHeight*destinationMilieu, screenHeight, 4);
-            updateTweenB(EASING_SINE_EASEOUT, screenHeight, screenHeight/2, 4);
+            updateTweenA(EASING_SINE_EASEOUT, Globals::screenHeight*destinationMilieu, Globals::screenHeight, 4);
+            updateTweenB(EASING_SINE_EASEOUT, Globals::screenHeight, Globals::screenHeight/2, 4);
         }
             break;
         case MOV_state_iii:{
-            updateTweenA(EASING_SINE_EASEOUT, getTweenAValue(), screenHeight/2, 4);
-            updateTweenB(EASING_SINE_EASEOUT, getTweenBValue(), screenHeight/2, 4);
+            updateTweenA(EASING_SINE_EASEOUT, getTweenAValue(), Globals::screenHeight/2, 4);
+            updateTweenB(EASING_SINE_EASEOUT, getTweenBValue(), Globals::screenHeight/2, 4);
         }
             break;
         case MOV_state_ivacour:{
             // offset x position (ie: pos += tween value;
-            updateTweenA(EASING_SINE_EASEOUT, 0, screenWidth, 5);
+            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenWidth, 5);
         }
             break;
         case MOV_state_ivbjardin:
-            updateTweenA(EASING_SINE_EASEOUT, screenWidth, -screenWidth, 2);
+            updateTweenA(EASING_SINE_EASEOUT, Globals::screenWidth, -Globals::screenWidth, 2);
             break;
         case MOV_state_ivccour:
-            updateTweenA(EASING_SINE_EASEOUT, -screenWidth, screenWidth, 2);
+            updateTweenA(EASING_SINE_EASEOUT, -Globals::screenWidth, Globals::screenWidth, 2);
             break;
         case MOV_state_ivdmilieu:
-            updateTweenA(EASING_SINE_EASEOUT, screenWidth, 0, 2);
+            updateTweenA(EASING_SINE_EASEOUT, Globals::screenWidth, 0, 2);
             break;
         case MOV_state_vmelange:
             // TODO
@@ -412,7 +410,7 @@ void ofMarilyn::nextMode(std::string reason){
 //--------ç------------------------------------------------------
 void ofMarilyn::resetBandes(){
     
-    float bandWidth = screenWidth / p.size();
+    float bandWidth = Globals::screenWidth / p.size();
     p[0].color = color0Param;
     p[1].color = color1Param;
     p[2].color = color2Param;
@@ -421,12 +419,12 @@ void ofMarilyn::resetBandes(){
     
     for(unsigned int i = 0; i < p.size(); i++){
         p[i].setMode(BANDE_MODE_IDLE);
-        p[i].screenWidth = screenWidth;
-        p[i].screenHeight = screenHeight;
+        p[i].screenWidth = Globals::screenWidth;
+        p[i].screenHeight = Globals::screenHeight;
         
         p[i].pos = ofPoint(bandWidth * i , 0);
         p[i].initialPos = ofPoint(bandWidth * i , 0);
-        p[i].size = ofPoint(bandWidth, bIsTopScreen ? 0 : screenHeight);
+        p[i].size = ofPoint(bandWidth, bIsTopScreen ? 0 : Globals::screenHeight);
         p[i].sizeFactor =  ofPoint(1, 1);
         
     }
@@ -492,12 +490,6 @@ void ofMarilyn::keyPressed(int key){
     
     if (key == 'h'){
         bShowGui = !bShowGui;
-    }
-    
-    if(key == 'f'){
-        ofToggleFullscreen();
-        screenHeight = ofGetHeight();
-        screenWidth = ofGetWidth();
     }
     
     if (key == 'S') {

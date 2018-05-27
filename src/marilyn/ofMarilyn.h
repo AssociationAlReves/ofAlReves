@@ -92,10 +92,7 @@ public:
     int currentMode;
     
     vector <ofBande> p;
-    
-    int screenHeight;
-    int screenWidth;
-    
+        
     ofEasyCam cam;
     
     

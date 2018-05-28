@@ -112,6 +112,17 @@ void ofxVasaDalleQuad::createDalle(int x, int y, int depth){
     createDalle(x, y, depth, VASA_DALLE_SHAPE_UNDEFINED);
 }
 
+void ofxVasaDalleQuad::createDallesAlternating(){
+    clear();
+    int count = 0;
+    for(int i =0; i<=ofGetWidth();i+=256){
+        for(int j=0; j<=ofGetWidth();j+=256){
+            createDalle(i, j, 0, (count % 2) == 0 ? VASA_DALLE_SHAPE_CIRCLE : VASA_DALLE_SHAPE_SQUARE);
+            count++;
+        }
+    }
+}
+
 void ofxVasaDalleQuad::createDalleFromQuadKey(string key, int shapeType){
     
     if (bing.tryTakeQuad(key)){
@@ -190,20 +201,22 @@ void ofxVasaDalleQuad::clearActors(){
 void ofxVasaDalleQuad::keyPressed(int key){
 
 
-	switch(key)
-	{
-	case 'l': bLights = !bLights; break;
-	case 'c': clear(); break;
-	case 's' : ofSetSmoothLighting(false);
-	case 'S' : ofSetSmoothLighting(true);
-	case 'v' : dynamicPathEnabled = !dynamicPathEnabled; break;
-	case '1': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_SQUARE);} break;
-	case '2': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_CIRCLE); } break;
+    switch(key)
+    {
+        case 'l': bLights = !bLights; break;
+        case 'c': clear(); break;
+        case 's' : ofSetSmoothLighting(false);
+        case 'S' : ofSetSmoothLighting(true);
+        case 'v' : dynamicPathEnabled = !dynamicPathEnabled; break;
+        case '1': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_SQUARE);} break;
+        case '2': {clear(); createDalle(ofGetWidth()/2,ofGetHeight()/2,0,VASA_DALLE_SHAPE_CIRCLE); } break;
         case '3': autoDalle3 = !autoDalle3; break;//createDalle(ofRandomWidth(),ofRandomHeight(),0); break; // taken
-	case '4': createDalle(ofRandomWidth(),ofRandomHeight(),(int)ofRandom(5)); break; // taken
-	case 'm' : ofHideCursor(); break;
-	case 'M' : ofShowCursor(); break;
-		case ' ': infiniteLifeTime = !infiniteLifeTime; break;
-
-	}
+        case '4': createDalle(ofRandomWidth(),ofRandomHeight(),(int)ofRandom(5)); break; // taken
+        case '5': createDallesAlternating(); break; // taken
+            
+        case 'm' : ofHideCursor(); break;
+        case 'M' : ofShowCursor(); break;
+        case ' ': infiniteLifeTime = !infiniteLifeTime; break;
+            
+    }
 }

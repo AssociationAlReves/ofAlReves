@@ -64,7 +64,6 @@ private:
     int planeResolution;
 
     ofVboMesh mesh;
-    
 	// Terrain scrolling
     double deltaX;
     float sumDeltaX;    

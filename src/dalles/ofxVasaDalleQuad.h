@@ -31,6 +31,7 @@ public:
     void clearActors();
     void addActor(int x, int y, ofVec2f velocity);
     
+    void createDallesAlternating();
     void clear();
     
     void createDalle(int x, int y, int depth, int shapeType);

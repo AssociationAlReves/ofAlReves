@@ -302,7 +302,7 @@ void ofxVasaLianas::updateKinect() {
 void ofxVasaLianas::draw() {
 
 	ofClear(0);
-	ofApp *app = (ofApp *)ofxGetAppPtr();
+	//ofApp *app = (ofApp *)ofxGetAppPtr();
 //	if (easyCamMouse) {
 //		app->cam.enableMouseInput();
 //	} else {
@@ -356,7 +356,7 @@ void ofxVasaLianas::draw() {
 	
 	
 	
-	app->cam.end();
+//	app->cam.end();
 	
 	
 	//cam.end();
@@ -367,7 +367,7 @@ void ofxVasaLianas::draw() {
 	{
 		gui.draw();
 	}
-	app->cam.begin();
+	//app->cam.begin();
 }
 
 //--------------------------------------------------------------
@@ -482,15 +482,15 @@ void ofxVasaLianas::setupKinectWarp(bool shift, bool alt, int x, int y) {
 //--------------------------------------------------------------
 void ofxVasaLianas::keyPressed(int key) {
 	
-	ofApp *app = (ofApp *)ofxGetAppPtr();
+	//ofApp *app = (ofApp *)ofxGetAppPtr();
 	
 	switch (key) {
 		case 'r': initLianas(); break;
 		case 'h': bShowGui = !bShowGui;
 			if (bShowGui) {
-				app->cam.disableMouseInput();
+				//app->cam.disableMouseInput();
 			} else {
-				app->cam.enableMouseInput();
+                //app->cam.enableMouseInput();
 			}
 			break;
 		case 'l':  { if (bLianas)

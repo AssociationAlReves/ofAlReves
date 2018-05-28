@@ -12,7 +12,7 @@ void ofxKinectMemory::setup() {
 	ofBackground(0);
 	ofEnableArbTex();
     
-    ofApp *app = (ofApp *)ofxGetAppPtr();
+    //ofApp *app = (ofApp *)ofxGetAppPtr();
 
 	forceWarpOff = false;
 	bDrawJoinedActors = false;
@@ -86,8 +86,8 @@ void ofxKinectMemory::setup() {
 	appGroup.add(blackScreen.set("blackScreen", true));
 	appGroup.add(antiAlias.set("antiAlias", true));
 	appGroup.add(lineWidth.set("lineWidth", 1, 0, 10));
-    appGroup.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
-    appGroup.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+//    appGroup.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+//    appGroup.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
 
 	//appGroup.add(lineColor.set("lineColor", ofColor(0), ofColor(0), ofColor(255)));
 
@@ -125,10 +125,10 @@ void ofxKinectMemory::setup() {
     warper.toggleShow();
 	//}
 
-    app->cam.reset();
+    //app->cam.reset();
     gui.loadFromFile(GUI_SETTINGS);
-    app->cam.setPosition(camPosition);
-    app->cam.setOrientation(camOrientation);
+    //app->cam.setPosition(camPosition);
+    //app->cam.setOrientation(camOrientation);
 }
 
 //--------------------------------------------------------------
@@ -169,25 +169,7 @@ void ofxKinectMemory::update() {
 //--------------------------------------------------------------
 void ofxKinectMemory::draw() {
 
-	ofApp *app = (ofApp *)ofxGetAppPtr();
-
-	if (!forceWarpOff) {
-		//=======================================
-		// WARP		
-		app->cam.end();
-		//======================== get our quad warp matrix.
-		ofMatrix4x4 mat = warper.getMatrix();
-		//======================== use the matrix to transform our fbo.
-		app->cam.begin();
-		glPushMatrix();
-		glMultMatrixf(mat.getPtr());
-		// ====================================
-	}
-
-	ofPushMatrix();
-
-	ofScale(1, -1, 1);
-	ofTranslate(0, -ofGetScreenHeight());
+	
 	//cam.begin();
 	//ofClear(0);
 	ofSetColor(255);
@@ -309,34 +291,13 @@ void ofxKinectMemory::draw() {
 
 	drawMemoryTrails();
 
-	ofPopMatrix();
 
-	if (!forceWarpOff) {
-		//================
-		// WARP DRAW
-		glPopMatrix();
-		app->cam.end();
-		//======================== draw quad warp ui.
-		ofSetColor(ofColor::magenta);
-		warper.drawQuadOutline();
-		ofSetColor(ofColor::yellow);
-		warper.drawCorners();
-		ofSetColor(ofColor::magenta);
-		warper.drawHighlightedCorner();
-		ofSetColor(ofColor::red);
-		warper.drawSelectedCorner();
-		//======================== info.
-	}
-	else {
-		app->cam.end();
-	}
 
 	if (bShowHelp) {
 
 		gui.draw();
 	}
 
-	app->cam.begin();
 }
 
 //--------------------------------------------------------------
@@ -487,8 +448,8 @@ void ofxKinectMemory::keyPressed(int key) {
 	case'l':
         {
 		gui.loadFromFile(GUI_SETTINGS);
-            app->cam.setPosition(camPosition);
-            app->cam.setOrientation(camOrientation);
+//            app->cam.setPosition(camPosition);
+//            app->cam.setOrientation(camOrientation);
             //kinect.setCameraTiltAngle(angle);
         }
             break;
@@ -519,12 +480,6 @@ void ofxKinectMemory::keyPressed(int key) {
 		break;
 	case 'J':
 		bDrawJoinedActors = true;
-    case 'M':
-            app->cam.disableMouseInput();
-            break;
-    case 'm':
-            app->cam.enableMouseInput();
-            break;
 	case 'C':
 		kinect.setCameraTiltAngle(0); // zero the tilt on exit
 		kinect.close();
@@ -552,8 +507,8 @@ void ofxKinectMemory::keyPressed(int key) {
 			warper.load();
 		}
 		if (key == 'S') {
-            camOrientation = app->cam.getOrientationEuler();
-            camPosition = app -> cam.getPosition();
+//            camOrientation = app->cam.getOrientationEuler();
+//            camPosition = app -> cam.getPosition();
             gui.saveToFile(GUI_SETTINGS);
 
 			warper.save();

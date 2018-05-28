@@ -47,8 +47,6 @@ public:
 
     ofxOcean *oceanScene;
     
-	ofEasyCam cam;
-
 	string IntToString(int i);
     
     // OSC

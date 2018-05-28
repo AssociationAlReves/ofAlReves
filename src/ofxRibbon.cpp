@@ -12,8 +12,8 @@ void ofxRibbon::setup(){
 	maxZ = 0;
 
 
-	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.reset();
+//    ofApp *app = (ofApp *)ofxGetAppPtr();
+//    app->cam.reset();
 }
 
 //--------------------------------------------------------------
@@ -27,7 +27,7 @@ void ofxRibbon::update(){
 			maxZ = 0;
 		} 
 
-		ofApp *app = (ofApp *)ofxGetAppPtr();
+		//ofApp *app = (ofApp *)ofxGetAppPtr();
 		//app->cam.update();
 
 	}
@@ -51,7 +51,7 @@ void ofxRibbon::clear(){
 	tweenInFrom = ofGetElapsedTimef();
 	tweenInTo = tweenInFrom + 4;
 	ofVec3f dest  = ofVec3f(0,0,maxZ + 200);
-	ofApp *app = (ofApp *)ofxGetAppPtr();
+	//ofApp *app = (ofApp *)ofxGetAppPtr();
 
 	
 	/*maxZ = 0;app->cam.moveTo(dest, 5000);

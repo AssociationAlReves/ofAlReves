@@ -49,7 +49,7 @@ void ofApp::setupSceneManager() {
 
 	// turn on transform origin translation and scaling to screen size,
 	// disable quad warping, and enable aspect ratio and centering when scaling
-	transformer.setTransforms(true, true, false, true, true);
+	transformer.setTransforms(false, false, false, false, false);
 
 	// set the ofxApp transformer so it's automatically applied in draw()
 	setTransformer(&transformer);
@@ -103,8 +103,7 @@ void ofApp::setupSceneManager() {
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
-	setSceneManagerUpdate(true);
-	setSceneManagerDraw(false);
+	
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
 
 	// start with a specific scene
@@ -177,27 +176,6 @@ void ofApp::draw() {
 		ofFill();
 	}
 
-
-	ofClear(255);
-	ofEnableAntiAliasing();
-
-
-	ofEnableAntiAliasing();
-	cam.begin();
-
-	ofPushMatrix();
-
-
-	ofTranslate(-ofGetWidth() / 2, ofGetHeight() / 2);
-	ofScale(1, -1, 1);
-	sceneManager.draw();
-
-	ofPopMatrix();
-
-
-	cam.end();
-
-
 	// drop out of the auto transform space back to OF screen space
 	transformer.pop();
 
@@ -223,7 +201,8 @@ void ofApp::draw() {
 	//
 	// this is actually done automatically if the transformer is set but
 	// included here for completeness
-	ofDisableAlphaBlending();
+	
+    //ofDisableAlphaBlending();
 	transformer.push();
 
 	// the warp editor is drawn automatically after this function
@@ -237,32 +216,18 @@ void ofApp::keyPressed(int key) {
 
 	switch (key) {
 
-	case 'e': cam.disableMouseInput(); break;
-	case 'E': cam.enableMouseInput(); break;
+        case 'e' :
+            transformer.disableEasyCamMouseInput();
+            break;
+        case 'E' :
+            transformer.enableEasyCamMouseInput();
+            break;
+      
+            
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;
 	case 'D':
 		bDebug = !bDebug;
-		break;
-
-	case 'a':
-		transformer.setAspect(!transformer.getAspect());
-		break;
-
-	case 'c':
-		transformer.setCentering(!transformer.getCentering());
-		break;
-
-		//case 'm':
-		//	transformer.setMirrorX(!transformer.getMirrorX());
-		//	break;
-
-	case 'n':
-		transformer.setMirrorY(!transformer.getMirrorY());
-		break;
-
-	case 'q':
-		transformer.setWarp(!transformer.getWarp());
 		break;
 
 	case 'f':

@@ -22,8 +22,8 @@ void ofxTerrain::setup(int width, int height, int resolution, float velocity){
 
 	defaultColor = ofFloatColor(1, 1, 1, 0);//ofFloatColor(0,0,1,0); 
     ofApp *app = (ofApp *)ofxGetAppPtr();
-    app->cam.setOrientation(ofVec3f(43.1984, 0, 0));
-    app->cam.setPosition(-200, -200.867, 208.106);
+    app->transformer.cam.setOrientation(ofVec3f(43.1984, 0, 0));
+    app->transformer.cam.setPosition(-200, -200.867, 208.106);
 	planeWidth = width;
 	planeHeight = height;
 	planeResolution = resolution;
@@ -516,8 +516,8 @@ void ofxTerrain::keyPressed(int key) {
 	case 'l':{
 		//
 		ofApp *app = (ofApp *)ofxGetAppPtr();
-		app->cam.setOrientation(ofVec3f(43.1984, 0, 0));
-		app->cam.setPosition(-200, -200.867, 208.106);
+		app->transformer.cam.setOrientation(ofVec3f(43.1984, 0, 0));
+		app->transformer.cam.setPosition(-200, -200.867, 208.106);
 
 	} break;
 

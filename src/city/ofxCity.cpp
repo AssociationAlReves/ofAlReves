@@ -14,9 +14,9 @@ void ofxCity::setup() {
 	img.allocate(CITY_BLOCKS_COLS * 2 + 5, CITY_BLOCKS_ROWS, ofImageType::OF_IMAGE_COLOR);
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.reset();
-	//float farClip = app->cam.getFarClip();
-	app->cam.setFarClip(1000000);
+	app->transformer.cam.reset();
+	//float farClip = app->transformer.cam.getFarClip();
+	app->transformer.cam.setFarClip(1000000);
 
 	mode = enCityIdle;
 	curSpeed = 0;
@@ -40,8 +40,8 @@ void ofxCity::setup() {
 		gui.add(bTweenSpeed.set("Tween speed", true));
 		gui.add(fov.set("FOV", 60, 0, 360));
 		gui.add(debugFbo.set("Debug FBO", false));
-		gui.add(camOrientation.set("camOrientation", app->cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
-		gui.add(camPosition.set("camPosition", app->cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+		gui.add(camOrientation.set("camOrientation", app->transformer.cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+		gui.add(camPosition.set("camPosition", app->transformer.cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
 		roadParams.setName("Road");
 
 		roadParams.add(rotationAngle.set("rotationAngle", 0, -180, 180));
@@ -307,9 +307,9 @@ void ofxCity::update() {
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	if (bUpdateParamsFromCode) {
-		app->cam.setFov(fov);
-		app->cam.setOrientation(camOrientation);
-		app->cam.setPosition(camPosition);
+		app->transformer.cam.setFov(fov);
+		app->transformer.cam.setOrientation(camOrientation);
+		app->transformer.cam.setPosition(camPosition);
 
 		bUpdateParamsFromCode = false;
 	}
@@ -368,8 +368,8 @@ void ofxCity::update() {
 
 void ofxCity::captureCam() {
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	camOrientation = app->cam.getOrientationEuler();
-	camPosition = app->cam.getPosition();
+	camOrientation = app->transformer.cam.getOrientationEuler();
+	camPosition = app->transformer.cam.getPosition();
 	//gui.saveToFile(CITY_SETTINGS_FILE);
 }
 
@@ -387,7 +387,7 @@ void ofxCity::setupExplosion() {
 	float now = ofGetElapsedTimef();
 	
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.setPosition(app->cam.getPosition() + ofVec3f(0, 800, 0));
+	app->transformer.cam.setPosition(app->transformer.cam.getPosition() + ofVec3f(0, 800, 0));
 	decelerate(2000, true);
 	roadPosEx.clear();
 	buildingsPosEx.clear();
@@ -710,7 +710,7 @@ void ofxCity::draw() {
 
 
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.end();
+	app->transformer.cam.end();
 	if (bShowGui) {
 		ofDisableDepthTest();
 
@@ -753,7 +753,7 @@ void ofxCity::draw() {
 		img.draw(100, 200, CITY_BLOCKS_COLS * 10, -CITY_BLOCKS_ROWS * 10);
 	}
 
-	app->cam.begin();
+	app->transformer.cam.begin();
 
 
 }
@@ -782,10 +782,10 @@ void ofxCity::keyPressed(int key) {
 	case 'h':
 		bShowGui = !bShowGui;
 		if (bShowGui) {
-			app->cam.disableMouseInput();
+			app->transformer.cam.disableMouseInput();
 		}
 		else {
-			app->cam.enableMouseInput();
+			app->transformer.cam.enableMouseInput();
 		}
 		break;
 	case 'z':
@@ -877,7 +877,7 @@ void ofxCity::setMode(int mode) {
 						  break;
         case enCityLine: {
             ofApp *app = (ofApp *)ofxGetAppPtr();
-            app->cam.reset();
+            app->transformer.cam.reset();
         } break;
 	}
 	cout << ofToString(mode) << endl;

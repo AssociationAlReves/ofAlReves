@@ -23,7 +23,7 @@ void ofxCityPingPong::setup() {
     }
     
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->cam.reset();
+	app->transformer.cam.reset();
 
 	curRectVisIndex = 0;
 
@@ -132,7 +132,7 @@ void ofxCityPingPong::draw() {
 
 		ofDisableDepthTest();
 		ofApp *app = (ofApp *)ofxGetAppPtr();
-		app->cam.end();
+		app->transformer.cam.end();
 
 		stringstream ss;
 		ss << "z/s : block sizes (curSize: " << ppSize << ")" << endl;
@@ -143,7 +143,7 @@ void ofxCityPingPong::draw() {
 
             gui.draw();
 
-		app->cam.begin();
+		app->transformer.cam.begin();
 
 		ofEnableDepthTest();
 	}

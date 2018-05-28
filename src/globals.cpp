@@ -8,5 +8,5 @@
 
 int Globals::oscMouseX = 0;
 int Globals::oscMouseY = 0;
-int Globals::screenWidth = 1024;
-int Globals::screenHeight = 768;
+int Globals::screenWidth = 1280;
+int Globals::screenHeight = 800;

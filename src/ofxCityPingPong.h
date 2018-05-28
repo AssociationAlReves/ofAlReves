@@ -12,7 +12,7 @@
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
 
-#define PING_PONG_NUM_STEPS 3
+#define PING_PONG_NUM_STEPS 4
 
 const string PING_PONG_SETTINGS_FILE = "pingpong_settings.xml";
 

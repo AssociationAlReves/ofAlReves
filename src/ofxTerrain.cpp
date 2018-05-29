@@ -377,6 +377,10 @@ void ofxTerrain::updateHills(){
 //--------------------------------------------------------------
 void ofxTerrain::updateCursor(ofVec2f position, bool direction){
 
+	if (bSmallCursor){
+		return;
+	}
+	
 	float nx = ofMap(position.x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
 	ofVec2f pos = ofVec2f(nx, position.y / planeResolution);
 

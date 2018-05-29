@@ -76,6 +76,7 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofxCityPingPong(IntToString(i++)));
     sceneManager.add(new ofxKinecticon(IntToString(i++)));
     sceneManager.add(new ofxVideoMirror(IntToString(i++)));
+    sceneManager.add(new ofxRibbon(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
 	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
@@ -241,6 +242,12 @@ void ofApp::keyPressed(int key) {
 	case '=':
 		sceneManager.nextScene();
 		break;
+    case 'w':
+        transformer.setWarp(false);
+        break;
+    case 'W':
+        transformer.setWarp(true);
+        break;
 
 	case OF_KEY_F1: sceneManager.gotoScene(0); break;
 	case OF_KEY_F2: sceneManager.gotoScene(1);  break;

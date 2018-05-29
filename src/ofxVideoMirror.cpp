@@ -8,6 +8,7 @@ void ofxVideoMirror::setup() {
 	camHeight = 720;
 	frameReady = false;
 	curMode = enMirror3Sides;
+    numSides = 3;
 	setMode(curMode);
 
 	if (running)
@@ -15,12 +16,14 @@ void ofxVideoMirror::setup() {
 		running = false;
 		vidGrabber.setVerbose(true);
 		//Select desired grabbing frame rate
-		//vidGrabber.setDesiredFrameRate(30);
-		vidGrabber.setDeviceID(1);
+		vidGrabber.setDesiredFrameRate(30);
+		vidGrabber.setDeviceID(deviceID);
 		vidGrabber.initGrabber(camWidth, camHeight);
 
 		running = true;
-	}
+    } else {
+        deviceID = 0;
+    }
 
 	if (!guiInitialized) {
 		gui.setup();
@@ -88,6 +91,29 @@ void ofxVideoMirror::update() {
 
 				}
 				break;
+                case enMirrorNSides:
+                    
+                    //Scan pixels
+                    for (int y = 0; y < camHeight; y++) {
+                        for (int x = camWidth * curMirrorFactor; x < camWidth * (numSides-1) * curMirrorFactor; x++) {
+                            //Get grabber color
+                            ofColor colorGrab = pixelsGrab.getColor(x, y);
+                            
+                            pixels.setColor(x, y, colorGrab);
+                        }
+                        for (int x = 0; x < camWidth * curMirrorFactor; x++) {
+                            //Get grabber color
+                            int xIn = ofClamp(camWidth * (numSides-1) * curMirrorFactor - x, 0, camWidth - 1);
+                            int xOut = ofClamp(x + camWidth * (numSides-1) * curMirrorFactor, 0, camWidth - 1);
+                            
+                            ofColor colorGrab = pixelsGrab.getColor(xIn, y);
+                            
+                            pixels.setColor(x, y, colorGrab);
+                            pixels.setColor(xOut, y, colorGrab);
+                        }
+                        
+                    }
+                    break;
 			case enMirrorMiddle:
 				//Scan pixels
 				for (int y = 0; y < camHeight; y++) {
@@ -172,17 +198,25 @@ void ofxVideoMirror::draw() {
 }
 
 void ofxVideoMirror::setMode(int mode) {
-	switch (mode) {
-	case enMirrorNormal:
-		curMirrorFactor = 0.5f;
-		break;
-	case enMirror3Sides:
-		curMirrorFactor = 1. / 3.0f;
-		break;
-	case enMirrorMiddle:
-		curMirrorFactor = 0.25f;
-		break;
-	}
+    
+    cout << "mode " << mode << endl;
+    
+    switch (mode) {
+        case enMirrorNormal:
+            curMirrorFactor = 0.5f;
+            break;
+        case enMirror3Sides: {
+            numSides = 3;
+            curMirrorFactor = 1. / numSides;
+        }
+            break;
+        case enMirrorNSides:
+            curMirrorFactor = 1. / numSides;
+            break;
+        case enMirrorMiddle:
+            curMirrorFactor = 0.25f;
+            break;
+    }
 }
 
 //--------------------------------------------------------------
@@ -199,9 +233,17 @@ void ofxVideoMirror::keyPressed(int key) {
 		vidGrabber.close();
 		break;
 	case 'm':
-		curMode = (curMode + 1) % 3;
+		curMode = (curMode + 1) % 4;
 		setMode(curMode);		
 		break;
+    case 'M':{
+        numSides = (numSides + 1) % 10;
+        setMode(curMode);
+        cout << "numSides " << numSides << endl;
+    } break;
+    case 'n': // cycle through cams 1-2
+        deviceID = (deviceID +1)%2;
+        break;
 	case 'q':
 		curMirrorFactor = ofClamp(curMirrorFactor - 0.01, 0, 1);
 		break;

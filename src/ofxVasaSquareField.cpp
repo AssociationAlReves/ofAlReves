@@ -321,7 +321,7 @@ void ofxVasaSquareField::keyPressed(int key){
 	case OF_KEY_RETURN: squareAutoComplete = !squareAutoComplete; break;
 	case 'n': nextMode();	break;
 	case 'w' : smoothReset(); break;
-	case 'W' : hardReset(); break;
+	case 'x' : hardReset(); break;
 	case 'r' : setup(); break;
 	case 'h':  bShowGui = !bShowGui; break;
 	}

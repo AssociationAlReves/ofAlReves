@@ -224,6 +224,10 @@ void ofxVasaLianas::update() {
 			if (bUseKinectRepulsor) {
 				lianas[i]->keyPressed(' ');
 			}
+            if (bUseMouseRepulsor && ofGetKeyPressed(' ')) {
+                lianas[i]->keyPressed(' ');
+                lianas[i]->addRepulsor(ofGetMouseX(),ofGetMouseY() );
+            }
 			
 			lianas[i]->clearRepulsors();
 		}

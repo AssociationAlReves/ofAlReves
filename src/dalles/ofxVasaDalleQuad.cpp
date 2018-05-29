@@ -117,7 +117,7 @@ void ofxVasaDalleQuad::createDallesAlternating(){
     int count = 0;
     for(int i =0; i<=ofGetWidth();i+=256){
         for(int j=0; j<=ofGetWidth();j+=256){
-            createDalle(i, j, 0, (count % 2) == 0 ? VASA_DALLE_SHAPE_CIRCLE : VASA_DALLE_SHAPE_SQUARE);
+            createDalle(i, j, 0, (count%2) == 0 ? VASA_DALLE_SHAPE_CIRCLE : VASA_DALLE_SHAPE_SQUARE);
             count++;
         }
     }

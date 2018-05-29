@@ -98,7 +98,7 @@ void ofxKinecticon::update(){
 		liveImage.setFromPixels(kinect.getDepthPixels());
 		colorImg.setFromPixels(kinect.getPixels());
 		
-        bool bThreshWithOpenCV = false;
+        bool bThreshWithOpenCV = true;
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
         

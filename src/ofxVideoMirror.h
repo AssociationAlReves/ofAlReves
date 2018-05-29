@@ -17,6 +17,7 @@ enum MIRROR_MODE {
 	enMirrorNormal = 0, // 50% screen left is projected to => screen / !screen (typical PhotoBooth effect)
 	enMirror3Sides = 1, // 30% screen center is projected to => !screen / screen / !screen
 	enMirrorMiddle = 2, // 50% screen center is projected to => screen / !screen
+    enMirrorNSides = 3 // not working now
 };
 
 class ofxVideoMirror : public ofxFadeScene
@@ -48,12 +49,14 @@ private:
 	//Pixels array for constructing output image
 	ofPixels imagePixels;
 	ofImage image; //Output image
+    int deviceID;
 
 	int camWidth;
 	int camHeight;
 
 	int curMode;
 	float curMirrorFactor;
+    int numSides;
 
 
 	bool boxed;

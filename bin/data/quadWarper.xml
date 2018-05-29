@@ -1,18 +1,18 @@
-<quad>
-	<upperLeft>
-		<x>0.364844</x>
-		<y>0.34625</y>
-	</upperLeft>
-	<upperRight>
-		<x>1</x>
-		<y>0</y>
-	</upperRight>
-	<lowerRight>
-		<x>1</x>
-		<y>1</y>
-	</lowerRight>
-	<lowerLeft>
-		<x>0</x>
-		<y>1</y>
-	</lowerLeft>
-</quad>
+<quad>
+	<upperLeft>
+		<x>0</x>
+		<y>0.23</y>
+	</upperLeft>
+	<upperRight>
+		<x>0.999219</x>
+		<y>0.16125</y>
+	</upperRight>
+	<lowerRight>
+		<x>1</x>
+		<y>1</y>
+	</lowerRight>
+	<lowerLeft>
+		<x>0</x>
+		<y>1</y>
+	</lowerLeft>
+</quad>

@@ -1,3 +1,5 @@
+#include "ofMain.h"
+
 #pragma once
 
 // this must match the display resolution of your projector

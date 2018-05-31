@@ -184,6 +184,7 @@ void ofApp::setHostNameToGlobals(){
         output.write( buf, bytesRead );
     }
     string hostname = ofSplitString(output.str(), ".")[0];
+    hostname = ofSplitString(hostname, "\n")[0];
     
     Globals::hostName = hostname;
     

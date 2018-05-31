@@ -13,11 +13,9 @@ void ofParticles::setup(){
 	
     
     if (!bGuiLoaded) {
-<<<<<<< HEAD
-        gui.setup("cityPanel", POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
-=======
+
         gui.setup("cityPanel", Globals::hostName + POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
->>>>>>> e95a2ae95ef10172c4e6c8f4521bb19b2e7de2d1
+        
 		gui.add(gridSizeParam.set("gridSize", 10, 1, 100));
 		gui.add(dragForceParam.set("dragForceParam", 0.99, 0.8, 0.99));
         gui.add(forceParam.set("forceParam", 0.6, 0.5, 1));

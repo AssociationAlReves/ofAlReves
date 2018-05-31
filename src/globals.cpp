@@ -24,3 +24,4 @@ void Globals::oscGotMessageFunc(){
 		cout << "OSC GOT MESSAGE" << endl;
 	}
 }
+string Globals::hostName = "";

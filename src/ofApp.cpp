@@ -23,25 +23,28 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
-    
+
     Globals::screenWidth = ofGetWidth();
     Globals::screenHeight = ofGetHeight();
-    
+
+#ifdef ALREVES_USE_OSC
     if (IS_HOST==0)
     {
         // open an outgoing connection to HOST:PORT
-        cout << "sending osc messages on " << HOST << ":" << PORT << "\n";
+        cout << "sending osc messages to " << HOST << ":" << PORT << "\n";
         sender.setup(HOST, PORT);
     } else
     {
         cout << "listening for osc messages on port " << PORT << "\n";
         receiver.setup(PORT);
     }
+#endif
 }
 
 //--------------------------------------------------------------
 void ofApp::setupSceneManager() {
 
+    setHostNameToGlobals();
 	setDrawFramerate(false);
 
 	// setup the render size (working area)
@@ -79,15 +82,15 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofxRibbon(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
-	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
-	//	sceneManager.add(new ofxCity(IntToString(i++)));																		
-	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																
-	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													
-	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																
-	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	
-	//	sceneManager.add(new ofxTerrain(IntToString(i++)));																		
-	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														
-	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														
+	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+	//	sceneManager.add(new ofxCity(IntToString(i++)));
+	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
+	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));
+	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));
+	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));
+	//	sceneManager.add(new ofxTerrain(IntToString(i++)));
+	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 
 #else
 
@@ -96,7 +99,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxTerrain(IntToString(i++)));
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaLianas(IntToString(i++)));    
+	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
     sceneManager.add(new ofxTunnel(IntToString(i++)));
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
     sceneManager.add(new ofxKinecticon(IntToString(i++)));
@@ -104,7 +107,7 @@ void ofApp::setupSceneManager() {
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
-	
+
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
 
 	// start with a specific scene
@@ -149,16 +152,17 @@ void ofApp::update() {
 	if (isDebug()) {
 		panel.update();
 	}
-    
+
+    #ifdef ALREVES_USE_OSC
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
-		
+
 		Globals::oscGotMessageFunc();
-		
+
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(m);
-        
+
         // check for mouse moved message
         if(m.getAddress() == "/mouse/position"){
             // both the arguments are int32's
@@ -172,6 +176,26 @@ void ofApp::update() {
 			cout << "received key " << Globals::oscKeyPressed  << endl;
 		}
     }
+    #endif
+}
+
+//--------------------------------------------------------------
+void ofApp::setHostNameToGlobals(){
+
+    FILE* stream = popen( "hostname", "r" );
+    ostringstream output;
+
+    while( !feof( stream ) && !ferror( stream ))
+    {
+        char buf[128];
+        int bytesRead = fread( buf, 1, 128, stream );
+        output.write( buf, bytesRead );
+    }
+    string hostname = ofSplitString(output.str(), ".")[0];
+
+    Globals::hostName = hostname;
+
+    cout << "HostName: <" << Globals::hostName << ">" << endl;
 }
 
 //--------------------------------------------------------------
@@ -210,7 +234,7 @@ void ofApp::draw() {
 	//
 	// this is actually done automatically if the transformer is set but
 	// included here for completeness
-	
+
     //ofDisableAlphaBlending();
 	transformer.push();
 
@@ -222,6 +246,15 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST == 0) {
+        ofxOscMessage m;
+        m.setAddress("/key");
+        m.addIntArg(key);
+        sender.sendMessage(m, false);
+        cout<<"sending key"<<endl;
+    }
+#endif
 
 	switch (key) {
 
@@ -231,8 +264,8 @@ void ofApp::keyPressed(int key) {
         case 'E' :
             transformer.enableEasyCamMouseInput();
             break;
-      
-            
+
+
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;
 	case 'D':
@@ -281,18 +314,30 @@ void ofApp::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST == 0) {
+        ofxOscMessage m;
+        m.setAddress("/key");
+        m.addIntArg(0);
+        sender.sendMessage(m, false);
+        cout<<"sending key"<<endl;
+    }
+#endif
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
-  
+
+#ifdef ALREVES_USE_OSC
     if (IS_HOST == 0) {
-    ofxOscMessage m;
-    m.setAddress("/mouse/position");
-    m.addIntArg(x);
-    m.addIntArg(y);
-    sender.sendMessage(m, false);
+        ofxOscMessage m;
+        m.setAddress("/mouse/position");
+        m.addIntArg(x);
+        m.addIntArg(y);
+        sender.sendMessage(m, false);
+        cout<<"sending mouse"<<endl;
     }
+#endif
 }
 
 //--------------------------------------------------------------

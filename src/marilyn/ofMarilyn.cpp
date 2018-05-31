@@ -30,7 +30,7 @@ void ofMarilyn::setup(){
     myGlitch.setup(&glitchFbo);
     
     if (!bGuiLoaded) {
-        gui.setup("bandes", BANDE_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+        gui.setup("bandes", Globals::hostName + BANDE_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
         
         gui.add(color0Param.set("color0", ofColor::orange));
         gui.add(color1Param.set("color1", ofColor::blue));
@@ -39,7 +39,7 @@ void ofMarilyn::setup(){
         gui.add(color4Param.set("color4", ofColor::green));
         gui.add(blankStartParam.set("Blank start",true));
         bGuiLoaded = true;
-        gui.loadFromFile(BANDE_SETTINGS_FILE);
+        gui.loadFromFile(Globals::hostName + BANDE_SETTINGS_FILE);
     }
     
     setupTimeTriggers();
@@ -493,10 +493,10 @@ void ofMarilyn::keyPressed(int key){
     }
     
     if (key == 'S') {
-        gui.saveToFile(BANDE_SETTINGS_FILE);
+        gui.saveToFile(Globals::hostName + BANDE_SETTINGS_FILE);
     }
     if (key == 'L') {
-        gui.loadFromFile(BANDE_SETTINGS_FILE);
+        gui.loadFromFile(Globals::hostName + BANDE_SETTINGS_FILE);
     }
     
     if (key == '1') myGlitch.setFx(OFXPOSTGLITCH_CONVERGENCE    , true);

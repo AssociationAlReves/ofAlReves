@@ -69,7 +69,7 @@ void ofxKinecticon::setup(){
     
     if (!bGuiInitialized) {
         bShowHelp = false;
-        gui.setup("Vasarely", VASA_KINECT_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
+        gui.setup("Vasarely", Globals::hostName + VASA_KINECT_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
         
         gui.add(nearThreshold.set("nearThresh", nearThreshold, 0, 255));
         gui.add(farThreshold.set("farThresh", farThreshold, 0, 255));

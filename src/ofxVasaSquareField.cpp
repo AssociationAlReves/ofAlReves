@@ -236,6 +236,7 @@ void ofxVasaSquareField::draw(){
 
 				// the closer, the greater is the force
 				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
+				
 				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
 				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
 				ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);

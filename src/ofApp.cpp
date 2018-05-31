@@ -27,7 +27,7 @@ void ofApp::setup() {
     Globals::screenWidth = ofGetWidth();
     Globals::screenHeight = ofGetHeight();
     
-    if (IS_HOST==1)
+    if (IS_HOST==0)
     {
         // open an outgoing connection to HOST:PORT
         cout << "sending osc messages on " << HOST << ":" << PORT << "\n";
@@ -152,6 +152,9 @@ void ofApp::update() {
     
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
+		
+		Globals::oscGotMessageFunc();
+		
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(m);
@@ -161,8 +164,13 @@ void ofApp::update() {
             // both the arguments are int32's
             Globals::oscMouseX = m.getArgAsInt32(0);
             Globals::oscMouseY = m.getArgAsInt32(1);
-            cout << "received mouse " << Globals::oscMouseX << endl;
-        }
+            //cout << "received mouse " << Globals::oscMouseX << endl;
+		}        // check for mouse moved message
+		if(m.getAddress() == "/key"){
+			// both the arguments are int32's
+			Globals::oscKeyPressed = m.getArgAsInt32(0);
+			cout << "received key " << Globals::oscKeyPressed  << endl;
+		}
     }
 }
 
@@ -278,7 +286,7 @@ void ofApp::keyReleased(int key) {
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
   
-    if (IS_HOST == 1) {
+    if (IS_HOST == 0) {
     ofxOscMessage m;
     m.setAddress("/mouse/position");
     m.addIntArg(x);

@@ -72,6 +72,10 @@ void demoParticle::update(){
     else if( mode == PARTICLE_MODE_REPEL ){
         
         ofPoint attractPt(ofGetMouseX(), ofGetMouseY());
+#ifdef ALREVES_USE_OSC
+		attractPt.x = Globals::oscMouseX;
+		attractPt.y = Globals::screenHeight - Globals::oscMouseY;
+#endif
         frc = attractPt-pos;
         frc2Init = pos - initialPos;
         

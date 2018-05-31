@@ -18,12 +18,14 @@
 
 #endif
 
+
 // -----------------------
 // OSC related
+#define ALREVES_USE_OSC
 // For sender
-#define HOST "mbp13.local"
+#define HOST "169.254.242.115"
 // For sender AND receiver
-#define PORT 12345
+#define PORT 9000
 // Set to 1 if hosting, 0 if receiving
 #define IS_HOST 1
 
@@ -45,7 +47,13 @@ class Globals {
 public:
     static int oscMouseX;
     static int oscMouseY;
+	
+	static int oscKeyPressed;
+	
+	static bool oscGotMessage;
     
     static int screenWidth;
     static int screenHeight;
+	
+	static void oscGotMessageFunc();
 };

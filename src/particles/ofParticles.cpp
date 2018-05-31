@@ -10,12 +10,12 @@ void ofParticles::setup(){
     currentMode = PARTICLE_MODE_REPEL;
     
     currentModeStr = "1 - PARTICLE_MODE_ATTRACT: attracts to mouse";
-    
-    resetParticles();
+	
     
     if (!bGuiLoaded) {
         gui.setup("cityPanel", POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
-        gui.add(dragForceParam.set("dragForceParam", 0.99, 0.8, 0.99));
+		gui.add(gridSizeParam.set("gridSize", 10, 1, 100));
+		gui.add(dragForceParam.set("dragForceParam", 0.99, 0.8, 0.99));
         gui.add(forceParam.set("forceParam", 0.6, 0.5, 1));
         gui.add(returnForceParam.set("returnForceParam", 0.2, 0, 1));
         gui.add(distParam.set("distParam (< >)", 150, 50, 800));
@@ -29,19 +29,22 @@ void ofParticles::setup(){
         colorGroup.add(altDestColorParam.set("altDestColorParam",ofColor(0,255,255)));
         colorGroup.add(colorVelocityParam.set("color velocity", 5,0,50));
         colorGroup.add(useAltColor.set("use alt color (b)", false));
+		colorGroup.add(useAltBgColor.set("use alt BG color (B)", false));
         gui.add(colorGroup);
         bGuiLoaded = true;
     
     }
     bShowGui = false;
+	
+	
+	resetParticles();
 }
 
 //--------------------------------------------------------------
 void ofParticles::resetParticles(){
-    
-    gridSize = 10;
-    numX = Globals::screenWidth / gridSize;
-    numY = Globals::screenHeight / gridSize;
+	
+    numX = Globals::screenWidth / gridSizeParam;
+    numY = Globals::screenHeight / gridSizeParam;
     int num  = numX * numY;
     
     
@@ -66,8 +69,8 @@ void ofParticles::resetParticles(){
                 p[i].color = useAltColor ? altColorParam : baseColorParam;
                 
                 
-                p[i].pos.x = x * gridSize;
-                p[i].pos.y = y * gridSize + (x % 2) * (gridSize/2.0);
+                p[i].pos.x = x * gridSizeParam;
+                p[i].pos.y = y * gridSizeParam + (x % 2) * (gridSizeParam/2.0);
                 p[i].initialPos = p[i].pos;
             }
         }
@@ -84,6 +87,18 @@ void ofParticles::resetParticles(){
 
 //--------------------------------------------------------------
 void ofParticles::update(){
+	
+	
+	
+#ifdef ALREVES_USE_OSC
+	if (Globals::oscKeyPressed != 0){
+		cout << Globals::oscKeyPressed << endl;
+		keyPressed(Globals::oscKeyPressed);
+	}
+#endif
+	
+	
+	
     auto now = ofGetElapsedTimef();
     if (now > endTime) {
         isExplosing = false;
@@ -115,12 +130,19 @@ void ofParticles::update(){
         attractPointsWithMovement[i].x = attractPoints[i].x + ofSignedNoise(i * 10, ofGetElapsedTimef() * 0.7) * 12.0;
         attractPointsWithMovement[i].y = attractPoints[i].y + ofSignedNoise(i * -10, ofGetElapsedTimef() * 0.7) * 12.0;
     }
+	
 }
 
 //--------------------------------------------------------------
 void ofParticles::draw(){
    // ofBackgroundGradient(ofColor(60,60,60), ofColor(10,10,10));
-    ofClear(255);
+	
+	if (useAltBgColor){
+		ofClear(0);
+	} else {
+		ofClear(255);
+	}
+	
     
     //    cam.begin();
     //    ofPushMatrix();
@@ -187,6 +209,9 @@ void ofParticles::keyPressed(int key){
     if(key == 'b'){
         useAltColor = !useAltColor;
     }
+	if(key == 'B'){
+		useAltBgColor = !useAltBgColor;
+	}
     if(key == '>'){
         distParam += 5;
     }

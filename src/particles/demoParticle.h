@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "globals.h"
 
 enum particleMode{
     PARTICLE_MODE_ATTRACT = 0,

@@ -23,10 +23,10 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0);
 
 	setupSceneManager();
-    
+
     Globals::screenWidth = ofGetWidth();
     Globals::screenHeight = ofGetHeight();
-    
+
 #ifdef ALREVES_USE_OSC
     if (IS_HOST==0)
     {
@@ -82,15 +82,15 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofxRibbon(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
-	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));													
-	//	sceneManager.add(new ofxCity(IntToString(i++)));																		
-	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));																
-	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));													
-	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));																
-	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));																	
-	//	sceneManager.add(new ofxTerrain(IntToString(i++)));																		
-	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));														
-	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));														
+	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+	//	sceneManager.add(new ofxCity(IntToString(i++)));
+	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
+	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));
+	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));
+	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));
+	//	sceneManager.add(new ofxTerrain(IntToString(i++)));
+	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
 
 #else
 
@@ -99,7 +99,7 @@ void ofApp::setupSceneManager() {
 	sceneManager.add(new ofxTerrain(IntToString(i++)));
 	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
 	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaLianas(IntToString(i++)));    
+	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
     sceneManager.add(new ofxTunnel(IntToString(i++)));
 	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
     sceneManager.add(new ofxKinecticon(IntToString(i++)));
@@ -107,7 +107,7 @@ void ofApp::setupSceneManager() {
 #endif
 	//sceneManager.add(new ofxTerrain());
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
-	
+
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
 
 	// start with a specific scene
@@ -152,31 +152,39 @@ void ofApp::update() {
 	if (isDebug()) {
 		panel.update();
 	}
-    
+
     #ifdef ALREVES_USE_OSC
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
+
+		Globals::oscGotMessageFunc();
+
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(m);
-        
+
         // check for mouse moved message
         if(m.getAddress() == "/mouse/position"){
             // both the arguments are int32's
             Globals::oscMouseX = m.getArgAsInt32(0);
             Globals::oscMouseY = m.getArgAsInt32(1);
-            cout << "received mouse " << Globals::oscMouseX << endl;
-        }
+            //cout << "received mouse " << Globals::oscMouseX << endl;
+		}        // check for mouse moved message
+		if(m.getAddress() == "/key"){
+			// both the arguments are int32's
+			Globals::oscKeyPressed = m.getArgAsInt32(0);
+			cout << "received key " << Globals::oscKeyPressed  << endl;
+		}
     }
     #endif
 }
 
 //--------------------------------------------------------------
 void ofApp::setHostNameToGlobals(){
-    
+
     FILE* stream = popen( "hostname", "r" );
     ostringstream output;
-    
+
     while( !feof( stream ) && !ferror( stream ))
     {
         char buf[128];
@@ -187,7 +195,7 @@ void ofApp::setHostNameToGlobals(){
     hostname = ofSplitString(hostname, "\n")[0];
     
     Globals::hostName = hostname;
-    
+
     cout << "HostName: <" << Globals::hostName << ">" << endl;
 }
 
@@ -227,7 +235,7 @@ void ofApp::draw() {
 	//
 	// this is actually done automatically if the transformer is set but
 	// included here for completeness
-	
+
     //ofDisableAlphaBlending();
 	transformer.push();
 
@@ -257,8 +265,8 @@ void ofApp::keyPressed(int key) {
         case 'E' :
             transformer.enableEasyCamMouseInput();
             break;
-      
-            
+
+
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;
 	case 'D':
@@ -320,7 +328,7 @@ void ofApp::keyReleased(int key) {
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
-  
+
 #ifdef ALREVES_USE_OSC
     if (IS_HOST == 0) {
         ofxOscMessage m;

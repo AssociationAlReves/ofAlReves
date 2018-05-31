@@ -13,7 +13,11 @@ void ofParticles::setup(){
 	
     
     if (!bGuiLoaded) {
+<<<<<<< HEAD
+        gui.setup("cityPanel", POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
+=======
         gui.setup("cityPanel", Globals::hostName + POP_ART_PARTICLES_FILE); // most of the time you don't need a name but don't forget to call setup
+>>>>>>> e95a2ae95ef10172c4e6c8f4521bb19b2e7de2d1
 		gui.add(gridSizeParam.set("gridSize", 10, 1, 100));
 		gui.add(dragForceParam.set("dragForceParam", 0.99, 0.8, 0.99));
         gui.add(forceParam.set("forceParam", 0.6, 0.5, 1));
@@ -87,6 +91,18 @@ void ofParticles::resetParticles(){
 
 //--------------------------------------------------------------
 void ofParticles::update(){
+	
+	
+	
+#ifdef ALREVES_USE_OSC
+	if (Globals::oscKeyPressed != 0){
+		cout << Globals::oscKeyPressed << endl;
+		keyPressed(Globals::oscKeyPressed);
+	}
+#endif
+	
+	
+	
     auto now = ofGetElapsedTimef();
     if (now > endTime) {
         isExplosing = false;
@@ -118,6 +134,7 @@ void ofParticles::update(){
         attractPointsWithMovement[i].x = attractPoints[i].x + ofSignedNoise(i * 10, ofGetElapsedTimef() * 0.7) * 12.0;
         attractPointsWithMovement[i].y = attractPoints[i].y + ofSignedNoise(i * -10, ofGetElapsedTimef() * 0.7) * 12.0;
     }
+	
 }
 
 //--------------------------------------------------------------

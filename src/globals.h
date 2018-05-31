@@ -6,10 +6,12 @@
 
 #if __APPLE__
 
+#define PROJECTOR_RESOLUTION_X 1280 //1024 //1280
+#define PROJECTOR_RESOLUTION_Y 800 //768 //800
 #define PROJECTOR_RESOLUTION_X 1024 //1024 //1280
 #define PROJECTOR_RESOLUTION_Y 768 //768 //800
 #define USE_KINECT
-    
+
 #else
 
 //#define PROJECTOR_RESOLUTION_X 1024//1280 //512 //1024 //1280
@@ -20,11 +22,12 @@
 
 #endif
 
+
 // -----------------------
 // OSC related
 #define ALREVES_USE_OSC
 // For sender
-#define HOST "169.254.173.188"
+#define HOST "169.254.242.115"
 // For sender AND receiver
 #define PORT 9000
 //
@@ -48,9 +51,15 @@ class Globals {
 public:
     static int oscMouseX;
     static int oscMouseY;
-    
+
+	static int oscKeyPressed;
+
+	static bool oscGotMessage;
+
     static int screenWidth;
     static int screenHeight;
-    
+
+	static void oscGotMessageFunc();
+
     static std::string hostName;
 };

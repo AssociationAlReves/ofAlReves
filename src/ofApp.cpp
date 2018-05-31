@@ -27,21 +27,24 @@ void ofApp::setup() {
     Globals::screenWidth = ofGetWidth();
     Globals::screenHeight = ofGetHeight();
     
-    if (IS_HOST==1)
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST==0)
     {
         // open an outgoing connection to HOST:PORT
-        cout << "sending osc messages on " << HOST << ":" << PORT << "\n";
+        cout << "sending osc messages to " << HOST << ":" << PORT << "\n";
         sender.setup(HOST, PORT);
     } else
     {
         cout << "listening for osc messages on port " << PORT << "\n";
         receiver.setup(PORT);
     }
+#endif
 }
 
 //--------------------------------------------------------------
 void ofApp::setupSceneManager() {
 
+    setHostNameToGlobals();
 	setDrawFramerate(false);
 
 	// setup the render size (working area)
@@ -150,6 +153,7 @@ void ofApp::update() {
 		panel.update();
 	}
     
+    #ifdef ALREVES_USE_OSC
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
@@ -164,6 +168,26 @@ void ofApp::update() {
             cout << "received mouse " << Globals::oscMouseX << endl;
         }
     }
+    #endif
+}
+
+//--------------------------------------------------------------
+void ofApp::setHostNameToGlobals(){
+    
+    FILE* stream = popen( "hostname", "r" );
+    ostringstream output;
+    
+    while( !feof( stream ) && !ferror( stream ))
+    {
+        char buf[128];
+        int bytesRead = fread( buf, 1, 128, stream );
+        output.write( buf, bytesRead );
+    }
+    string hostname = ofSplitString(output.str(), ".")[0];
+    
+    Globals::hostName = hostname;
+    
+    cout << "HostName: <" << Globals::hostName << ">" << endl;
 }
 
 //--------------------------------------------------------------
@@ -214,6 +238,15 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST == 0) {
+        ofxOscMessage m;
+        m.setAddress("/key");
+        m.addIntArg(key);
+        sender.sendMessage(m, false);
+        cout<<"sending key"<<endl;
+    }
+#endif
 
 	switch (key) {
 
@@ -273,18 +306,30 @@ void ofApp::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST == 0) {
+        ofxOscMessage m;
+        m.setAddress("/key");
+        m.addIntArg(0);
+        sender.sendMessage(m, false);
+        cout<<"sending key"<<endl;
+    }
+#endif
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
   
-    if (IS_HOST == 1) {
-    ofxOscMessage m;
-    m.setAddress("/mouse/position");
-    m.addIntArg(x);
-    m.addIntArg(y);
-    sender.sendMessage(m, false);
+#ifdef ALREVES_USE_OSC
+    if (IS_HOST == 0) {
+        ofxOscMessage m;
+        m.setAddress("/mouse/position");
+        m.addIntArg(x);
+        m.addIntArg(y);
+        sender.sendMessage(m, false);
+        cout<<"sending mouse"<<endl;
     }
+#endif
 }
 
 //--------------------------------------------------------------

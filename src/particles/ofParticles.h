@@ -50,6 +50,7 @@ public:
     
     // gui params
     ofxPanel gui;
+	ofParameter<int> gridSizeParam; // 10
     ofParameter<float> dragForceParam; //  0.9, 0.99
     ofParameter<float> forceParam; // 0.6
     ofParameter<float> returnForceParam; // 0.2
@@ -68,6 +69,7 @@ public:
     ofParameter<ofColor> altDestColorParam;
     ofParameter<float> colorVelocityParam;
     ofParameter<bool> useAltColor;
+	ofParameter<bool> useAltBgColor;
     bool bShowGui;
     bool bGuiLoaded;
     

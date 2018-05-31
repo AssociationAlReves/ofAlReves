@@ -20,7 +20,7 @@ void ofxVasaLianas::setup() {
 //--------------------------------------------------------------
 void ofxVasaLianas::initGui() {
 
-	gui.setup("panel", LIANAS_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+	gui.setup("panel", Globals::hostName + LIANAS_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
 
 	//---------------------------------------------------
 	/// Lianas
@@ -498,9 +498,9 @@ void ofxVasaLianas::keyPressed(int key) {
 			}
 			break;
 		case 'l':  { if (bLianas)
-			gui.loadFromFile("lianas.xml");
+			gui.loadFromFile(Globals::hostName + "lianas.xml");
 		else
-			gui.loadFromFile("lianamesh.xml");
+			gui.loadFromFile(Globals::hostName + "lianamesh.xml");
 	}
 	break;			kinect.setCameraTiltAngle(angle);
 			break;
@@ -510,9 +510,9 @@ void ofxVasaLianas::keyPressed(int key) {
 		case 'K' : bUseKinectRepulsor = true; break;
 		case 'y' : {bLianas = !bLianas; initLianas();} break;
 		case 's': { if (bLianas)
-			gui.saveToFile("lianas.xml");
+			gui.saveToFile(Globals::hostName + "lianas.xml");
 		else
-			gui.saveToFile("lianamesh.xml");
+			gui.saveToFile(Globals::hostName + "lianamesh.xml");
 		}
 			break;
 		case 'C':

@@ -48,7 +48,7 @@ void ofxOcean::setup(){
     
     setupMesh(width,height,gridSize);
     
-    gui.setup("panel",OCEAN_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+    gui.setup("panel",Globals::hostName + OCEAN_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
     gui.add(filled.set("bFill", true));
     gui.add(useLights.set("Use lights", true));
     gui.add(smoothLighting.set("Smooth Lighting", false));

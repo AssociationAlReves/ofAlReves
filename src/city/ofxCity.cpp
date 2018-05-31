@@ -35,7 +35,7 @@ void ofxCity::setup() {
 	// GUI
 	roadParamsHash = 0;
 	if (!bGuiLoaded) {
-		gui.setup("cityPanel", CITY_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+		gui.setup("cityPanel", Globals::hostName + CITY_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
 		gui.add(bWireframe.set("Wireframe", false));
 		gui.add(bTweenSpeed.set("Tween speed", true));
 		gui.add(fov.set("FOV", 60, 0, 360));
@@ -370,7 +370,7 @@ void ofxCity::captureCam() {
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	camOrientation = app->transformer.cam.getOrientationEuler();
 	camPosition = app->transformer.cam.getPosition();
-	//gui.saveToFile(CITY_SETTINGS_FILE);
+	//gui.saveToFile(Globals::hostName + CITY_SETTINGS_FILE);
 }
 
 
@@ -774,11 +774,11 @@ void ofxCity::keyPressed(int key) {
 	case 'P': captureCam(); break;
 	case 'r': setup(); break;
         case 'l': {
-            gui.loadFromFile(CITY_SETTINGS_FILE);
+            gui.loadFromFile(Globals::hostName + CITY_SETTINGS_FILE);
             ofSeedRandom(123456);
             setupTextures();
         } break;
-	case 's': gui.saveToFile(CITY_SETTINGS_FILE); break;
+	case 's': gui.saveToFile(Globals::hostName + CITY_SETTINGS_FILE); break;
 	case 'h':
 		bShowGui = !bShowGui;
 		if (bShowGui) {
@@ -866,7 +866,7 @@ void ofxCity::setMode(int mode) {
 	}
 	break;
         case enCityAgain: {
-            gui.loadFromFile(CITY_SETTINGS_FILE);
+            gui.loadFromFile(Globals::hostName + CITY_SETTINGS_FILE);
             setupTextures();
             bUpdateParamsFromCode = true;
             

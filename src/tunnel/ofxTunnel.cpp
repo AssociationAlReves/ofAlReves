@@ -26,7 +26,7 @@ void ofxTunnel::setup() {
 //--------------------------------------------------------------
 void ofxTunnel::initGui() {
     
-    gui.setup("panel", TUNNEL_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+    gui.setup("panel", Globals::hostName + TUNNEL_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
     
     //---------------------------------------------------
     /// Tunnel-related
@@ -398,13 +398,13 @@ void ofxTunnel::keyPressed(int key) {
 //            }
             break;
         case 'l':
-            gui.loadFromFile(TUNNEL_SETTINGS_FILE);
+            gui.loadFromFile(Globals::hostName + Globals::hostName + TUNNEL_SETTINGS_FILE);
             break;
         case 'j': bUseMouseRepulsor = false; break;
         case 'J' : bUseMouseRepulsor = true; break;
         case 'k': bUseKinectRepulsor = false; break;
         case 'K' : bUseKinectRepulsor = true; break;
-         case 's': gui.saveToFile(TUNNEL_SETTINGS_FILE);
+         case 's': gui.saveToFile(Globals::hostName + TUNNEL_SETTINGS_FILE);
             break;
         case 'C':
             kinect.setCameraTiltAngle(0); // zero the tilt on exit

@@ -61,7 +61,7 @@ void ofxTerrain::initGui() {
 	bShowGui = false;
 	if (!bGuiInitialized) {
 
-		gui.setup("panel", TERRAIN_SETTINGS_FILE);
+		gui.setup("panel", Globals::hostName + TERRAIN_SETTINGS_FILE);
 							
 		mainGroup.setName("Main");
 		mainGroup.add(speedParam.set("speed", 60, 0.001, 500));

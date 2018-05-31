@@ -65,7 +65,7 @@ void ofxKinectMemory::setup() {
 
 	// -----------------------
 	// GUI
-	gui.setup("Memory", GUI_SETTINGS);
+	gui.setup("Memory", Globals::hostName + GUI_SETTINGS);
 
 	cvGroup.setName("OpenCV");
 	cvGroup.add(nearThreshold.set("nearThreshold", 255, 0, 255));
@@ -126,7 +126,7 @@ void ofxKinectMemory::setup() {
 	//}
 
     //app->cam.reset();
-    gui.loadFromFile(GUI_SETTINGS);
+    gui.loadFromFile(Globals::hostName + GUI_SETTINGS);
     //app->cam.setPosition(camPosition);
     //app->cam.setOrientation(camOrientation);
 }
@@ -447,14 +447,14 @@ void ofxKinectMemory::keyPressed(int key) {
 		break;
 	case'l':
         {
-		gui.loadFromFile(GUI_SETTINGS);
+		gui.loadFromFile(Globals::hostName + GUI_SETTINGS);
 //            app->cam.setPosition(camPosition);
 //            app->cam.setOrientation(camOrientation);
             //kinect.setCameraTiltAngle(angle);
         }
             break;
 	case's':
-		gui.saveToFile(GUI_SETTINGS);
+		gui.saveToFile(Globals::hostName + GUI_SETTINGS);
 		break;
 	case 'a':
 		kinect.setCameraTiltAngle(angle);
@@ -509,7 +509,7 @@ void ofxKinectMemory::keyPressed(int key) {
 		if (key == 'S') {
 //            camOrientation = app->cam.getOrientationEuler();
 //            camPosition = app -> cam.getPosition();
-            gui.saveToFile(GUI_SETTINGS);
+            gui.saveToFile(Globals::hostName + GUI_SETTINGS);
 
 			warper.save();
 		}

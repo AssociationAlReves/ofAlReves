@@ -133,7 +133,7 @@ void ofMovingSquares::setup(){
 	shapes.push_back(fuchsia);
 
 	if (bGuiInitialized == false) {
-			gui.setup("Square Field", MOVING_SQUARES_SETTINGS_FILE);
+			gui.setup("Square Field", Globals::hostName + MOVING_SQUARES_SETTINGS_FILE);
 
 			greenParams.setName("Green");
 			greenParams.add(greenAngleParam.set("angle",0, 0, 2.0 * PI));

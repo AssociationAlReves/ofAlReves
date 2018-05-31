@@ -38,7 +38,7 @@ void ofxCityPingPong::setup() {
 //--------------------------------------------------------------
 void ofxCityPingPong::initGui() {
     
-    gui.setup("panel", PING_PONG_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
+    gui.setup("panel", Globals::hostName + PING_PONG_SETTINGS_FILE); // most of the time you don't need a name but don't forget to call setup
     
     gui.add(ppSize.set("Size z/s",400,0,1000));
     gui.add(ppMargin.set("Margin q/d",160,0,800));
@@ -185,7 +185,7 @@ void ofxCityPingPong::keyPressed(int key) {
 		ppSize = ofClamp(ppSize - delta, 0, 1000);
 		updateRects();
 		break;
-    case 'S': gui.saveToFile(PING_PONG_SETTINGS_FILE);
+    case 'S': gui.saveToFile(Globals::hostName + PING_PONG_SETTINGS_FILE);
         break;
 	case 'm':
 		bSpaceMode = !bSpaceMode;
@@ -195,7 +195,7 @@ void ofxCityPingPong::keyPressed(int key) {
 		curRectVisIndex = (curRectVisIndex + 1) % PING_PONG_NUM_STEPS;
 		break;
         case 'L':
-            gui.loadFromFile(PING_PONG_SETTINGS_FILE);
+            gui.loadFromFile(Globals::hostName + PING_PONG_SETTINGS_FILE);
             break;
 	
 	}

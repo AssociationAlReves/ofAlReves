@@ -13,6 +13,7 @@
 
 
 
+
 #ifdef HAVE_OFX_GUI
 #include "ofxGui.h"
 #include "ofxTransformPanel.h"
@@ -26,6 +27,7 @@ public:
 
 	void setupSceneManager();
 	void setup();
+    void setHostNameToGlobals();
 	void update();
 	void draw();
 

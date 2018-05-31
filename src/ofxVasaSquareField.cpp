@@ -42,7 +42,7 @@ void ofxVasaSquareField::setup(){
 
 	if (bGuiInitialized == false) {
 
-		gui.setup("Square Field", VASA_SQUARE_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
+		gui.setup("Square Field", Globals::hostName + VASA_SQUARE_SETTINGS_FILE);        //Creates a canvas at (0,0) using the default width
 
 
 		forceParams.setName("Force");

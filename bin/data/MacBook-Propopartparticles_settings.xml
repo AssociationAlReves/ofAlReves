@@ -1,0 +1,21 @@
+<group>
+	<dragForceParam>0.8513</dragForceParam>
+	<forceParam>1</forceParam>
+	<returnForceParam>0.285</returnForceParam>
+	<distParam>98.75</distParam>
+<group/>
+<resetDistThresholdParam>20</resetDistThresholdParam>
+<scale>0.982</scale>
+	<Colors>
+		<baseColor>255, 255, 255, 255</baseColor>
+		<baseDestColor>215, 0, 0, 255</baseDestColor>
+		<altDestColorParam>212, 0, 20, 255</altDestColorParam>
+		<use_alt_color>0</use_alt_color>
+	<altColor>0, 0, 0, 255</altColor>
+		<color_velocity>11.2245</color_velocity>
+	<use_alt_color__b_>1</use_alt_color__b_>
+	<use_alt_BG_color__B_>0</use_alt_BG_color__B_>
+	</Colors>
+<distParam______>100</distParam______>
+<gridSize>10</gridSize>
+</group>

@@ -1,11 +1,11 @@
 <quad>
 	<upperLeft>
-		<x>0</x>
-		<y>0.23</y>
+		<x>-0.00703125</x>
+		<y>0.2425</y>
 	</upperLeft>
 	<upperRight>
-		<x>0.999219</x>
-		<y>0.16125</y>
+		<x>0.995313</x>
+		<y>0.2425</y>
 	</upperRight>
 	<lowerRight>
 		<x>1</x>

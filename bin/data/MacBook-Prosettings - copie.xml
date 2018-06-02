@@ -1,0 +1,50 @@
+<panel>
+	<bFill>1</bFill>
+	<Use_lights>1</Use_lights>
+	<Smooth_Lighting>0</Smooth_Lighting>
+	<Shiny>1</Shiny>
+	<usePointLight>0</usePointLight>
+	<useDirLight>1</useDirLight>
+	<Orientation__x_z_y_angles_>180, -42.2449, 117.551</Orientation__x_z_y_angles_>
+<panel/>
+<useMaterial>1</useMaterial>
+	<meshColor>1, 0.72449, 1, 1</meshColor>
+	<diffuseColor>1, 1, 1, 1</diffuseColor>
+	<specularColor>1, 1, 1, 1</specularColor>
+	<ambientColor>0, 0.00510204, 1, 1</ambientColor>
+	<matDiffuseColor>0, 0.204082, 1, 1</matDiffuseColor>
+	<matSpecularColor>1, 1, 1, 1</matSpecularColor>
+	<matEmissiveColor>0, 0.540816, 1, 1</matEmissiveColor>
+	<matAmbientColor>0, 0.55102, 1, 1</matAmbientColor>
+<shininess>128</shininess>
+<Lights>
+		<Orientation__x_z_y_angles_>67.5469, -37.4094, -93.636</Orientation__x_z_y_angles_>
+		<diffuseColor>1, 1, 1, 1</diffuseColor>
+		<specularColor>1, 1, 1, 1</specularColor>
+		<ambientColor>0, 0.00510204, 1, 1</ambientColor>
+	</Lights>
+<Material>
+		<matDiffuseColor>0, 0.204082, 1, 1</matDiffuseColor>
+		<matSpecularColor>1, 1, 1, 1</matSpecularColor>
+		<matEmissiveColor>0, 0.540816, 1, 1</matEmissiveColor>
+		<matAmbientColor>0, 0.55102, 1, 1</matAmbientColor>
+	<shininess>128</shininess>
+	</Material>
+<Ocean_mesh>
+		<meshColor>1, 0.72449, 1, 1</meshColor>
+		<size>100</size>
+		<gridSize>10</gridSize>
+	<resolution>10</resolution>
+	<noiseAmp>12.2449</noiseAmp>
+		<noiseSpeed>7.14286</noiseSpeed>
+		<noiseHeight>63.7755</noiseHeight>
+	<waveAmp>0.176314</waveAmp>
+		<waveSpeed>1.37755</waveSpeed>
+		<waveHeight>196.429</waveHeight>
+		<waveDirection>-0.0724698, 0.489796, 0.10454</waveDirection>
+	<waveAmp2>0.272485</waveAmp2>
+		<waveSpeed2>1.22449</waveSpeed2>
+		<waveHeight2>61.2245</waveHeight2>
+		<waveDirection2>-0.874219, -0.79092, 0</waveDirection2>
+	</Ocean_mesh>
+</panel>

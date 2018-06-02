@@ -9,7 +9,6 @@
 #include "ofxVideoScene.h"
 #include "ofxRibbon.h"
 #include "ofxBgScene.h"
-#include "ofxVasaCubeMesh.h"
 #include "ofxOcean.h"
 #include "ofxCity.h"
 #include "ofxVideoMirror.h"

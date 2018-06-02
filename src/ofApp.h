@@ -4,8 +4,7 @@
 
 #include "ofxAppUtils.h"
 #include "globals.h"
-#include "ofxOcean.h"
-#include "ofxOsc.h"
+#include "ofOscHandler.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project
@@ -27,7 +26,6 @@ public:
 
 	void setupSceneManager();
 	void setup();
-    void setHostNameToGlobals();
 	void update();
 	void draw();
 
@@ -47,13 +45,12 @@ public:
 	// handles the scenes
 	ofxSceneManager sceneManager;
 
-    ofxOcean *oceanScene;
     
 	string IntToString(int i);
     
-    // OSC
-    ofxOscSender sender;
-    ofxOscReceiver receiver;
+    /// OSC
+    ofOscHandler osc;
+
 
 #ifdef HAVE_OFX_GUI
 	ofxTransformPanel panel;

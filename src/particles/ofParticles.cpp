@@ -93,10 +93,12 @@ void ofParticles::update(){
 	
 	
 #ifdef ALREVES_USE_OSC
+    if (Globals::oscIsMaster == false){
 	if (Globals::oscKeyPressed != 0){
 		cout << Globals::oscKeyPressed << endl;
 		keyPressed(Globals::oscKeyPressed);
 	}
+    }
 #endif
 	
 	

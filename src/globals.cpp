@@ -14,6 +14,7 @@ int Globals::screenHeight = 800;
 
 int Globals::oscKeyPressed = 0;
 
+bool Globals::oscIsMaster = false;
 bool Globals::oscGotMessage = false;
 
 

@@ -6,10 +6,9 @@
 
 #if __APPLE__
 
-#define PROJECTOR_RESOLUTION_X 1280 //1024 //1280
-#define PROJECTOR_RESOLUTION_Y 800 //768 //800
 #define PROJECTOR_RESOLUTION_X 1024 //1024 //1280
 #define PROJECTOR_RESOLUTION_Y 768 //768 //800
+
 #define USE_KINECT
 
 #else
@@ -26,12 +25,6 @@
 // -----------------------
 // OSC related
 #define ALREVES_USE_OSC
-// For sender
-#define HOST "169.254.242.115"
-// For sender AND receiver
-#define PORT 9000
-//
-#define IS_HOST 0
 
 
 #define EASING_LINEAR 0
@@ -58,6 +51,8 @@ public:
 
     static int screenWidth;
     static int screenHeight;
+    
+    static bool oscIsMaster;
 
 	static void oscGotMessageFunc();
 

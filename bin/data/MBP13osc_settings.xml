@@ -1,11 +1,11 @@
 <group>
-	<Master>0</Master>
+	<Master>1</Master>
 	<OSC_Listener>
 		<Port>9000</Port>
 	</OSC_Listener>
 	<OSC_Send>
-		<Destination>MBP15</Destination>
-		<Port>9000</Port>
+		<Destination>MBP15.local</Destination>
+		<Port>9001</Port>
 	</OSC_Send>
 <group/>
 <reconnect>0</reconnect>

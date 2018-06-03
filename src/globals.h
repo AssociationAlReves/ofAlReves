@@ -10,7 +10,7 @@
 #define PROJECTOR_RESOLUTION_Y 768 //768 //800
 #define USE_KINECT
 
-#else
+#else // PC
 
 //#define PROJECTOR_RESOLUTION_X 1024//1280 //512 //1024 //1280
 //#define PROJECTOR_RESOLUTION_Y 768//800// 32 //768 //800
@@ -39,20 +39,33 @@
 #define EASING_BACK_EASEOUT 10
 #define EASING_QUAD_EASEOUT 11
 
+// settings are stored in <hostName>osc_settings.xml
+// this where master is defined or not
+// can be change in Debug mode of ofxApp ('d' key)
 class Globals {
 public:
+    
+    //---------------------------
+    // OSC related
+    // If true, mouse and keys will be sent to slaves (1 supported now)
+    static bool oscIsMaster;
+    
+    // mouse and keys from MASTER
     static int oscMouseX;
     static int oscMouseY;
-
 	static int oscKeyPressed;
+    
+    static int oscSceneIndex;
 
+    // flag set when first message gets in and logged in std out
 	static bool oscGotMessage;
-    static bool oscIsMaster;
 
+    // to prevent OF 0.9.x full screen bug where perfs are slow when calling ofGetWidth()
     static int screenWidth;
     static int screenHeight;
 
 	static void oscGotMessageFunc();
 
+    // hostName is used to have per-machine settings and source control not overwriting them
     static std::string hostName;
 };

@@ -55,45 +55,24 @@ void ofApp::setupSceneManager() {
 
 
 	int i = 0;
-#if __APPLE__
-
+    sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));
+    sceneManager.add(new ofxBgScene(false, false, false, IntToString(i++)));
     sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
-    sceneManager.add(new ofxTerrain(IntToString(i++)));
-    sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
-    sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
-    sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-    sceneManager.add(new ofxVasaLianas(IntToString(i++)));
     sceneManager.add(new ofParticles(IntToString(i++)));
-    sceneManager.add(new ofxCityPingPong(IntToString(i++)));
-    sceneManager.add(new ofxKinecticon(IntToString(i++)));
-    sceneManager.add(new ofxVideoMirror(IntToString(i++)));
     sceneManager.add(new ofxRibbon(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
-	//	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
-	//	sceneManager.add(new ofxCity(IntToString(i++)));
-	//	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
-	//	sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));
-	//	sceneManager.add(new ofxKinectMemory(IntToString(i++)));
-	//	sceneManager.add(new ofxKinecticon(IntToString(i++)));
-	//	sceneManager.add(new ofxTerrain(IntToString(i++)));
-	//	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
-	//	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-
-#else
-
-	// Bellegarde (spectacle + ateliers Vasarely)
-	sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
-	sceneManager.add(new ofxTerrain(IntToString(i++)));
-	sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
-	sceneManager.add(new ofxVasaLianas(IntToString(i++)));
-    sceneManager.add(new ofxTunnel(IntToString(i++)));
-	sceneManager.add(new ofxCityPingPong(IntToString(i++)));
-    sceneManager.add(new ofxKinecticon(IntToString(i++)));
-
-#endif
-	//sceneManager.add(new ofxTerrain());
+//    sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+//    sceneManager.add(new ofxTerrain(IntToString(i++)));
+//    sceneManager.add(new ofxVasaDalleQuad(false, IntToString(i++)));
+//    sceneManager.add(new ofxVasaDalleQuad(true, IntToString(i++)));
+//    sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
+//    sceneManager.add(new ofxVasaLianas(IntToString(i++)));
+//    sceneManager.add(new ofParticles(IntToString(i++)));
+//    sceneManager.add(new ofxCityPingPong(IntToString(i++)));
+//    sceneManager.add(new ofxKinecticon(IntToString(i++)));
+//    sceneManager.add(new ofxVideoMirror(IntToString(i++)));
+    
 	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
 
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
@@ -140,11 +119,19 @@ void ofApp::update() {
 	if (isDebug()) {
 		panel.update();
 	}
-
-    bool isdbg = isDebug();
-    if (isDebug()){
-        osc.update(isdbg);
+    
+#ifdef ALREVES_USE_OSC
+    
+    osc.update(isDebug());
+    
+    if (sceneManager.getCurrentSceneIndex() != Globals::oscSceneIndex
+            && Globals::oscSceneIndex >= 0){
+        sceneManager.gotoScene(Globals::oscSceneIndex);
     }
+    
+#endif
+
+  
     
 }
 

@@ -87,6 +87,7 @@ void ofOscHandler::update(const bool & debug){
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         
+        // write to console on first message received to debug
         Globals::oscGotMessageFunc();
         
         // get the next message
@@ -110,10 +111,17 @@ void ofOscHandler::update(const bool & debug){
             Globals::oscMouseY = m.getArgAsInt32(1);
             //cout << "received mouse " << Globals::oscMouseX << endl;
         }        // check for mouse moved message
-        if(address == "/key"){
+        else if(address == "/key"){
             // both the arguments are int32's
             Globals::oscKeyPressed = m.getArgAsInt32(0);
             cout << "received key " << Globals::oscKeyPressed  << endl;
+        }
+        else if(address.size() > 10 && address.substr(0,10) == "/OF/scene/"){
+            // scene change command. Get 3rd part
+            int on = m.getArgAsInt32(0);
+            Globals::oscSceneIndex = on ? ofToInt(ofSplitString(address, "/")[3]) : -1;
+          
+            cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
         }
     }
 #endif

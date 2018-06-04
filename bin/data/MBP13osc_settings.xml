@@ -1,5 +1,5 @@
 <group>
-	<Master>0</Master>
+	<Master>1</Master>
 	<OSC_Listener>
 		<Port>9000</Port>
 	</OSC_Listener>

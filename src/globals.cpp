@@ -17,6 +17,8 @@ int Globals::oscKeyPressed = 0;
 bool Globals::oscIsMaster = false;
 bool Globals::oscGotMessage = false;
 
+int Globals::oscSceneIndex = 0;
+
 
 
 void Globals::oscGotMessageFunc(){

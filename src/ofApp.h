@@ -38,6 +38,7 @@ public:
 
 	void windowResized(int w, int h);
     
+    void switchSceneManagerScene(const int & sceneIndex);
 
 	// rendering transformer
 	ofxTransformer transformer;

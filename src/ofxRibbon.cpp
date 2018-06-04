@@ -71,7 +71,8 @@ void ofxRibbon::draw(){
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
-	ofBackground(255);
+    ofEnableAlphaBlending();
+	ofBackground(255,255,255,255*alpha);
 
 	ofSetColor(0);
 	//ofEnableLighting();

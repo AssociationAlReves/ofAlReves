@@ -73,7 +73,7 @@ void ofApp::setupSceneManager() {
 //    sceneManager.add(new ofxKinecticon(IntToString(i++)));
 //    sceneManager.add(new ofxVideoMirror(IntToString(i++)));
     
-	sceneManager.setup(true); // true = setup all the scenes now (not on the fly)
+	sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
 
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside
 
@@ -138,7 +138,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-
+    ofEnableAlphaBlending();
 	if (isDebug()) {
 		ofNoFill();
 		ofSetColor(255);
@@ -222,26 +222,39 @@ void ofApp::keyPressed(int key) {
         transformer.setWarp(true);
         break;
 
-	case OF_KEY_F1: sceneManager.gotoScene(0); break;
-	case OF_KEY_F2: sceneManager.gotoScene(1);  break;
-	case OF_KEY_F3: sceneManager.gotoScene(2);  break;
-	case OF_KEY_F4: sceneManager.gotoScene(3);  break;
-	case OF_KEY_F5: sceneManager.gotoScene(4);  break;
-	case OF_KEY_F6: sceneManager.gotoScene(5);  break;
-	case OF_KEY_F7: sceneManager.gotoScene(6);  break;
-	case OF_KEY_F8: sceneManager.gotoScene(7);  break;
-	case OF_KEY_F9:  sceneManager.gotoScene(8); break;
-	case OF_KEY_F10: sceneManager.gotoScene(9); break;
-	case OF_KEY_F11: sceneManager.gotoScene(10); break;
-	case OF_KEY_F12: sceneManager.gotoScene(11); break;
+    case OF_KEY_F1: switchSceneManagerScene(0); break;
+    case OF_KEY_F2: switchSceneManagerScene(1);  break;
+    case OF_KEY_F3: switchSceneManagerScene(2);  break;
+    case OF_KEY_F4: switchSceneManagerScene(3);  break;
+    case OF_KEY_F5: switchSceneManagerScene(4);  break;
+    case OF_KEY_F6: switchSceneManagerScene(5);  break;
+    case OF_KEY_F7: switchSceneManagerScene(6);  break;
+    case OF_KEY_F8: switchSceneManagerScene(7);  break;
+    case OF_KEY_F9:  switchSceneManagerScene(8); break;
+    case OF_KEY_F10: switchSceneManagerScene(9); break;
+    case OF_KEY_F11: switchSceneManagerScene(10); break;
+    case OF_KEY_F12: switchSceneManagerScene(11); break;
 	case OF_KEY_BACKSPACE:
-		sceneManager.noScene();
+            switchSceneManagerScene(-1);
 		break;
 
 	case 'o':
 		sceneManager.setOverlap(!sceneManager.getOverlap());
 		break;
 	}
+}
+
+//--------------------------------------------------------------
+// dot not use from OSC messages.
+// this is used because user is pressing a scene key change
+// and we want to override osc scene index
+void ofApp::switchSceneManagerScene(const int & sceneIndex){
+    Globals::oscSceneIndex = -1;
+    if (sceneIndex == -1) {
+        sceneManager.noScene();
+    } else {
+        sceneManager.gotoScene(sceneIndex);
+    }
 }
 
 //--------------------------------------------------------------

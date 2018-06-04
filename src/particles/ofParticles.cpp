@@ -89,13 +89,15 @@ void ofParticles::resetParticles(){
 void ofParticles::update(){
 	
 	
-	
+	bool isSpaceKeyPressed = ofGetKeyPressed(' ');
 #ifdef ALREVES_USE_OSC
 	if (Globals::oscKeyPressed != 0){
-		cout << Globals::oscKeyPressed << endl;
+        isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
 		keyPressed(Globals::oscKeyPressed);
 	}
 #endif
+    
+    
 	
 	
 	
@@ -103,6 +105,9 @@ void ofParticles::update(){
     if (now > endTime) {
         isExplosing = false;
     }
+    ofColor color = useAltColor ? altColorParam : baseColorParam;
+    color.a = 255*alpha;
+    ofEnableAlphaBlending();
     for(unsigned int i = 0; i < p.size(); i++){
         p[i].setMode(currentMode);
         p[i].screenWidth = Globals::screenWidth;
@@ -111,10 +116,11 @@ void ofParticles::update(){
         p[i].force = forceParam;
         p[i].returnForce = returnForceParam;
         p[i].resetDistThreshold = resetDistThresholdParam;
-        p[i].color = useAltColor ? altColorParam : baseColorParam;
+        p[i].color = color;
         p[i].destColor = useAltColor ? altDestColorParam : baseDestColorParam;
         p[i].scale = scaleParam;
         p[i].colorVelocity = colorVelocityParam;
+        p[i].isSpaceKeyPressed = isSpaceKeyPressed;
         
         if (isExplosing) {
             p[i].dist = ofxeasing::map_clamp(now, initTime, endTime, distParam, Globals::screenHeight, &ofxeasing::exp::easeOut);
@@ -136,11 +142,11 @@ void ofParticles::update(){
 //--------------------------------------------------------------
 void ofParticles::draw(){
    // ofBackgroundGradient(ofColor(60,60,60), ofColor(10,10,10));
-	
+    ofEnableAlphaBlending();
 	if (useAltBgColor){
-		ofClear(0);
+		ofClear(0,0,0,255*alpha);
 	} else {
-		ofClear(255);
+		ofClear(255,255,255,255*alpha);
 	}
 	
     

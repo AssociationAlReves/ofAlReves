@@ -9,6 +9,7 @@ demoParticle::demoParticle(){
     returnForce = 0.2;
     dist = 150;
     resetDistThreshold = 10;
+    isSpaceKeyPressed = false;
 }
 
 //------------------------------------------------------------------
@@ -90,7 +91,7 @@ void demoParticle::update(){
         
         vel *= drag;
         
-        if (ofGetKeyPressed(' ')) {
+        if (isSpaceKeyPressed) {
             // avoid oscillating around init point
             if (distInit < resetDistThreshold){
                 vel = ofPoint(0, 0);
@@ -161,7 +162,7 @@ void demoParticle::update(){
                 vel *= drag;
                 
                 //lets also limit our attraction to a certain distance and don't apply if ' ' key is pressed
-                if( dist < 300 && dist > 40 && !ofGetKeyPressed(' ') ){
+                if( dist < 300 && dist > 40 && !isSpaceKeyPressed ){
                     vel += frc * 0.003;
                 }else{
                     //if the particles are not close to us, lets add a little bit of random movement using noise. this is where uniqueVal comes in handy.

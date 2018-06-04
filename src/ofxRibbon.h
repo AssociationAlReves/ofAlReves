@@ -13,12 +13,13 @@
 #include "ofxEasing.h"
 #include "ofxAppUtils.h"
 
-class ofxRibbon : public ofxScene
+class ofxRibbon : public ofxFadeScene
 {
 public:
 	ofxRibbon(string prefix = "scene") 
-		: ofxScene(prefix + ": " + "Ribbon"){
+		: ofxFadeScene(prefix + ": " + "Ribbon"){
 			setSingleSetup(false); // call setup each time the scene is loaded
+            setFade(5000,5000);
 		}
 
 	void setup();

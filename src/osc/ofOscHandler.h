@@ -42,6 +42,8 @@ private:
     string receivedMessages;
     int numReceivedMessages;
     
+    bool isDebugMode;
+    
 public:
     
     ofOscHandler() {
@@ -49,6 +51,7 @@ public:
         bGuiLoaded = false;
         receivedMessages = "";
         numReceivedMessages = 0;
+        isDebugMode = false;
     }
     
     void setup();

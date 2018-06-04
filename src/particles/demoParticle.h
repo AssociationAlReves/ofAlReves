@@ -18,6 +18,8 @@ public:
     void setMode(particleMode newMode);
     void setAttractPoints( vector <ofPoint> * attract );
     
+    bool isSpaceKeyPressed;
+    
     void reset();
     void update();
     void draw();

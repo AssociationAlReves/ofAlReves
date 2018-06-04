@@ -74,6 +74,7 @@ void ofOscHandler::setup(){
 //--------------------------------------------------------------
 void ofOscHandler::update(const bool & debug){
 
+    isDebugMode = debug;
 #ifdef ALREVES_USE_OSC
     
     if (reconnectParam){
@@ -123,6 +124,10 @@ void ofOscHandler::update(const bool & debug){
           
             cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
         }
+        else if(address == "/OF/key"){
+            // key stroke from Ableton Live. The code is in the arg
+            Globals::oscKeyPressed = m.getArgAsInt32(0);
+        }
     }
 #endif
 }
@@ -143,7 +148,9 @@ void ofOscHandler::keyPressed(int key){
         m.setAddress("/key");
         m.addIntArg(key);
         sender.sendMessage(m, false);
-        cout<<"sending key"<<endl;
+        if (isDebugMode){
+            cout<<"sending key"<<endl;
+        }
     }
 #endif
 }
@@ -156,7 +163,10 @@ void ofOscHandler::keyReleased(int key){
         m.setAddress("/key");
         m.addIntArg(0);
         sender.sendMessage(m, false);
-        cout<<"sending key"<<endl;
+        if (isDebugMode){
+             cout<<"sending key released "<<endl;
+        }
+       
     }
 #endif
 }
@@ -171,7 +181,9 @@ void ofOscHandler::mouseMoved(int x, int y ){
         m.addIntArg(x);
         m.addIntArg(y);
         sender.sendMessage(m, false);
-        cout<<"sending mouse"<<endl;
+        if (isDebugMode){
+            cout<<"sending mouse"<<endl;
+        }
     }
 #endif
 }

@@ -1,0 +1,12 @@
+<group>
+	<Master>0</Master>
+	<reconnect>0</reconnect>
+	<OSC_Listener>
+		<Port>9001</Port>
+	</OSC_Listener>
+	<OSC_Send>
+		<Destination>127.0.0.1</Destination>
+		<Port>9000</Port>
+	</OSC_Send>
+<group/>
+</group>

@@ -9,6 +9,8 @@
 #include "ofxOcean.h"
 #include "ofApp.h"
 
+using namespace glm;
+
 //--------------------------------------------------------------
 void ofxOcean::setup(){
     
@@ -324,7 +326,7 @@ void ofxOcean::setNormals( ofMesh &mesh ){
     int nV = mesh.getNumVertices();
     //The number of the triangles
     int nT = mesh.getNumIndices() / 3;
-    vector<ofPoint> norm( nV ); //Array for the normals
+    vector<vec3> norm( nV ); //Array for the normals
     //Scan all the triangles. For each triangle add its
     //normal to norm's vectors of triangle's vertices
     for (int t=0; t<nT; t++) {
@@ -333,19 +335,20 @@ void ofxOcean::setNormals( ofMesh &mesh ){
         int i2 = mesh.getIndex( 3 * t + 1 );
         int i3 = mesh.getIndex( 3 * t + 2 );
         //Get vertices of the triangle
-        const ofPoint &v1 = mesh.getVertex( i1 );
-        const ofPoint &v2 = mesh.getVertex( i2 );
-        const ofPoint &v3 = mesh.getVertex( i3 );
+        const vec3 &v1 = mesh.getVertex( i1 );
+        const vec3 &v2 = mesh.getVertex( i2 );
+        const vec3 &v3 = mesh.getVertex( i3 );
         //Compute the triangle's normal
-        ofPoint dir = ( (v2 - v1).getCrossed( v3 - v1 ) ).getNormalized();
+		vec3 dir = glm::normalize(glm::cross(v2 - v1, v3 - v1));
         //Accumulate it to norm array for i1, i2, i3
+		
         norm[ i1 ] += dir;
         norm[ i2 ] += dir;
         norm[ i3 ] += dir;
     }
     //Normalize the normal's length
     for (int i=0; i<nV; i++) {
-        norm[i].normalize();
+		norm[i] = glm::normalize(norm[i]);
     }
     //Set the normals to mesh
     mesh.clearNormals();

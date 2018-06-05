@@ -13,7 +13,6 @@
 #include "ofxGui.h"
 #include "ofxCv.h"
 #include "ofxKinect.h"
-#include "ofxQuadWarp.h"
 
 #include "ofxLiana.h"
 #include "ofxNode.h"
@@ -55,8 +54,6 @@ private:
 	
 	bool bUseMouseRepulsor;
 	bool bUseKinectRepulsor;
-	
-	void setupKinectWarp(bool shift, bool alt, int x, int y);
 	
 
 	/*-------------------------------------------------------*/

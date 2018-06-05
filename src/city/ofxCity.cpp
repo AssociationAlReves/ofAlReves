@@ -1,6 +1,9 @@
 #include "ofxCity.h"
 #include "ofApp.h"
 
+
+using namespace glm;
+
 //--------------------------------------------------------------
 void ofxCity::setup() {
 
@@ -40,8 +43,8 @@ void ofxCity::setup() {
 		gui.add(bTweenSpeed.set("Tween speed", true));
 		gui.add(fov.set("FOV", 60, 0, 360));
 		gui.add(debugFbo.set("Debug FBO", false));
-		gui.add(camOrientation.set("camOrientation", app->transformer.cam.getOrientationEuler(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
-		gui.add(camPosition.set("camPosition", app->transformer.cam.getPosition(), ofVec3f(-180, -180, -180), ofVec3f(180, 180, 180)));
+		gui.add(camOrientation.set("camOrientation", app->transformer.cam.getOrientationEuler(), vec3(-180, -180, -180), vec3(180, 180, 180)));
+		gui.add(camPosition.set("camPosition", app->transformer.cam.getPosition(), vec3(-180, -180, -180), vec3(180, 180, 180)));
 		roadParams.setName("Road");
 
 		roadParams.add(rotationAngle.set("rotationAngle", 0, -180, 180));
@@ -247,10 +250,10 @@ void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 					int minRow = 0, minCol = col, maxCol = 0, maxRow = 0;
 
 					float height = ofRandom(100, ofMap(blockProbability, 0, 1, blockProbability / 10, blockProbability  *blockProbability) * CITY_BLOCK_MAXHEIGHT);
-					for (int i = col; i < min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
+					for (int i = col; i < std::min(col + requestedCols, CITY_BLOCKS_COLS); i++) {
 
 						if (true) {
-							for (int j = 0; j < min(requestedRows + 1, CITY_BLOCKS_ROWS); j++) {
+							for (int j = 0; j < std::min(requestedRows + 1, CITY_BLOCKS_ROWS); j++) {
 
 								maxRow = j;
 								int index = j * CITY_BLOCKS_COLS + i;
@@ -260,7 +263,7 @@ void ofxCity::generateBlockSide(bool isLeftSide, int nowRowForced) {
 							}
 						}
 
-						lastReservedCol = max(lastReservedCol, i);
+						lastReservedCol = std::max(lastReservedCol, i);
 						maxCol = i;
 					}
 
@@ -832,8 +835,8 @@ void ofxCity::setMode(int mode) {
 		float highestZ = -10000;
 		for (std::vector<ofBuilding>::iterator buildingIt = buildings.begin(); buildingIt != buildings.end(); ++buildingIt) {
 			ofBuilding building = *buildingIt;
-			lowestZ = min(lowestZ, building.position.z);
-			highestZ = max(highestZ, building.position.z);
+			lowestZ = std::min(lowestZ, building.position.z);
+			highestZ = std::max(highestZ, building.position.z);
 		}
 		float diffZ = highestZ - lowestZ;
 

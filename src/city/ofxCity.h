@@ -29,6 +29,7 @@
 #define CITY_COLLAPSE_BOX_WIDTH 1000000
 #define CITY_COLLAPSE_BOX_HEIGHT 1000000
 
+using namespace glm;
 
 enum CITY_MODE { enCityIdle = 0, 
 	enCityStart = 1,	// road appearance, opacity
@@ -115,8 +116,8 @@ private:
 	ofParameter<int> roadTexHeight;
 	ofParameter<float> curSpeed;
 	ofParameter<float> roadOpacity;
-	ofParameter<ofVec3f> camOrientation;
-	ofParameter<ofVec3f> camPosition;
+	ofParameter<vec3> camOrientation;
+	ofParameter<vec3> camPosition;
 	ofParameterGroup roadParams;
 
 	ofParameter<int> terrainWidth;

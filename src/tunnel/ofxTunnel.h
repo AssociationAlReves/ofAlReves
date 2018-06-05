@@ -13,7 +13,6 @@
 #include "ofxGui.h"
 #include "ofxCv.h"
 #include "ofxKinect.h"
-#include "ofxQuadWarp.h"
 
 const string TUNNEL_SETTINGS_FILE = "tunnel_settings.xml";
 

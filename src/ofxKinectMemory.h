@@ -13,7 +13,6 @@
 #include "ofxGui.h"
 #include "ofxCv.h"
 #include "ofxKinect.h"
-#include "ofxQuadWarp.h"
 
 
 class ofxKinectMemory : public ofxScene
@@ -89,9 +88,6 @@ private:
 	ofFbo fboWhite;
 	ofFbo fboBlack;
 
-	// warp
-	ofxQuadWarp warper;
-	bool forceWarpOff;
 
 };
 

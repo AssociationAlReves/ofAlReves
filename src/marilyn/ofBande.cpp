@@ -43,3 +43,7 @@ void ofBande::draw(){
     
 }
 
+void ofBande::nextMode(std::string reason) {
+
+}
+

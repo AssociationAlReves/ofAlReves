@@ -142,7 +142,7 @@ public:
     
     void custom_bandeFullScreen(const int bandeIndex);
     
-    bool beforeDraw();
+    
     
     void updateTweenA(int easing, float _from, float _to, float _duration = 3000 );
     float getTweenAValue();

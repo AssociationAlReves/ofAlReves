@@ -479,9 +479,6 @@ void ofxVasaLianas::closeKinect() {
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 }
-//--------------------------------------------------------------
-void ofxVasaLianas::setupKinectWarp(bool shift, bool alt, int x, int y) {
-}
 
 //--------------------------------------------------------------
 void ofxVasaLianas::keyPressed(int key) {

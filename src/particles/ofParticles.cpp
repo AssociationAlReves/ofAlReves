@@ -32,6 +32,8 @@ void ofParticles::setup(){
 		colorGroup.add(useAltBgColor.set("use alt BG color (B)", false));
         gui.add(colorGroup);
         bGuiLoaded = true;
+        
+        gui.loadFromFile(Globals::hostName + POP_ART_PARTICLES_FILE);
     
     }
     bShowGui = false;

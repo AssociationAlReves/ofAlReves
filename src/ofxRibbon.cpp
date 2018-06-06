@@ -11,9 +11,15 @@ void ofxRibbon::setup(){
 	endLine = false;
 	maxZ = 0;
 
+    if (bGuiLoaded == false){
+        gui.setup("Ribbon control", Globals::hostName + RIBBON_SETTINGS_FILE);
+        
+        gui.add(speedParam.set("speed",2,0,20));
+        gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE);
+        
+        bGuiLoaded = true;
+    }
 
-//    ofApp *app = (ofApp *)ofxGetAppPtr();
-//    app->cam.reset();
 }
 
 //--------------------------------------------------------------
@@ -25,17 +31,15 @@ void ofxRibbon::update(){
 		if ( isTweenCompleted) {
 			points.clear();
 			maxZ = 0;
-		} 
-
-		//ofApp *app = (ofApp *)ofxGetAppPtr();
-		//app->cam.update();
-
+		}
 	}
 
 
 	ofVec3f sumOfAllPoints(0,0,0);
 	for(unsigned int i = 0; i < points.size(); i++){
-		points[i].z -= (endLine ? 0 : 2);
+        if (!endLine){
+            points[i].z -= speedParam;
+        }
 		maxZ = min(maxZ,points[i].z);
 		sumOfAllPoints += points[i];
 	}
@@ -141,6 +145,10 @@ void ofxRibbon::draw(){
 	//end the shape
 	mesh.draw();
 	//ofDisableLighting();
+    
+    if (bShowGui) {
+        gui.draw();
+    }
 }
 
 
@@ -181,6 +189,9 @@ void ofxRibbon::keyPressed(int key){
 	{
 	case ' ' : clear(); break;
 	case 'r': setup(); break;
+        case 'S' : gui.saveToFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;
+        case 'L' : gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;
+        case 'g': bShowGui = !bShowGui; break;
 	default:
 		break;
 	}

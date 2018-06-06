@@ -12,6 +12,10 @@
 #include "globals.h"
 #include "ofxEasing.h"
 #include "ofxAppUtils.h"
+#include "ofxGui.h"
+
+
+#define RIBBON_SETTINGS_FILE  "ribbon_settings.xml"
 
 class ofxRibbon : public ofxFadeScene
 {
@@ -19,8 +23,10 @@ public:
 	ofxRibbon(string prefix = "scene") 
 		: ofxFadeScene(prefix + ": " + "Ribbon"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-            setFade(5000,5000);
-		}
+            setFade(500,500);
+            bGuiLoaded = false;
+            bShowGui = false;
+        }
 
 	void setup();
 	void update();
@@ -33,6 +39,13 @@ public:
 
 private:
 	
+    // gui params
+    ofxPanel gui;
+    
+    ofParameter<float> speedParam; // 2
+    bool bGuiLoaded;
+    bool bShowGui;
+    
 	//this holds all of our points
     vector<ofVec3f> points;
     //this keeps track of the center of all the points

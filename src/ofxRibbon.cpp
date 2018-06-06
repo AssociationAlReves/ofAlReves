@@ -15,6 +15,8 @@ void ofxRibbon::setup(){
         gui.setup("Ribbon control", Globals::hostName + RIBBON_SETTINGS_FILE);
         
         gui.add(speedParam.set("speed",2,0,20));
+        gui.add(rangeMinParam.set("range min",-2000,-5000,0));
+        gui.add(rangeMaxParam.set("range max",-500,-1000,0));
         gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE);
         
         bGuiLoaded = true;
@@ -133,11 +135,13 @@ void ofxRibbon::draw(){
 		// rainbow
 		float hue = 255 * 0.5 * (1+sin(i*0.1));
 		float brightness = 255;
-		color.setHsb(hue, 255, brightness);
+        float alphaPt = ofMap(leftPoint.z, rangeMinParam, rangeMaxParam, 0, 255, true);
+		color.setHsb(hue, 255, brightness, alphaPt);
+        color.a = alphaPt;
 		mesh.addColor(color);
 		//hue = 255; //255 * (0.1 * abs(ofSignedNoise((i-0.257)*0.1)));
 		//brightness = 255 * (1 - abs(ofSignedNoise((i-0.324)*0.25)));
-		color.setHsb(hue, 255, brightness);
+		color.setHsb(hue, 255, brightness, alphaPt);
 		mesh.addColor(color);
 
 	}

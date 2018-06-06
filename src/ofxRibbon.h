@@ -43,6 +43,9 @@ private:
     ofxPanel gui;
     
     ofParameter<float> speedParam; // 2
+    
+    ofParameter<float> rangeMinParam;
+    ofParameter<float> rangeMaxParam;
     bool bGuiLoaded;
     bool bShowGui;
     

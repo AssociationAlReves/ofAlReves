@@ -69,7 +69,7 @@ public:
     ofMovingSquares(string prefix = "scene", bool isMirrored = false)
     : isMirrored(isMirrored),  ofxFadeScene(prefix + ": " + "Moving squares"){
         setSingleSetup(true); // call setup each time the scene is loaded
-        setFade(5000,5000);
+        setFade(500,500);
         bGuiInitialized = false;
     }
     

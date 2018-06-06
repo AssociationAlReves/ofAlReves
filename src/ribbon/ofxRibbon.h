@@ -13,6 +13,7 @@
 #include "ofxEasing.h"
 #include "ofxAppUtils.h"
 #include "ofxGui.h"
+#include "ofxRibbonPart.h"
 
 
 #define RIBBON_SETTINGS_FILE  "ribbon_settings.xml"
@@ -50,17 +51,10 @@ private:
     bool bShowGui;
     
 	//this holds all of our points
-    vector<ofVec3f> points;
-    //this keeps track of the center of all the points
-    ofVec3f center;
+    vector<ofxRibbonPart> parts;
 
-	float maxZ;
+    float sWidth;
+    float sHeight;
 
-	bool endLine;
-	
-	float sWidth;
-	float sHeight;
-	
-	float tweenInFrom, tweenInTo;
 };
 

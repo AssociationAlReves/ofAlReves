@@ -27,8 +27,15 @@ void ofxRibbon::setup(){
 
 //--------------------------------------------------------------
 void ofxRibbon::update(){
-
+    
     for (int i = 0; i< parts.size(); i++){
+#ifdef ALREVES_USE_OSC
+        if (Globals::oscIsMaster == false){
+            if (parts[i].mouseDriven){
+                parts[i].addPoint(Globals::oscMouseX, Globals::oscMouseY);
+            }
+        }
+#endif
         parts[i].rangeMaxParam = rangeMaxParam;
         parts[i].rangeMinParam = rangeMinParam;
         parts[i].speedParam = speedParam;
@@ -61,9 +68,20 @@ void ofxRibbon::draw(){
 
 //--------------------------------------------------------------
 void ofxRibbon::mouseMoved(int x, int y ){
-    for (int i = 0; i< parts.size(); i++){
-        if (parts[i].mouseDriven){
-            parts[i].addPoint(x, y);;
+    
+    bool useDirectMouse = true;
+#ifdef ALREVES_USE_OSC
+    if (Globals::oscIsMaster == false){
+        useDirectMouse = false;
+    }
+#endif
+    
+    
+    if (useDirectMouse) {
+        for (int i = 0; i< parts.size(); i++){
+            if (parts[i].mouseDriven){
+                parts[i].addPoint(x, y);;
+            }
         }
     }
 }

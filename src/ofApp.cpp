@@ -55,11 +55,18 @@ void ofApp::setupSceneManager() {
 
 
 	int i = 0;
+    // F1 Black
     sceneManager.add(new ofxBgScene(false, false, true, IntToString(i++)));
+    // F2 White
     sceneManager.add(new ofxBgScene(false, false, false, IntToString(i++)));
+    // F3 Hot
     sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));
+    // F4 particles
     sceneManager.add(new ofParticles(IntToString(i++)));
+    // F5 ribbon
     sceneManager.add(new ofxRibbon(IntToString(i++)));
+    // F6 4 colors
+    sceneManager.add(new ofxVideoScene("vid/couleurs.mp4", "4couleurs", true, true, false, true));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
 //    sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));

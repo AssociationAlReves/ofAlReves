@@ -30,6 +30,7 @@
 		3249EA8D9E8407FE5E9608DD /* demoParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B2BE74EF2EAF6532AB1BD2 /* demoParticle.cpp */; };
 		395C5CDF20C814D9009B2FDF /* ofxRibbonPart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 395C5CDD20C814D9009B2FDF /* ofxRibbonPart.cpp */; };
 		395C5CE220C82FC9009B2FDF /* ofxVisualPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 395C5CE120C82FC9009B2FDF /* ofxVisualPopup.cpp */; };
+		397A9F2E20CF1E4200AA7D72 /* ofxVisualPopupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 397A9F2C20CF1E4200AA7D72 /* ofxVisualPopupManager.cpp */; };
 		39E4B69E20C32C23001FAF2E /* ofOscHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39E4B69C20C32C23001FAF2E /* ofOscHandler.cpp */; };
 		3E9ECA1FD75C6BE4ECFD9D89 /* ofParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9B4654E28963DC4A4EC942BE /* ofParticles.cpp */; };
 		445D7450E36B76B67952E484 /* ofxBgScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F544820BD56626DA89C766C /* ofxBgScene.cpp */; };
@@ -212,6 +213,8 @@
 		395C5CDE20C814D9009B2FDF /* ofxRibbonPart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxRibbonPart.h; sourceTree = "<group>"; };
 		395C5CE020C82FC9009B2FDF /* ofxVisualPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVisualPopup.h; sourceTree = "<group>"; };
 		395C5CE120C82FC9009B2FDF /* ofxVisualPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVisualPopup.cpp; sourceTree = "<group>"; };
+		397A9F2C20CF1E4200AA7D72 /* ofxVisualPopupManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVisualPopupManager.cpp; sourceTree = "<group>"; };
+		397A9F2D20CF1E4200AA7D72 /* ofxVisualPopupManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVisualPopupManager.h; sourceTree = "<group>"; };
 		39E4B69C20C32C23001FAF2E /* ofOscHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofOscHandler.cpp; sourceTree = "<group>"; };
 		39E4B69D20C32C23001FAF2E /* ofOscHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofOscHandler.h; sourceTree = "<group>"; };
 		3ADB4E06C4EDB97E020A778D /* functional.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = functional.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/functional.hpp; sourceTree = SOURCE_ROOT; };
@@ -801,6 +804,17 @@
 			path = ribbon;
 			sourceTree = "<group>";
 		};
+		397A9F2B20CF1E1F00AA7D72 /* visualpopup */ = {
+			isa = PBXGroup;
+			children = (
+				395C5CE120C82FC9009B2FDF /* ofxVisualPopup.cpp */,
+				395C5CE020C82FC9009B2FDF /* ofxVisualPopup.h */,
+				397A9F2C20CF1E4200AA7D72 /* ofxVisualPopupManager.cpp */,
+				397A9F2D20CF1E4200AA7D72 /* ofxVisualPopupManager.h */,
+			);
+			path = visualpopup;
+			sourceTree = "<group>";
+		};
 		39E4B69B20C32BFB001FAF2E /* osc */ = {
 			isa = PBXGroup;
 			children = (
@@ -1379,8 +1393,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				395C5CE120C82FC9009B2FDF /* ofxVisualPopup.cpp */,
-				395C5CE020C82FC9009B2FDF /* ofxVisualPopup.h */,
+				397A9F2B20CF1E1F00AA7D72 /* visualpopup */,
 				395C5CDC20C81479009B2FDF /* ribbon */,
 				39E4B69B20C32BFB001FAF2E /* osc */,
 				B30978DAF5A7F1DADF72F268 /* dalles */,
@@ -1642,6 +1655,7 @@
 				2D98463A756C4BE6DCFE43D1 /* ofxCityPingPong.cpp in Sources */,
 				0B83A708FBEAD7AF4C115033 /* ofxVideoMirror.cpp in Sources */,
 				0567DF96C7B84259B0CBEF09 /* ofxRibbon.cpp in Sources */,
+				397A9F2E20CF1E4200AA7D72 /* ofxVisualPopupManager.cpp in Sources */,
 				545FCB34D3E81275A1229F72 /* ofMarilyn.cpp in Sources */,
 				B8EEBA5F86E14965A2E2492F /* ofBande.cpp in Sources */,
 				D525A0E9B927B468321273E7 /* ofMovingSquares.cpp in Sources */,

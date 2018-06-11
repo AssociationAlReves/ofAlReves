@@ -66,7 +66,11 @@ void ofApp::setupSceneManager() {
     // F5 ribbon
     sceneManager.add(new ofxRibbon(IntToString(i++)));
     // F6 4 colors
-    sceneManager.add(new ofxVideoScene("vid/couleurs.mp4", "4couleurs", true, true, false, true));
+    sceneManager.add(new ofxVideoScene("vid/couleurs.mp4", IntToString(i++), true, true, false, true));
+    // F7 Marilyn
+    sceneManager.add(new ofMarilyn(IntToString(i++)));
+    // F8 popup
+    sceneManager.add(new ofxVisualPopupManager(IntToString(i++)));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
 //    sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));

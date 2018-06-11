@@ -16,6 +16,8 @@
 #include "ofxVasaLianas.h"
 #include "ofxTunnel.h"
 #include "ofParticles.h"
+#include "ofMarilyn.h"
+#include "ofxVisualPopupManager.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 //#include "ofxKinectListener.h"

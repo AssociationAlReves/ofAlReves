@@ -134,10 +134,12 @@ void ofOscHandler::update(const bool & debug){
         else if(address == "/OF/key" && Globals::oscIsMaster){
             // key stroke from Ableton Live. The code is in the arg
             Globals::oscKeyPressed = m.getArgAsInt32(0);
+            cout << "master key" << endl;
         }
         else if(address == "/OF/slave/key" && !Globals::oscIsMaster){
             // key stroke from Ableton Live. The code is in the arg
             Globals::oscKeyPressed = m.getArgAsInt32(0);
+            cout << "slave key" << endl;
         }
     }
 #endif

@@ -79,9 +79,7 @@ void ofOscHandler::update(const bool & debug){
     
     if (reconnectParam){
         // reset all connections
-        
         setup();
-        
         reconnectParam = false;
     }
     
@@ -117,14 +115,27 @@ void ofOscHandler::update(const bool & debug){
             Globals::oscKeyPressed = m.getArgAsInt32(0);
             cout << "received key " << Globals::oscKeyPressed  << endl;
         }
-        else if(address.size() > 10 && address.substr(0,10) == "/OF/scene/"){
+        else if(address.size() > 10 && address.substr(0,10) == "/OF/scene/"
+                && Globals::oscIsMaster){
             // scene change command. Get 3rd part
             int on = m.getArgAsInt32(0);
             Globals::oscSceneIndex = on ? ofToInt(ofSplitString(address, "/")[3]) : -1;
           
             cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
         }
-        else if(address == "/OF/key"){
+        else if(address.size() > 10 && address.substr(0,10) == "/OF/slave/scene/"
+                && !Globals::oscIsMaster){
+            // scene change command. Get 3rd part
+            int on = m.getArgAsInt32(0);
+            Globals::oscSceneIndex = on ? ofToInt(ofSplitString(address, "/")[3]) : -1;
+            
+            cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
+        }
+        else if(address == "/OF/key" && Globals::oscIsMaster){
+            // key stroke from Ableton Live. The code is in the arg
+            Globals::oscKeyPressed = m.getArgAsInt32(0);
+        }
+        else if(address == "/OF/slave/key" && !Globals::oscIsMaster){
             // key stroke from Ableton Live. The code is in the arg
             Globals::oscKeyPressed = m.getArgAsInt32(0);
         }

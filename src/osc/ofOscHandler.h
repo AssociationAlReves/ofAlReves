@@ -17,7 +17,7 @@
 /*
  
  +----------------+                         +----------------+
- |    Ableton     |                         |  OF APP #1     |
+ |    Ableton     |                         |  OF APP #1     |  // responds only to OF/scene or OF/key
  |     LIVE       |                         |  MASTER        |
  +----------------+                         +----------------+
  | OSC SEND 9000  +---------------------+---> OSC LISTEN 9000|
@@ -28,8 +28,8 @@
                                         |                       | Key strokes
                      with MIDI to OSC   |   +----------------+  |
                                         |   |  OF APP #2     |  |
-                                        |   |  SLAVE         |  |
-                                        |   +----------------+  |
+                                        |   |  SLAVE         |  |   // responds only to OF/slave/scene
+                                        |   +----------------+  |      or OF/slave/key
                                         +---> OSC LISTEN 9000<--+
                                             +----------------+
 

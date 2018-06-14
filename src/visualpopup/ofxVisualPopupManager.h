@@ -14,13 +14,25 @@
 #include "ofxGui.h"
 #include "ofxVisualPopup.h"
 
+enum popupManagerScenario{
+    COMIC_STRIP = 0,
+    MOULINEX,
+    SUPERMARKETLADY
+};
+
+enum popupManagerTransition{
+    NONE = 0,
+    POPUP
+};
+
 class ofxVisualPopupManager : public ofxFadeScene
 {
 public:
-    ofxVisualPopupManager(string prefix = "scene")
-    : ofxFadeScene(prefix + ": " + "VisualPopup"){
+    ofxVisualPopupManager(string prefix = "scene", popupManagerScenario scenarioIndex = COMIC_STRIP, popupManagerTransition fadeMode = NONE)
+    :  ofxFadeScene(prefix + ": " + "VisualPopup"){
         setSingleSetup(false); // call setup each time the scene is loaded
-        setFade(500,500);
+        setFade(0,0);
+        _scenarioIndex = scenarioIndex;
     }
     
     void setup();
@@ -33,6 +45,7 @@ public:
     
 private:
     
+    int _scenarioIndex;
     vector<ofxVisualPopup> images;
     int imgIndex;
     

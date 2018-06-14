@@ -13,22 +13,18 @@
 void ofxVisualPopupManager::setup(){
     images.clear();
     
-    
-    ofxVisualPopup img4 = ofxVisualPopup("comic/vid/pow.mp4", true, 0, true);
-    img4.loadSettings();
-    images.push_back(img4);
-    ofxVisualPopup img0 = ofxVisualPopup("comic/img/pop.jpg", false, 0, true);
-    img0.loadSettings();
-    images.push_back(img0);
-    
-    ofxVisualPopup img1 = ofxVisualPopup("comic/img/blop.jpg", false, 0, true);
-    img1.loadSettings();
-    images.push_back(img1);
-    
-    ofxVisualPopup img2 = ofxVisualPopup("comic/img/wizz.jpg", false, 0, true);
-    img2.loadSettings();
-    images.push_back(img2);
-    
+    if (_scenarioIndex == 0) {
+        ofxVisualPopup img4 = ofxVisualPopup("comic/vid/pow.mp4", true, 0, true);
+        img4.loadSettings(); images.push_back(img4);
+        ofxVisualPopup img0 = ofxVisualPopup("comic/img/pop.jpg", false, 0, true);
+        img0.loadSettings(); images.push_back(img0);
+        ofxVisualPopup img1 = ofxVisualPopup("comic/img/blop.jpg", false, 0, true);
+        img1.loadSettings(); images.push_back(img1);
+        ofxVisualPopup img2 = ofxVisualPopup("comic/img/wizz.jpg", false, 0, true);
+        img2.loadSettings(); images.push_back(img2);
+    }
+    else if (_scenarioIndex == 1) {
+    }
     
     imgIndex = -1;
     

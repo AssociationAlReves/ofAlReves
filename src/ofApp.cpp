@@ -70,7 +70,9 @@ void ofApp::setupSceneManager() {
     // F7 Marilyn
     sceneManager.add(new ofMarilyn(IntToString(i++)));
     // F8 popup
-    sceneManager.add(new ofxVisualPopupManager(IntToString(i++)));
+    sceneManager.add(new ofxVisualPopupManager(IntToString(i++), COMIC_STRIP, POPUP));
+    // F9 popup Moulinex
+    sceneManager.add(new ofxVisualPopupManager(IntToString(i++), MOULINEX, NONE));
 
 	//	// Bellegarde (spectacle + ateliers Vasarely)
 //    sceneManager.add(new ofxBgScene(false, true, false, IntToString(i++)));

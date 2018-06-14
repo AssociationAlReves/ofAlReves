@@ -73,7 +73,7 @@ void ofOscHandler::setup(){
 
 //--------------------------------------------------------------
 void ofOscHandler::update(const bool & debug){
-
+    Globals::oscKeyPressed = 0;
     isDebugMode = debug;
 #ifdef ALREVES_USE_OSC
     

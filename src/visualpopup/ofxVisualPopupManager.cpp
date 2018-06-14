@@ -11,19 +11,22 @@
 
 //--------------------------------------------------------------
 void ofxVisualPopupManager::setup(){
-    images.clear();
     
-    if (_scenarioIndex == 0) {
-        ofxVisualPopup img4 = ofxVisualPopup("comic/vid/pow.mp4", true, 0, true);
-        img4.loadSettings(); images.push_back(img4);
-        ofxVisualPopup img0 = ofxVisualPopup("comic/img/pop.jpg", false, 0, true);
-        img0.loadSettings(); images.push_back(img0);
-        ofxVisualPopup img1 = ofxVisualPopup("comic/img/blop.jpg", false, 0, true);
-        img1.loadSettings(); images.push_back(img1);
-        ofxVisualPopup img2 = ofxVisualPopup("comic/img/wizz.jpg", false, 0, true);
-        img2.loadSettings(); images.push_back(img2);
+    
+    if (_scenarioIndex == COMIC_STRIP) {
+        images.clear();
+        images.push_back(new ofxVisualPopup("comic/vid/pow.mp4", true, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/pop.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/blop.jpg", false, 0, true));
+        images.push_back( new ofxVisualPopup("comic/img/wizz.jpg", false, 0, true));
     }
-    else if (_scenarioIndex == 1) {
+    else if (_scenarioIndex == MOULINEX) {
+        images.clear();
+        images.push_back(new ofxVisualPopup("comic/img/moulinex1.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/moulinex2.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/moulinex3.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/moulinex4.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/moulinex5.jpg", false, 0, true));
     }
     
     imgIndex = -1;
@@ -43,7 +46,7 @@ void ofxVisualPopupManager::update(){
 #endif
     
     for (int i = 0; i < images.size(); i++) {
-        images[i].update();
+        images[i]->update();
     }
     
 }
@@ -52,16 +55,32 @@ void ofxVisualPopupManager::update(){
 //--------------------------------------------------------------
 void ofxVisualPopupManager::draw(){
     
-    ofClear(255);
+    if (_scenarioIndex == COMIC_STRIP) {
+        ofClear(255);
+    } else if (_scenarioIndex == MOULINEX) {
+        ofClear(0);
+    } else {
+        ofClear(0);
+    }
     ofPushMatrix();
     ofTranslate(0,Globals::screenHeight);
     ofScale(1,-1,1);
-   // ofTranslate(0,-Globals::screenHeight);
+    // ofTranslate(0,-Globals::screenHeight);
     
-    for (int i = 0; i < images.size(); i++) {
-        images[i].draw();
+    if (_scenarioIndex == COMIC_STRIP) {
+        for (int i = 0; i < images.size(); i++) {
+            images[i]->draw();
+        }
+    } else {
+        if (imgIndex >= 0) {
+            images[imgIndex]->draw();
+        }
     }
     ofPopMatrix();
+    
+    for (int i = 0; i < images.size(); i++) {
+        images[i]->drawGui();
+    }
 }
 
 
@@ -69,7 +88,9 @@ void ofxVisualPopupManager::draw(){
 //--------------------------------------------------------------
 void ofxVisualPopupManager::mouseMoved(int x, int y ){
     
-     images[imgIndex].mouseMoved(x, y);
+    if (imgIndex >= 0){
+        images[imgIndex]->mouseMoved(x, y);
+    }
 }
 
 
@@ -78,28 +99,35 @@ void ofxVisualPopupManager::mouseMoved(int x, int y ){
 void ofxVisualPopupManager::keyPressed(int key){
     if (key == ' '){
         if (imgIndex >= 0){
-            images[imgIndex].stop();
+            images[imgIndex]->stop();
         }
         imgIndex = (imgIndex + 1) % (images.size()+1);
         if (imgIndex == 0) {
             for (int i = 0; i < images.size(); i++) {
-                images[i].reset();
+                images[i]->reset();
             }
         } else if (imgIndex == images.size()){
-            for (int i = 0; i < images.size(); i++) {
-                images[i].reset();
+            if (_scenarioIndex == COMIC_STRIP) {
+                for (int i = 0; i < images.size(); i++) {
+                    images[i]->reset();
+                }
+                imgIndex = -1;
+            } else
+            {
+                imgIndex = 0;
             }
-            imgIndex = -1;
         }
         cout << imgIndex << endl;
         
         if (imgIndex >= 0){
-            images[imgIndex].play();
+            images[imgIndex]->play();
         }
     }
     if (key == 'r'){
         imgIndex = -1;
     }
     
-    images[imgIndex].keyPressed(key);
+    if (imgIndex >= 0){
+        images[imgIndex]->keyPressed(key);
+    }
 }

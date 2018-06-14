@@ -46,7 +46,7 @@ public:
 private:
     
     int _scenarioIndex;
-    vector<ofxVisualPopup> images;
+    vector<ofxVisualPopup*> images;
     int imgIndex;
     
 };

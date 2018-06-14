@@ -11,6 +11,7 @@
 #include "ofxXmlSettings.h"
 #include "ofxGui.h"
 #include "ofxEasing.h"
+#include "globals.h"
 
 class ofxVisualPopup {
     
@@ -18,6 +19,7 @@ public:
     ofxVisualPopup(string fileName, bool isVideo, float volume01 = 0, bool overlaps = false);
     void update();
     void draw();
+    void drawGui();
     void play(); // reset video player
     void stop();
     void reset();
@@ -39,6 +41,8 @@ private:
     ofParameter<float> rotParam;
     ofParameter<ofColor> color1;
     ofParameter<ofColor> color2;
+    ofParameter<bool> fillParam;
+    ofParameter<bool> preserveAspectRatioParam;
     
     //easing
     float startTime;
@@ -52,11 +56,5 @@ private:
     bool _overlaps; // sill drawn when stopped
     bool _isRunning;
     bool _isEnded;
-    
-    
-    int screenWidth;
-    int screenHeight;
-    
-    
     
 };

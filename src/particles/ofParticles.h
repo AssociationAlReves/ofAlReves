@@ -15,7 +15,7 @@ public:
     ofParticles(string prefix = "scene")
     :  ofxFadeScene(prefix + ": " + "Particles"){
         setSingleSetup(true); // call setup each time the scene is loaded
-        setFade(500,500);
+        setFade(0,0);
         bGuiLoaded = false;
     }
     void setup();

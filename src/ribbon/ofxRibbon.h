@@ -24,7 +24,7 @@ public:
 	ofxRibbon(string prefix = "scene") 
 		: ofxFadeScene(prefix + ": " + "Ribbon"){
 			setSingleSetup(false); // call setup each time the scene is loaded
-            setFade(500,500);
+            setFade(0,0);
             bGuiLoaded = false;
             bShowGui = false;
         }

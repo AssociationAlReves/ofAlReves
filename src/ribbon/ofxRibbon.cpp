@@ -106,7 +106,7 @@ void ofxRibbon::update(){
         now = ofGetElapsedTimef();
         if (now <= endTime){
             
-            float easingValue = ofxeasing::map(now, startTime, endTime, 0, Globals::screenHeight, &ofxeasing::cubic::easeInOut);
+            float easingValue = ofxeasing::map(now, startTime, endTime, 0, Globals::screenHeight, &ofxeasing::linear::easeInOut);
             
             cout << easingValue << endl;
             float spacing = Globals::screenWidth/11.0;

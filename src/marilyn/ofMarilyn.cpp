@@ -22,7 +22,12 @@ void ofMarilyn::setup(){
     currentMode = 0;
     
     //------------------
-    bIsTopScreen = false;
+#ifdef ALREVES_USE_OSC
+    //bIsTopScreen = Globals::oscIsMaster == false;
+#else
+     bIsTopScreen = false;
+#endif
+   
     
     //----------
     // Glitch
@@ -90,6 +95,15 @@ void ofMarilyn::setupTimeTriggers(){
 
 //--------------------------------------------------------------
 void ofMarilyn::update(){
+    
+#ifdef ALREVES_USE_OSC
+    if (Globals::oscKeyPressed != 0){
+        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
+        keyPressed(Globals::oscKeyPressed);
+        Globals::oscKeyPressed = 0; // reset for non repeating
+        cout << this->getName() << " space key" << endl;
+    }
+#endif
     
     float valA = getTweenAValue();
     float valB = getTweenBValue();
@@ -317,7 +331,7 @@ void ofMarilyn::nextMode(std::string reason){
                 p[i].update();
             }
             updateTweenA(EASING_CUBIC, 0,Globals::screenHeight,5);
-            updateTweenB(EASING_CUBIC, 0,Globals::screenHeight,11);
+            updateTweenB(EASING_CUBIC, 0,Globals::screenHeight,3);
         }
             break;
         case MOV_state_ToutRecule:
@@ -407,7 +421,7 @@ void ofMarilyn::nextMode(std::string reason){
 }
 
 
-//--------ç------------------------------------------------------
+//---------------------------------------------------------------
 void ofMarilyn::resetBandes(){
     
     float bandWidth = Globals::screenWidth / p.size();

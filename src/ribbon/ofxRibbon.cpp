@@ -22,7 +22,7 @@ void ofxRibbon::setup(){
         bGuiLoaded = true;
     }
     
-    parts.assign(11, ofxRibbonPart());
+    parts.assign(10, ofxRibbonPart());
     parts[0].mouseDriven = true;
     
     mode = RIBBON_MODE_FREE;
@@ -88,6 +88,33 @@ void ofxRibbon::update(){
         float radius = (2.0*Globals::screenHeight/3)/2.0;
         parts[0].addPoint(Globals::screenWidth/2 + xOffset, Globals::screenHeight - 50 + yOffset);
         
+    } else if (mode == RIBBON_MODE_HLINE_BOTTOM){
+        // easing for lines
+        
+        now = ofGetElapsedTimef();
+        if (now <= endTime){
+            
+            float easingValue = ofxeasing::map(now, startTime, endTime, 0, Globals::screenWidth / 2.0+50, &ofxeasing::linear::easeOut);
+            
+            parts[0].addPoint(Globals::screenWidth/2 + easingValue, Globals::screenHeight * 0.2);
+            parts[1].addPoint(Globals::screenWidth/2 - easingValue, Globals::screenHeight * 0.2);
+            
+        }
+    } else if (mode == RIBBON_MODE_VLINES){
+        // easing for lines
+        
+        now = ofGetElapsedTimef();
+        if (now <= endTime){
+            
+            float easingValue = ofxeasing::map(now, startTime, endTime, 0, Globals::screenHeight, &ofxeasing::cubic::easeInOut);
+            
+            cout << easingValue << endl;
+            float spacing = Globals::screenWidth/11.0;
+            for (int i = 0; i< parts.size(); i++){
+                parts[i].addPoint(spacing * (i+1), easingValue);
+            }
+            
+        }
     }
     
     for (int i = 0; i< parts.size(); i++){
@@ -177,6 +204,26 @@ void ofxRibbon::nextMode(){
         endTime = startTime + snakeSpeedParam;
         speedParam = 0;
         yOffset = 0;
+    } else if (mode == RIBBON_MODE_SNAKE) {
+        mode = RIBBON_MODE_HLINE_BOTTOM;
+        for (int i = 0; i< parts.size(); i++){
+            parts[i].reset();
+        }
+        parts[0].mouseDriven = false;
+        speedParam = 0;
+        // easing
+        startTime = ofGetElapsedTimef();
+        endTime = startTime + 1;
+    } else if (mode == RIBBON_MODE_HLINE_BOTTOM) {
+        mode = RIBBON_MODE_VLINES;
+        for (int i = 0; i< parts.size(); i++){
+            parts[i].reset();
+        }
+        parts[0].mouseDriven = false;
+        speedParam = 0;
+        // easing
+        startTime = ofGetElapsedTimef();
+        endTime = startTime + 10;
     }
 }
 

@@ -15,6 +15,13 @@
 #include "ofxGui.h"
 #include "ofxRibbonPart.h"
 
+#define RIBBON_MODE_FREE 0
+#define RIBBON_MODE_HLINE 1
+#define RIBBON_MODE_CIRCLE 2
+#define RIBBON_MODE_SNAKE 3
+#define RIBBON_MODE_HLINE_BOTTOM 4
+#define RIBBON_MODE_VLINES 5
+
 
 #define RIBBON_SETTINGS_FILE  "ribbon_settings.xml"
 
@@ -27,6 +34,7 @@ public:
             setFade(0,0);
             bGuiLoaded = false;
             bShowGui = false;
+            mode = 0;
         }
 
 	void setup();
@@ -36,10 +44,13 @@ public:
 	void keyPressed(int key);
 	void mouseMoved(int x, int y );
 
+    void nextMode();
+
 	void clear();
 
 private:
 	
+    int mode;
     // gui params
     ofxPanel gui;
     
@@ -47,6 +58,9 @@ private:
     
     ofParameter<float> rangeMinParam;
     ofParameter<float> rangeMaxParam;
+    
+    ofParameter<float> snakeSpeedParam;
+    ofParameter<int> snakeStepsParam;
     bool bGuiLoaded;
     bool bShowGui;
     
@@ -55,6 +69,11 @@ private:
 
     float sWidth;
     float sHeight;
+    
+    float now;
+    float startTime;
+    float endTime;
+    float yOffset;
 
 };
 

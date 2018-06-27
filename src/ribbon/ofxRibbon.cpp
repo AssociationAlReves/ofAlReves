@@ -15,6 +15,8 @@ void ofxRibbon::setup(){
         gui.add(speedParam.set("speed",2,0,20));
         gui.add(rangeMinParam.set("range min",-2000,-5000,0));
         gui.add(rangeMaxParam.set("range max",-500,-1000,0));
+        gui.add(snakeSpeedParam.set("snake speed",0,10,3));
+        gui.add(snakeStepsParam.set("snake steps",1,10,4));
         gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE);
         
         bGuiLoaded = true;
@@ -22,20 +24,74 @@ void ofxRibbon::setup(){
     
     parts.assign(11, ofxRibbonPart());
     parts[0].mouseDriven = true;
+    
+    mode = RIBBON_MODE_FREE;
 
 }
 
 //--------------------------------------------------------------
 void ofxRibbon::update(){
     
-    for (int i = 0; i< parts.size(); i++){
+    if (mode == RIBBON_MODE_FREE){
+        for (int i = 0; i< parts.size(); i++){
 #ifdef ALREVES_USE_OSC
-        if (Globals::oscIsMaster == false){
-            if (parts[i].mouseDriven){
-                parts[i].addPoint(Globals::oscMouseX, Globals::oscMouseY);
+            if (Globals::oscIsMaster == false){
+                if (parts[i].mouseDriven){
+                    parts[i].addPoint(Globals::oscMouseX, Globals::oscMouseY);
+                }
             }
-        }
 #endif
+        }
+    } else if (mode == RIBBON_MODE_HLINE){
+        // easing for lines
+        // bounce or elastic are ok
+        
+        now = ofGetElapsedTimef();
+        if (now <= endTime){
+            
+            float easingValue = ofxeasing::map(now, startTime, endTime, 0, Globals::screenWidth / 2.0+50, &ofxeasing::linear::easeOut);
+            
+            parts[0].addPoint(Globals::screenWidth/2 + easingValue, Globals::screenHeight/2);
+            parts[1].addPoint(Globals::screenWidth/2 - easingValue, Globals::screenHeight/2);
+            
+        }
+    } else if (mode == RIBBON_MODE_CIRCLE){
+        
+        now = ofGetElapsedTimef();
+        
+        float easingValue = ofxeasing::map(now, startTime, endTime, 0, 2.0*PI, &ofxeasing::linear::easeIn);
+        
+        float radius = (2.0*Globals::screenHeight/3)/2.0;
+        parts[0].addPoint(Globals::screenWidth/2 + cos(easingValue) * radius, Globals::screenHeight/2 + sin(easingValue) * radius);
+        
+    } else if (mode == RIBBON_MODE_SNAKE){
+        
+        float duration = 8;
+        now = ofGetElapsedTimef();
+        if (now >= startTime+duration){
+            startTime = now;
+        }
+        
+        float easingValue = ofxeasing::map(now, startTime, startTime+duration, 0, 1, &ofxeasing::linear::easeInOut);
+        
+        float sinVal = sin(easingValue*2.0*PI);
+        float xOffset = sinVal * Globals::screenWidth/2.0;
+        
+        if (abs(sinVal)>0.8){
+            float yFactor = ofMap(1-abs(sinVal),0.2,0,-PI/2.0,PI/2.0);
+            yFactor = 1+sin(yFactor)/2.0;
+            yOffset -= yFactor * 2.0;
+            cout << yFactor << endl;
+           // yOffset += 10.0* sin(ofMap(1-abs(sinVal),0.2,0,0,PI));
+        }
+        //cout << easingValue << endl;
+        float radius = (2.0*Globals::screenHeight/3)/2.0;
+        parts[0].addPoint(Globals::screenWidth/2 + xOffset, Globals::screenHeight - 50 + yOffset);
+        
+    }
+    
+    for (int i = 0; i< parts.size(); i++){
+        
         parts[i].rangeMaxParam = rangeMaxParam;
         parts[i].rangeMinParam = rangeMinParam;
         parts[i].speedParam = speedParam;
@@ -64,8 +120,6 @@ void ofxRibbon::draw(){
     }
 }
 
-
-
 //--------------------------------------------------------------
 void ofxRibbon::mouseMoved(int x, int y ){
     
@@ -76,28 +130,67 @@ void ofxRibbon::mouseMoved(int x, int y ){
     }
 #endif
     
-    
-    if (useDirectMouse) {
-        for (int i = 0; i< parts.size(); i++){
-            if (parts[i].mouseDriven){
-                parts[i].addPoint(x, y);;
+    if (mode == RIBBON_MODE_FREE) {
+        if (useDirectMouse) {
+            for (int i = 0; i< parts.size(); i++){
+                if (parts[i].mouseDriven){
+                    parts[i].addPoint(x, y);;
+                }
             }
         }
     }
 }
 
-
+//--------------------------------------------------------------
+void ofxRibbon::nextMode(){
+    
+    if (mode == RIBBON_MODE_FREE){
+        mode = RIBBON_MODE_HLINE;
+        
+        for (int i = 0; i< parts.size(); i++){
+            parts[i].reset();
+        }
+        parts[0].mouseDriven = false;
+        speedParam = 0;
+        // easing
+        startTime = ofGetElapsedTimef();
+        endTime = startTime + 1;
+        
+        // draw 2 horizontal lines
+        
+    } else if (mode == RIBBON_MODE_HLINE) {
+        mode = RIBBON_MODE_CIRCLE;
+        for (int i = 0; i< parts.size(); i++){
+            parts[i].reset();
+        }
+        // easing
+        startTime = ofGetElapsedTimef();
+        endTime = startTime + 1;
+        speedParam = 1;
+    } else if (mode == RIBBON_MODE_CIRCLE) {
+        mode = RIBBON_MODE_SNAKE;
+        for (int i = 0; i< parts.size(); i++){
+            parts[i].reset();
+        }
+        // easing
+        startTime = ofGetElapsedTimef();
+        endTime = startTime + snakeSpeedParam;
+        speedParam = 0;
+        yOffset = 0;
+    }
+}
 
 //--------------------------------------------------------------
 void ofxRibbon::keyPressed(int key){
-	switch (key)
-	{
-	case ' ' : clear(); break;
-	case 'r': setup(); break;
+    switch (key)
+    {
+        case ' ' : nextMode(); break;
+        case 'c' : clear(); break;
+        case 'r': setup(); break;
         case 'S' : gui.saveToFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;
         case 'L' : gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;
         case 'g': bShowGui = !bShowGui; break;
-	default:
-		break;
-	}
+        default:
+            break;
+    }
 }

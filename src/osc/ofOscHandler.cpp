@@ -101,7 +101,7 @@ void ofOscHandler::update(const bool & debug){
             string msg = getOscMsgAsString(m);
             receivedMessages += "\n" + msg;
         }
-        
+		
         string address = m.getAddress();
         // check for mouse moved message
         if(address == "/mouse/position"){
@@ -119,15 +119,15 @@ void ofOscHandler::update(const bool & debug){
                 && Globals::oscIsMaster){
             // scene change command. Get 3rd part
             int on = m.getArgAsInt32(0);
-            Globals::oscSceneIndex = on ? ofToInt(ofSplitString(address, "/")[3]) : -1;
+            Globals::oscSceneIndex = on == 1 ? ofToInt(ofSplitString(address, "/")[3]) : -1;
           
             cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
         }
-        else if(address.size() > 10 && address.substr(0,10) == "/OF/slave/scene/"
+        else if(address.size() > 16 && address.substr(0,16) == "/OF/slave/scene/"
                 && !Globals::oscIsMaster){
             // scene change command. Get 3rd part
             int on = m.getArgAsInt32(0);
-            Globals::oscSceneIndex = on ? ofToInt(ofSplitString(address, "/")[3]) : -1;
+            Globals::oscSceneIndex = on == 1 ? ofToInt(ofSplitString(address, "/")[4]) : -1;
             
             cout << "OSC scene changed to " << Globals::oscSceneIndex  << endl;
         }

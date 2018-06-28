@@ -144,11 +144,15 @@ void ofMarilyn::update(){
             }
         }
             break;
-        case MOV_state_DepartJardin:
+        case MOV_state_DepartJardin1:
+        case MOV_state_DepartCour1:
+        case MOV_state_DepartJardin2:
+        case MOV_state_DepartCour2:
+        case MOV_state_DepartJardin3:
         {
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = valA;
-                p[i].pos.x -= valB;
+                p[i].size.y = Globals::screenHeight/2;
+                p[i].pos.x = p[i].initialPos.x + valB;
                 
                 p[i].update();
             }
@@ -232,7 +236,7 @@ void ofMarilyn::update(){
         case MOV_state_ivdmilieu:
         { // A
             for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = Globals::screenWidth/2;
+                p[i].size.y = Globals::screenHeight/2;
                 p[i].pos.x = p[i].initialPos.x + valA;
                 
                 p[i].update();
@@ -342,9 +346,21 @@ void ofMarilyn::nextMode(std::string reason){
         case MOV_state_ToutAvanceMid:
             updateTweenA(EASING_SINE, 0, Globals::screenHeight/2, 16);
             break;
-        case MOV_state_DepartJardin:
+        case MOV_state_DepartJardin1:
             // offset x position (ie: pos -= tween value;
-            updateTweenB(EASING_SINE, 0, Globals::screenWidth, 13);
+            updateTweenB(EASING_SINE, 0, -Globals::screenWidth, 2);
+            break;
+        case MOV_state_DepartCour1:
+            updateTweenB(EASING_SINE_EASEOUT, -Globals::screenWidth, Globals::screenWidth, 2);
+            break;
+        case MOV_state_DepartJardin2:
+            updateTweenB(EASING_SINE_EASEOUT, Globals::screenWidth, -Globals::screenWidth, 2);
+            break;
+        case MOV_state_DepartCour2:
+            updateTweenB(EASING_SINE_EASEOUT, -Globals::screenWidth, Globals::screenWidth, 2);
+            break;
+        case MOV_state_DepartJardin3:
+            updateTweenB(EASING_SINE, Globals::screenWidth, -Globals::screenWidth, 2);
             break;
         case MOV_state_Bleu:{
             float bandWidth = Globals::screenWidth / p.size();
@@ -507,7 +523,8 @@ void ofMarilyn::keyPressed(int key){
     }
     
     if( key == 'r' ){
-        setup();
+        currentMode = 0;
+        resetBandes(false);
     }
     
     if (key == 'h'){

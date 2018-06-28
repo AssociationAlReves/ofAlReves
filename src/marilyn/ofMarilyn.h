@@ -19,33 +19,36 @@
 #define MOV_BANDES_DEBUG
 #define MOV_BANDES_DEF_NO_TIME 99999
 
-#define MOV_state_Blank             0    // initial screen
-#define MOV_state_AllDown  1    // 0:08 à 0:13 et 0:11
-#define MOV_state_ToutRecule        2    // 0:13 à 0:13,1
-#define MOV_state_ToutAvanceMid     3    // 0:13 à 0:28
-#define MOV_state_DepartJardin  4    // 53.5
-#define MOV_state_Bleu  5
-#define MOV_state_Rose  6
-#define MOV_state_Violet  7
-#define MOV_state_Orange  8
-#define MOV_state_Vert  9
-///....
-#define MOV_state_i  10 // i
-#define MOV_state_ii  11 // ii
-#define MOV_state_iii  12 // iii
-#define MOV_state_ivacour  13 ///iva
-#define MOV_state_ivbjardin  14 ///ivb
-#define MOV_state_ivccour 15 /// ivc
-#define MOV_state_ivdmilieu 16 /// ivd
-#define MOV_state_vmelange 17 /// ivd
-#define MOV_state_1col2 18
-#define MOV_state_1col4 19
-#define MOV_state_1col0 20
-#define MOV_state_1col3 21
-#define MOV_state_1col1 22
-#define MOV_state_allCol 23
-#define MOV_state_shuffle 24
-#define MOV_state_glitch 25
+#define MOV_state_Blank    0
+#define MOV_state_AllDown    1
+#define MOV_state_ToutRecule    2
+#define MOV_state_ToutAvanceMid    3
+#define MOV_state_DepartJardin1    4
+#define MOV_state_DepartCour1    5
+#define MOV_state_DepartJardin2    6
+#define MOV_state_DepartCour2    7
+#define MOV_state_DepartJardin3    8
+#define MOV_state_Bleu 9
+#define MOV_state_Rose 10
+#define MOV_state_Violet 11
+#define MOV_state_Orange 12
+#define MOV_state_Vert 13
+#define MOV_state_i 14    // i
+#define MOV_state_ii 15    // ii
+#define MOV_state_iii 16    // iii
+#define MOV_state_ivacour 17    // iva
+#define MOV_state_ivbjardin 18    // ivb
+#define MOV_state_ivccour     19    // ivc
+#define MOV_state_ivdmilieu    20    // ivd
+#define MOV_state_vmelange     21    // ivd
+#define MOV_state_1col2     22
+#define MOV_state_1col4     23
+#define MOV_state_1col0     24
+#define MOV_state_1col3     25
+#define MOV_state_1col1     26
+#define MOV_state_allCol     27
+#define MOV_state_shuffle     28
+#define MOV_state_glitch     29
 
 
 #define EASING_LINEAR 0

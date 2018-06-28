@@ -22,11 +22,7 @@ void ofxVisualPopupManager::setup(){
     }
     else if (_scenarioIndex == MOULINEX) {
         images.clear();
-        images.push_back(new ofxVisualPopup("comic/img/moulinex1.jpg", false, 0, true));
-        images.push_back(new ofxVisualPopup("comic/img/moulinex2.jpg", false, 0, true));
-        images.push_back(new ofxVisualPopup("comic/img/moulinex3.jpg", false, 0, true));
-        images.push_back(new ofxVisualPopup("comic/img/moulinex4.jpg", false, 0, true));
-        images.push_back(new ofxVisualPopup("comic/img/moulinex5.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("vid/MixPub.mp4", true, 0, false));
     }
     
     imgIndex = -1;

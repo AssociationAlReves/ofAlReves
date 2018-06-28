@@ -48,7 +48,7 @@ void ofMarilyn::setup(){
     }
     
     setupTimeTriggers();
-    resetBandes();
+    resetBandes(false);
     
     bShowGui = false;
 }
@@ -255,16 +255,16 @@ void ofMarilyn::update(){
             custom_bandeFullScreen(1);
             break;
         case MOV_state_allCol:{
-            // col2 grows in size until full screen
-            for(unsigned int i = 0; i < p.size(); i++){
-                p[i].size.y = (Globals::screenWidth/2)*(1+(1-valB));
-                p[i].update();
-                
-                p[i].color.a = ofMap(valA,0,1,0,255);
-            }
-            p[1].color.a = 255;
-            p[1].pos.x = ofMap(valB,0,1,0,p[2].initialPos.x);
-            p[1].sizeFactor = ofPoint(1+(valB* Globals::screenWidth),1+(valB*Globals::screenWidth));
+//            // col2 grows in size until full screen
+//            for(unsigned int i = 0; i < p.size(); i++){
+//                p[i].size.y = (Globals::screenWidth/2)*(1+(1-valB));
+//                p[i].update();
+//
+//                p[i].color.a = ofMap(valA,0,1,0,255);
+//            }
+//            p[1].color.a = 255;
+//            p[1].pos.x = ofMap(valB,0,1,0,p[2].initialPos.x);
+//            p[1].sizeFactor = ofPoint(1+(valB* Globals::screenWidth),1+(valB*Globals::screenWidth));
         } break;
         default:
             break;
@@ -283,7 +283,7 @@ void ofMarilyn::update(){
 void ofMarilyn::custom_bandeFullScreen(const int bandeIndex){
     float valA = getTweenAValue();
     float valB = getTweenBValue();
-    resetBandes();
+    resetBandes(false);
     // col2 grows in size until full screen
     for(unsigned int i = 0; i < p.size(); i++){
         p[i].size.y = (Globals::screenWidth/2)*(1+valB);
@@ -384,7 +384,7 @@ void ofMarilyn::nextMode(std::string reason){
             break;
         case MOV_state_ivacour:{
             // offset x position (ie: pos += tween value;
-            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenWidth, 5);
+            updateTweenA(EASING_SINE_EASEOUT, 0, Globals::screenWidth, 2);
         }
             break;
         case MOV_state_ivbjardin:
@@ -408,8 +408,9 @@ void ofMarilyn::nextMode(std::string reason){
             updateTweenA(EASING_SINE_EASEOUT, 0, 1, 0.5);
         } break;
         case MOV_state_allCol:{
-            updateTweenB(EASING_SINE_EASEOUT, 1, 0, 0.5);
-            updateTweenA(EASING_SINE_EASEOUT, 0, 1, 0.5);
+            resetBandes(true);
+//            updateTweenB(EASING_SINE_EASEOUT, 1, 0, 0.5);
+//            updateTweenA(EASING_SINE_EASEOUT, 0, 1, 0.5);
         } break;
         default:{
             tweenDuration = (timeTriggers[currentMode] - timeTriggers[currentMode-1])*1000;
@@ -422,7 +423,7 @@ void ofMarilyn::nextMode(std::string reason){
 
 
 //---------------------------------------------------------------
-void ofMarilyn::resetBandes(){
+void ofMarilyn::resetBandes(bool forceFullSize){
     
     float bandWidth = Globals::screenWidth / p.size();
     p[0].color = color0Param;
@@ -431,6 +432,13 @@ void ofMarilyn::resetBandes(){
     p[3].color = color3Param;
     p[4].color = color4Param;
     
+    float bandSize = 0;
+    if (forceFullSize) {
+        bandSize = Globals::screenHeight;
+    } else {
+        bandSize = bIsTopScreen ? 0 : Globals::screenHeight;
+    }
+    
     for(unsigned int i = 0; i < p.size(); i++){
         p[i].setMode(BANDE_MODE_IDLE);
         p[i].screenWidth = Globals::screenWidth;
@@ -438,7 +446,7 @@ void ofMarilyn::resetBandes(){
         
         p[i].pos = ofPoint(bandWidth * i , 0);
         p[i].initialPos = ofPoint(bandWidth * i , 0);
-        p[i].size = ofPoint(bandWidth, bIsTopScreen ? 0 : Globals::screenHeight);
+        p[i].size = ofPoint(bandWidth, bandSize);
         p[i].sizeFactor =  ofPoint(1, 1);
         
     }

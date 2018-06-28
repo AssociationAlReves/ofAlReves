@@ -74,7 +74,7 @@ public:
     void setup();
     void update();
     void draw();
-    void resetBandes();
+    void resetBandes(bool forceFullSize);
     void setupTimeTriggers();
     
     void keyPressed(int key);

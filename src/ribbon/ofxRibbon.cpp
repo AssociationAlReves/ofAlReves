@@ -32,6 +32,15 @@ void ofxRibbon::setup(){
 //--------------------------------------------------------------
 void ofxRibbon::update(){
     
+#ifdef ALREVES_USE_OSC
+    if (Globals::oscKeyPressed != 0){
+        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
+        keyPressed(Globals::oscKeyPressed);
+        Globals::oscKeyPressed = 0; // reset for non repeating
+        cout << "popup space key" << endl;
+    }
+#endif
+    
     if (mode == RIBBON_MODE_FREE){
         for (int i = 0; i< parts.size(); i++){
 #ifdef ALREVES_USE_OSC

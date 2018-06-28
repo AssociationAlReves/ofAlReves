@@ -158,7 +158,7 @@ void ofOscHandler::keyPressed(int key){
 #ifdef ALREVES_USE_OSC
     if (Globals::oscIsMaster) {
         ofxOscMessage m;
-        m.setAddress("/key");
+        m.setAddress("/OF/slave/key");
         m.addIntArg(key);
         sender.sendMessage(m, false);
         if (isDebugMode){
@@ -173,7 +173,7 @@ void ofOscHandler::keyReleased(int key){
 #ifdef ALREVES_USE_OSC
     if (Globals::oscIsMaster) {
         ofxOscMessage m;
-        m.setAddress("/key");
+        m.setAddress("/OF/slave/key");
         m.addIntArg(0);
         sender.sendMessage(m, false);
         if (isDebugMode){

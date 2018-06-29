@@ -156,6 +156,11 @@ void ofxVisualPopupManager::keyPressed(int key){
         imgColIndex.clear();
         imgSize.clear();
     }
+    if (key == 'c'){
+        imgPos.clear();
+        imgColIndex.clear();
+        imgSize.clear();
+    }
     if (key == 'b'){
         int newimgIndex = (int)floor( ofRandom(0, 8));
         imgColIndex.push_back(newimgIndex);

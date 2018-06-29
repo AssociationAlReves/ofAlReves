@@ -15,8 +15,8 @@ void ofxVisualPopupManager::setup(){
     
     if (_scenarioIndex == COMIC_STRIP) {
         images.clear();
-        images.push_back(new ofxVisualPopup("comic/vid/pow.mp4", true, 0, true));
-        images.push_back(new ofxVisualPopup("comic/img/pop.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/shebam.jpg", false, 0, true));
+        images.push_back(new ofxVisualPopup("comic/img/pow.jpg", false, 0, true));
         images.push_back(new ofxVisualPopup("comic/img/blop.jpg", false, 0, true));
         images.push_back( new ofxVisualPopup("comic/img/wizz.jpg", false, 0, true));
     }

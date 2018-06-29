@@ -106,7 +106,8 @@ void ofxVisualPopup::update(){
 void ofxVisualPopup::draw(){
     //ofBackgroundGradient(color1, color2);
     
-   
+    ofEnableAlphaBlending();
+    ofSetColor(255);
     ofPushMatrix();
     if (_isRunning || (_overlaps && _isEnded)) {
         

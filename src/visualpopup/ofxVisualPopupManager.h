@@ -50,5 +50,10 @@ private:
     vector<ofxVisualPopup*> images;
     int imgIndex;
     
+    vector<ofImage> imgCol;
+    vector<ofVec3f> imgPos;
+    vector<int> imgColIndex;
+    vector<float> imgSize;
+    
 };
 

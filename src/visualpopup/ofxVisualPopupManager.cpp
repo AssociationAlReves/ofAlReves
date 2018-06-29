@@ -19,6 +19,19 @@ void ofxVisualPopupManager::setup(){
         images.push_back(new ofxVisualPopup("comic/img/pow.jpg", false, 0, true));
         images.push_back(new ofxVisualPopup("comic/img/blop.jpg", false, 0, true));
         images.push_back( new ofxVisualPopup("comic/img/wizz.jpg", false, 0, true));
+        
+        imgCol.clear();
+        imgCol.push_back(ofImage("comic/buildings/b1.png"));
+        imgCol.push_back(ofImage("comic/buildings/b2.png"));
+        imgCol.push_back(ofImage("comic/buildings/b3.png"));
+        imgCol.push_back(ofImage("comic/buildings/b4.png"));
+        imgCol.push_back(ofImage("comic/buildings/b5.png"));
+        imgCol.push_back(ofImage("comic/buildings/b6.png"));
+        imgCol.push_back(ofImage("comic/buildings/b7.png"));
+        imgCol.push_back(ofImage("comic/buildings/b8.png"));
+        imgPos.clear();
+        imgSize.clear();
+        
     }
     else if (_scenarioIndex == MOULINEX) {
         images.clear();
@@ -72,6 +85,14 @@ void ofxVisualPopupManager::draw(){
     ofTranslate(0,Globals::screenHeight);
     ofScale(1,-1,1);
     // ofTranslate(0,-Globals::screenHeight);
+    
+    if (imgColIndex.size()>0){
+        for(int i = 0; i < imgColIndex.size(); i++){
+            ofVec3f pos = imgPos[i];
+            float size = imgSize[i];
+            imgCol[imgColIndex[i]].draw(pos.x,pos.y);
+        }
+    }
     
     if (_scenarioIndex == COMIC_STRIP) {
         for (int i = 0; i < images.size(); i++) {
@@ -131,6 +152,16 @@ void ofxVisualPopupManager::keyPressed(int key){
     }
     if (key == 'r'){
         imgIndex = -1;
+        imgPos.clear();
+        imgColIndex.clear();
+        imgSize.clear();
+    }
+    if (key == 'b'){
+        int newimgIndex = (int)floor( ofRandom(0, 8));
+        imgColIndex.push_back(newimgIndex);
+        imgPos.push_back(ofVec3f(ofRandom(-200,Globals::screenWidth+100), 0,0));
+        imgSize.push_back(ofRandom(1,1));
+        
     }
     
     if (imgIndex >= 0){

@@ -47,6 +47,8 @@ public:
     void nextMode();
 
 	void clear();
+	
+	void setCamera();
 
 private:
 	

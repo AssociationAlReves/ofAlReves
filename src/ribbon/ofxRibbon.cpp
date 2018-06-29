@@ -32,15 +32,15 @@ void ofxRibbon::setup(){
 //--------------------------------------------------------------
 void ofxRibbon::update(){
     
-#ifdef ALREVES_USE_OSC
-    if (Globals::oscKeyPressed != 0){
-        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
-        keyPressed(Globals::oscKeyPressed);
-        Globals::oscKeyPressed = 0; // reset for non repeating
-        cout << "popup space key" << endl;
-    }
-#endif
-    
+//#ifdef ALREVES_USE_OSC
+//    if (Globals::oscKeyPressed != 0){
+//        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
+//        keyPressed(Globals::oscKeyPressed);
+//        Globals::oscKeyPressed = 0; // reset for non repeating
+//        cout << "ribbon space key" << endl;
+//    }
+//#endif
+	
     if (mode == RIBBON_MODE_FREE){
         for (int i = 0; i< parts.size(); i++){
 #ifdef ALREVES_USE_OSC
@@ -154,6 +154,8 @@ void ofxRibbon::draw(){
     if (bShowGui) {
         gui.draw();
     }
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -235,13 +237,27 @@ void ofxRibbon::nextMode(){
         endTime = startTime + 10;
     }
 }
-
+//--------------------------------------------------------------
+void ofxRibbon::setCamera(){
+	ofApp *app = (ofApp *)ofxGetAppPtr();
+	//app->transformer.cam.reset();
+	
+	ofVec3f camPosition = ofVec3f(6.01961, -205.768, 204.361);
+	ofVec3f camOrientation = ofVec3f(45.1028, 0.766478, 0.914713);
+	
+//	cout << app->transformer.cam.getPosition() << endl;
+//	cout << app->transformer.cam.getOrientationEuler() << endl;
+	
+	app->transformer.cam.setPosition(camPosition);
+	app->transformer.cam.setOrientation(camOrientation);
+}
 //--------------------------------------------------------------
 void ofxRibbon::keyPressed(int key){
     switch (key)
     {
         case ' ' : nextMode(); break;
         case 'c' : clear(); break;
+		case 'C' : setCamera(); break;
         case 'r': setup(); break;
         case 'S' : gui.saveToFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;
         case 'L' : gui.loadFromFile(Globals::hostName + RIBBON_SETTINGS_FILE); break;

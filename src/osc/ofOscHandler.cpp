@@ -73,7 +73,7 @@ void ofOscHandler::setup(){
 
 //--------------------------------------------------------------
 void ofOscHandler::update(const bool & debug){
-    Globals::oscKeyPressed = 0;
+    //Globals::oscKeyPressed = 0;
     isDebugMode = debug;
 #ifdef ALREVES_USE_OSC
     
@@ -138,8 +138,12 @@ void ofOscHandler::update(const bool & debug){
         }
         else if(address == "/OF/slave/key" && !Globals::oscIsMaster){
             // key stroke from Ableton Live. The code is in the arg
-            Globals::oscKeyPressed = m.getArgAsInt32(0);
-            cout << "slave key" << endl;
+			if (Globals::oscKeyPressed == 0){
+				Globals::oscKeyPressed = m.getArgAsInt32(0);
+				cout << "slave key " << Globals::oscKeyPressed << endl;
+			} else {
+				cout << "ignore key because not handled yet" << endl;
+			}
         }
     }
 #endif

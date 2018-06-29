@@ -24,9 +24,19 @@ void ofxVisualPopupManager::setup(){
         images.clear();
         images.push_back(new ofxVisualPopup("vid/MixPub.mp4", true, 0, false));
     }
-    
+	else if (_scenarioIndex == SUPERMARKETLADY) {
+		images.clear();
+		images.push_back(new ofxVisualPopup("comic/img/supermarketlady.jpg", false, 0, false));
+	} else if (_scenarioIndex == BONBONS) {
+		images.clear();
+		images.push_back(new ofxVisualPopup("vid/stripes1.mp4", true, 0, true));
+		images.push_back(new ofxVisualPopup("vid/stripes2.mp4", true, 0, true));
+		images.push_back(new ofxVisualPopup("vid/stripes3.mp4", true, 0, true));
+	}
+
+	
     imgIndex = -1;
-    
+	
 }
 
 //--------------------------------------------------------------

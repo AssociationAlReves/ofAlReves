@@ -70,7 +70,7 @@ class ofMarilyn : public ofxFadeScene{
 public:
     ofMarilyn(string prefix = "scene")
     : ofxFadeScene(prefix + ": " + "Marilyn"){
-        setSingleSetup(false); // setup each time the scene is loaded
+        setSingleSetup(true); // setup each time the scene is loaded
         setFade(0,0);
         
     }

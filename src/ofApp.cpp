@@ -73,6 +73,10 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofxVisualPopupManager(IntToString(i++), COMIC_STRIP, POPUP));
     // F9 popup Moulinex
     sceneManager.add(new ofxVideoScene("vid/MixPub.mp4", IntToString(i++), true, false, false, false));
+	// F10 supermarket
+	sceneManager.add(new ofxVisualPopupManager(IntToString(i++), SUPERMARKETLADY, NONE));
+	// F11 bonbons
+	sceneManager.add(new ofxVisualPopupManager(IntToString(i++), BONBONS, NONE));
     //sceneManager.add(new ofxVisualPopupManager(IntToString(i++), MOULINEX, NONE));
     
 

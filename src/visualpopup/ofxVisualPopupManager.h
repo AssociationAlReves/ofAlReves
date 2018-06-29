@@ -17,7 +17,8 @@
 enum popupManagerScenario{
     COMIC_STRIP = 0,
     MOULINEX,
-    SUPERMARKETLADY
+    SUPERMARKETLADY,
+	BONBONS
 };
 
 enum popupManagerTransition{

@@ -96,13 +96,12 @@ void ofParticles::update(){
 	if (Globals::oscKeyPressed != 0){
         isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
 		keyPressed(Globals::oscKeyPressed);
+		Globals::oscKeyPressed = 0;
+	} else {
+		isSpaceKeyPressed = ofGetKeyPressed(' ');
 	}
 #endif
-    
-    
-	
-	
-	
+
     auto now = ofGetElapsedTimef();
     if (now > endTime) {
         isExplosing = false;

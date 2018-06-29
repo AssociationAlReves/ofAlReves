@@ -7,13 +7,13 @@
 <resetDistThresholdParam>20</resetDistThresholdParam>
 <scale>0.982</scale>
 	<Colors>
-		<baseColor>235, 0, 0, 255</baseColor>
-		<baseDestColor>255, 255, 98, 255</baseDestColor>
-		<altDestColorParam>150, 255, 255, 255</altDestColorParam>
+		<baseColor>255, 255, 255, 255</baseColor>
+		<baseDestColor>215, 0, 0, 255</baseDestColor>
+		<altDestColorParam>212, 0, 20, 255</altDestColorParam>
 		<use_alt_color>0</use_alt_color>
-	<altColor>0, 0, 255, 255</altColor>
+	<altColor>0, 0, 0, 255</altColor>
 		<color_velocity>11.2245</color_velocity>
-	<use_alt_color__b_>0</use_alt_color__b_>
+	<use_alt_color__b_>1</use_alt_color__b_>
 	<use_alt_BG_color__B_>0</use_alt_BG_color__B_>
 	</Colors>
 <distParam______>100</distParam______>

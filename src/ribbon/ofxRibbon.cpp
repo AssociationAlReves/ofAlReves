@@ -154,6 +154,8 @@ void ofxRibbon::draw(){
     if (bShowGui) {
         gui.draw();
     }
+    
+     //ofDisableAlphaBlending();
 }
 
 //--------------------------------------------------------------

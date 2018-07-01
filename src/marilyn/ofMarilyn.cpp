@@ -23,7 +23,7 @@ void ofMarilyn::setup(){
     
     //------------------
 #ifdef ALREVES_USE_OSC
-    //bIsTopScreen = Globals::oscIsMaster == false;
+	bIsTopScreen = true; //Globals::oscIsMaster == false;
 #else
      bIsTopScreen = false;
 #endif
@@ -96,15 +96,15 @@ void ofMarilyn::setupTimeTriggers(){
 //--------------------------------------------------------------
 void ofMarilyn::update(){
     
-#ifdef ALREVES_USE_OSC
-    if (Globals::oscKeyPressed != 0){
-        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
-        keyPressed(Globals::oscKeyPressed);
-        Globals::oscKeyPressed = 0; // reset for non repeating
-        cout << this->getName() << " space key" << endl;
-    }
-#endif
-    
+//#ifdef ALREVES_USE_OSC
+//    if (Globals::oscKeyPressed != 0){
+//        bool isSpaceKeyPressed = Globals::oscKeyPressed == ' ';
+//        keyPressed(Globals::oscKeyPressed);
+//        Globals::oscKeyPressed = 0; // reset for non repeating
+//        cout << this->getName() << " space key" << endl;
+//    }
+//#endif
+	
     float valA = getTweenAValue();
     float valB = getTweenBValue();
     switch (currentMode){

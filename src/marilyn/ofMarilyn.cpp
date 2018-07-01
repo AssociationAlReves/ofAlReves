@@ -340,11 +340,11 @@ void ofMarilyn::nextMode(std::string reason){
             break;
         case MOV_state_ToutRecule:
         {
-            updateTweenA(EASING_EXPO_EASEOUT, Globals::screenHeight, 0, 0.5);
+            updateTweenA(EASING_EXPO_EASEOUT, Globals::screenHeight, 0, 5);
         }
             break;
         case MOV_state_ToutAvanceMid:
-            updateTweenA(EASING_SINE, 0, Globals::screenHeight/2, 16);
+            updateTweenA(EASING_SINE, 0, Globals::screenHeight/2, 8);
             break;
         case MOV_state_DepartJardin1:
             // offset x position (ie: pos -= tween value;

@@ -248,8 +248,8 @@ void ofxRibbon::setCamera(){
 //	cout << app->transformer.cam.getPosition() << endl;
 //	cout << app->transformer.cam.getOrientationEuler() << endl;
 	
-	app->transformer.cam.setPosition(camPosition);
-	app->transformer.cam.setOrientation(camOrientation);
+//    app->transformer.cam.setPosition(camPosition);
+//    app->transformer.cam.setOrientation(camOrientation);
 }
 //--------------------------------------------------------------
 void ofxRibbon::keyPressed(int key){

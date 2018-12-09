@@ -19,41 +19,41 @@
 #endif
 
 class ofApp : public ofxApp { // <-- inherits ofxApp instead of ofBaseApp
-
+    
 public:
-
-	ofApp()  {}
-
-	void setupSceneManager();
-	void setup();
-	void update();
-	void draw();
-
-	void keyPressed(int key);
-	void keyReleased(int key);
-	void mouseMoved(int x, int y);
-	void mouseDragged(int x, int y, int button);
-	void mousePressed(int x, int y, int button);
-	void mouseReleased(int x, int y, int button);
-
-	void windowResized(int w, int h);
+    
+    ofApp()  {}
+    
+    void setupSceneManager();
+    void setup();
+    void update();
+    void draw();
+    
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y);
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    
+    void windowResized(int w, int h);
     
     void switchSceneManagerScene(const int & sceneIndex);
-
-	// rendering transformer
-	ofxTransformer transformer;
-
-	// handles the scenes
-	ofxSceneManager sceneManager;
-
     
-	string IntToString(int i);
+    // rendering transformer
+    ofxTransformer transformer;
+    
+    // handles the scenes
+    ofxSceneManager sceneManager;
+    
+    
+    string IntToString(int i);
     
     /// OSC
     ofOscHandler osc;
-
-
+    
+    
 #ifdef HAVE_OFX_GUI
-	ofxTransformPanel panel;
+    ofxTransformPanel panel;
 #endif
 };

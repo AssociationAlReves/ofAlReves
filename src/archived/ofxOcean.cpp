@@ -13,11 +13,11 @@
 void ofxOcean::setup(){
     
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->transformer.cam.reset();
-    
-    app->transformer.cam.lookAt(ofVec3f(0.151753, 0.923233, -0.353005));
-    app->transformer.cam.setPosition(ofVec3f(-600.906, -3368.04, 538.046));
-    
+//    app->transformer.cam.reset();
+//    
+//    app->transformer.cam.lookAt(ofVec3f(0.151753, 0.923233, -0.353005));
+//    app->transformer.cam.setPosition(ofVec3f(-600.906, -3368.04, 538.046));
+//    
     
     // turn on smooth lighting //
     smoothLighting     = true;
@@ -238,16 +238,16 @@ void ofxOcean::update(){
     
     ofApp *app = (ofApp *)ofxGetAppPtr();
 
-    cout << "llokAt" << app->transformer.cam.getLookAtDir() << endl;
-    
-    cout << "pos" << app->transformer.cam.getPosition() << endl;
+//    cout << "llokAt" << app->transformer.cam.getLookAtDir() << endl;
+//
+//    cout << "pos" << app->transformer.cam.getPosition() << endl;
     
 }
 
 //--------------------------------------------------------------
 void ofxOcean::draw(){
 	ofApp *app = (ofApp *)ofxGetAppPtr();
-	app->transformer.cam.end();
+	//app->transformer.cam.end();
 
     ofBackgroundGradient(ofColor::fromHex(0xFFFFFF), ofColor::fromHex(0x82CAFF));
     ofEnableDepthTest();
@@ -271,10 +271,10 @@ void ofxOcean::draw(){
     
     
 
-	app->transformer.cam.begin();
-    
-    
-    app->transformer.cam.setFarClip(100000);
+//    app->transformer.cam.begin();
+//
+//
+//    app->transformer.cam.setFarClip(100000);
 
     
     ofPushMatrix();
@@ -294,7 +294,7 @@ void ofxOcean::draw(){
     
     ofPopMatrix();
 
-	app->transformer.cam.end();
+	//app->transformer.cam.end();
     
     if (useLights) {
         // activate the lights //
@@ -312,7 +312,7 @@ void ofxOcean::draw(){
         ofDisableDepthTest();
         gui.draw();
     }
-	app->transformer.cam.begin();
+	//app->transformer.cam.begin();
 }
 
 
@@ -349,7 +349,7 @@ void ofxOcean::setNormals( ofMesh &mesh ){
     }
     //Set the normals to mesh
     mesh.clearNormals();
-    mesh.addNormals( norm );
+   // mesh.addNormals.addNormals( norm );
 }
 
 //--------------------------------------------------------------
@@ -360,10 +360,10 @@ void ofxOcean::keyPressed(int key){
     if( key == 'h' ){
         bShowGui = !bShowGui;
 				if (bShowGui){
-			app->transformer.cam.disableMouseInput();
+			//app->transformer.cam.disableMouseInput();
 		}
 		else {
-			app->transformer.cam.enableMouseInput();
+			//app->transformer.cam.enableMouseInput();
 		}
     }
     if (key =='<') {

@@ -308,8 +308,8 @@ void ofxCity::update() {
 	ofApp *app = (ofApp *)ofxGetAppPtr();
 	if (bUpdateParamsFromCode) {
 		app->transformer.cam.setFov(fov);
-		app->transformer.cam.setOrientation(camOrientation);
-		app->transformer.cam.setPosition(camPosition);
+//        app->transformer.cam.setOrientation(camOrientation);
+//        app->transformer.cam.setPosition(camPosition);
 
 		bUpdateParamsFromCode = false;
 	}

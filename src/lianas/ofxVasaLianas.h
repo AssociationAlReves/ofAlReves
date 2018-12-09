@@ -13,7 +13,7 @@
 #include "ofxGui.h"
 #include "ofxCv.h"
 #include "ofxKinect.h"
-#include "ofxQuadWarp.h"
+//#include "ofxQuadWarp.h"
 
 #include "ofxLiana.h"
 #include "ofxNode.h"

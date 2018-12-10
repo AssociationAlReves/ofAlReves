@@ -1,18 +1,19 @@
+<?xml version="1.0"?>
 <quad>
 	<upperLeft>
-		<x>-0.00703125</x>
-		<y>0.2425</y>
+		<x>0.171875</x>
+		<y>0.32125</y>
 	</upperLeft>
 	<upperRight>
-		<x>0.995313</x>
-		<y>0.2425</y>
+		<x>0.95625</x>
+		<y>0.31</y>
 	</upperRight>
 	<lowerRight>
-		<x>1</x>
-		<y>1</y>
+		<x>0.9375</x>
+		<y>0.99875</y>
 	</lowerRight>
 	<lowerLeft>
-		<x>0</x>
-		<y>1</y>
+		<x>0.217969</x>
+		<y>0.99875</y>
 	</lowerLeft>
 </quad>

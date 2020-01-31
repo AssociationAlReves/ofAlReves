@@ -64,15 +64,12 @@ void ofxQuadWarp::disableMouseControls() {
         return;
     }
     bMouseEnabled = false;
-    try {
+    
         ofRemoveListener(ofEvents().mouseMoved, this, &ofxQuadWarp::onMouseMoved);
         ofRemoveListener(ofEvents().mousePressed, this, &ofxQuadWarp::onMousePressed);
         ofRemoveListener(ofEvents().mouseDragged, this, &ofxQuadWarp::onMouseDragged);
         ofRemoveListener(ofEvents().mouseReleased, this, &ofxQuadWarp::onMouseReleased);
-    }
-    catch(Poco::SystemException) {
-        return;
-    }
+   
 }
 
 void ofxQuadWarp::enableKeyboardShortcuts() {
@@ -88,12 +85,9 @@ void ofxQuadWarp::disableKeyboardShortcuts() {
         return;
     }
     bKeyboardShortcuts = false;
-    try {
+   
         ofRemoveListener(ofEvents().keyPressed, this, &ofxQuadWarp::keyPressed);
-    }
-    catch(Poco::SystemException) {
-        return;
-    }
+    
 }
 
 //----------------------------------------------------- source / target points.
@@ -194,7 +188,7 @@ ofMatrix4x4 ofxQuadWarp::getMatrix(ofPoint * srcPoints, ofPoint * dstPoints) {
 	//figure out the warping!
 	//warning - older versions of openCV had a bug
 	//in this function.
-	cvFindHomography(src_mat, dst_mat, translate);
+	//cvFindHomography(src_mat, dst_mat, translate);
     
 	//get the matrix as a list of floats
 	float *mat = translate->data.fl;
@@ -411,77 +405,77 @@ bool ofxQuadWarp::isShowing() {
 //----------------------------------------------------- save / load.
 void ofxQuadWarp::save(string path) {
     ofXml xml;
-    xml.addChild("quadwarp");
-    xml.setTo("quadwarp");
-    xml.addChild("src");
-    xml.setTo("src");
+    xml.appendChild("quadwarp");
+    xml.set("quadwarp");
+    xml.appendChild ("src");
+    xml.set("src");
     for(int i=0; i<4; i++) {
-        xml.addChild("point");
-        xml.setToChild(i);
+        xml.appendChild("point");
+        //xml.setChild(i);
         xml.setAttribute("x", ofToString(srcPoints[i].x));
         xml.setAttribute("y", ofToString(srcPoints[i].y));
-        xml.setToParent();
+        //xml.setParent();
     }
-    xml.setToParent();
-    xml.addChild("dst");
-    xml.setTo("dst");
+    //xml.setParent();
+    xml.appendChild("dst");
+    xml.set("dst");
     for(int i=0; i<4; i++) {
-        xml.addChild("point");
-        xml.setToChild(i);
+        xml.appendChild("point");
+        //xml.setChild(i);
         xml.setAttribute("x", ofToString(dstPoints[i].x));
         xml.setAttribute("y", ofToString(dstPoints[i].y));
-        xml.setToParent();
+        //xml.setParent();
     }
-    xml.setToParent();
+    //xml.setParent();
     
-    xml.setToParent();
+    //xml.setParent();
     xml.save(path);
 }
 
 void ofxQuadWarp::load(string path) {
-    ofXml xml;
-    bool bOk = xml.load(path);
-    if(bOk == false) {
-        return;
-    }
-    
-    bOk = xml.setTo("quadwarp");
-    if(bOk == false) {
-        return;
-    }
-    
-    bOk = xml.setTo("src");
-    if(bOk == false) {
-        return;
-    }
-    
-    for(int i=0; i<xml.getNumChildren(); i++) {
-        bOk = xml.setToChild(i);
-        if(bOk == false) {
-            continue;
-        }
-        srcPoints[i].x = ofToFloat(xml.getAttribute("x"));
-        srcPoints[i].y = ofToFloat(xml.getAttribute("y"));
-        xml.setToParent();
-    }
-    xml.setToParent();
-    
-    bOk = xml.setTo("dst");
-    if(bOk == false) {
-        return;
-    }
-    
-    for(int i=0; i<xml.getNumChildren(); i++) {
-        bOk = xml.setToChild(i);
-        if(bOk == false) {
-            continue;
-        }
-        dstPoints[i].x = ofToFloat(xml.getAttribute("x"));
-        dstPoints[i].y = ofToFloat(xml.getAttribute("y"));
-        xml.setToParent();
-    }
-    xml.setToParent();
-    xml.setToParent();
+//    ofXml xml;
+//    bool bOk = xml.load(path);
+//    if(bOk == false) {
+//        return;
+//    }
+//    
+//    bOk = xml.set("quadwarp");
+//    if(bOk == false) {
+//        return;
+//    }
+//    
+//    bOk = xml.set("src");
+//    if(bOk == false) {
+//        return;
+//    }
+//    
+//    for(int i=0; i<xml.getNumChildren(); i++) {
+//        bOk = xml.setChild(i);
+//        if(bOk == false) {
+//            continue;
+//        }
+//        srcPoints[i].x = ofToFloat(xml.getAttribute("x"));
+//        srcPoints[i].y = ofToFloat(xml.getAttribute("y"));
+//        xml.setParent();
+//    }
+//    xml.setParent();
+//    
+//    bOk = xml.set("dst");
+//    if(bOk == false) {
+//        return;
+//    }
+//    
+//    for(int i=0; i<xml.getNumChildren(); i++) {
+//        bOk = xml.setChild(i);
+//        if(bOk == false) {
+//            continue;
+//        }
+//        dstPoints[i].x = ofToFloat(xml.getAttribute("x"));
+//        dstPoints[i].y = ofToFloat(xml.getAttribute("y"));
+//        xml.setParent();
+//    }
+//    xml.setParent();
+//    xml.setParent();
 }
 
 //----------------------------------------------------- show / hide.

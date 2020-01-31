@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Vasarely>
+	<nearThresh>197</nearThresh>
+	<farThresh>29</farThresh>
+	<diffThresh>80</diffThresh>
+	<Use_background__b_>1</Use_background__b_>
+	<Alt_Color__c_>1</Alt_Color__c_>
+</Vasarely>

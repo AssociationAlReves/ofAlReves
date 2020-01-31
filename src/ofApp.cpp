@@ -91,6 +91,8 @@ void ofApp::setupSceneManager() {
         sceneManager.add(new ofxCityPingPong(IntToString(i++)));
         sceneManager.add(new ofxKinecticon(IntToString(i++)));
         sceneManager.add(new ofxVideoMirror(IntToString(i++)));
+    sceneManager.add(new ofMovingSquares(IntToString(i++)));
+    sceneManager.add(new ofxCrossedLines(true,IntToString(i++)));
     
     sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
     
@@ -210,10 +212,10 @@ void ofApp::keyPressed(int key) {
     switch (key) {
             
         case 'e' :
-            //transformer.disableEasyCamMouseInput();
+            transformer.disableEasyCamMouseInput();
             break;
         case 'E' :
-            //transformer.enableEasyCamMouseInput();
+            transformer.enableEasyCamMouseInput();
             break;
             
             

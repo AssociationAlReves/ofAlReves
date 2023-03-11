@@ -1,5 +1,5 @@
 #include "ofMovingSquares.h"
-
+#define MOV_SQUARES_DEBUG
 unsigned delay = 0;
 
 //--------------------------------------------------------------

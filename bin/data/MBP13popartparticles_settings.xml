@@ -31,10 +31,10 @@
 	<Colors>
 		<baseColor>255, 0, 0, 255</baseColor>
 		<baseDestColor>255, 255, 0, 255</baseDestColor>
-		<altColor>0, 0, 255, 255</altColor>
-		<altDestColorParam>0, 255, 255, 255</altDestColorParam>
+		<altColor>0, 0, 4, 255</altColor>
+		<altDestColorParam>255, 0, 0, 255</altDestColorParam>
 		<color_velocity>5</color_velocity>
-		<use_alt_color__b_>0</use_alt_color__b_>
+		<use_alt_color__b_>1</use_alt_color__b_>
 		<use_alt_BG_color__B_>0</use_alt_BG_color__B_>
 	</Colors>
 </cityPanel>

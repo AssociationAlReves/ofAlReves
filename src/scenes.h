@@ -6,6 +6,7 @@
 #include "ofxVasaSquareField.h"
 #include "ofxSquareScreen.h"
 #include "ofxCrossedLines.h"
+#include "ofMovingSquares.h"
 #include "ofxVideoScene.h"
 #include "ofxBgScene.h"
 #include "ofxVideoMirror.h"

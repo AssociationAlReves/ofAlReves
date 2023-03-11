@@ -69,4 +69,15 @@ Fun with Vasarely inspired path
   
 ## ofxVasaSquareField
 
+Field or squares rotated by mouse.
+
 <img width="1111" alt="image" src="https://user-images.githubusercontent.com/2776898/224489563-837a0bea-94cd-4f9c-a143-2c7e91262e7f.png">
+
+- keys : 
+  - 'c' or 'x' : hard reset with quick rotation effect
+  - 'r': full reset
+  - 'w': smooth reset with slow rotation effect
+  - 'c': clear
+  - 'n': toggle mode
+
+

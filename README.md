@@ -66,8 +66,6 @@ Fun with Vasarely inspired path
   - 'c': clear
   - 'l': toggle lighting
   - '1' to '5': create unique or fill
- 
+  
+## ofxVasaSquareField
 
-  - 'r': reset
-  - 'c': toggle colors (blue/while <-> orange)
-  - 'b': set background color (ie: blue outside big bg circle)

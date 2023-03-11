@@ -40,3 +40,21 @@ In live stage, when there is no network, on mac you can right clic in WiFi menu 
 
 ## ofxTerrain
 
+Line terrain scene inspired by Adrien M and Clair B work, with holes and bumps
+
+![image](https://user-images.githubusercontent.com/2776898/224487750-a9b9ae55-d70e-46d5-a7a2-8d1ce1508541.png)
+
+- Line terrain scene inspired by Adrien M and Clair B work, with holes and bumps
+- keys : 
+  - 'r': reset
+  - 'j': add hole at mouse position
+  - 'J': add hill at mouse position
+  - 'k': add small hill at mouse position
+  - 'c': change cursor style (default or red dot)
+  - 'm', 'M': show/hide cursor
+
+
+
+  - 'r': reset
+  - 'c': toggle colors (blue/while <-> orange)
+  - 'b': set background color (ie: blue outside big bg circle)

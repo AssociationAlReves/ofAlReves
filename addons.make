@@ -1,9 +1,9 @@
 ofxAppUtils
+ofxOpenCv
 ofxCv
 ofxEasing
 ofxGui
 ofxKinect
-ofxOpenCv
 ofxOsc
 ofxPostGlitch
 ofxXmlSettings

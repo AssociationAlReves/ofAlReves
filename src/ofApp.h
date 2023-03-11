@@ -4,7 +4,7 @@
 
 #include "ofxAppUtils.h"
 #include "globals.h"
-#include "ofOscHandler.h"
+#include "osc/ofOscHandler.h"
 
 // optional ofxGUI control panel for transformer,
 // uncomment this if you're using ofxGui in this project

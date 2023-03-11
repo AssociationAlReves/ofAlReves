@@ -10,7 +10,6 @@
 #include "ofxVideoScene.h"
 #include "ofxBgScene.h"
 #include "ofxVideoMirror.h"
-#include "ofxCityPingPong.h"
 #include "ofxVasaLianas.h"
 #include "ofxTunnel.h"
 #include "ofParticles.h"

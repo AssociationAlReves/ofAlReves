@@ -88,7 +88,7 @@ void ofApp::setupSceneManager() {
         sceneManager.add(new ofxVasaSquareField(false, IntToString(i++)));
         sceneManager.add(new ofxVasaLianas(IntToString(i++)));
         sceneManager.add(new ofParticles(IntToString(i++)));
-        sceneManager.add(new ofxCityPingPong(IntToString(i++)));
+        //sceneManager.add(new ofxCityPingPong(IntToString(i++)));
         sceneManager.add(new ofxKinecticon(IntToString(i++)));
         sceneManager.add(new ofxVideoMirror(IntToString(i++)));
     sceneManager.add(new ofMovingSquares(IntToString(i++)));

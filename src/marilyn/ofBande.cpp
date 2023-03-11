@@ -8,10 +8,6 @@
 #include "ofBande.h"
 
 //------------------------------------------------------------------
-ofBande::ofBande(){
-}
-
-//------------------------------------------------------------------
 void ofBande::setMode(bandeMode newMode){
     mode = newMode;
 }

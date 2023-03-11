@@ -48,8 +48,12 @@
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
+<<<<<<< Updated upstream
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
+=======
+      debugDocumentVersioning = "NO"
+>>>>>>> Stashed changes
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
@@ -69,9 +73,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
+<<<<<<< Updated upstream
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
+=======
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "NO">
+      <BuildableProductRunnable>
+>>>>>>> Stashed changes
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"

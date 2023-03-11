@@ -7,6 +7,7 @@ Here is a short of the final show : https://vimeo.com/137587683
 Tested with OF 0.11.2 and Apple M1.
 
 Scenes are managed by the great ofxAppUtils. Use function keys (F1, F2, ...) to access specific scenes.
+Use mouse wheel to zoom and left button to rotate.
 Note: a different fork of ofxAppUtils has been modified to enable transformer cam access.
 
 # OSC notes
@@ -53,7 +54,19 @@ Line terrain scene inspired by Adrien M and Clair B work, with holes and bumps
   - 'c': change cursor style (default or red dot)
   - 'm', 'M': show/hide cursor
 
+## ofVasaDalleQuad
 
+Fun with Vasarely inspired path
+
+![image](https://user-images.githubusercontent.com/2776898/224488272-45b5a16e-ea70-4597-88d9-bea6da1b6895.png)
+
+- keys : 
+  - 'v': trace path at mouse position (they fade out after some time)
+  - ' ': stop fade out (keep what's drawn)
+  - 'c': clear
+  - 'l': toggle lighting
+  - '1' to '5': create unique or fill
+ 
 
   - 'r': reset
   - 'c': toggle colors (blue/while <-> orange)

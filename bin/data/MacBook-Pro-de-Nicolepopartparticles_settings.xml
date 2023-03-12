@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<cityPanel>
+	<gridSize>10</gridSize>
+	<dragForceParam>0.99</dragForceParam>
+	<forceParam>0.6</forceParam>
+	<returnForceParam>0.2</returnForceParam>
+	<distParam______>150</distParam______>
+	<resetDistThresholdParam>10</resetDistThresholdParam>
+	<scale>1</scale>
+	<Colors>
+		<baseColor>255, 0, 0, 255</baseColor>
+		<baseDestColor>255, 255, 0, 255</baseDestColor>
+		<altColor>0, 0, 255, 255</altColor>
+		<altDestColorParam>0, 255, 255, 255</altDestColorParam>
+		<color_velocity>5</color_velocity>
+		<use_alt_color__b_>0</use_alt_color__b_>
+		<use_alt_BG_color__B_>0</use_alt_BG_color__B_>
+	</Colors>
+</cityPanel>

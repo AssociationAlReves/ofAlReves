@@ -117,12 +117,18 @@ void ofApp::setupSceneManager() {
     //
     setSceneManager(&sceneManager);
     
+    transformer.cam.enableInertia();
+    
     stringstream ss;
     ss << "Registered scenes !" << endl;
     for (int i = 0; i < sceneManager.getNumScenes(); i++) {
         ss << "F" << i + 1 << ": " << sceneManager.getSceneName(i) << endl;
     }
+    ss << endl << "cam inertia enabled: " << transformer.cam.getInertiaEnabled() << endl;
+    ss << endl << "cam drag: " << transformer.cam.getDrag() << endl;
     cout << ss.str() << endl;;
+    
+    
     
 }
 

@@ -167,7 +167,7 @@ void ofxTerrain::meshAppendX(int segmentLength, int numSegments){
 	int newMeshSizeX = meshSize.x + numSegments;
 
 	// setup height map
-	//noiseScale = ofMap(ofGetMouseX(), 0 , ofGetWidth(), 0, 0.5);
+	//noiseScale = ofMap(mouseXPos, 0 , ofGetWidth(), 0, 0.5);
 	for (int x = meshSize.x; x < newMeshSizeX; x++) {
 		for (int y = 0; y < meshSize.y; y++) {
 			switch (mode) {
@@ -298,6 +298,10 @@ void ofxTerrain::updateHoles(){
 //--------------------------------------------------------------
 void ofxTerrain::addHill(int x, int y, float radius){
 
+    stringstream ss;
+    ss << "add hill at X:" << x << " Y:" << y;
+    cout << ss.str() << endl;;
+    
 	float nx = ofMap(x, 0, PROJECTOR_RESOLUTION_X, meshSize.x - planeWidth / planeResolution, meshSize.x);
 //	hillsAmp.push_back(0);
 //	hillsRadius.push_back(radius);
@@ -436,6 +440,9 @@ int ofxTerrain::indexFromXY(const int x, const int y, const int totalHeight){
 //--------------------------------------------------------------
 void ofxTerrain::update(){
 
+    mouseXPos = mouseX / 1.5;
+    mouseYPos = mouseY;
+    
 	switch (mode) {
 	case VASA_TERRAIN_NORMAL:
 	case VASA_TERRAIN_TOPLANE:
@@ -460,7 +467,7 @@ void ofxTerrain::update(){
 	updateHoles();
 	updateHills();
 	updateCursor(lastCursor, false);
-	ofVec2f currentCursor = ofVec2f(ofGetMouseX(), ofGetMouseY());
+	ofVec2f currentCursor = ofVec2f(mouseXPos, mouseYPos);
 	updateCursor(currentCursor, true);
 	lastCursor = currentCursor;
 }
@@ -486,8 +493,8 @@ void ofxTerrain::draw(){
 		ofSetColor(ofColor::red);
 		ofSetLineWidth(10);
 		int lw = 2;
-		ofDrawLine(mouseX - lw, mouseY, mouseX + lw, mouseY);
-		ofDrawLine(mouseX, mouseY - lw, mouseX, mouseY + lw);
+		ofDrawLine(mouseXPos - lw, mouseYPos, mouseXPos + lw, mouseYPos);
+		ofDrawLine(mouseXPos, mouseYPos - lw, mouseXPos, mouseYPos + lw);
 	}
 
 	ofSetLineWidth(1);
@@ -501,7 +508,6 @@ void ofxTerrain::draw(){
 //--------------------------------------------------------------
 void ofxTerrain::keyPressed(int key) {
 
-
 	switch (key)
 	{
 	case ' ': { mode = (mode + 1) % 4;
@@ -510,9 +516,9 @@ void ofxTerrain::keyPressed(int key) {
 	case 'g': bShowGui = !bShowGui; break;
 	case 'h': addHole(800, 400); break;
 	case 'H': addHill(800, 400, 15); break;
-	case 'j': addHole(ofGetMouseX(), ofGetMouseY()); break;
-	case 'J': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS); break;
-	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/1.5); break;
+	case 'j': addHole(mouseXPos, mouseYPos); break;
+	case 'J': addHill(mouseXPos, mouseYPos, VASA_HILL_RADIUS); break;
+	case 'k': addHill(mouseXPos, mouseYPos, VASA_HILL_RADIUS/1.5); break;
 	case 'c': bSmallCursor = !bSmallCursor; break;
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;

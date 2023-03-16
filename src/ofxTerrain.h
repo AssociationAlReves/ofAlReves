@@ -60,6 +60,8 @@ private:
 
     int planeWidth;
     int planeHeight;
+    int mouseXPos;
+    int mouseYPos;
 
     int planeResolution;
 

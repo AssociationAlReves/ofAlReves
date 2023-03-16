@@ -1,8 +1,19 @@
 #include "ofxBgScene.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofxBgScene::setup() {
 	bBackground = false;
+    
+    ofApp *app = (ofApp *)ofxGetAppPtr();
+    app->transformer.cam.reset();
+    float farClip = app->transformer.cam.getFarClip();
+    
+    stringstream ss;
+    ss << endl << "cam far plane: " << farClip << endl;
+    cout << ss.str() << endl;;
+    
+    app->transformer.cam.setFarClip(1000000);
 }
 
 //--------------------------------------------------------------

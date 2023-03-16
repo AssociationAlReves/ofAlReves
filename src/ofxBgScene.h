@@ -12,6 +12,7 @@
 #include "globals.h"
 #include "ofxEasing.h"
 #include "ofxAppUtils.h"
+#include "ofApp.h"
 
 class ofxBgScene : public ofxFadeScene
 {

@@ -483,11 +483,11 @@ void ofxCity::drawExplosion() {
 	//ofDrawAxis(500);
 
 	ofPushMatrix();
-	ofRotate(0, 0, 0, 0);
+	ofRotateDeg(0, 0, 0, 0);
 	ofTranslate(curCamTranslate.x, curCamTranslate.y, curCamTranslate.z);
-	ofRotateX(curCamRot.x);
-	ofRotateY(curCamRot.y);
-	ofRotateZ(curCamRot.z);
+	ofRotateXDeg(curCamRot.x);
+	ofRotateYDeg(curCamRot.y);
+	ofRotateZDeg(curCamRot.z);
 
 	ofSetColor(ofColor::gray);
 	float roadSize = roadTexWidth / roadDivision;
@@ -501,9 +501,9 @@ void ofxCity::drawExplosion() {
 		
 		ofPushMatrix();
 			ofTranslate(roadPosEx[i]);
-			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofRotateDeg(noiseAngle, noisex, noisey, noisez);
 			ofPushMatrix();
-			ofRotate(90, 1, 0, 0);
+			ofRotateDeg(90, 1, 0, 0);
 				ofDrawRectangle(0, 0, roadSize, roadSize);
 			ofPopMatrix();
 		ofPopMatrix();
@@ -522,9 +522,9 @@ void ofxCity::drawExplosion() {
 
 		ofPushMatrix();
 			ofTranslate(buildingsPosEx[i]);
-			ofRotate(noiseAngle, noisex, noisey, noisez);
+			ofRotateDeg(noiseAngle, noisex, noisey, noisez);
 			ofPushMatrix();
-			ofRotate(90, 1, 0, 0);
+			ofRotateDeg(90, 1, 0, 0);
 				ofDrawRectangle(0, 0, buildingsSizesEx[i].x, buildingsSizesEx[i].y);
 			ofPopMatrix();
 		ofPopMatrix();
@@ -629,7 +629,7 @@ void ofxCity::draw() {
 			// Terrain draw
 			//
 			/*ofPushMatrix();
-			ofRotate(90, 1, 0, 0);
+			ofRotateDeg(90, 1, 0, 0);
 			ofTranslate(0, -10000, 0);
 			terrain.draw();
 			ofPopMatrix();*/

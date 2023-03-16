@@ -57,7 +57,7 @@ void ofxVasaDalleQuad::update(){
     for(int i = 0; i< actors.size(); i++) {
         ofVec2f actor = actors[i];
         
-        int depth = (int)floor(ofRandom((float)maxDepth+1));
+        int depth = (int)floor(ofRandom((float)maxDepth+1)) + 1;
 
         createDalle(actor.x, actor.y, depth);
     }

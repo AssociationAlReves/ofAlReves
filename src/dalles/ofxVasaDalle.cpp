@@ -33,6 +33,9 @@ void ofxVasaDalle::setup(int dalleSize){
 		shapeColor = palette[1];
 		squareColor.setSaturation(200);
 		shapeColor.setSaturation(200);
+        squareColor.setBrightness(255);
+        shapeColor.setBrightness(255);
+
 	}
 	//squareColor.setBrightness(255);
 	//shapeColor.setBrightness(255);
@@ -105,7 +108,7 @@ void ofxVasaDalle::draw(){
 	switch (shapeType) {
 	case VASA_DALLE_SHAPE_CIRCLE:
 
-		ofRotate(90, 1, 0, 0);
+		ofRotateDeg(90, 1, 0, 0);
 		ofCylinderPrimitive(shapeSize/2, shapeHeight, 25, 1).draw();
 		//ofCircle(0, 0, shapeSize / 2.0);
 
@@ -117,8 +120,8 @@ void ofxVasaDalle::draw(){
 		break;
 	default:
 		ofTranslate(0,-shapeSize*0.15,0);
-		ofRotate(90, 1, 0, 0);
-		ofRotate(90, 0, 1, 0);
+		ofRotateDeg(90, 1, 0, 0);
+		ofRotateDeg(90, 0, 1, 0);
 		ofCylinderPrimitive(shapeSize*0.65, shapeHeight, 3, 1).draw();
 		break;
 	}

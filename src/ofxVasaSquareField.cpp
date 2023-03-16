@@ -184,7 +184,7 @@ void ofxVasaSquareField::draw(){
 				ofTranslate(i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR), j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR));
 
 				// noise rotation going to 0 when all squares are drawn
-				ofRotateZ(ofSignedNoise( ofGetElapsedTimef() *2*speed + i*1.23 + j*2.34 )
+				ofRotateZDeg(ofSignedNoise( ofGetElapsedTimef() *2*speed + i*1.23 + j*2.34 )
 					* ofMap(squareIndex, 0, squareCount, 180, 0));
 
 				// noise scale  going to 1 when all squares are drawn
@@ -217,7 +217,7 @@ void ofxVasaSquareField::draw(){
 				{
 					ofPushMatrix();
 					ofTranslate(i*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR), j*squareTotalSize-squareSize*(1.0*VASA_SQUARE_PADDING_FACTOR));
-					ofRotateZ(rotSpeed[i*sizeY+j] * ofGetElapsedTimef());
+                    ofRotateZDeg(rotSpeed[i*sizeY+j] * ofGetElapsedTimef());
 					ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);
 					ofPopMatrix();
 
@@ -238,7 +238,7 @@ void ofxVasaSquareField::draw(){
 				float force = distRange - ofClamp(ofDist(squareX, squareY, mouseX, mouseY),0,distRange);
 				
 				ofScale(ofMap(force,0,distRange, 1,scaleFactor),ofMap(force,0,distRange, 1,scaleFactor),1);
-				ofRotateZ(ofMap(force,0,distRange, 0,devAngle));
+                ofRotateZDeg(ofMap(force,0,distRange, 0,devAngle));
 				ofDrawRectangle(-squareSize/2,-squareSize/2, squareSize,squareSize);
 				ofPopMatrix();
 

@@ -352,7 +352,7 @@ void ofxTerrain::updateHills(){
 				ofVec3f curVertex = mesh.getVertex(idx);
 
 				//float val = ampTween * exp(- ( pow((float)x-xCenter,2)/radius + pow((float)y-yCenter,2)/radius));
-				float sqrVal = radius - pow((float)x - xCenter, 2) - pow((float)y - yCenter, 2);
+				float sqrVal = radius - ((float)x - xCenter) * ((float)x - xCenter) - ((float)y - yCenter) * ((float)y - yCenter);
 				if (sqrVal > 0) {
 
 					curVertex.z += amp * sqrt(sqrVal) / 4;
@@ -406,7 +406,7 @@ void ofxTerrain::updateCursor(ofVec2f position, bool direction){
 			ofVec3f curVertex = mesh.getVertex(idx);
 
 			//float val = ampTween * exp(- ( pow((float)x-xCenter,2)/radius + pow((float)y-yCenter,2)/radius));
-			float sqrVal = radius - pow((float)x - xCenter, 2) - pow((float)y - yCenter, 2);
+			float sqrVal = radius - ((float)x - xCenter, 2) * ((float)x - xCenter, 2) - ((float)y - yCenter) * ((float)y - yCenter);
 			if (sqrVal > 0) {
 				if (direction)
 				{
@@ -512,7 +512,7 @@ void ofxTerrain::keyPressed(int key) {
 	case 'H': addHill(800, 400, 15); break;
 	case 'j': addHole(ofGetMouseX(), ofGetMouseY()); break;
 	case 'J': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS); break;
-	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/2.0); break;
+	case 'k': addHill(ofGetMouseX(), ofGetMouseY(), VASA_HILL_RADIUS/1.5); break;
 	case 'c': bSmallCursor = !bSmallCursor; break;
 	case 'm': ofHideCursor(); break;
 	case 'M': ofShowCursor(); break;

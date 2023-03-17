@@ -23,7 +23,7 @@ public:
 			setFade(0,0);
 		}
 	void setup();
-    void setup(int width, int height, int sizeOfTiles = 256, int maxDepthLevel = 3);
+    void setup(int width, int height, int sizeOfTiles = 256, int maxDepthLevel = 2);
     void update();
     void draw();
 	void keyPressed(int key);

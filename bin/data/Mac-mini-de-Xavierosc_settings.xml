@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<OSC_control>
+	<Master>1</Master>
+	<reconnect>0</reconnect>
+	<OSC_Listener>
+		<Port>9000</Port>
+	</OSC_Listener>
+	<OSC_Send>
+		<Destination>127.0.0.1</Destination>
+		<Port>9000</Port>
+	</OSC_Send>
+</OSC_control>

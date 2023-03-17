@@ -1,5 +1,6 @@
-<group>
-	<speed>2</speed>
-	<range_min>-875</range_min>
-	<range_max>-25</range_max>
-</group>
+<?xml version="1.0"?>
+<Ribbon_control>
+    <speed>2</speed>
+    <range_min>-875</range_min>
+    <range_max>-25</range_max>
+</Ribbon_control>

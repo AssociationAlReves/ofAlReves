@@ -344,7 +344,9 @@ void ofxVasaLianas::draw() {
 	ofScale(kwScaleX, kwScaleY);
 	ofTranslate(kwX, kwY);
 	
-	drawKinect();
+    if (bUseKinectRepulsor) {
+        drawKinect();
+    }
 	
 	if (kinectWarp) {
 		ofSetColor(255);
@@ -364,11 +366,12 @@ void ofxVasaLianas::draw() {
 	
 	
 	//cam.end();
-	stringstream ss;
-	ss << "FPS : " + ofToString(ofGetFrameRate());
-	ofDrawBitmapStringHighlight(ss.str(), 10, 10);
+	
 	if (bShowGui)
 	{
+        stringstream ss;
+        ss << "FPS : " + ofToString(ofGetFrameRate());
+        ofDrawBitmapStringHighlight(ss.str(), 10, 10);
 		gui.draw();
 	}
 	//app->cam.begin();
@@ -497,15 +500,19 @@ void ofxVasaLianas::keyPressed(int key) {
                 //app->cam.enableMouseInput();
 			}
 			break;
-		case 'l':  { if (bLianas)
-			gui.loadFromFile(Globals::hostName + "lianas.xml");
-		else
-			gui.loadFromFile(Globals::hostName + "lianamesh.xml");
-	}
-	break;			kinect.setCameraTiltAngle(angle);
-			break;
+		case 'l':
+            { if (bLianas)
+                gui.loadFromFile(Globals::hostName + "lianas.xml");
+            else
+                gui.loadFromFile(Globals::hostName + "lianamesh.xml");
+            }
+            break;
 		case 'j': bUseMouseRepulsor = false; break;
-		case 'J' : bUseMouseRepulsor = true; break;
+        case 'J' : {
+            lianaMesh.clearRepulsors();
+            bUseMouseRepulsor = true;
+        }
+            break;
 		case 'k': bUseKinectRepulsor = false; break;
 		case 'K' : bUseKinectRepulsor = true; break;
 		case 'y' : {bLianas = !bLianas; initLianas();} break;

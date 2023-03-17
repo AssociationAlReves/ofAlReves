@@ -93,6 +93,7 @@ void ofApp::setupSceneManager() {
     //sceneManager.add(new ofxVideoMirror(IntToString(i++)));
     //	sceneManager.add(new ofMovingSquares(IntToString(i++)));
     sceneManager.add(new ofxRibbon(IntToString(i++)));
+    sceneManager.add(new ofxSquareScreen(IntToString(i++)));
     
     sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
     

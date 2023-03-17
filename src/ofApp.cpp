@@ -90,9 +90,9 @@ void ofApp::setupSceneManager() {
     sceneManager.add(new ofParticles(IntToString(i++)));
     //sceneManager.add(new ofxCityPingPong(IntToString(i++)));
     sceneManager.add(new ofxKinecticon(IntToString(i++)));
-    sceneManager.add(new ofxVideoMirror(IntToString(i++)));
-    sceneManager.add(new ofMovingSquares(IntToString(i++)));
-    sceneManager.add(new ofxCrossedLines(true,IntToString(i++)));
+    //sceneManager.add(new ofxVideoMirror(IntToString(i++)));
+    //	sceneManager.add(new ofMovingSquares(IntToString(i++)));
+    sceneManager.add(new ofxRibbon(IntToString(i++)));
     
     sceneManager.setup(false); // true = setup all the scenes now (not on the fly)
     

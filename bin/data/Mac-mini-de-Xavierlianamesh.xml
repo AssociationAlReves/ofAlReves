@@ -1,0 +1,55 @@
+<panel>
+	<Main>
+		<randomNodes>0</randomNodes>
+		<lockX>0</lockX>
+		<lockY>1</lockY>
+		<lockZ>0</lockZ>
+		<lockLastNode>1</lockLastNode>
+		<numLianas>27</numLianas>
+		<gravity>0</gravity>
+		<lineWidth>3.36735</lineWidth>
+	</Main>
+	<Nodes>
+		<nodeRadius>1</nodeRadius>
+		<nodeStrength>-4.08154</nodeStrength>
+		<nodeDiameter>1</nodeDiameter>
+		<nodeDamping>0.0306122</nodeDamping>
+		<nodeRamp>0.77551</nodeRamp>
+		<nodeVelocity>10.9694</nodeVelocity>
+	</Nodes>
+	<Springs>
+		<numNodes>30</numNodes>
+		<springLength>280.612</springLength>
+		<springStiffness>10</springStiffness>
+		<stringDamping>0.994898</stringDamping>
+	</Springs>
+	<Repulsion>
+		<repulsionRadius>352.041</repulsionRadius>
+		<rep.Strength>30.6122</rep.Strength>
+	</Repulsion>
+	<OpenCV>
+		<nearThreshold>255</nearThreshold>
+		<farThreshold>55.9439</farThreshold>
+		<threshold>26.0204</threshold>
+		<contourMinArea>42.449</contourMinArea>
+		<contourMaxArea>1e+06</contourMaxArea>
+		<blurSize>10</blurSize>
+		<maximumDistance>300</maximumDistance>
+		<persistence>100</persistence>
+	</OpenCV>
+	<debug>
+		<ShowLabels>0</ShowLabels>
+		<bShowDepth>0</bShowDepth>
+		<bShowFilteredDepth>0</bShowFilteredDepth>
+		<kinect_angle>20</kinect_angle>
+		<kinect_warp_sX>2.37245</kinect_warp_sX>
+		<kinect_warp_sY>0.734694</kinect_warp_sY>
+		<kinect_X>-38.2653</kinect_X>
+		<kinect_Y>152.551</kinect_Y>
+		<kinect_warp>0</kinect_warp>
+		<easyCamMouse>1</easyCamMouse>
+		<bounds>-799.134, 408.496</bounds>
+		<topleftPos>-212.711, 433.486</topleftPos>
+	</debug>
+<panel/>
+</panel>

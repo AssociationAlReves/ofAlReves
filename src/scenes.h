@@ -13,6 +13,7 @@
 #include "ofxVasaLianas.h"
 #include "ofxTunnel.h"
 #include "ofParticles.h"
+#include "ofxRibbon.h"
 #ifdef USE_KINECT
 #include "ofxKinecticon.h"
 //#include "ofxKinectListener.h"

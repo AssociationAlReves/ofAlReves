@@ -118,7 +118,7 @@ void ofApp::setupSceneManager() {
     //
     setSceneManager(&sceneManager);
     
-    transformer.cam.enableInertia();
+    //transformer.cam.enableInertia();
     transformer.cam.setDrag(0.9); // 0.9 is default
     
     stringstream ss;

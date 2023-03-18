@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <OSC_control>
-	<Master>0</Master>
+	<Master>1</Master>
 	<reconnect>0</reconnect>
 	<OSC_Listener>
-		<Port>9001</Port>
+		<Port>9005</Port>
 	</OSC_Listener>
 	<OSC_Send>
 		<Destination>MBP13.local</Destination>

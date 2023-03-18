@@ -88,7 +88,7 @@
 	</Repulsion>
 	<OpenCV>
 		<nearThreshold>255</nearThreshold>
-		<farThreshold>213</farThreshold>
+		<farThreshold>0</farThreshold>
 		<threshold>13</threshold>
 		<contourMinArea>1</contourMinArea>
 		<contourMaxArea>1e+06</contourMaxArea>
@@ -99,7 +99,7 @@
 	<debug>
 		<ShowLabels>1</ShowLabels>
 		<bShowDepth>0</bShowDepth>
-		<bShowFilteredDepth>0</bShowFilteredDepth>
+		<bShowFilteredDepth>1</bShowFilteredDepth>
 		<kinect_angle>0</kinect_angle>
 		<kinect_warp_sX>1</kinect_warp_sX>
 		<kinect_warp_sY>1</kinect_warp_sY>

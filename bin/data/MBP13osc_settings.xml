@@ -1,24 +1,12 @@
 <?xml version="1.0"?>
-<group>
-	<Master>0</Master>
-	<OSC_Listener>
-		<Port>9000</Port>
-	</OSC_Listener>
-	<OSC_Send>
-		<Destination>MBP15.local</Destination>
-		<Port>9001</Port>
-	</OSC_Send>
-	<group />
-	<reconnect>0</reconnect>
-</group>
 <OSC_control>
-	<Master>0</Master>
+	<Master>1</Master>
 	<reconnect>0</reconnect>
 	<OSC_Listener>
 		<Port>9000</Port>
 	</OSC_Listener>
 	<OSC_Send>
-		<Destination>MBP15.local</Destination>
+		<Destination>MacBook-Pro-de-Nicole.local</Destination>
 		<Port>9001</Port>
 	</OSC_Send>
 </OSC_control>
